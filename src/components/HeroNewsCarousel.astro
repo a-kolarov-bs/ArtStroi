@@ -127,19 +127,6 @@ const slides: Slide[] = [
       <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
     </svg>
   </button>
-
-  <div class="lg:hidden mt-6 flex justify-center items-center gap-2.5" role="tablist" aria-label="Слайдове">
-    {slides.map((_, i) => (
-      <button
-        type="button"
-        data-hero-news-mobile-dot={i}
-        role="tab"
-        aria-selected={i === 0 ? 'true' : 'false'}
-        aria-label={`Слайд ${i + 1}`}
-        class:list={['rounded-full transition-all duration-300 ease-out-expo', i === 0 ? 'h-2 w-7 bg-brand' : 'h-2 w-2 bg-white/50 hover:bg-white/80']}
-      ></button>
-    ))}
-  </div>
 </div>
 
 <style>
@@ -355,7 +342,6 @@ const slides: Slide[] = [
       const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-hero-news-slide]'));
       const prevBtn = root.querySelector<HTMLButtonElement>('[data-hero-news-prev]');
       const nextBtn = root.querySelector<HTMLButtonElement>('[data-hero-news-next]');
-      const mobileDots = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-hero-news-mobile-dot]'));
       let active = 0;
       let paused = false;
       let timer: number | undefined;
@@ -384,12 +370,6 @@ const slides: Slide[] = [
             dot.className = `h-1 rounded-full transition-all duration-300 ease-out-expo ${isActive ? 'w-5 bg-brand' : 'w-1.5 bg-ink-200'}`;
           });
         });
-
-        mobileDots.forEach((dot, i) => {
-          const isActive = i === active;
-          dot.setAttribute('aria-selected', String(isActive));
-          dot.className = `rounded-full transition-all duration-300 ease-out-expo ${isActive ? 'h-2 w-7 bg-brand' : 'h-2 w-2 bg-white/50 hover:bg-white/80'}`;
-        });
       };
 
       const goTo = (i: number) => {
@@ -407,7 +387,6 @@ const slides: Slide[] = [
 
       prevBtn?.addEventListener('click', () => goTo(active - 1));
       nextBtn?.addEventListener('click', () => goTo(active + 1));
-      mobileDots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
       root.addEventListener('mouseenter', () => { paused = true; });
       root.addEventListener('mouseleave', () => { paused = false; });
 

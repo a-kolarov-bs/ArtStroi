@@ -97,20 +97,8 @@ const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
 
 <style>
   @media (max-width: 767px) {
-    picture img {
-      filter: blur(14px) saturate(1.08) brightness(0.68);
-      transform: scale(1.08);
-    }
-
     .hero-video {
-      inset: auto 0 auto 0;
-      top: clamp(9.75rem, 25svh, 13.5rem);
-      height: calc(100vw * 496 / 864);
-      object-fit: contain;
       object-position: center;
-      transform: none !important;
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 13%, #000 87%, transparent 100%);
-      mask-image: linear-gradient(to bottom, transparent 0%, #000 13%, #000 87%, transparent 100%);
     }
 
     .hero-layout {
