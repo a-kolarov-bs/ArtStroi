@@ -17,7 +17,7 @@ const nav = [
   <div class="container-page flex h-20 items-center justify-between gap-6">
     <a
       href="/"
-      class="group flex items-center transition-transform duration-400 hover:scale-[1.02] focus:outline-none focus-visible:outline-none"
+      class="site-logo group flex items-center transition-transform duration-400 hover:scale-[1.02] focus:outline-none focus-visible:outline-none"
       aria-label="АРТСТРОЙ ООД — начало"
     >
       <img
@@ -25,7 +25,7 @@ const nav = [
         alt="АРТСТРОЙ ООД"
         width="478"
         height="112"
-        class="h-9 md:h-10 w-auto"
+        class="site-logo__img h-9 md:h-10 w-auto"
         decoding="async"
       />
     </a>
@@ -132,6 +132,31 @@ const nav = [
   body.has-solid-header #site-header .glass:hover {
     background: rgba(28, 32, 38, 0.16);
     border-color: rgba(255, 255, 255, 0.70);
+  }
+
+  .site-logo {
+    margin-inline-start: -0.55rem;
+    border-radius: 0.95rem;
+    padding: 0.38rem 0.62rem 0.38rem 0.55rem;
+  }
+
+  #site-header[data-state='top'] .site-logo {
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.72)),
+      rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.92),
+      0 14px 32px -22px rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+  }
+
+  #site-header[data-state='scrolled'] .site-logo,
+  body.has-solid-header #site-header .site-logo {
+    background: transparent;
+    border: 1px solid transparent;
+    box-shadow: none;
   }
 
   .mobile-menu-button {
@@ -265,6 +290,19 @@ const nav = [
   }
 
   @media (max-width: 767px) {
+    #site-header[data-state='scrolled'] .site-logo,
+    body.has-solid-header #site-header .site-logo {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.72)),
+        rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.92),
+        0 14px 32px -22px rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+    }
+
     #site-header[data-state='scrolled'],
     body.has-solid-header #site-header {
       background-color: transparent;

@@ -83,14 +83,6 @@ const declaration = {
   img: 'https://www.artstroismolian.com/sert/8.jpg',
 };
 
-// ── Leadership — verbatim from CLAUDE.md ──────────────────────────
-const leadership = [
-  { role: 'Управител', phone: '+359 878 715 936', tel: '+359878715936' },
-  { role: 'Технически директор', phone: '+359 877 766 523', tel: '+359877766523' },
-  { role: 'Счетоводство', phone: '+359 878 715 935', tel: '+359878715935' },
-  { role: 'Транспорт', phone: '+359 878 986 797', tel: '+359878986797' },
-];
-
 const pageTitle = 'За нас · АРТСТРОЙ ООД — строителна компания от Смолян от 1992';
 const pageDescription =
   'Над 34 години строителство в Смолян и България. Носители на „Сграда на годината". Сертифицирани по ISO 9001/14001/45001. Вписани в ЦПРС.';
@@ -492,63 +484,7 @@ const pageDescription =
   </section>
 
   <!-- ════════════════════════════════════════════════════════════
-       6 · LEADERSHIP — dark contact ledger.
-       ════════════════════════════════════════════════════════════ -->
-  <section class="relative isolate overflow-hidden bg-ink-950 text-white py-14 md:py-20" aria-labelledby="people-heading">
-    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-c opacity-[0.16]"></div>
-
-    <div class="container-page relative">
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end mb-10 md:mb-12">
-        <Reveal class="lg:col-span-7">
-          <p class="eyebrow text-brand flex items-center gap-3">
-            <span class="inline-block h-px w-10 bg-brand"></span>
-            Хора
-          </p>
-          <h2
-            id="people-heading"
-            class="mt-4 font-display tracking-tight text-white max-w-[22ch]"
-            style="font-size: clamp(1.85rem, 1rem + 2.2vw, 3rem); line-height: 1.05;"
-          >
-            Директна връзка с екипа.
-            <span class="italic block text-white/65" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
-              Четири линии за връзка.
-            </span>
-          </h2>
-        </Reveal>
-        <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
-          <p class="text-[14.5px] md:text-[15px] text-white/65 leading-[1.65] max-w-[44ch]">
-            Без call center, без диспечери. Управителят, техническият директор, счетоводството и транспортът отговарят лично — в работно време и обикновено в рамките на същия ден.
-          </p>
-        </Reveal>
-      </div>
-
-      <ol class="zn-people grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/12">
-        {leadership.map((p, i) => (
-          <Reveal as="li" delay={i * 80} class="zn-people__cell group">
-            <a href={`tel:${p.tel}`} class="zn-people__link">
-              <div class="zn-people__head">
-                <span class="font-display italic text-brand tabular-nums" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span class="zn-people__tag">Линия</span>
-              </div>
-              <p class="zn-people__role">{p.role}</p>
-              <p class="zn-people__phone">{p.phone}</p>
-              <span class="zn-people__action">
-                Обади се
-                <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          </Reveal>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- ════════════════════════════════════════════════════════════
-       7 · CTA — compact split, mirrors /uslugi closing.
+       6 · CTA — compact split, mirrors /uslugi closing.
        ════════════════════════════════════════════════════════════ -->
   <section class="relative isolate overflow-hidden bg-cream-50 py-16 md:py-24" aria-labelledby="zn-cta-heading">
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet"></div>
@@ -1343,88 +1279,6 @@ const pageDescription =
     color: theme('colors.brand.DEFAULT');
   }
 
-  /* ════════ LEADERSHIP — people ledger ═════════════════════════ */
-  .zn-people {
-    border: 1px solid rgba(255, 255, 255, 0.10);
-  }
-  .zn-people__cell {
-    background: theme('colors.ink.950');
-    transition: background-color 320ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .zn-people__cell:hover {
-    background: rgba(186, 45, 32, 0.08);
-  }
-  .zn-people__link {
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem 1.5rem 1.6rem;
-    height: 100%;
-    color: inherit;
-  }
-  @media (min-width: 768px) {
-    .zn-people__link { padding: 1.85rem 1.75rem 1.85rem; }
-  }
-  .zn-people__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-  }
-  .zn-people__head > span:first-child {
-    font-size: 1.05rem;
-    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .zn-people__cell:hover .zn-people__head > span:first-child {
-    transform: translateY(-2px);
-  }
-  .zn-people__tag {
-    font-size: 0.62rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.42);
-    font-family: ui-monospace, "SFMono-Regular", monospace;
-    transition: color 400ms ease, letter-spacing 500ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .zn-people__cell:hover .zn-people__tag {
-    color: rgba(255, 255, 255, 0.78);
-    letter-spacing: 0.2em;
-  }
-  .zn-people__role {
-    margin-top: 1.4rem;
-    font-size: 0.62rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.55);
-    font-weight: 600;
-  }
-  .zn-people__phone {
-    margin-top: 0.5rem;
-    font-size: clamp(1.05rem, 0.8rem + 0.6vw, 1.25rem);
-    line-height: 1.15;
-    color: #FFFFFF;
-    font-variant-numeric: tabular-nums;
-    transition: color 320ms ease;
-  }
-  .zn-people__cell:hover .zn-people__phone {
-    color: theme('colors.brand.DEFAULT');
-  }
-  .zn-people__action {
-    margin-top: auto;
-    padding-top: 1.4rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.62rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.65);
-    align-self: flex-start;
-    transition: gap 320ms ease, color 320ms ease;
-  }
-  .zn-people__cell:hover .zn-people__action {
-    color: theme('colors.brand.DEFAULT');
-    gap: 0.65rem;
-  }
-
   /* ════════ CTA backdrop drift ═════════════════════════════════ */
   .zn-cta__backdrop {
     animation: zn-cta-drift 32s ease-in-out infinite alternate;
@@ -1461,11 +1315,6 @@ const pageDescription =
     .zn-timeline__dot,
     .zn-timeline__hr,
     .zn-timeline__cell,
-    .zn-people__cell,
-    .zn-people__head > span:first-child,
-    .zn-people__tag,
-    .zn-people__phone,
-    .zn-people__action,
     .zn-dossier__row,
     .zn-dossier__cta,
     .zn-award__img,
@@ -1478,7 +1327,6 @@ const pageDescription =
     .zn-iso__num,
     .zn-cprs__roman,
     .zn-timeline__year,
-    .zn-people__head > span:first-child,
     .zn-award__img {
       transform: none !important;
     }
