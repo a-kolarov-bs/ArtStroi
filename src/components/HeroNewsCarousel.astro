@@ -59,6 +59,13 @@ const slides: Slide[] = [
 ---
 
 <div class="hero-news-card relative w-full max-w-[215px] sm:max-w-[290px] lg:max-w-[300px] xl:max-w-[320px] mx-auto" data-hero-news>
+  <svg aria-hidden="true" class="absolute h-0 w-0 overflow-hidden">
+    <filter id="cert-stamp-roughen">
+      <feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.7" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
   <button
     type="button"
     data-hero-news-prev
@@ -85,7 +92,9 @@ const slides: Slide[] = [
           </div>
           <div class="cert-card__stage">
             <span class="cert-card__code">{s.code}</span>
-            <span class="cert-card__seal" aria-hidden="true">ART</span>
+            <span class="cert-card__seal" aria-hidden="true">
+              <span class="cert-card__seal-text">АРТСТРОЙ</span>
+            </span>
             <span class="cert-card__thumb">
               <img
                 src={s.image}
@@ -213,14 +222,65 @@ const slides: Slide[] = [
     width: 3.55rem;
     height: 3.55rem;
     place-items: center;
-    border: 1px solid rgba(186, 45, 32, 0.45);
     border-radius: 999px;
+    color: rgba(186, 45, 32, 0.82);
+    transform: rotate(-10deg);
+    isolation: isolate;
+  }
+  .cert-card__seal::before,
+  .cert-card__seal::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .cert-card__seal::before {
+    border: 2px solid rgba(186, 45, 32, 0.38);
+    background:
+      radial-gradient(circle at 22% 30%, rgba(186, 45, 32, 0.10) 0 2px, transparent 2.4px),
+      radial-gradient(circle at 70% 72%, rgba(186, 45, 32, 0.10) 0 1.8px, transparent 2.2px),
+      repeating-conic-gradient(
+        from 8deg,
+        rgba(186, 45, 32, 0.26) 0deg 3deg,
+        transparent 3deg 7deg,
+        rgba(186, 45, 32, 0.12) 7deg 9deg,
+        transparent 9deg 15deg
+      );
+    -webkit-mask:
+      radial-gradient(circle, transparent 57%, #000 58% 66%, transparent 67%),
+      radial-gradient(circle, #000 0 100%);
+    -webkit-mask-composite: source-over;
+    mask:
+      radial-gradient(circle, transparent 57%, #000 58% 66%, transparent 67%),
+      radial-gradient(circle, #000 0 100%);
+    opacity: 0.92;
+    filter: url('#cert-stamp-roughen');
+  }
+  .cert-card__seal::after {
+    inset: 0.38rem;
+    border: 1.5px solid rgba(186, 45, 32, 0.34);
+    box-shadow:
+      0 0 0 0.18rem rgba(186, 45, 32, 0.035),
+      inset 0 0 0 0.18rem rgba(186, 45, 32, 0.025);
+    filter: url('#cert-stamp-roughen');
+  }
+  .cert-card__seal-text {
+    position: relative;
+    z-index: 1;
+    max-width: 2.35rem;
     color: rgba(186, 45, 32, 0.78);
     font-family: var(--font-display);
-    font-size: 0.86rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    transform: rotate(-10deg);
+    font-size: 0.48rem;
+    font-weight: 800;
+    letter-spacing: 0.035em;
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow:
+      0.02em 0 rgba(186, 45, 32, 0.18),
+      -0.02em 0 rgba(186, 45, 32, 0.10);
+    filter: url('#cert-stamp-roughen');
   }
   .cert-card__thumb {
     position: absolute;
@@ -309,7 +369,21 @@ const slides: Slide[] = [
     .cert-card__seal {
       width: 2.55rem;
       height: 2.55rem;
-      font-size: 0.66rem;
+    }
+    .cert-card__seal::before {
+      border-width: 1.5px;
+    }
+    .cert-card__seal::after {
+      inset: 0.28rem;
+      border-width: 1px;
+      box-shadow:
+        0 0 0 0.13rem rgba(186, 45, 32, 0.035),
+        inset 0 0 0 0.13rem rgba(186, 45, 32, 0.025);
+    }
+    .cert-card__seal-text {
+      max-width: 1.72rem;
+      font-size: 0.34rem;
+      letter-spacing: 0.025em;
     }
     .cert-card__thumb {
       width: 5.15rem;
