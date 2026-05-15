@@ -1,4 +1,4 @@
-import legacy from '../../data-extract/projects.json';
+import legacy from './legacy-projects.json';
 
 export interface Project {
   id: number;
