@@ -10,8 +10,8 @@ const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
   class="relative isolate flex min-h-[100svh] w-full flex-col overflow-hidden bg-ink-950 text-white"
   aria-label="Hero"
 >
-  <!-- Background media: video on >=md, poster image always; mobile shows only poster -->
-  <picture class="absolute inset-0 -z-10">
+  <!-- Background media: poster fallback behind the autoplay video. -->
+  <picture class="absolute inset-0 -z-20">
     <source media="(min-width: 768px)" srcset={heroPoster} />
     <img
       src={heroPosterMobile}
@@ -24,12 +24,12 @@ const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
   </picture>
 
   <video
-    class="absolute inset-0 -z-10 hidden h-full w-full object-cover md:block"
+    class="hero-video absolute inset-0 -z-10 h-full w-full object-cover"
     autoplay
     muted
     loop
     playsinline
-    preload="metadata"
+    preload="auto"
     poster={heroPoster}
     aria-hidden="true"
     style="filter: contrast(1.06) saturate(1.08) brightness(0.96); transform: scale(1.02); transform-origin: center;"
@@ -97,6 +97,10 @@ const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
 
 <style>
   @media (max-width: 767px) {
+    .hero-video {
+      object-position: center;
+    }
+
     .hero-layout {
       min-height: 100svh;
       align-items: stretch;
@@ -156,6 +160,12 @@ const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
       max-width: 17.5rem;
       font-size: 0.84rem;
       line-height: 1.34;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-video {
+      display: none;
     }
   }
 </style>
