@@ -1,0 +1,45 @@
+---
+// Floating monospace label tags — drafting paper annotations scattered as
+// ambient decoration. Sit at low opacity, never compete with content.
+//
+// Variant `dark` for sections with dark base; `light` for limestone/ink-100.
+
+interface Props {
+  variant?: 'dark' | 'light';
+  class?: string;
+}
+const { variant = 'dark', class: className = '' } = Astro.props;
+
+const baseColor = variant === 'dark' ? 'text-white/[0.18]' : 'text-ink-900/[0.32]';
+
+const tags = [
+  { text: 'A-101 · UPPER FL',           top: '8%',  left: '6%',   rot: 0 },
+  { text: 'SCALE 1:50',                  top: '14%', right: '12%', rot: 0 },
+  { text: 'DET. 04 · F-1',               top: '38%', right: '4%',  rot: -90 },
+  { text: 'M = 25.40m',                  top: '64%', left: '3%',   rot: 0 },
+  { text: 'SECTION A-A',                 top: '78%', right: '8%',  rot: 0 },
+  { text: 'REV.03 · 2024',               top: '88%', left: '38%',  rot: 0 },
+  { text: 'GRID-3 · 4.20m',              top: '24%', left: '46%',  rot: 0 },
+  { text: '+0.00 = ±0.000',              top: '52%', right: '38%', rot: 0 },
+];
+---
+
+<div
+  aria-hidden="true"
+  class:list={['pointer-events-none absolute inset-0 -z-[5] hidden md:block', className]}
+>
+  {tags.map((t) => (
+    <span
+      class:list={[
+        'absolute font-mono uppercase whitespace-nowrap tracking-[0.12em] text-[10px] lg:text-[11px]',
+        baseColor,
+      ]}
+      style={`
+        ${t.top ? `top:${t.top};` : ''}
+        ${t.left ? `left:${t.left};` : ''}
+        ${t.right ? `right:${t.right};` : ''}
+        ${t.rot ? `transform: rotate(${t.rot}deg); transform-origin: left top;` : ''}
+      `}
+    >{t.text}</span>
+  ))}
+</div>

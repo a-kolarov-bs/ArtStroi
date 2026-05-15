@@ -1,0 +1,285 @@
+---
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+  index?: number;
+  /** Optional override aspect ratio (defaults to portrait 3/4 desktop) */
+  aspect?: string;
+  /** Compact variant for one-row featured grids — smaller type, smaller arrow */
+  size?: 'default' | 'sm';
+  /** When set, the card plays this video on hover and reveals a description. */
+  videoUrl?: string;
+  /** When set, the card cycles through these images on hover (slideshow). */
+  hoverImages?: string[];
+}
+
+const { project, index = 0, aspect = 'aspect-[3/4]', size = 'default', videoUrl, hoverImages = [] } = Astro.props;
+const isSmall = size === 'sm';
+const hasVideo = Boolean(videoUrl);
+const hasSlideshow = !hasVideo && hoverImages.length > 0;
+const hasHoverFx = hasVideo || hasSlideshow;
+
+const cover = project.coverImageUrl ?? '/hero/hero-poster.jpg';
+const locationLabel = (project.location ?? '').split(',')[0]?.trim().toUpperCase() || 'БЪЛГАРИЯ';
+const href = `/proekti/${project.slug}`;
+const description = project.description?.trim() || '';
+---
+
+<a
+  href={href}
+  class:list={[
+    'project-card group relative block overflow-hidden rounded-2xl bg-ink-900 text-white',
+    aspect,
+    hasHoverFx && 'has-hover-fx',
+    hasVideo && 'has-hover-video',
+    hasSlideshow && 'has-hover-slideshow',
+  ]}
+  data-index={index}
+  style={`view-transition-name: project-${project.slug};`}
+>
+  <!-- Image layer (slow zoom on hover) -->
+  <div class="absolute inset-0">
+    <img
+      src={cover}
+      alt={project.title}
+      loading="lazy"
+      decoding="async"
+      class="h-full w-full object-cover transition-transform duration-[4000ms] ease-out-expo group-hover:scale-[1.08]"
+    />
+  </div>
+
+  {hasVideo && (
+    <!-- Video layer (hidden by default; fades in & plays on hover) -->
+    <video
+      class="hover-video absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-out-expo group-hover:opacity-100"
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      aria-hidden="true"
+    >
+      <source src={videoUrl} type="video/mp4" />
+    </video>
+  )}
+
+  {hasSlideshow && (
+    <!-- Slideshow layer (hidden by default; cycles through gallery on hover) -->
+    <div class="hover-slideshow absolute inset-0" aria-hidden="true">
+      {hoverImages.map((url, idx) => (
+        <img
+          src={url}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          class="slide absolute inset-0 h-full w-full object-cover"
+          data-slide-index={idx}
+        />
+      ))}
+    </div>
+  )}
+
+  <!-- Gradient overlay -->
+  <div
+    class="absolute inset-0 transition-opacity duration-600 ease-out-expo"
+    aria-hidden="true"
+    style="background: linear-gradient(to top, rgba(18,22,28,0.88) 0%, rgba(18,22,28,0.30) 45%, rgba(18,22,28,0.0) 75%);"
+  ></div>
+
+  {hasHoverFx && (
+    <!-- Extra darkening on hover so description text reads cleanly over media -->
+    <div
+      class="absolute inset-0 bg-ink-950/55 opacity-0 transition-opacity duration-500 ease-out-expo group-hover:opacity-100"
+      aria-hidden="true"
+    ></div>
+  )}
+
+  <!-- Top-right index marker -->
+  <span
+    class:list={[
+      'absolute uppercase tracking-eyebrow font-medium text-white/60',
+      isSmall
+        ? 'right-4 top-4 text-[0.55rem]'
+        : 'right-3 top-3 text-[0.55rem] md:right-5 md:top-5 md:text-[0.65rem]',
+    ]}
+    aria-hidden="true"
+  >
+    {String(index + 1).padStart(2, '0')} <span class="text-white/30">/</span> {isSmall ? '' : 'ПРОЕКТ'}
+  </span>
+
+  <!-- Content (bottom) -->
+  <div class:list={[
+    'relative z-10 flex h-full flex-col justify-end',
+    isSmall ? 'p-4' : 'p-3 md:p-7 lg:p-8',
+  ]}>
+    <div class="flex items-end justify-between gap-3">
+      <div class="min-w-0 flex-1">
+        <p
+          class:list={[
+            'eyebrow !text-white inline-flex items-center rounded-full',
+            'bg-white/20 backdrop-blur-md ring-1 ring-white/30',
+            'transition-colors duration-300',
+            isSmall
+              ? '!text-[0.6rem] px-2.5 py-1'
+              : '!text-[0.45rem] md:!text-xs !leading-none md:!leading-normal px-1.5 py-[3px] md:px-3 md:py-1.5',
+          ]}
+        >
+          {locationLabel}
+        </p>
+        <h3
+          class:list={[
+            'font-display leading-[1.1] md:leading-[1.05] tracking-tight text-white max-w-[26ch] line-clamp-3',
+            isSmall
+              ? 'mt-2 text-base md:text-[15px]'
+              : 'mt-1.5 text-[13px] md:mt-3 md:text-2xl lg:text-3xl',
+          ]}
+        >
+          {project.title}
+        </h3>
+        {hasHoverFx && description && (
+          <p
+            class:list={[
+              'hover-desc text-white/85 max-w-[34ch] line-clamp-3',
+              isSmall ? 'text-[12px] leading-snug' : 'text-[11px] md:text-sm leading-snug',
+            ]}
+          >
+            {description}
+          </p>
+        )}
+        {!isSmall && !hasHoverFx && (
+          <span
+            class="mt-4 block h-px w-0 bg-brand transition-[width] duration-700 ease-out-expo group-hover:w-24 hidden md:block"
+            aria-hidden="true"
+          />
+        )}
+      </div>
+      <span
+        class:list={[
+          'grid shrink-0 place-items-center rounded-full bg-brand text-white shadow-lift transition-all duration-500 ease-out-expo group-hover:scale-110 group-hover:-rotate-12',
+          isSmall ? 'h-9 w-9' : 'h-7 w-7 md:h-12 md:w-12',
+        ]}
+        aria-hidden="true"
+      >
+        <svg
+          class={isSmall ? 'w-[11px] h-[11px]' : 'w-2.5 h-2.5 md:w-3.5 md:h-3.5'}
+          viewBox="0 0 14 14"
+          fill="none"
+        >
+          <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .project-card {
+    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.35),
+                0 0 0 1px rgba(186, 45, 32, 0.20);
+  }
+
+  /* Description reveal — collapsed by default, expands on hover with a soft
+     fade-up. Uses grid-rows trick to animate height without max-height jank. */
+  .hover-desc {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    margin-top: 0;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(8px);
+    overflow: hidden;
+    transition:
+      max-height 1000ms cubic-bezier(0.16, 1, 0.3, 1),
+      margin-top 1000ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 800ms cubic-bezier(0.16, 1, 0.3, 1) 200ms,
+      transform 800ms cubic-bezier(0.16, 1, 0.3, 1) 200ms;
+  }
+  .has-hover-fx:hover .hover-desc {
+    max-height: 8rem;
+    margin-top: 0.5rem;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Slideshow: each slide stacked over the cover image, hidden by default.
+     Snappy crossfade — short duration with a faster ease-in-out curve,
+     so transitions feel decisive rather than buttery-smooth. */
+  .hover-slideshow .slide {
+    opacity: 0;
+    transition: opacity 280ms cubic-bezier(0.7, 0, 0.3, 1);
+  }
+  .hover-slideshow .slide.is-active {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card:hover { transform: none; }
+    .project-card img { transform: none !important; }
+    .hover-desc { transition: none; }
+    .hover-video { transition: none !important; }
+    .hover-slideshow .slide { transition: none !important; }
+  }
+</style>
+
+<script>
+  // ── Hover videos: play/pause on enter/leave ─────────────────
+  const videoCards = document.querySelectorAll<HTMLElement>('.has-hover-video');
+  for (const card of videoCards) {
+    const video = card.querySelector<HTMLVideoElement>('video.hover-video');
+    if (!video) continue;
+    let playPromise: Promise<void> | undefined;
+    card.addEventListener('mouseenter', () => {
+      try {
+        playPromise = video.play();
+      } catch (_) { /* ignore */ }
+    });
+    card.addEventListener('mouseleave', () => {
+      const reset = () => {
+        video.pause();
+        video.currentTime = 0;
+      };
+      if (playPromise) playPromise.then(reset).catch(() => reset());
+      else reset();
+    });
+  }
+
+  // ── Hover slideshow: cycle through gallery on enter, stop on leave ──
+  // Each card has 3-5 stacked images (.slide). On hover we add `.is-active`
+  // to one at a time on a timer, producing a soft crossfade. On leave we
+  // clear all `.is-active` flags so the underlying cover image returns.
+  const SLIDE_INTERVAL_MS = 1700;
+  const slideshowCards = document.querySelectorAll<HTMLElement>('.has-hover-slideshow');
+  for (const card of slideshowCards) {
+    const slides = Array.from(card.querySelectorAll<HTMLImageElement>('img.slide'));
+    if (slides.length === 0) continue;
+    let current = -1;
+    let timerId: number | null = null;
+
+    const advance = () => {
+      const next = (current + 1) % slides.length;
+      if (current >= 0) slides[current].classList.remove('is-active');
+      slides[next].classList.add('is-active');
+      current = next;
+    };
+
+    card.addEventListener('mouseenter', () => {
+      if (timerId !== null) return;
+      // Show the first slide immediately, then cycle on interval.
+      advance();
+      timerId = window.setInterval(advance, SLIDE_INTERVAL_MS);
+    });
+    card.addEventListener('mouseleave', () => {
+      if (timerId !== null) {
+        clearInterval(timerId);
+        timerId = null;
+      }
+      for (const s of slides) s.classList.remove('is-active');
+      current = -1;
+    });
+  }
+</script>

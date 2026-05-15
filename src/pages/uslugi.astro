@@ -1,0 +1,1240 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Reveal from '../components/Reveal.astro';
+import { projects } from '../data/projects';
+
+// ────────────────────────────────────────────────────────────────
+// Spec-sheet services page — dense editorial, six disciplines,
+// drafted in the language of a real construction specification book.
+// ────────────────────────────────────────────────────────────────
+
+const currentYear = new Date().getFullYear();
+const yearsActive = currentYear - 1992;
+const totalProjects = projects.length;
+
+const services = [
+  {
+    code: 'A.01',
+    slug: 'arch',
+    tag: 'ЖИЛ',
+    title: 'Жилищно строителство',
+    summary:
+      'Многофамилни блокове, затворени комплекси, фамилни къщи и вили. Поемаме целия цикъл — от изкопа до Акт 16.',
+    segments: [
+      'Многофамилни жилищни блокове',
+      'Затворени жилищни комплекси',
+      'Еднофамилни къщи и вили',
+      'Апартхотели и ваканционни обекти',
+    ],
+    scope: [
+      'Кофраж и стоманобетон',
+      'Зидария и преградни стени',
+      'Покривни конструкции',
+      'Фасади и довършителни работи',
+      'Партери и общи части',
+    ],
+    refCount: 14,
+    refCat: 'Жилищни сгради',
+  },
+  {
+    code: 'P.02',
+    slug: 'pub',
+    tag: 'ОБЩ',
+    title: 'Обществени и индустриални сгради',
+    summary:
+      'Училища, читалища, спортни зали, общински и производствени обекти. Дълъг опит с обществени поръчки и държавни инвеститори.',
+    segments: [
+      'Образователни обекти',
+      'Здравни заведения',
+      'Спортни и културни обекти',
+      'Производствени халета',
+    ],
+    scope: [
+      'Изпълнение по работни проекти',
+      'Сертифицирани материали',
+      'Контрол по ЗУТ',
+      'Приемателни актове 12 / 15 / 16',
+      'Инвестиционен надзор',
+    ],
+    refCount: 18,
+    refCat: 'Обществени сгради',
+  },
+  {
+    code: 'I.03',
+    slug: 'inf',
+    tag: 'ПЪТ',
+    title: 'Пътна и градска инфраструктура',
+    summary:
+      'Улици, площади, тротоари, подпорни стени и корекции на речни корита — включително възстановяване след свлачища.',
+    segments: [
+      'Общински улици и тротоари',
+      'Градски площади',
+      'Подпорни конструкции',
+      'Свлачищни укрепвания',
+      'Корекции на речни корита',
+    ],
+    scope: [
+      'Земни работи',
+      'Асфалтови настилки',
+      'Бетонови съоръжения',
+      'Дъждовна канализация',
+      'Пътна маркировка',
+    ],
+    refCount: 12,
+    refCat: 'Инфраструктура',
+  },
+  {
+    code: 'R.04',
+    slug: 'rnv',
+    tag: 'РЕК',
+    title: 'Реконструкция и енергийно саниране',
+    summary:
+      'Цялостна рехабилитация на стари сгради и фасадно саниране за нормативна енергийна ефективност — с пълна документация.',
+    segments: [
+      'Жилищни блокове',
+      'Обществени сгради',
+      'Хотели и СПА',
+      'Исторически градски обекти',
+    ],
+    scope: [
+      'Топлоизолация фасади и покриви',
+      'Подмяна на дограма',
+      'Хидроизолации',
+      'Конструктивно усилване',
+      'Сертификат за енергийна ефективност',
+    ],
+    refCount: 7,
+    refCat: 'Обществени сгради',
+  },
+  {
+    code: 'M.05',
+    slug: 'mep',
+    tag: 'ИНС',
+    title: 'Електро, ВиК и инсталации',
+    summary:
+      'Вътрешни и външни инсталации — електро, ВиК, ОВиК — със сертифицирани материали, проби и приемателни актове.',
+    segments: [
+      'Жилищни обекти',
+      'Обществени и образователни',
+      'Хотели и комплекси',
+      'Промишлени халета',
+    ],
+    scope: [
+      'Електро ниско напрежение',
+      'Водопровод и канализация',
+      'Отопление и охлаждане',
+      'Слаботокови инсталации',
+      'Външни мрежи и съоръжения',
+    ],
+    refCount: 9,
+    refCat: 'Обществени сгради',
+  },
+  {
+    code: 'F.06',
+    slug: 'fin',
+    tag: 'ФИН',
+    title: 'Реставрация и довършителен финиш',
+    summary:
+      'Декоративни ремонти, реставрация на исторически фасади, барбекюта и камини по индивидуален проект — където детайлът е продукт.',
+    segments: [
+      'Исторически фасади',
+      'Луксозни интериори',
+      'Открити терени и градини',
+      'Бутикови хотели',
+    ],
+    scope: [
+      'Каменни облицовки',
+      'Дървени и метални детайли',
+      'Реставрация на мазилки',
+      'Барбекюта и камини',
+      'Парапети и ковано желязо',
+    ],
+    refCount: 5,
+    refCat: 'Обществени сгради',
+  },
+];
+
+const inHouse = [
+  'Главно изпълнение',
+  'Кофраж и стоманобетон',
+  'Зидария и преграждания',
+  'Довършителни работи',
+  'Координация на обекта',
+  'Геодезичен контрол',
+];
+const partners = [
+  'Архитектурно проектиране',
+  'Конструктивно проектиране',
+  'ОВК / Електро проектиране',
+  'Лабораторни тестове',
+  'Специализиран мониторинг',
+];
+
+const method = [
+  {
+    n: '01',
+    title: 'Анализ',
+    body: 'Анализираме терена, регулациите и инвестиционната рамка. Подходът се съгласува с проектанта и инвеститора преди договор.',
+  },
+  {
+    n: '02',
+    title: 'Договор',
+    body: 'Изготвяме спецификации, оферта и срокове. Прозрачно ценообразуване по позиции — без скрити линии и междинни корекции.',
+  },
+  {
+    n: '03',
+    title: 'Изпълнение',
+    body: 'Координиран екип на обекта — груб строеж, инсталации, фасади и финиш. Контрол по етапи с протоколи и снимков отчет.',
+  },
+  {
+    n: '04',
+    title: 'Предаване',
+    body: 'Предаване с пълна изпълнителна документация. Гаранционна поддръжка и експлоатационна намеса по договор.',
+  },
+];
+
+const pageTitle = 'Услуги · АРТСТРОЙ ООД — пълен обхват строителни услуги';
+const pageDescription =
+  'Жилищно и обществено строителство, инфраструктура, реконструкция, енергийно саниране, инсталации и реставрация. 33 години изпълнение под един договор.';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <!-- ════════════════════════════════════════════════════════════
+       1 · HERO — dark editorial slab.
+       Twelve-column split: title block left, live service index right.
+       Compact py — no oceans of negative space.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="us-hero relative isolate overflow-hidden bg-ink-950 text-white">
+    <span aria-hidden="true" class="absolute inset-x-0 top-0 h-[3px] bg-brand"></span>
+
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-d opacity-[0.16]"></div>
+
+    <span
+      aria-hidden="true"
+      class="us-hero__backdrop absolute -right-6 -bottom-12 select-none pointer-events-none font-display italic text-white/[0.045] leading-[0.78]"
+      style="font-size: clamp(12rem, 22vw, 26rem); font-variation-settings:'opsz' 144,'SOFT' 100;"
+    >
+      дисциплини
+    </span>
+
+    <div class="container-page relative pt-32 md:pt-36 lg:pt-40 pb-14 md:pb-20">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-end">
+        <!-- LEFT — editorial title block -->
+        <Reveal class="lg:col-span-7">
+          <p class="eyebrow flex items-center gap-3 flex-wrap text-brand">
+            <span class="inline-block h-px w-10 bg-brand"></span>
+            Услуги · 1992 → {currentYear}
+          </p>
+          <h1
+            class="mt-5 md:mt-7 font-display tracking-tight leading-[0.95] text-white max-w-[20ch]"
+            style="font-size: clamp(2.5rem, 1.25rem + 5vw, 6rem); letter-spacing: -0.025em;"
+          >
+            Шест дисциплини.
+            <span class="italic block text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+              Един договор.
+            </span>
+          </h1>
+          <p class="mt-7 md:mt-9 max-w-[52ch] text-base md:text-lg text-white/70 leading-[1.65]">
+            От първия изкоп до Акт 16 — пълен обхват строителни услуги под покрива на една фирма. Без външни подизпълнители на ключовите позиции, без размити отговорности.
+          </p>
+
+          <!-- Tight inline stats — no separate band section -->
+          <dl class="mt-9 md:mt-11 grid grid-cols-3 gap-x-6 gap-y-4 max-w-xl border-t border-white/12 pt-6">
+            <div>
+              <dt class="sr-only">Години работа</dt>
+              <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem); font-variation-settings:'opsz' 144;">
+                <span data-counter={yearsActive}>0</span><span class="text-brand">+</span>
+              </dd>
+              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Години работа</p>
+            </div>
+            <div>
+              <dt class="sr-only">Реализирани обекти</dt>
+              <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem); font-variation-settings:'opsz' 144;">
+                <span data-counter={totalProjects}>0</span><span class="text-brand">+</span>
+              </dd>
+              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Реализирани обекта</p>
+            </div>
+            <div>
+              <dt class="sr-only">Дисциплини</dt>
+              <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem); font-variation-settings:'opsz' 144;">
+                <span data-counter="6" data-pad="2">0</span>
+              </dd>
+              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Дисциплини</p>
+            </div>
+          </dl>
+        </Reveal>
+
+        <!-- RIGHT — live spec-sheet index, jump-links to each card -->
+        <Reveal class="lg:col-span-5" delay={120}>
+          <div class="us-index relative">
+            <div class="flex items-baseline justify-between border-b border-white/15 pb-3">
+              <p class="text-[10.5px] uppercase tracking-eyebrow text-white/55">
+                Указател · Стр.&nbsp;А
+              </p>
+              <p class="font-display italic text-white/55 text-sm tabular-nums" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                06 / 06
+              </p>
+            </div>
+            <ol class="us-index__list">
+              {services.map((s) => (
+                <li>
+                  <a href={`#${s.slug}`} class="us-index__row group">
+                    <span class="us-index__code font-display italic tabular-nums" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                      {s.code}
+                    </span>
+                    <span class="us-index__tag" aria-hidden="true">{s.tag}</span>
+                    <span class="us-index__title">{s.title}</span>
+                    <span class="us-index__leaders" aria-hidden="true"></span>
+                    <span class="us-index__count font-display italic tabular-nums" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                      {s.refCount}
+                    </span>
+                    <span class="us-index__arrow" aria-hidden="true">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       2 · SERVICE CARDS — 6 dense editorial blocks in a 3×2 grid.
+       Each card is its own specification page: code, title, segments
+       and scope all visible without hover. Density is intentional.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="relative isolate overflow-hidden bg-cream-50 py-16 md:py-20 lg:py-24" aria-labelledby="services-grid-heading">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet"></div>
+
+    <div class="container-page relative">
+      <Reveal class="max-w-3xl mb-10 md:mb-14">
+        <p class="eyebrow">Спецификации</p>
+        <h2
+          id="services-grid-heading"
+          class="mt-3 font-display tracking-tight text-ink-950"
+          style="font-size: clamp(1.6rem, 1rem + 1.6vw, 2.45rem); line-height: 1.1;"
+        >
+          Какво е под нашия <span class="italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">подпис</span>.
+        </h2>
+      </Reveal>
+
+      <ol class="us-grid grid grid-cols-2 lg:grid-cols-3 gap-x-px gap-y-0 lg:gap-px bg-ink-900/30 sm:bg-ink-900/10 -mx-3 sm:mx-0">
+        {services.map((s, i) => (
+          <Reveal as="li" delay={i * 80} class="us-card group">
+            <article id={s.slug} class="us-card__inner">
+              <header class="us-card__head">
+                <span class="us-card__code" aria-hidden="true">{s.code} · {s.tag}</span>
+                <span class="us-card__count font-display italic tabular-nums" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                  №{String(i + 1).padStart(2, '0')}
+                </span>
+              </header>
+
+              <h3
+                class="us-card__title font-display tracking-tight text-ink-950"
+                style="font-size: clamp(1.3rem, 0.95rem + 0.85vw, 1.7rem); line-height: 1.08;"
+              >
+                {s.title}
+              </h3>
+
+              <span aria-hidden="true" class="us-card__hr"></span>
+
+              <p class="us-card__summary text-[14.5px] md:text-[15px] text-ink-600 leading-[1.6]">
+                {s.summary}
+              </p>
+
+              <section class="us-card__block">
+                <p class="us-card__label">Сегменти</p>
+                <ul class="us-card__bul">
+                  {s.segments.map((seg) => (
+                    <li>{seg}</li>
+                  ))}
+                </ul>
+              </section>
+
+              <section class="us-card__block">
+                <p class="us-card__label">Обхват</p>
+                <ul class="us-card__check">
+                  {s.scope.map((sc) => (
+                    <li>
+                      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+                        <path d="M2 5.5l2.2 2.2L9 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>{sc}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+
+              <footer class="us-card__foot">
+                <a href={`/proekti?cat=${encodeURIComponent(s.refCat)}`} class="us-card__more">
+                  <span>{s.refCount} проекта в архива</span>
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </footer>
+            </article>
+          </Reveal>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       3 · CAPABILITY MATRIX — what we keep in-house vs partner.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="relative isolate overflow-hidden bg-cream-100 border-y border-ink-900/[0.08] py-14 md:py-20" aria-labelledby="matrix-heading">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
+
+    <div class="container-page relative">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+        <Reveal class="lg:col-span-4">
+          <p class="eyebrow">Контрол</p>
+          <h2
+            id="matrix-heading"
+            class="mt-3 font-display tracking-tight text-ink-950"
+            style="font-size: clamp(1.6rem, 1rem + 1.5vw, 2.3rem); line-height: 1.1;"
+          >
+            Какво поемаме <span class="italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">сами</span>.
+          </h2>
+          <p class="mt-5 max-w-md text-[15px] text-ink-600 leading-[1.65]">
+            Ключовите дисциплини са под собствен контрол — собствени бригади, собствено оборудване, прозрачен график. Специализираните работи — с дългогодишни партньори.
+          </p>
+        </Reveal>
+
+        <Reveal class="lg:col-span-8" delay={120}>
+          <div class="grid sm:grid-cols-2 gap-px bg-ink-900/12">
+            <div class="bg-cream-100 p-6 md:p-7">
+              <div class="flex items-baseline justify-between mb-5">
+                <p class="text-[10.5px] uppercase tracking-eyebrow text-brand font-semibold">Собствено изпълнение</p>
+                <span class="font-display italic text-ink-900/35 tabular-nums text-sm" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                  {String(inHouse.length).padStart(2, '0')}
+                </span>
+              </div>
+              <ul class="space-y-2.5">
+                {inHouse.map((x) => (
+                  <li class="us-matrix__row flex items-baseline gap-3 text-[14.5px] text-ink-950">
+                    <span aria-hidden="true" class="mt-2 inline-block h-1.5 w-1.5 rounded-full bg-brand shrink-0"></span>
+                    <span>{x}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div class="bg-cream-100 p-6 md:p-7">
+              <div class="flex items-baseline justify-between mb-5">
+                <p class="text-[10.5px] uppercase tracking-eyebrow text-ink-900/60 font-semibold">Сертифицирани партньори</p>
+                <span class="font-display italic text-ink-900/35 tabular-nums text-sm" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                  {String(partners.length).padStart(2, '0')}
+                </span>
+              </div>
+              <ul class="space-y-2.5">
+                {partners.map((x) => (
+                  <li class="us-matrix__row us-matrix__row--alt flex items-baseline gap-3 text-[14.5px] text-ink-600">
+                    <span aria-hidden="true" class="mt-[5px] inline-block h-px w-3 bg-ink-900/40 shrink-0"></span>
+                    <span>{x}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       4 · METHOD — compressed 4-step strip on dark.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="relative isolate overflow-hidden bg-ink-950 text-white py-16 md:py-24" aria-labelledby="method-heading">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-c opacity-[0.18]"></div>
+
+    <div class="container-page relative">
+      <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-end mb-10 md:mb-14">
+        <Reveal class="lg:col-span-7">
+          <p class="eyebrow text-brand flex items-center gap-3">
+            <span class="inline-block h-px w-10 bg-brand"></span>
+            Метод
+          </p>
+          <h2
+            id="method-heading"
+            class="mt-4 font-display tracking-tight text-white max-w-[20ch]"
+            style="font-size: clamp(1.85rem, 1rem + 2.2vw, 3rem); line-height: 1.05;"
+          >
+            Четири стъпки — една <span class="italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">отговорност</span>.
+          </h2>
+        </Reveal>
+        <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
+          <p class="text-[15px] md:text-base text-white/70 leading-[1.65] max-w-[44ch]">
+            Дисциплиниран процес от анализ до предаване на ключа. Прозрачни срокове, протоколи по етапи и пълна изпълнителна документация.
+          </p>
+        </Reveal>
+      </div>
+
+      <ol class="us-method grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10">
+        {method.map((m, i) => (
+          <Reveal as="li" delay={i * 80} class="us-method__cell group">
+            <div class="flex items-baseline justify-between">
+              <span
+                class="us-method__n font-display block text-brand leading-none"
+                style="font-size: clamp(2.5rem, 2rem + 1.4vw, 3.25rem); font-variation-settings:'opsz' 144,'SOFT' 0;"
+              >
+                {m.n}
+              </span>
+              <span class="us-method__step" aria-hidden="true">Стъпка</span>
+            </div>
+            <span aria-hidden="true" class="mt-4 block h-px w-10 bg-white/25 transition-[width,background-color] duration-700 ease-out-expo group-hover:w-20 group-hover:bg-brand"></span>
+            <h3 class="mt-5 font-display text-xl md:text-[1.35rem] leading-tight text-white">
+              {m.title}
+            </h3>
+            <p class="mt-3 text-[14px] md:text-[14.5px] text-white/70 leading-[1.65]">
+              {m.body}
+            </p>
+          </Reveal>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       5 · STANDARDS RIBBON — single dense horizontal band.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="relative isolate overflow-hidden bg-cream-50 border-y border-ink-900/[0.08] py-8 md:py-12" aria-label="Стандарти">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-d"></div>
+
+    <div class="container-page relative">
+      <ul class="us-standards grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-px bg-ink-900/10">
+        <li class="us-standards__cell bg-cream-50 px-5 py-5 md:px-7 md:py-6 flex items-baseline gap-4">
+          <span class="font-display italic text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem); font-variation-settings:'opsz' 144,'SOFT' 100;">
+            ISO
+          </span>
+          <span class="text-[12.5px] md:text-[13px] uppercase tracking-eyebrow text-ink-600">
+            9001 / 14001 / 45001
+          </span>
+        </li>
+        <li class="us-standards__cell bg-cream-50 px-5 py-5 md:px-7 md:py-6 flex items-baseline gap-4">
+          <span class="font-display italic text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem); font-variation-settings:'opsz' 144,'SOFT' 100;">
+            10
+          </span>
+          <span class="text-[12.5px] md:text-[13px] uppercase tracking-eyebrow text-ink-600">
+            години гаранция на стр. конструкции
+          </span>
+        </li>
+        <li class="us-standards__cell bg-cream-50 px-5 py-5 md:px-7 md:py-6 flex items-baseline gap-4">
+          <span class="font-display italic text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem); font-variation-settings:'opsz' 144,'SOFT' 100;">
+            ЦПРС
+          </span>
+          <span class="text-[12.5px] md:text-[13px] uppercase tracking-eyebrow text-ink-600">
+            вписани · I · II · IV · V&nbsp;група
+          </span>
+        </li>
+        <li class="us-standards__cell bg-cream-50 px-5 py-5 md:px-7 md:py-6 flex items-baseline gap-4">
+          <span class="font-display italic text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem); font-variation-settings:'opsz' 144,'SOFT' 100;">
+            Акт&nbsp;16
+          </span>
+          <span class="text-[12.5px] md:text-[13px] uppercase tracking-eyebrow text-ink-600">
+            пълна изпълнителна документация
+          </span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       6 · CTA — compact split with phone rail.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="us-cta relative isolate overflow-hidden bg-ink-950 text-white py-16 md:py-24" aria-labelledby="us-cta-heading">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet opacity-[0.18]"></div>
+    <span
+      aria-hidden="true"
+      class="us-cta__backdrop absolute -left-6 top-4 select-none pointer-events-none font-display italic text-white/[0.045] leading-[0.78]"
+      style="font-size: clamp(10rem, 22vw, 22rem); font-variation-settings:'opsz' 144,'SOFT' 100;"
+    >
+      1992
+    </span>
+
+    <div class="container-page relative">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-end">
+        <Reveal class="lg:col-span-7">
+          <p class="eyebrow text-brand flex items-center gap-3">
+            <span class="inline-block h-px w-10 bg-brand"></span>
+            Започни проект
+          </p>
+          <h2
+            id="us-cta-heading"
+            class="us-cta__title mt-5 font-display tracking-tight leading-[1.02] text-white max-w-[20ch]"
+            style="font-size: clamp(2rem, 1rem + 4vw, 4.5rem); letter-spacing: -0.025em;"
+          >
+            Имаш проект?
+            <span class="italic block text-white/65" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+              Започни от един разговор.
+            </span>
+          </h2>
+        </Reveal>
+        <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
+          <p class="us-cta__lead text-[15px] md:text-base text-white/70 leading-[1.65] max-w-[44ch]">
+            Първа консултация без ангажимент. Отговаряме в работно време и за необичайни задачи — реставрация, аварийни укрепвания, общински инвестиции.
+          </p>
+
+          <ul class="us-phone mt-7 grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/12 rounded-[4px] overflow-hidden">
+            <li class="us-phone__cell bg-ink-950 px-4 py-3.5">
+              <p class="text-[10.5px] uppercase tracking-eyebrow text-brand">Управител</p>
+              <a href="tel:+359878715936" class="mt-1 block text-[14.5px] text-white tabular-nums hover:text-brand transition-colors">
+                +359 878 715 936
+              </a>
+            </li>
+            <li class="us-phone__cell bg-ink-950 px-4 py-3.5">
+              <p class="text-[10.5px] uppercase tracking-eyebrow text-brand">Тех. директор</p>
+              <a href="tel:+359877766523" class="mt-1 block text-[14.5px] text-white tabular-nums hover:text-brand transition-colors">
+                +359 877 766 523
+              </a>
+            </li>
+            <li class="us-phone__cell bg-ink-950 px-4 py-3.5">
+              <p class="text-[10.5px] uppercase tracking-eyebrow text-brand">Транспорт</p>
+              <a href="tel:+359878986797" class="mt-1 block text-[14.5px] text-white tabular-nums hover:text-brand transition-colors">
+                +359 878 986 797
+              </a>
+            </li>
+          </ul>
+
+          <div class="us-cta__actions mt-7 flex flex-wrap gap-3">
+            <a href="/kontakti" class="us-cta__primary btn-brand">
+              Получи оферта
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="/proekti" class="us-cta__secondary inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white/85 hover:text-white transition-colors duration-300 border border-white/15 hover:border-white/35">
+              Виж архива
+            </a>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Anchor target offset — jumps land below sticky header */
+  .us-card__inner[id] { scroll-margin-top: 6rem; }
+
+  /* ─── Service index (hero right column) ─────────────────── */
+  .us-index__list { margin-top: 0.25rem; }
+  .us-index__row {
+    display: grid;
+    grid-template-columns: 3.4rem 2.8rem 1fr auto auto 1.1rem;
+    align-items: baseline;
+    gap: 0.7rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    color: rgba(255, 255, 255, 0.86);
+    transition:
+      color 320ms cubic-bezier(0.16, 1, 0.3, 1),
+      padding 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .us-index__row:hover {
+    color: #FFFFFF;
+    padding-left: 0.45rem;
+  }
+  .us-index__list li:last-child .us-index__row { border-bottom: none; }
+  .us-index__code {
+    font-size: 0.85rem;
+    color: rgba(186, 45, 32, 0.85);
+    letter-spacing: 0.02em;
+  }
+  .us-index__tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.42);
+    font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", monospace;
+  }
+  .us-index__title {
+    font-size: 0.95rem;
+    line-height: 1.2;
+    color: inherit;
+    font-weight: 500;
+  }
+  .us-index__leaders {
+    display: inline-block;
+    height: 1px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.32) 1px, transparent 1.5px);
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+    background-position: 0 50%;
+    align-self: end;
+    margin-bottom: 0.42rem;
+    min-width: 1.5rem;
+  }
+  .us-index__count {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .us-index__arrow {
+    color: rgba(255, 255, 255, 0.32);
+    transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), color 320ms ease;
+  }
+  .us-index__row:hover .us-index__arrow {
+    transform: translateX(3px);
+    color: #BA2D20;
+  }
+  @media (max-width: 639px) {
+    .us-index__row {
+      grid-template-columns: 2.8rem 2.4rem 1fr auto 0.9rem;
+      gap: 0.55rem;
+      padding: 0.75rem 0;
+    }
+    .us-index__leaders { display: none; }
+    .us-index__count { font-size: 0.85rem; }
+    .us-index__title { font-size: 0.875rem; }
+  }
+
+  /* ─── Service grid cards ─────────────────────────────────── */
+  .us-card {
+    position: relative;
+    background: theme('colors.cream.50');
+    transition:
+      background-color 320ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+  .us-card:hover {
+    background: #FFFFFF;
+    transform: translateY(-3px);
+    box-shadow: 0 18px 38px -20px rgba(18, 22, 28, 0.22);
+    z-index: 2;
+  }
+  /* :target — when a hero index link is clicked, the destination card
+     briefly flashes with a brand-red ring to confirm the jump. */
+  .us-card:has(:target),
+  .us-card__inner:target {
+    animation: us-target-flash 1800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes us-target-flash {
+    0%   { box-shadow: 0 0 0 2px theme('colors.brand.DEFAULT'), 0 18px 38px -16px rgba(186, 45, 32, 0.35); background: #FFFFFF; }
+    100% { box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent; background: theme('colors.cream.50'); }
+  }
+  .us-card__inner {
+    padding: 1.6rem 1.4rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  @media (min-width: 768px) {
+    .us-card__inner { padding: 1.85rem 1.7rem 1.7rem; }
+  }
+  @media (min-width: 1024px) {
+    .us-card__inner { padding: 2rem 1.85rem 1.85rem; }
+  }
+  .us-card__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .us-card__code {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(186, 45, 32, 0.85);
+    font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", monospace;
+  }
+  .us-card__count {
+    font-size: 0.9rem;
+    color: rgba(18, 22, 28, 0.32);
+    transition: color 400ms ease, transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .us-card:hover .us-card__count {
+    color: theme('colors.brand.DEFAULT');
+    transform: translateX(-4px) translateY(-1px);
+  }
+  .us-card__code {
+    transition: color 400ms ease, letter-spacing 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .us-card:hover .us-card__code {
+    letter-spacing: 0.20em;
+  }
+  .us-card__title {
+    margin-top: 1.1rem;
+    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .us-card:hover .us-card__title {
+    transform: translateY(-1px);
+  }
+  .us-card__bul li::before {
+    transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .us-card:hover .us-card__bul li::before {
+    transform: scale(1.35);
+  }
+  .us-card__hr {
+    display: block;
+    height: 1px;
+    width: 2.5rem;
+    background: rgba(186, 45, 32, 0.55);
+    margin: 1.1rem 0 1rem;
+    transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .us-card:hover .us-card__hr { width: 5rem; }
+  .us-card__summary { max-width: 44ch; }
+  .us-card__block { margin-top: 1.25rem; }
+  .us-card__label {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(18, 22, 28, 0.55);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  .us-card__bul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.32rem;
+  }
+  .us-card__bul li {
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: theme('colors.ink.950');
+    padding-left: 0.95rem;
+    position: relative;
+  }
+  .us-card__bul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 0.32rem;
+    height: 0.32rem;
+    background: theme('colors.brand.DEFAULT');
+    border-radius: 50%;
+  }
+  .us-card__check {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .us-card__check li {
+    display: grid;
+    grid-template-columns: 1.15rem 1fr;
+    gap: 0.45rem;
+    align-items: baseline;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: theme('colors.ink.600');
+  }
+  .us-card__check li svg {
+    color: theme('colors.brand.DEFAULT');
+    margin-top: 0.18rem;
+  }
+  .us-card__foot {
+    margin-top: auto;
+    padding-top: 1.4rem;
+  }
+  .us-card__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    color: theme('colors.ink.950');
+    border-bottom: 1px solid rgba(18, 22, 28, 0.18);
+    padding-bottom: 0.35rem;
+    transition: color 320ms ease, border-color 320ms ease, gap 320ms ease;
+  }
+  .us-card__more:hover {
+    color: theme('colors.brand.DEFAULT');
+    border-color: theme('colors.brand.DEFAULT');
+    gap: 0.7rem;
+  }
+
+  /* ─── Mobile compact cards (2-col) ──────────────────────── */
+  /* On narrow viewports services switch to a 2-column grid; everything
+     inside the card scales down so all spec content remains visible. */
+  @media (max-width: 639px) {
+    .us-card__inner {
+      padding: 1.05rem 0.7rem 1.1rem;
+    }
+    .us-card__head { gap: 0.4rem; }
+    .us-card__code {
+      font-size: 0.52rem;
+      letter-spacing: 0.12em;
+    }
+    .us-card__count {
+      font-size: 0.78rem;
+    }
+    .us-card__title {
+      font-size: 1rem !important;
+      line-height: 1.12;
+      margin-top: 0.7rem;
+      letter-spacing: -0.01em;
+    }
+    .us-card__hr {
+      width: 1.6rem;
+      margin: 0.8rem 0 0.75rem;
+    }
+    .us-card:hover .us-card__hr { width: 3rem; }
+    .us-card__summary {
+      font-size: 12px;
+      line-height: 1.5;
+      max-width: 100%;
+    }
+    .us-card__block { margin-top: 0.95rem; }
+    .us-card__label {
+      font-size: 0.52rem;
+      letter-spacing: 0.14em;
+      margin-bottom: 0.45rem;
+    }
+    .us-card__bul { gap: 0.22rem; }
+    .us-card__bul li {
+      font-size: 11.5px;
+      line-height: 1.35;
+      padding-left: 0.75rem;
+    }
+    .us-card__bul li::before {
+      width: 0.28rem;
+      height: 0.28rem;
+      top: 0.5em;
+    }
+    .us-card__check { gap: 0.25rem; }
+    .us-card__check li {
+      grid-template-columns: 0.9rem 1fr;
+      gap: 0.35rem;
+      font-size: 11.5px;
+      line-height: 1.4;
+    }
+    .us-card__check li svg {
+      width: 9px;
+      height: 9px;
+    }
+    .us-card__foot {
+      padding-top: 1rem;
+    }
+    .us-card__more {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      gap: 0.35rem;
+      padding-bottom: 0.25rem;
+    }
+    .us-card__more svg {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  /* ─── Method (dark band) ────────────────────────────────── */
+  .us-method__cell {
+    background: theme('colors.ink.950');
+    padding: 1.5rem 1.5rem 1.6rem;
+    transition: background-color 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .us-method__cell:hover {
+    background: rgba(18, 22, 28, 0.55); /* lifts subtly over the white/10 hairline */
+  }
+  @media (min-width: 768px) {
+    .us-method__cell { padding: 1.85rem 1.75rem 1.85rem; }
+  }
+  @media (min-width: 1024px) {
+    .us-method__cell { padding: 2rem 1.9rem 2rem; }
+  }
+  .us-method__n {
+    transition:
+      transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+      font-variation-settings 600ms ease,
+      color 500ms ease;
+    will-change: transform;
+  }
+  .us-method__cell:hover .us-method__n {
+    transform: translateY(-4px);
+    color: #FFFFFF;
+  }
+  .us-method__step {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", monospace;
+    transition: color 400ms ease, letter-spacing 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .us-method__cell:hover .us-method__step {
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.2em;
+  }
+
+  /* ─── Capability matrix item hover ──────────────────────── */
+  .us-matrix__row {
+    transition:
+      padding-left 400ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 320ms ease;
+  }
+  .us-matrix__row:hover {
+    padding-left: 0.35rem;
+    color: theme('colors.brand.DEFAULT');
+  }
+  .us-matrix__row--alt:hover {
+    color: theme('colors.ink.950');
+  }
+  .us-matrix__row > span:first-child {
+    transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .us-matrix__row:hover > span:first-child {
+    transform: scale(1.6);
+  }
+
+  /* ─── Standards ribbon hover ────────────────────────────── */
+  .us-standards__cell {
+    transition: background-color 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  /* Mobile (1-col rows) — body text aligns across all 4 rows because
+     the italic numeral block has a fixed min-width. Without this each
+     row's body started at a different x because numerals differ in
+     width (ISO vs 10 vs Акт 16). */
+  @media (max-width: 639px) {
+    .us-standards__cell {
+      padding-inline: 1.25rem;
+      padding-block: 1.1rem;
+      gap: 1.25rem;
+    }
+    .us-standards__cell > span:first-child {
+      flex: 0 0 5.5rem;
+      min-width: 5.5rem;
+    }
+    .us-standards__cell > span:last-child {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+  .us-standards__cell:hover {
+    background: #FFFFFF;
+  }
+  .us-standards__cell > span:first-child {
+    transition:
+      transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 400ms ease;
+    will-change: transform;
+  }
+  .us-standards__cell:hover > span:first-child {
+    transform: translateY(-3px) rotate(-2deg);
+    color: theme('colors.brand.dark');
+  }
+  .us-standards__cell > span:last-child {
+    transition: color 400ms ease;
+  }
+  .us-standards__cell:hover > span:last-child {
+    color: theme('colors.ink.950');
+  }
+
+  /* ─── Phone rail hover ──────────────────────────────────── */
+  .us-phone__cell {
+    transition: background-color 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .us-phone__cell:hover {
+    background: rgba(186, 45, 32, 0.10);
+  }
+  @media (max-width: 639px) {
+    .us-cta {
+      padding-block: 3.25rem 3.6rem;
+    }
+    .us-cta__backdrop {
+      left: -1.2rem;
+      top: 0.35rem;
+      font-size: clamp(7rem, 34vw, 9.5rem) !important;
+    }
+    .us-cta .eyebrow {
+      gap: 0.75rem;
+    }
+    .us-cta .eyebrow > span {
+      width: 2.15rem;
+    }
+    .us-cta__title {
+      margin-top: 1rem !important;
+      max-width: 12ch;
+      font-size: clamp(2rem, 12vw, 3.05rem) !important;
+      line-height: 0.96 !important;
+    }
+    .us-cta__title span {
+      margin-top: 0.1rem;
+    }
+    .us-cta__lead {
+      margin-top: -0.4rem;
+      max-width: 32ch;
+      font-size: 14px !important;
+      line-height: 1.55 !important;
+    }
+    .us-phone {
+      margin-top: 1.35rem !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      background: rgba(255, 255, 255, 0.10);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+    .us-phone__cell {
+      padding: 0.8rem 0.85rem;
+      background: rgba(18, 22, 28, 0.72);
+    }
+    .us-phone__cell:first-child {
+      grid-column: 1 / -1;
+    }
+    .us-phone__cell p {
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+    }
+    .us-phone__cell a {
+      margin-top: 0.25rem;
+      font-size: 13.5px;
+      white-space: nowrap;
+    }
+    .us-cta__actions {
+      margin-top: 1.25rem !important;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 0.65rem;
+    }
+    .us-cta__primary,
+    .us-cta__secondary {
+      width: 100%;
+      justify-content: center;
+      min-height: 3rem;
+      padding: 0.85rem 1rem !important;
+      font-size: 0.85rem;
+    }
+    .us-cta__secondary {
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+  }
+
+  /* ─── Stats (hero band) — fade-in via reveal ────────────── */
+  .us-stat { display: inline-block; }
+  .us-stat > span[data-counter] {
+    display: inline-block;
+    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* ─── Hero & CTA backdrop drifts ────────────────────────── */
+  .us-hero__backdrop {
+    animation: us-backdrop-drift 28s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  .us-cta__backdrop {
+    animation: us-backdrop-drift-rev 32s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  @keyframes us-backdrop-drift {
+    0%   { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-2rem, -0.6rem, 0); }
+  }
+  @keyframes us-backdrop-drift-rev {
+    0%   { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(1.8rem, 0.6rem, 0); }
+  }
+
+  /* ─── Hero index — per-row stagger entry ────────────────── */
+  .us-index__list li {
+    opacity: 0;
+    transform: translateX(8px);
+    animation: us-index-in 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .us-index__list li:nth-child(1) { animation-delay: 320ms; }
+  .us-index__list li:nth-child(2) { animation-delay: 400ms; }
+  .us-index__list li:nth-child(3) { animation-delay: 480ms; }
+  .us-index__list li:nth-child(4) { animation-delay: 560ms; }
+  .us-index__list li:nth-child(5) { animation-delay: 640ms; }
+  .us-index__list li:nth-child(6) { animation-delay: 720ms; }
+  @keyframes us-index-in {
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+
+  /* ─── Reduced motion — strip transforms, keep opacity ───── */
+  @media (prefers-reduced-motion: reduce) {
+    .us-card,
+    .us-card__hr,
+    .us-index__row,
+    .us-card__more,
+    .us-index__arrow,
+    .us-card__count,
+    .us-card__code,
+    .us-card__title,
+    .us-matrix__row,
+    .us-standards__cell,
+    .us-standards__cell > span:first-child,
+    .us-method__cell,
+    .us-method__n,
+    .us-method__step,
+    .us-phone__cell,
+    .us-stat > span[data-counter] {
+      transition: none !important;
+      animation: none !important;
+    }
+    .us-card:hover,
+    .us-method__cell:hover,
+    .us-standards__cell:hover .us-standards__cell > span:first-child {
+      transform: none !important;
+    }
+    .us-card__hr { width: 2.5rem !important; }
+    .us-card:hover .us-card__bul li::before { transform: none !important; }
+    .us-hero__backdrop,
+    .us-cta__backdrop {
+      animation: none !important;
+    }
+    .us-index__list li {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  // ── Hero stats count-up — animates 0 → target on first intersection ──
+  // Pattern mirrors /proekti.astro so the page feels coherent. The element
+  // text is replaced each frame; if data-pad="2" is set, the value is
+  // zero-padded to 2 digits (used by the "06" disciplines cell).
+  const setupCounters = () => {
+    const counters = document.querySelectorAll<HTMLElement>('[data-counter]');
+    if (!counters.length) return;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      counters.forEach((el) => {
+        const t = parseInt(el.dataset.counter ?? '0', 10);
+        const pad = parseInt(el.dataset.pad ?? '0', 10);
+        el.textContent = pad ? String(t).padStart(pad, '0') : String(t);
+      });
+      return;
+    }
+    const ease = (t: number) => 1 - Math.pow(1 - t, 3); // ease-out cubic
+    const animate = (el: HTMLElement, target: number, pad: number) => {
+      const duration = 2400;
+      const start = performance.now();
+      const tick = (now: number) => {
+        const progress = Math.min(1, (now - start) / duration);
+        const v = Math.round(target * ease(progress));
+        el.textContent = pad ? String(v).padStart(pad, '0') : String(v);
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            const target = parseInt(el.dataset.counter ?? '0', 10);
+            const pad = parseInt(el.dataset.pad ?? '0', 10);
+            animate(el, target, pad);
+            obs.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.4 }
+    );
+    counters.forEach((el) => io.observe(el));
+  };
+
+  setupCounters();
+  document.addEventListener('astro:page-load', setupCounters);
+</script>

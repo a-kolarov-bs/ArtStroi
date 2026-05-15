@@ -1,0 +1,790 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Reveal from '../components/Reveal.astro';
+import { projects, projectCategories, getCategory } from '../data/projects';
+
+const PAGE_SIZE = 25;
+
+// Pre-compute category + a flattened search blob for client-side filtering.
+const cards = projects.map((p) => {
+  const category = getCategory(p);
+  const search = [p.title, p.location ?? '', p.client ?? '', p.description ?? '', p.scope ?? '', category]
+    .join(' ')
+    .toLowerCase();
+  return { project: p, category, search };
+});
+
+const counts: Record<string, number> = { all: cards.length };
+for (const c of cards) counts[c.category] = (counts[c.category] ?? 0) + 1;
+
+// Pick a varied set of projects for the cinematic photo reel — featured first,
+// then a sprinkle from each category so the reel feels diverse.
+const reelPick = (() => {
+  const picked: typeof projects = [];
+  const seen = new Set<number>();
+  // Featured first
+  for (const p of projects) {
+    if (p.featured && !seen.has(p.id)) {
+      picked.push(p);
+      seen.add(p.id);
+    }
+  }
+  // Then 2 more from each category to balance
+  for (const cat of projectCategories) {
+    const fromCat = projects.filter((p) => getCategory(p) === cat && !seen.has(p.id));
+    for (const p of fromCat.slice(0, 2)) {
+      picked.push(p);
+      seen.add(p.id);
+    }
+  }
+  return picked.slice(0, 16);
+})();
+
+const currentYear = new Date().getFullYear();
+const yearsActive = currentYear - 1992;
+
+const pageTitle = `Архив проекти · ${projects.length} реализирани обекта — АРТСТРОЙ ООД`;
+const pageDescription = `${projects.length} реализирани проекта от 1992 до ${currentYear} — жилищни сгради, инфраструктура, обществени обекти и паркове из цяла България.`;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+
+  <!-- ════════════════════════════════════════════════════════════
+       HERO — cinematic photo reel + monumental title + data band.
+       The reel sits flush at the top so the transparent header
+       overlays a dark surface (and stays readable).
+       ════════════════════════════════════════════════════════════ -->
+  <section class="proekti-hero relative isolate overflow-hidden bg-cream-50">
+    <!-- Cinematic film reel: project photos auto-scroll left, infinite loop -->
+    <div class="reel-wrap relative w-full overflow-hidden bg-ink-950">
+      <div class="reel flex h-full gap-3 lg:gap-4">
+        {[...reelPick, ...reelPick].map((p, i) => (
+          <a
+            href={`/proekti?cat=${encodeURIComponent(getCategory(p))}`}
+            class="reel-card group/reel relative shrink-0 block overflow-hidden"
+            aria-label={`${p.title} — ${getCategory(p)}`}
+            data-clone={i >= reelPick.length ? 'true' : 'false'}
+          >
+            <img
+              src={p.coverImageUrl ?? '/hero/hero-poster.jpg'}
+              alt={p.title}
+              loading={i < 4 ? 'eager' : 'lazy'}
+              decoding="async"
+              class="block h-full w-auto object-cover transition-transform duration-[1800ms] ease-out-expo group-hover/reel:scale-[1.04]"
+            />
+            <!-- Constant subtle dark wash (so headline contrast holds) -->
+            <div aria-hidden="true" class="absolute inset-0 bg-ink-950/15"></div>
+            <!-- Hover caption -->
+            <div
+              aria-hidden="true"
+              class="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/15 to-transparent opacity-0 group-hover/reel:opacity-100 transition-opacity duration-500"
+            ></div>
+            <div class="absolute left-4 right-4 bottom-4 opacity-0 group-hover/reel:opacity-100 transition-opacity duration-500 delay-75">
+              <p class="text-[10px] uppercase tracking-eyebrow text-brand">{getCategory(p)}</p>
+              <p class="mt-1 text-sm font-medium text-white line-clamp-2">{p.title}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+      <!-- Edge fades — soften where the reel meets the header & body -->
+      <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-ink-950/55 to-transparent"></div>
+      <div aria-hidden="true" class="pointer-events-none absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-ink-950 to-transparent"></div>
+      <div aria-hidden="true" class="pointer-events-none absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-ink-950 to-transparent"></div>
+    </div>
+
+    <!-- Editorial title block on cream — sits below the reel -->
+    <div aria-hidden="true" class="absolute inset-0 -z-20 bp-sheet"></div>
+    <div class="container-page relative pt-7 md:pt-10 pb-8 md:pb-14">
+      <Reveal>
+        <p class="eyebrow flex items-center gap-3 flex-wrap">
+          <span class="inline-block h-px w-10 bg-brand"></span>
+          Архивът · Archive 1992 — {currentYear}
+        </p>
+        <h1
+          class="mt-4 md:mt-7 font-display tracking-tight leading-[0.95] text-ink-950 max-w-[18ch]"
+          style="font-size: clamp(2.25rem, 1rem + 4vw, 5.25rem); letter-spacing: -0.025em;"
+        >
+          Нашето портфолио </br> <span class="italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">от доказателства.</span>
+        </h1>
+
+        <!-- Stats band -->
+        <dl class="mt-6 md:mt-10 grid grid-cols-3 gap-y-8 gap-x-8 max-w-2xl border-t border-ink-900/10 pt-4 md:pt-7">
+          <div>
+            <dt class="sr-only">Реализирани обекти</dt>
+            <dd class="font-display text-ink-950 leading-[0.85] tabular-nums" style="font-size: clamp(2.5rem, 4vw, 4rem); font-variation-settings:'opsz' 144;">
+              <span data-counter={projects.length}>0</span>
+            </dd>
+            <p class="mt-3 md:mt-4 text-[11px] uppercase tracking-eyebrow text-ink-600">Реализирани обекта</p>
+          </div>
+          <div>
+            <dt class="sr-only">Години работа</dt>
+            <dd class="font-display text-ink-950 leading-[0.85] tabular-nums" style="font-size: clamp(2.5rem, 4vw, 4rem); font-variation-settings:'opsz' 144;">
+              <span data-counter={yearsActive}>0</span><span class="text-brand">+</span>
+            </dd>
+            <p class="mt-3 md:mt-4 text-[11px] uppercase tracking-eyebrow text-ink-600">Години работа</p>
+          </div>
+          <div>
+            <dt class="sr-only">Града</dt>
+            <dd class="font-display text-ink-950 leading-[0.85] tabular-nums" style="font-size: clamp(2.5rem, 4vw, 4rem); font-variation-settings:'opsz' 144;">
+              <span data-counter="8">0</span><span class="text-brand">+</span>
+            </dd>
+            <p class="mt-3 md:mt-4 text-[11px] uppercase tracking-eyebrow text-ink-600">Града в България</p>
+          </div>
+        </dl>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       FILTER STRIP — search + 4 category chips + counter.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="proekti-filterbar relative bg-cream-50 border-y border-ink-900/[0.08]">
+    <div class="container-page py-3.5 md:py-10">
+      <div class="flex flex-col gap-3.5 md:gap-7">
+        <!-- Editorial underline-style search -->
+        <div class="search-wrap flex items-center gap-4 border-b border-brand pb-3 transition-colors duration-300">
+          <svg
+            class="text-brand shrink-0"
+            width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"
+          >
+            <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5" />
+            <path d="M14 14l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <input
+            id="proekti-search"
+            type="search"
+            inputmode="search"
+            autocomplete="off"
+            placeholder="Търси по име, локация или ключова дума…"
+            aria-label="Търсене в архива"
+            class="flex-1 bg-transparent border-0 outline-none text-base md:text-lg placeholder:text-ink-900/40 text-ink-950 py-1"
+          />
+          <button
+            type="button"
+            id="proekti-search-clear"
+            class="hidden text-xs uppercase tracking-eyebrow text-ink-600 hover:text-ink-950 transition-colors"
+            aria-label="Изчисти търсенето"
+          >
+            Изчисти
+          </button>
+        </div>
+
+        <!-- Chip row + counter -->
+        <div class="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-5 md:gap-8">
+          <div
+            class="filter-chips flex flex-nowrap md:flex-wrap items-center gap-2.5 overflow-x-auto -mx-1 px-1 pb-1 md:overflow-visible"
+            role="tablist"
+            aria-label="Филтър по категория"
+          >
+            <button type="button" class="chip is-active" data-cat="all" aria-pressed="true">Всички</button>
+            {projectCategories.map((c) => (
+              <button type="button" class="chip" data-cat={c} aria-pressed="false">{c}</button>
+            ))}
+          </div>
+          <p class="text-[11px] uppercase tracking-eyebrow text-ink-600 shrink-0 self-end md:self-auto">
+            <span id="proekti-count" class="text-brand font-semibold">{cards.length}</span>
+            <span class="text-ink-600/70">/</span>
+            <span class="text-ink-950 font-medium">{cards.length}</span>
+            проекта
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       GRID — 25 cards per page, paginated client-side.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="bg-cream-50 py-8 md:py-24 lg:py-28" id="proekti-grid-section">
+    <!-- Mobile uses tighter horizontal padding so the 2-col cards have a bit
+         more room than the rest of the page; desktop keeps container-page. -->
+    <div class="mx-auto w-full max-w-7xl px-4 md:px-10 lg:px-12">
+      <!-- Mobile: 2-col compact grid; tablet: 2-col; desktop: 3-col wide grid. -->
+      <div
+        id="proekti-grid"
+        class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-x-2 sm:gap-x-6 md:gap-x-7 lg:gap-x-8 gap-y-6 md:gap-y-10 lg:gap-y-12"
+        data-page-size={PAGE_SIZE}
+      >
+        {cards.map((c, i) => (
+          <article
+            class="project-grid-item"
+            data-search={c.search}
+            data-category={c.category}
+            style={`--card-col: ${i % 3};`}
+          >
+            <div class="card-shell">
+              <ProjectCard
+                project={c.project}
+                index={i}
+                aspect="aspect-[4/5]"
+                size="default"
+                hoverImages={c.project.galleryImageUrls}
+              />
+            </div>
+            <div class="card-caption hidden md:flex mt-5 items-baseline gap-3">
+              <span
+                class="font-display italic text-ink-900/40 tabular-nums text-sm"
+                style="font-variation-settings:'opsz' 144;"
+              >
+                №{String(c.project.id).padStart(3, '0')}
+              </span>
+              <span class="text-[10px] uppercase tracking-eyebrow text-brand">
+                {c.category}
+              </span>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- Pagination -->
+      <nav
+        id="proekti-pager"
+        class="mt-8 md:mt-20 flex flex-nowrap sm:flex-wrap items-center justify-center gap-1 sm:gap-2"
+        aria-label="Странициране"
+      ></nav>
+
+      <!-- Empty state -->
+      <div
+        id="proekti-empty"
+        class="hidden mt-20 mx-auto max-w-xl text-center"
+        aria-live="polite"
+      >
+        <p class="eyebrow flex items-center justify-center gap-3">
+          <span class="inline-block h-px w-8 bg-brand"></span>
+          Празно поле
+        </p>
+        <h3 class="mt-6 font-display text-3xl md:text-4xl text-ink-950 leading-[1.05]">
+          Не намираме обект <br/>с тези критерии.
+        </h3>
+        <p class="mt-5 text-base text-ink-600 max-w-md mx-auto">
+          Опитай с по-широки филтри — или ни питай директно. Често за необичайни проекти запис в архива още няма.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <button type="button" id="proekti-clear" class="btn-ghost-dark">
+            Изчисти филтрите
+          </button>
+          <a href="/kontakti" class="btn-brand">Питай ни директно</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       BOTTOM CTA — editorial dark close-out.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="relative isolate overflow-hidden bg-ink-950 text-white py-20 md:py-28 lg:py-32">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-d opacity-[0.18]"></div>
+    <span
+      aria-hidden="true"
+      class="absolute -left-6 top-6 select-none pointer-events-none font-display italic text-white/[0.04] leading-[0.78]"
+      style="font-size: clamp(10rem, 22vw, 22rem); font-variation-settings:'opsz' 144,'SOFT' 100;"
+    >
+      1992
+    </span>
+
+    <div class="container-page relative">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-end">
+        <Reveal class="lg:col-span-7">
+          <p class="eyebrow text-brand flex items-center gap-3">
+            <span class="inline-block h-px w-8 bg-brand"></span>
+            Започни проект
+          </p>
+          <h2
+            class="mt-6 font-display tracking-tight leading-[1.02] text-white max-w-[18ch]"
+            style="font-size: clamp(2.25rem, 1rem + 4.5vw, 5rem); letter-spacing: -0.025em;"
+          >
+            Архивът свършва тук.
+            <span class="italic block text-white/65" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+              Следващият обект — твой.
+            </span>
+          </h2>
+        </Reveal>
+        <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
+          <p class="text-base md:text-lg text-white/70 leading-[1.65] max-w-[42ch]">
+            От рекордно сложни жилищни групи до общинска инфраструктура — питай ни директно. Първа консултация без ангажимент.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="/kontakti" class="btn-brand">
+              Свържи се с нас
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="tel:+359878715936" class="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white/85 hover:text-white transition-colors duration-300 border border-white/15 hover:border-white/35">
+              +359 878 715 936
+            </a>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ─── HERO REEL — auto-scrolling film strip ───────────── */
+  .reel-wrap {
+    /* Sized so the transparent header (h-20 = 80px) overlays a dark area
+       and the headline below has plenty of breathing room. */
+    height: clamp(280px, 36vw, 460px);
+  }
+  .reel {
+    width: max-content;
+    animation: reel-scroll 50s linear infinite;
+    will-change: transform;
+  }
+  .reel-card {
+    height: 100%;
+    aspect-ratio: 3 / 4;
+    background: theme('colors.ink.900');
+  }
+  .reel-card img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  .reel-wrap:hover .reel { animation-play-state: paused; }
+
+  @keyframes reel-scroll {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+  }
+
+  /* Reduced-motion users get a static reel — no auto-scroll. */
+  @media (prefers-reduced-motion: reduce) {
+    .reel { animation: none; transform: translateX(0); }
+  }
+
+  /* ─── CHIP — Apple Liquid Glass with brand-red ACTIVE ── */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.1rem;
+    border-radius: 9999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: theme('colors.ink.900');
+    white-space: nowrap;
+    cursor: pointer;
+    background: rgba(28, 32, 38, 0.05);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.04),
+      0 4px 12px -8px rgba(18, 22, 28, 0.10);
+    transition:
+      background-color 250ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 250ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 250ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 250ms cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .chip:hover {
+    background: rgba(28, 32, 38, 0.10);
+    border-color: rgba(255, 255, 255, 0.70);
+  }
+  .chip.is-active {
+    background: theme('colors.brand.DEFAULT');
+    color: white;
+    border-color: theme('colors.brand.DEFAULT');
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.20),
+      0 8px 22px -10px rgba(186, 45, 32, 0.55);
+    transform: translateY(-1px);
+  }
+
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .filter-chips { scrollbar-width: none; }
+
+  #proekti-search::-webkit-search-cancel-button,
+  #proekti-search::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .project-grid-item[hidden] { display: none; }
+
+  /* ─── Cinematic card reveal — column-staggered cascade ─────────
+     Cards rise from below with subtle scale; caption fades in after.
+     Stagger delay derived from --card-col (0/1/2 for 3-col grid). */
+  .project-grid-item {
+    --card-delay: calc(var(--card-col, 0) * 90ms);
+  }
+  .project-grid-item .card-shell {
+    opacity: 0;
+    transform: translate3d(0, 70px, 0) scale(0.96);
+    transition:
+      opacity 950ms cubic-bezier(0.16, 1, 0.3, 1) var(--card-delay),
+      transform 1100ms cubic-bezier(0.16, 1, 0.3, 1) var(--card-delay);
+    will-change: transform, opacity;
+  }
+  .project-grid-item .card-caption {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+    transition:
+      opacity 700ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--card-delay) + 380ms),
+      transform 700ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--card-delay) + 380ms);
+  }
+  .project-grid-item.is-visible .card-shell {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  .project-grid-item.is-visible .card-caption {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-grid-item .card-shell,
+    .project-grid-item .card-caption {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<!-- Pagination styles must be GLOBAL — the buttons are rendered dynamically
+     via innerHTML and don't carry Astro's per-component scope attribute. -->
+<style is:global>
+  #proekti-pager .pager-num,
+  #proekti-pager .pager-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.85rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #1A1F26;
+    cursor: pointer;
+    background: rgba(28, 32, 38, 0.05);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.04),
+      0 4px 12px -8px rgba(18, 22, 28, 0.10);
+    transition:
+      background-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  #proekti-pager .pager-num:hover,
+  #proekti-pager .pager-step:not([disabled]):hover {
+    background: rgba(28, 32, 38, 0.10);
+    border-color: rgba(255, 255, 255, 0.70);
+  }
+  #proekti-pager .pager-num.is-active {
+    background: #12161C;
+    color: white;
+    border-color: #12161C;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.10),
+      0 6px 16px -8px rgba(18, 22, 28, 0.35);
+    transform: translateY(-1px);
+  }
+  #proekti-pager .pager-step[disabled] {
+    opacity: 0.40;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  #proekti-pager .pager-step {
+    padding: 0 1.1rem;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  #proekti-pager .pager-info {
+    display: inline-flex;
+    align-items: center;
+    height: 2.5rem;
+    padding: 0 0.4rem;
+    font-size: 0.85rem;
+    color: rgba(73, 73, 73, 0.55);
+  }
+
+  /* Mobile: keep page numbers prominent (large, easy to tap) and shrink the
+     Prev/Next text so the entire pager still fits on one row. */
+  @media (max-width: 639px) {
+    #proekti-pager {
+      gap: 0.3rem;
+    }
+    #proekti-pager .pager-num,
+    #proekti-pager .pager-step {
+      height: 2.6rem;
+    }
+    /* PAGE NUMBERS — larger and tappable */
+    #proekti-pager .pager-num {
+      min-width: 2.6rem;
+      padding: 0 0.55rem;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    /* PREV / NEXT — shrunk so labels still fit beside the bigger numbers */
+    #proekti-pager .pager-step {
+      min-width: auto;
+      gap: 0.25rem;
+      padding: 0 0.55rem;
+      font-size: 0.55rem;
+      letter-spacing: 0.05em;
+    }
+    #proekti-pager .pager-step svg {
+      width: 10px;
+      height: 10px;
+    }
+    #proekti-pager .pager-info {
+      font-size: 0.85rem;
+      padding: 0 0.15rem;
+    }
+  }
+</style>
+
+<script>
+  // ── Count-up animation for the hero stats band ───────────
+  const setupCounters = () => {
+    const counters = document.querySelectorAll<HTMLElement>('[data-counter]');
+    if (!counters.length) return;
+    const ease = (t: number) => 1 - Math.pow(1 - t, 3); // ease-out cubic
+    const animate = (el: HTMLElement, target: number) => {
+      const duration = 2800;
+      const start = performance.now();
+      const tick = (now: number) => {
+        const progress = Math.min(1, (now - start) / duration);
+        el.textContent = String(Math.round(target * ease(progress)));
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const target = parseInt((entry.target as HTMLElement).dataset.counter ?? '0', 10);
+            animate(entry.target as HTMLElement, target);
+            obs.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.45 }
+    );
+    for (const el of counters) io.observe(el);
+  };
+
+  // ── Filter + paginate ─────────────────────────────────────
+  const setup = () => {
+    setupCounters();
+    const grid = document.getElementById('proekti-grid');
+    const searchInput = document.getElementById('proekti-search') as HTMLInputElement | null;
+    const searchClear = document.getElementById('proekti-search-clear');
+    const counter = document.getElementById('proekti-count');
+    const empty = document.getElementById('proekti-empty');
+    const clearBtn = document.getElementById('proekti-clear');
+    const pager = document.getElementById('proekti-pager');
+    const gridSection = document.getElementById('proekti-grid-section');
+    if (!grid || !searchInput || !counter || !empty || !pager) return;
+
+    const items = Array.from(grid.querySelectorAll<HTMLElement>('.project-grid-item'));
+    const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip'));
+    const PAGE_SIZE = parseInt(grid.dataset.pageSize ?? '25', 10);
+
+    const state = {
+      cat: 'all',
+      q: '',
+      page: 1,
+    };
+
+    // ── Cinematic reveal: items fade-up + scale in on viewport entry ──
+    // Re-observe items whenever they become hidden (page/filter change),
+    // so they re-animate the next time they're shown.
+    const reveal = new IntersectionObserver(
+      (entries, obs) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -6% 0px' }
+    );
+    for (const item of items) reveal.observe(item);
+
+    const apply = (opts: { resetPage?: boolean; scroll?: boolean } = {}) => {
+      if (opts.resetPage) state.page = 1;
+      const q = state.q.trim().toLowerCase();
+      const matched: HTMLElement[] = [];
+      for (const item of items) {
+        const cat = item.dataset.category ?? '';
+        const text = item.dataset.search ?? '';
+        const matchCat = state.cat === 'all' || cat === state.cat;
+        const matchQuery = !q || text.includes(q);
+        if (matchCat && matchQuery) matched.push(item);
+      }
+      const totalPages = Math.max(1, Math.ceil(matched.length / PAGE_SIZE));
+      if (state.page > totalPages) state.page = totalPages;
+      const start = (state.page - 1) * PAGE_SIZE;
+      const end = start + PAGE_SIZE;
+      const visibleSet = new Set(matched.slice(start, end));
+      for (const item of items) {
+        const wasHidden = item.hasAttribute('hidden');
+        if (visibleSet.has(item)) {
+          item.removeAttribute('hidden');
+          // If this item was hidden (page/filter change), reset & re-observe
+          // so the cinematic enter animation plays again when it intersects.
+          if (wasHidden) {
+            item.classList.remove('is-visible');
+            reveal.observe(item);
+          }
+        } else {
+          item.setAttribute('hidden', '');
+          item.classList.remove('is-visible');
+        }
+      }
+      counter.textContent = String(matched.length);
+      empty.classList.toggle('hidden', matched.length !== 0);
+      searchClear?.classList.toggle('hidden', q.length === 0);
+      renderPager(state.page, totalPages, matched.length);
+      writeUrl();
+      if (opts.scroll && gridSection) {
+        gridSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+
+    const renderPager = (current: number, total: number, matchedCount: number) => {
+      if (matchedCount === 0 || total <= 1) {
+        pager.innerHTML = '';
+        return;
+      }
+      // Sliding window: show up to 5 page numbers around current
+      const window = 5;
+      let from = Math.max(1, current - 2);
+      let to = Math.min(total, from + window - 1);
+      from = Math.max(1, to - window + 1);
+
+      const parts: string[] = [];
+      parts.push(`
+        <button type="button" class="pager-step pager-step-prev" data-step="prev" ${current === 1 ? 'disabled' : ''} aria-label="Предишна страница">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M9 11L5 7l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="pager-step-label">Предишна</span>
+        </button>
+      `);
+      if (from > 1) {
+        parts.push(`<button type="button" class="pager-num" data-page="1">1</button>`);
+        if (from > 2) parts.push(`<span class="pager-info">…</span>`);
+      }
+      for (let i = from; i <= to; i++) {
+        parts.push(`<button type="button" class="pager-num ${i === current ? 'is-active' : ''}" data-page="${i}" aria-current="${i === current ? 'page' : 'false'}">${i}</button>`);
+      }
+      if (to < total) {
+        if (to < total - 1) parts.push(`<span class="pager-info">…</span>`);
+        parts.push(`<button type="button" class="pager-num" data-page="${total}">${total}</button>`);
+      }
+      parts.push(`
+        <button type="button" class="pager-step pager-step-next" data-step="next" ${current === total ? 'disabled' : ''} aria-label="Следваща страница">
+          <span class="pager-step-label">Следваща</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      `);
+      pager.innerHTML = parts.join('');
+    };
+
+    const writeUrl = () => {
+      const url = new URL(window.location.href);
+      if (state.q) url.searchParams.set('q', state.q); else url.searchParams.delete('q');
+      if (state.cat !== 'all') url.searchParams.set('cat', state.cat); else url.searchParams.delete('cat');
+      if (state.page > 1) url.searchParams.set('page', String(state.page)); else url.searchParams.delete('page');
+      window.history.replaceState({}, '', url.toString());
+    };
+
+    const setActiveChip = (cat: string) => {
+      for (const c of chips) {
+        const isActive = c.dataset.cat === cat;
+        c.classList.toggle('is-active', isActive);
+        c.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      }
+    };
+
+    searchInput.addEventListener('input', () => {
+      state.q = searchInput.value;
+      apply({ resetPage: true });
+    });
+
+    searchClear?.addEventListener('click', () => {
+      searchInput.value = '';
+      state.q = '';
+      apply({ resetPage: true });
+      searchInput.focus();
+    });
+
+    for (const chip of chips) {
+      chip.addEventListener('click', () => {
+        state.cat = chip.dataset.cat ?? 'all';
+        setActiveChip(state.cat);
+        apply({ resetPage: true });
+      });
+    }
+
+    clearBtn?.addEventListener('click', () => {
+      state.q = '';
+      state.cat = 'all';
+      searchInput.value = '';
+      setActiveChip('all');
+      apply({ resetPage: true });
+    });
+
+    // Pager — event delegation (buttons rendered dynamically).
+    pager.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const num = target.closest<HTMLElement>('.pager-num');
+      const step = target.closest<HTMLElement>('.pager-step');
+      if (num) {
+        const page = parseInt(num.dataset.page ?? '1', 10);
+        state.page = page;
+        apply({ scroll: true });
+      } else if (step) {
+        const direction = step.dataset.step;
+        if (direction === 'prev') state.page = Math.max(1, state.page - 1);
+        else if (direction === 'next') state.page = state.page + 1;
+        apply({ scroll: true });
+      }
+    });
+
+    // Hydrate state from URL (?q=&cat=&page=).
+    const params = new URLSearchParams(window.location.search);
+    const q0 = params.get('q');
+    const cat0 = params.get('cat');
+    const page0 = params.get('page');
+    if (q0) {
+      searchInput.value = q0;
+      state.q = q0;
+    }
+    if (cat0 && chips.some((c) => c.dataset.cat === cat0)) {
+      state.cat = cat0;
+      setActiveChip(cat0);
+    }
+    if (page0) {
+      const n = parseInt(page0, 10);
+      if (Number.isFinite(n) && n >= 1) state.page = n;
+    }
+    apply();
+  };
+
+  setup();
+  document.addEventListener('astro:page-load', setup);
+</script>

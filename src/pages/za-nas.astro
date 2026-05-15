@@ -1,0 +1,1536 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Reveal from '../components/Reveal.astro';
+import { projects } from '../data/projects';
+
+// ────────────────────────────────────────────────────────────────
+// За нас — editorial dossier of the firm.
+// Dense like uslugi.astro: no oceans of whitespace, alternating
+// cream/ink bands, with ONE full-bleed section ("Сграда на годината")
+// that breaks out of container-page on purpose.
+// ────────────────────────────────────────────────────────────────
+
+const FOUNDED = 1992;
+const currentYear = new Date().getFullYear();
+const yearsActive = currentYear - FOUNDED;
+const totalProjects = projects.length;
+
+// ── Award (Сграда на годината) — Chukara project feature.
+const awardSlots = [
+  { file: '/award/chukara/detail-1.jpg', alt: 'Вино и СПА хотел Чукара — фасада', caption: 'Естествен камък и дървени ламели' },
+  { file: '/award/chukara/detail-2.jpg', alt: 'Вино и СПА хотел Чукара — общ изглед', caption: 'Планински хотелски ансамбъл' },
+  { file: '/award/chukara/detail-3.jpg', alt: 'Вино и СПА хотел Чукара — интериор и екстериор', caption: 'Хотел, СПА и винена програма' },
+];
+
+// ── Certificates — sourced verbatim from /sert.html of legacy site ────
+// Image URLs are absolute to the legacy host for now. When/if the client
+// uploads scans we'll mirror them to /public/certs/.
+const isoStandards = [
+  {
+    code: 'ISO 9001:2015',
+    title: 'Управление на качеството',
+    body: 'Сертифицирана система за управление на качеството — приложима за пълния обхват на строително-монтажните работи.',
+    img: 'https://www.artstroismolian.com/sert/1.jpg',
+    pdf: 'https://www.artstroismolian.com/sert/1.pdf',
+  },
+  {
+    code: 'ISO 14001:2015',
+    title: 'Околна среда',
+    body: 'Управление по отношение на околната среда — намалено въздействие на строителния процес върху терена и общността.',
+    img: 'https://www.artstroismolian.com/sert/2.jpg',
+    pdf: 'https://www.artstroismolian.com/sert/2.pdf',
+  },
+  {
+    code: 'ISO 45001:2018',
+    title: 'Здраве и безопасност',
+    body: 'Система за управление на здравето и безопасността при работа — оценен риск на всяко работно място на обекта.',
+    img: 'https://www.artstroismolian.com/sert/3.jpg',
+    pdf: 'https://www.artstroismolian.com/sert/3.pdf',
+  },
+];
+
+const cprsGroups = [
+  {
+    roman: 'I',
+    title: 'Първа група',
+    body: 'Строежи от високото строителство и прилежащата му инфраструктура.',
+    img: 'https://www.artstroismolian.com/sert/4.jpg',
+  },
+  {
+    roman: 'II',
+    title: 'Втора група',
+    body: 'Строежи от транспортната инфраструктура — пътища, тротоари, площади.',
+    img: 'https://www.artstroismolian.com/sert/5.jpg',
+  },
+  {
+    roman: 'III',
+    title: 'Трета група',
+    body: 'Строежи от енергийната инфраструктура — електро, ВиК, външни мрежи.',
+    img: 'https://www.artstroismolian.com/sert/6.jpg',
+  },
+  {
+    roman: 'IV',
+    title: 'Четвърта група',
+    body: 'Строежи от благоустройствената инфраструктура — паркове, ВиК съоръжения.',
+    img: 'https://www.artstroismolian.com/sert/7.jpg',
+  },
+];
+
+const declaration = {
+  title: 'Декларация за целите и ангажиментите',
+  body: 'Политика на ръководството по качество, околна среда, здраве и безопасност при работа. Документът е публичен и неразделна част от интегрираната ни система.',
+  pdf: 'https://www.artstroismolian.com/sert/doc07412420240403151358.pdf',
+  img: 'https://www.artstroismolian.com/sert/8.jpg',
+};
+
+// ── Leadership — verbatim from CLAUDE.md ──────────────────────────
+const leadership = [
+  { role: 'Управител', phone: '+359 878 715 936', tel: '+359878715936' },
+  { role: 'Технически директор', phone: '+359 877 766 523', tel: '+359877766523' },
+  { role: 'Счетоводство', phone: '+359 878 715 935', tel: '+359878715935' },
+  { role: 'Транспорт', phone: '+359 878 986 797', tel: '+359878986797' },
+];
+
+const pageTitle = 'За нас · АРТСТРОЙ ООД — строителна компания от Смолян от 1992';
+const pageDescription =
+  'Над 34 години строителство в Смолян и България. Носители на „Сграда на годината". Сертифицирани по ISO 9001/14001/45001. Вписани в ЦПРС.';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <!-- ════════════════════════════════════════════════════════════
+       1 · HERO — dark editorial slab, compact and dense.
+       Same vocabulary as /uslugi hero so the firm reads as one voice.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="zn-hero relative isolate overflow-hidden bg-ink-950 text-white">
+    <span aria-hidden="true" class="absolute inset-x-0 top-0 h-[3px] bg-brand"></span>
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-c opacity-[0.16]"></div>
+
+    <span
+      aria-hidden="true"
+      class="zn-hero__backdrop absolute -right-8 -bottom-14 select-none pointer-events-none font-display italic text-white/[0.045] leading-[0.78]"
+      style="font-size: clamp(11rem, 22vw, 26rem); font-variation-settings:'opsz' 144,'SOFT' 100;"
+    >
+      1992
+    </span>
+
+    <div class="container-page relative pt-32 md:pt-36 lg:pt-40 pb-14 md:pb-20">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-end">
+        <!-- LEFT — title -->
+        <Reveal class="lg:col-span-7">
+          <p class="eyebrow flex items-center gap-3 flex-wrap text-brand">
+            <span class="inline-block h-px w-10 bg-brand"></span>
+            За нас · 1992 → {currentYear}
+          </p>
+          <h1
+            class="mt-5 md:mt-7 font-display tracking-tight leading-[0.95] text-white max-w-[22ch]"
+            style="font-size: clamp(2.5rem, 1.25rem + 5vw, 6rem); letter-spacing: -0.025em;"
+          >
+            Тридесет и четири години
+            <span class="italic block text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+              под един подпис.
+            </span>
+          </h1>
+          <p class="mt-7 md:mt-9 max-w-[54ch] text-base md:text-lg text-white/70 leading-[1.65]">
+            „АРТСТРОЙ" ООД работи в Смолян и Родопската област от 1992 г. Строим жилища, обществени сгради и инфраструктура — със собствени бригади, собствено оборудване и ясен контрол на изпълнението.
+          </p>
+
+          <!-- Tight inline stats — no separate band -->
+          <dl class="zn-stats mt-9 md:mt-11 gap-x-6 gap-y-4 max-w-2xl border-t border-white/12 pt-6">
+            <div>
+              <dt class="sr-only">Години работа</dt>
+              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem); font-variation-settings:'opsz' 144;">
+                <span data-counter={yearsActive}>0</span><span class="text-brand">+</span>
+              </dd>
+              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Години</p>
+            </div>
+            <div>
+              <dt class="sr-only">Реализирани обекти</dt>
+              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem); font-variation-settings:'opsz' 144;">
+                <span data-counter={totalProjects}>0</span><span class="text-brand">+</span>
+              </dd>
+              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Обекта</p>
+            </div>
+            <div>
+              <dt class="sr-only">ЦПРС групи</dt>
+              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem); font-variation-settings:'opsz' 144;">
+                <span data-counter="4" data-pad="2">0</span>
+              </dd>
+              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">ЦПРС групи</p>
+            </div>
+            <div>
+              <dt class="sr-only">ISO стандарта</dt>
+              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem); font-variation-settings:'opsz' 144;">
+                <span data-counter="3" data-pad="2">0</span>
+              </dd>
+              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">ISO стандарта</p>
+            </div>
+          </dl>
+        </Reveal>
+
+        <!-- RIGHT — dossier card -->
+        <Reveal class="lg:col-span-5" delay={120}>
+          <aside class="zn-dossier">
+            <div class="flex items-baseline justify-between border-b border-white/15 pb-3">
+              <p class="text-[10.5px] uppercase tracking-eyebrow text-white/55">
+                Профил · Стр.&nbsp;А
+              </p>
+              <p class="font-display italic text-white/55 text-sm tabular-nums" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                01 / 07
+              </p>
+            </div>
+
+            <dl class="zn-dossier__list">
+              <div class="zn-dossier__row">
+                <dt>Седалище</dt>
+                <dd>гр. Смолян 4700 · кв. Устово</dd>
+              </div>
+              <div class="zn-dossier__row">
+                <dt>Адрес</dt>
+                <dd>ул. „Хаджи Иван Бечев" №6</dd>
+              </div>
+              <div class="zn-dossier__row">
+                <dt>Учредяване</dt>
+                <dd>март 1992 г.</dd>
+              </div>
+              <div class="zn-dossier__row">
+                <dt>Регистър</dt>
+                <dd>ЦПРС · I · II · III · IV група</dd>
+              </div>
+              <div class="zn-dossier__row">
+                <dt>Стандарти</dt>
+                <dd>ISO 9001 · 14001 · 45001</dd>
+              </div>
+              <div class="zn-dossier__row">
+                <dt>Награда</dt>
+                <dd class="text-brand">Сграда на годината</dd>
+              </div>
+            </dl>
+
+            <a href="#nagrada" class="zn-dossier__cta">
+              Виж наградения обект
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </aside>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       3 · AWARD — light editorial proof of recognition.
+       ════════════════════════════════════════════════════════════ -->
+  <section
+    id="nagrada"
+    class="zn-award relative isolate overflow-hidden bg-ink-950 text-white"
+    aria-labelledby="award-heading"
+  >
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b opacity-[0.10]"></div>
+    <img
+      src="/award/chukara/hero.jpg"
+      alt=""
+      loading="lazy"
+      decoding="async"
+      aria-hidden="true"
+      class="zn-award__wash"
+    />
+
+    <div class="relative px-5 md:px-10 pt-16 md:pt-24 pb-16 md:pb-22">
+      <div class="mx-auto max-w-[92rem]">
+        <Reveal>
+          <div class="zn-award__kicker">
+            <span class="inline-block h-px w-10 bg-brand"></span>
+            <p class="eyebrow text-brand">Наше отличие · Национално признание</p>
+          </div>
+        </Reveal>
+
+        <div class="mt-8 md:mt-10 grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+          <Reveal class="lg:col-span-5">
+            <p class="zn-award__category">Сграда на годината · 2022</p>
+            <h2
+              id="award-heading"
+              class="mt-4 font-display tracking-tight text-white"
+              style="font-size: clamp(3.4rem, 1.6rem + 6vw, 7.8rem); line-height: 0.9; letter-spacing: -0.03em;"
+            >
+              Сграда
+              <span class="italic block text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">на годината.</span>
+            </h2>
+            <p class="mt-6 md:mt-8 max-w-[48ch] text-[15.5px] md:text-[16.5px] text-white/72 leading-[1.7]">
+              „АРТСТРОЙ“ ООД е изпълнител на отличения проект „Вино и СПА хотел Чукара“ в Националния конкурс „Сграда на годината“ 2022. Това е признание за реално изпълнение, детайл и строителна дисциплина.
+            </p>
+            <div class="zn-award__seal" aria-label="Сграда на годината 2022">
+              <span>2022</span>
+              <strong>Отличен обект</strong>
+              <em>Ваканционни и СПА хотели</em>
+            </div>
+          </Reveal>
+
+          <Reveal class="lg:col-span-7" delay={120}>
+            <figure class="zn-award__hero">
+              <video
+                class="zn-award__video"
+                poster="/award/chukara/hero.jpg"
+                src="/award/chukara/drone.mp4"
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Въздушен обход на Вино и СПА хотел Чукара"
+              ></video>
+              <img
+                src="/award/chukara/hero.jpg"
+                alt="Вино и СПА хотел Чукара, гр. Трявна"
+                loading="lazy"
+                decoding="async"
+                class="zn-award__poster"
+              />
+              <figcaption class="zn-award__hero-caption">
+                <span>Вино и СПА хотел Чукара</span>
+                <span>Тук ще бъде поставен drone клипът</span>
+              </figcaption>
+            </figure>
+          </Reveal>
+        </div>
+
+        <div class="mt-8 md:mt-10 grid lg:grid-cols-12 gap-px bg-white/12">
+          <Reveal class="zn-award__cell lg:col-span-3">
+            <p class="zn-award__label">Нашата роля</p>
+            <p class="zn-award__value">Артстрой ООД</p>
+          </Reveal>
+          <Reveal class="zn-award__cell lg:col-span-3" delay={60}>
+            <p class="zn-award__label">Отличие</p>
+            <p class="zn-award__value">Сграда на годината</p>
+          </Reveal>
+          <Reveal class="zn-award__cell lg:col-span-3" delay={120}>
+            <p class="zn-award__label">Категория</p>
+            <p class="zn-award__value">Ваканционни и СПА хотели</p>
+          </Reveal>
+          <Reveal class="zn-award__cell lg:col-span-3" delay={180}>
+            <p class="zn-award__label">Обект</p>
+            <p class="zn-award__value">Вино и СПА хотел Чукара</p>
+          </Reveal>
+        </div>
+
+        <div class="mt-10 md:mt-14 grid lg:grid-cols-12 gap-8 lg:gap-10">
+          <Reveal class="lg:col-span-4">
+            <div class="zn-award__metrics">
+              <div>
+                <span class="zn-award__metric">57</span>
+                <span class="zn-award__metric-label">стаи и апартаменти</span>
+              </div>
+              <div>
+                <span class="zn-award__metric">123</span>
+                <span class="zn-award__metric-label">места за настаняване</span>
+              </div>
+              <div>
+                <span class="zn-award__metric">40 дка</span>
+                <span class="zn-award__metric-label">комплекс с винопроизводство и туризъм</span>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal class="lg:col-span-8" delay={120}>
+            <ol class="zn-award__strip">
+              {awardSlots.map((s, i) => (
+                <li class="zn-award__slot group">
+                  <figure class="zn-award__figure">
+                    <img src={s.file} alt={s.alt} loading="lazy" decoding="async" class="zn-award__img" />
+                    <figcaption class="zn-award__caption">
+                      <span class="text-[10.5px] uppercase tracking-eyebrow text-brand">0{i + 1}</span>
+                      <span class="mt-1 block text-[13px] md:text-[13.5px] text-white">{s.caption}</span>
+                    </figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ol>
+          </Reveal>
+        </div>
+
+        <div class="zn-award__footer">
+          <p>
+            Отличието е в категория „Ваканционни и СПА хотели“ на Национален конкурс „Сграда на годината“ 2022.
+          </p>
+          <a href="https://www.buildingoftheyear.bg/bg/uchastnici/spa-2022/vino-i-spa-hotel-chukara" target="_blank" rel="noopener noreferrer" class="zn-award__link">
+            Виж проекта в конкурса
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       5 · CERTIFICATES — ISO row + ЦПРС groups + декларация.
+       Dense grid, brand-monogram cards. Each cert is a spec page.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="relative isolate overflow-hidden bg-cream-50 py-16 md:py-24" aria-labelledby="certs-heading">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
+
+    <div class="container-page relative">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end mb-10 md:mb-14">
+        <Reveal class="lg:col-span-7">
+          <p class="eyebrow">Сертификати · Регистри</p>
+          <h2
+            id="certs-heading"
+            class="mt-3 font-display tracking-tight text-ink-950 max-w-[22ch]"
+            style="font-size: clamp(1.85rem, 1rem + 2vw, 2.85rem); line-height: 1.05;"
+          >
+            Документи под
+            <span class="italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">подпис</span>.
+          </h2>
+        </Reveal>
+        <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
+          <p class="text-[14.5px] md:text-[15px] text-ink-600 leading-[1.65] max-w-[46ch]">
+            Системата ни за управление на качеството, околната среда, здравето и безопасността при работа е изградена в съответствие с международните стандарти ISO и е валидирана от независим орган. Всички сертификати са актуални и налични за инспекция.
+          </p>
+        </Reveal>
+      </div>
+
+      <!-- ISO row — three feature cards -->
+      <ol class="zn-iso grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ink-900/12">
+        {isoStandards.map((s, i) => (
+          <Reveal as="li" delay={i * 80} class="zn-iso__cell group">
+            <article class="zn-iso__inner">
+              <header class="zn-iso__head">
+                <span class="zn-iso__num font-display italic tabular-nums text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                  ISO
+                </span>
+                <span class="zn-iso__step">№{String(i + 1).padStart(2, '0')}</span>
+              </header>
+              <h3
+                class="zn-iso__title font-display tracking-tight text-ink-950"
+                style="font-size: clamp(1.25rem, 0.95rem + 0.75vw, 1.55rem); line-height: 1.1;"
+              >
+                {s.code}
+              </h3>
+              <p class="zn-iso__label">{s.title}</p>
+              <span aria-hidden="true" class="zn-iso__hr"></span>
+              <p class="zn-iso__body">{s.body}</p>
+
+              <!-- Document thumbnail — legacy scan, replaced when clients
+                   upload new versions -->
+              <a class="zn-iso__doc group/doc" href={s.pdf} target="_blank" rel="noopener noreferrer">
+                <span class="zn-iso__thumb">
+                  <img src={s.img} alt={`Сертификат ${s.code}`} loading="lazy" decoding="async" />
+                </span>
+                <span class="zn-iso__doc-meta">
+                  <span class="zn-iso__doc-label">Виж сертификата</span>
+                  <span class="zn-iso__doc-ext">PDF</span>
+                </span>
+                <svg class="zn-iso__doc-arrow" width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </article>
+          </Reveal>
+        ))}
+      </ol>
+
+      <!-- ЦПРС groups row + declaration -->
+      <div class="mt-10 md:mt-14">
+        <Reveal class="mb-8 md:mb-10">
+          <div class="flex flex-wrap items-baseline justify-between gap-4 border-b border-ink-900/15 pb-4">
+            <h3
+              class="font-display tracking-tight text-ink-950"
+              style="font-size: clamp(1.15rem, 0.85rem + 0.85vw, 1.5rem); line-height: 1.15;"
+            >
+              ЦПРС · вписвания
+            </h3>
+            <p class="text-[11.5px] uppercase tracking-eyebrow text-ink-600">
+              Централен професионален регистър на строителя
+            </p>
+          </div>
+        </Reveal>
+
+        <ol class="zn-cprs grid grid-cols-2 lg:grid-cols-5 gap-px bg-ink-900/12">
+          {cprsGroups.map((g, i) => (
+            <Reveal as="li" delay={i * 60} class="zn-cprs__cell group">
+              <article class="zn-cprs__inner">
+                <span class="zn-cprs__roman font-display italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                  {g.roman}
+                </span>
+                <h4 class="zn-cprs__title">{g.title}</h4>
+                <p class="zn-cprs__body">{g.body}</p>
+                <a class="zn-cprs__doc" href={g.img} target="_blank" rel="noopener noreferrer" aria-label={`Удостоверение ${g.title}`}>
+                  <span class="zn-cprs__thumb">
+                    <img src={g.img} alt="" loading="lazy" decoding="async" />
+                  </span>
+                  <span class="zn-cprs__doc-label">Удостоверение</span>
+                  <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </article>
+            </Reveal>
+          ))}
+
+          <!-- Declaration as a 5th, distinct cell -->
+          <Reveal as="li" delay={cprsGroups.length * 60} class="zn-cprs__cell zn-cprs__cell--alt group">
+            <article class="zn-cprs__inner">
+              <span class="zn-cprs__roman font-display italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                §
+              </span>
+              <h4 class="zn-cprs__title">{declaration.title}</h4>
+              <p class="zn-cprs__body">{declaration.body}</p>
+              <a class="zn-cprs__doc" href={declaration.pdf} target="_blank" rel="noopener noreferrer" aria-label="Декларация PDF">
+                <span class="zn-cprs__thumb">
+                  <img src={declaration.img} alt="" loading="lazy" decoding="async" />
+                </span>
+                <span class="zn-cprs__doc-label">Декларация · PDF</span>
+                <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </article>
+          </Reveal>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       6 · LEADERSHIP — dark contact ledger.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="relative isolate overflow-hidden bg-ink-950 text-white py-14 md:py-20" aria-labelledby="people-heading">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-c opacity-[0.16]"></div>
+
+    <div class="container-page relative">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end mb-10 md:mb-12">
+        <Reveal class="lg:col-span-7">
+          <p class="eyebrow text-brand flex items-center gap-3">
+            <span class="inline-block h-px w-10 bg-brand"></span>
+            Хора
+          </p>
+          <h2
+            id="people-heading"
+            class="mt-4 font-display tracking-tight text-white max-w-[22ch]"
+            style="font-size: clamp(1.85rem, 1rem + 2.2vw, 3rem); line-height: 1.05;"
+          >
+            Директна връзка с екипа.
+            <span class="italic block text-white/65" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+              Четири линии за връзка.
+            </span>
+          </h2>
+        </Reveal>
+        <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
+          <p class="text-[14.5px] md:text-[15px] text-white/65 leading-[1.65] max-w-[44ch]">
+            Без call center, без диспечери. Управителят, техническият директор, счетоводството и транспортът отговарят лично — в работно време и обикновено в рамките на същия ден.
+          </p>
+        </Reveal>
+      </div>
+
+      <ol class="zn-people grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/12">
+        {leadership.map((p, i) => (
+          <Reveal as="li" delay={i * 80} class="zn-people__cell group">
+            <a href={`tel:${p.tel}`} class="zn-people__link">
+              <div class="zn-people__head">
+                <span class="font-display italic text-brand tabular-nums" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span class="zn-people__tag">Линия</span>
+              </div>
+              <p class="zn-people__role">{p.role}</p>
+              <p class="zn-people__phone">{p.phone}</p>
+              <span class="zn-people__action">
+                Обади се
+                <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+          </Reveal>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       7 · CTA — compact split, mirrors /uslugi closing.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="relative isolate overflow-hidden bg-cream-50 py-16 md:py-24" aria-labelledby="zn-cta-heading">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet"></div>
+    <span
+      aria-hidden="true"
+      class="zn-cta__backdrop absolute -left-6 top-4 select-none pointer-events-none font-display italic text-ink-900/[0.05] leading-[0.78]"
+      style="font-size: clamp(10rem, 22vw, 22rem); font-variation-settings:'opsz' 144,'SOFT' 100;"
+    >
+      ARTSTROY
+    </span>
+
+    <div class="container-page relative">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-end">
+        <Reveal class="lg:col-span-7">
+          <p class="eyebrow flex items-center gap-3">
+            <span class="inline-block h-px w-10 bg-brand"></span>
+            Започни проект
+          </p>
+          <h2
+            id="zn-cta-heading"
+            class="mt-5 font-display tracking-tight leading-[1.02] text-ink-950 max-w-[22ch]"
+            style="font-size: clamp(2rem, 1rem + 4vw, 4.5rem); letter-spacing: -0.025em;"
+          >
+            Имаш проект в Смолянско?
+            <span class="italic block text-ink-900/55" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+              Започни от един разговор.
+            </span>
+          </h2>
+        </Reveal>
+        <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
+          <p class="text-[15px] md:text-base text-ink-600 leading-[1.65] max-w-[44ch]">
+            Първа консултация без ангажимент. Отговаряме в работно време — Пон–Пет 9:00–18:00.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="/kontakti" class="btn-brand">
+              Получи оферта
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="/proekti" class="btn-ghost-dark">
+              Виж архива
+            </a>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ─── Anchor offset so hero "Виж наградата" jump lands below sticky header */
+  #nagrada { scroll-margin-top: 6rem; }
+
+  /* ════════ HERO ════════════════════════════════════════════════ */
+  /* Stat row — declared in CSS so Tailwind's JIT doesn't have to find
+     `grid-cols-4` (which it sometimes misses when only the bare class
+     is used). 4 cols at >=520px, 2 cols below. */
+  .zn-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    row-gap: 1rem;
+  }
+  @media (max-width: 519px) {
+    .zn-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .zn-hero__backdrop {
+    animation: zn-drift 26s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  @keyframes zn-drift {
+    0%   { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-2rem, -0.6rem, 0); }
+  }
+  .zn-stat > span[data-counter] {
+    display: inline-block;
+  }
+
+  /* Hero dossier card — same vocabulary as us-index */
+  .zn-dossier {
+    position: relative;
+  }
+  .zn-dossier__list {
+    margin-top: 0.5rem;
+  }
+  .zn-dossier__row {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    transition: padding 320ms cubic-bezier(0.16, 1, 0.3, 1), color 320ms ease;
+  }
+  .zn-dossier__row:hover {
+    padding-left: 0.45rem;
+  }
+  .zn-dossier__row:last-child { border-bottom: none; }
+  .zn-dossier__row dt {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.42);
+    font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", monospace;
+  }
+  .zn-dossier__row dd {
+    font-size: 0.95rem;
+    line-height: 1.25;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .zn-dossier__cta {
+    margin-top: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    color: #FFFFFF;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    padding-bottom: 0.35rem;
+    transition: color 320ms ease, border-color 320ms ease, gap 320ms ease;
+  }
+  .zn-dossier__cta:hover {
+    color: theme('colors.brand.DEFAULT');
+    border-color: theme('colors.brand.DEFAULT');
+    gap: 0.7rem;
+  }
+  @media (max-width: 639px) {
+    .zn-dossier__row {
+      grid-template-columns: 6.5rem 1fr;
+      gap: 0.6rem;
+      padding: 0.7rem 0;
+    }
+    .zn-dossier__row dd { font-size: 0.85rem; }
+  }
+
+  /* ════════ MANIFESTO — pillars ═════════════════════════════════ */
+  .zn-pillars { /* outer ol */
+    border: 1px solid rgba(18, 22, 28, 0.08);
+  }
+  .zn-pillar {
+    background: theme('colors.cream.50');
+    transition:
+      background-color 320ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-pillar:hover {
+    background: #FFFFFF;
+    transform: translateY(-3px);
+    box-shadow: 0 18px 38px -20px rgba(18, 22, 28, 0.22);
+    z-index: 2;
+  }
+  .zn-pillar__inner {
+    padding: 1.6rem 1.4rem 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .zn-pillar__inner { padding: 1.85rem 1.7rem 1.7rem; }
+  }
+  @media (min-width: 1024px) {
+    .zn-pillar__inner { padding: 2rem 1.9rem 1.9rem; }
+  }
+  .zn-pillar__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .zn-pillar__roman {
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-pillar:hover .zn-pillar__roman {
+    transform: translateX(-2px) translateY(-1px);
+  }
+  .zn-pillar__step {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(18, 22, 28, 0.45);
+    font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", monospace;
+    transition: letter-spacing 500ms cubic-bezier(0.16, 1, 0.3, 1), color 400ms ease;
+  }
+  .zn-pillar:hover .zn-pillar__step {
+    letter-spacing: 0.2em;
+    color: theme('colors.brand.DEFAULT');
+  }
+  .zn-pillar__word {
+    margin-top: 1rem;
+    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-pillar:hover .zn-pillar__word {
+    transform: translateY(-1px);
+  }
+  .zn-pillar__hr {
+    display: block;
+    height: 1px;
+    width: 2.5rem;
+    background: rgba(186, 45, 32, 0.55);
+    margin: 1rem 0 0.95rem;
+    transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-pillar:hover .zn-pillar__hr { width: 5rem; }
+  .zn-pillar__body {
+    max-width: 48ch;
+  }
+
+  /* ════════ AWARD — full-bleed marquee section ════════════════════ */
+  .zn-award {
+    min-height: 100vh;
+  }
+  .zn-award__wash {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.18;
+    filter: grayscale(0.25) saturate(0.8);
+  }
+  .zn-award::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(43, 49, 57, 0.94) 0%, rgba(43, 49, 57, 0.86) 44%, rgba(43, 49, 57, 0.70) 100%),
+      radial-gradient(ellipse at 76% 20%, rgba(186, 45, 32, 0.16), transparent 44%);
+  }
+  .zn-award__kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+  .zn-award__category {
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.72rem;
+    line-height: 1.4;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 650;
+  }
+  .zn-award__cell {
+    background: rgba(18, 22, 28, 0.70);
+    padding: 1.25rem 1.2rem 1.35rem;
+    min-height: 8.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background-color 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (min-width: 768px) {
+    .zn-award__cell { padding: 1.45rem 1.55rem 1.55rem; }
+  }
+  .zn-award__cell:hover {
+    background: rgba(18, 22, 28, 0.86);
+  }
+  .zn-award__label {
+    color: theme('colors.brand.DEFAULT');
+    font-size: 0.66rem;
+    line-height: 1.2;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .zn-award__value {
+    margin-top: 1.35rem;
+    color: #FFFFFF;
+    font-size: clamp(1rem, 0.9rem + 0.35vw, 1.18rem);
+    line-height: 1.15;
+    font-family: theme('fontFamily.display');
+  }
+  .zn-award__seal {
+    margin-top: 2rem;
+    width: min(18rem, 100%);
+    padding: 1.2rem 1.25rem 1.25rem;
+    border: 1px solid rgba(186, 45, 32, 0.28);
+    background: rgba(18, 22, 28, 0.70);
+    box-shadow: 0 1.2rem 3rem rgba(0, 0, 0, 0.16);
+  }
+  .zn-award__seal span {
+    display: block;
+    color: theme('colors.brand.DEFAULT');
+    font-family: theme('fontFamily.display');
+    font-style: italic;
+    font-size: clamp(3rem, 2.2rem + 2vw, 4.6rem);
+    line-height: 0.85;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  }
+  .zn-award__seal strong,
+  .zn-award__seal em {
+    display: block;
+    margin-top: 0.65rem;
+    font-size: 0.72rem;
+    line-height: 1.35;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-style: normal;
+  }
+  .zn-award__seal strong {
+    color: #FFFFFF;
+  }
+  .zn-award__seal em {
+    color: rgba(255, 255, 255, 0.58);
+  }
+  .zn-award__hero {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    min-height: 24rem;
+    margin: 0;
+    overflow: hidden;
+    background: theme('colors.ink.900');
+    box-shadow: 0 2.4rem 5rem rgba(0, 0, 0, 0.32);
+  }
+  @media (max-width: 767px) {
+    .zn-award__hero {
+      aspect-ratio: 4 / 5;
+      min-height: 0;
+    }
+  }
+  .zn-award__video,
+  .zn-award__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .zn-award__video {
+    z-index: 2;
+  }
+  .zn-award__poster {
+    z-index: 1;
+  }
+  .zn-award__hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background:
+      linear-gradient(to top, rgba(18, 22, 28, 0.76) 0%, transparent 38%),
+      linear-gradient(to right, rgba(18, 22, 28, 0.28) 0%, transparent 44%);
+    pointer-events: none;
+  }
+  .zn-award__hero-caption {
+    position: absolute;
+    z-index: 4;
+    inset: auto 1rem 1rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 0.7rem;
+    line-height: 1.25;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  @media (max-width: 639px) {
+    .zn-award__hero-caption {
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+  }
+  .zn-award__metrics {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+  @media (max-width: 1023px) {
+    .zn-award__metrics {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 639px) {
+    .zn-award__metrics {
+      grid-template-columns: 1fr;
+    }
+  }
+  .zn-award__metrics > div {
+    min-height: 8.6rem;
+    padding: 1.25rem;
+    background: rgba(18, 22, 28, 0.76);
+  }
+  .zn-award__metric {
+    display: block;
+    color: theme('colors.brand.DEFAULT');
+    font-family: theme('fontFamily.display');
+    font-size: clamp(2rem, 1.4rem + 2vw, 3.6rem);
+    line-height: 0.9;
+    font-style: italic;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  }
+  .zn-award__metric-label {
+    display: block;
+    margin-top: 0.85rem;
+    max-width: 20ch;
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+  .zn-award__slot {
+    position: relative;
+    overflow: hidden;
+    background: theme('colors.ink.900');
+  }
+  .zn-award__strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+  @media (max-width: 767px) {
+    .zn-award__strip {
+      grid-template-columns: 1fr;
+    }
+    .zn-award__slot {
+      aspect-ratio: 16 / 10;
+    }
+  }
+  @media (min-width: 768px) {
+    .zn-award__slot {
+      aspect-ratio: 4 / 5;
+    }
+  }
+  .zn-award__figure {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+  .zn-award__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1), filter 600ms ease;
+  }
+  .zn-award__slot:hover .zn-award__img {
+    transform: scale(1.05);
+  }
+  .zn-award__caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 2;
+    padding: 0.8rem 1rem 0.85rem;
+    background: linear-gradient(to top, rgba(18, 22, 28, 0.85) 0%, rgba(18, 22, 28, 0) 100%);
+    pointer-events: none;
+  }
+  .zn-award__footer {
+    margin-top: 2.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    color: rgba(255, 255, 255, 0.50);
+    font-size: 0.76rem;
+    line-height: 1.55;
+  }
+  .zn-award__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    color: #FFFFFF;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    padding-bottom: 0.35rem;
+    transition: color 320ms ease, border-color 320ms ease, gap 320ms ease;
+  }
+  .zn-award__link:hover {
+    color: theme('colors.brand.DEFAULT');
+    border-color: theme('colors.brand.DEFAULT');
+    gap: 0.7rem;
+  }
+
+  /* ════════ TIMELINE ═══════════════════════════════════════════ */
+  .zn-timeline {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    background: rgba(18, 22, 28, 0.12);
+    border: 1px solid rgba(18, 22, 28, 0.08);
+  }
+  @media (max-width: 1023px) {
+    .zn-timeline {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 479px) {
+    .zn-timeline {
+      grid-template-columns: 1fr;
+    }
+  }
+  .zn-timeline__cell {
+    position: relative;
+    background: theme('colors.cream.100');
+    padding: 1.4rem 1.3rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-timeline__cell:hover {
+    background: theme('colors.cream.50');
+  }
+  @media (min-width: 768px) {
+    .zn-timeline__cell { padding: 1.7rem 1.6rem 1.85rem; }
+  }
+  .zn-timeline__year {
+    display: block;
+    font-size: clamp(1.6rem, 1rem + 1.5vw, 2.3rem);
+    line-height: 0.85;
+    margin-bottom: 0.6rem;
+    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-timeline__cell:hover .zn-timeline__year {
+    transform: translateY(-2px);
+  }
+  .zn-timeline__dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: theme('colors.brand.DEFAULT');
+    margin-bottom: 0.5rem;
+    border-radius: 50%;
+    transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-timeline__cell:hover .zn-timeline__dot {
+    transform: scale(1.6);
+  }
+  .zn-timeline__hr {
+    display: block;
+    height: 1px;
+    width: 2rem;
+    background: rgba(18, 22, 28, 0.2);
+    margin: 0.2rem 0 0.9rem;
+    transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-timeline__cell:hover .zn-timeline__hr {
+    width: 4rem;
+    background: theme('colors.brand.DEFAULT');
+  }
+  .zn-timeline__label {
+    font-size: 1.05rem;
+    line-height: 1.15;
+    margin-bottom: 0.4rem;
+  }
+  .zn-timeline__body {
+    font-size: 13.5px;
+    line-height: 1.55;
+    max-width: 32ch;
+  }
+
+  /* ════════ CERTIFICATES — ISO + ЦПРС ═══════════════════════════ */
+  .zn-iso {
+    border: 1px solid rgba(18, 22, 28, 0.08);
+  }
+  .zn-iso__cell {
+    background: theme('colors.cream.50');
+    transition:
+      background-color 320ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-iso__cell:hover {
+    background: #FFFFFF;
+    transform: translateY(-3px);
+    box-shadow: 0 18px 38px -20px rgba(18, 22, 28, 0.22);
+    z-index: 2;
+  }
+  .zn-iso__inner {
+    padding: 1.6rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  @media (min-width: 768px) {
+    .zn-iso__inner { padding: 1.9rem 1.8rem 1.8rem; }
+  }
+  .zn-iso__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .zn-iso__num {
+    font-size: clamp(1.5rem, 1rem + 1vw, 2rem);
+    line-height: 0.85;
+    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-iso__cell:hover .zn-iso__num {
+    transform: translateY(-3px) rotate(-2deg);
+  }
+  .zn-iso__step {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(18, 22, 28, 0.45);
+    font-family: ui-monospace, "SFMono-Regular", monospace;
+    transition: color 400ms ease, letter-spacing 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-iso__cell:hover .zn-iso__step {
+    color: theme('colors.brand.DEFAULT');
+    letter-spacing: 0.2em;
+  }
+  .zn-iso__title { margin-top: 1.1rem; }
+  .zn-iso__label {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(18, 22, 28, 0.55);
+    font-weight: 600;
+    margin-top: 0.55rem;
+  }
+  .zn-iso__hr {
+    display: block;
+    height: 1px;
+    width: 2.5rem;
+    background: rgba(186, 45, 32, 0.55);
+    margin: 1.05rem 0 0.95rem;
+    transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-iso__cell:hover .zn-iso__hr { width: 5rem; }
+  .zn-iso__body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: theme('colors.ink.600');
+    max-width: 44ch;
+  }
+  .zn-iso__doc {
+    margin-top: 1.4rem;
+    display: grid;
+    grid-template-columns: 3.4rem 1fr auto;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 0.85rem 0.7rem 0.7rem;
+    background: rgba(18, 22, 28, 0.045);
+    border: 1px solid rgba(18, 22, 28, 0.08);
+    transition: background-color 320ms ease, border-color 320ms ease, padding 320ms ease;
+  }
+  .zn-iso__doc:hover {
+    background: #FFFFFF;
+    border-color: rgba(186, 45, 32, 0.35);
+    padding-left: 0.9rem;
+  }
+  .zn-iso__thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1.3;
+    overflow: hidden;
+    background: rgba(18, 22, 28, 0.08);
+    box-shadow: 0 2px 8px -2px rgba(18, 22, 28, 0.12);
+  }
+  .zn-iso__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-iso__doc:hover .zn-iso__thumb img {
+    transform: scale(1.05);
+  }
+  .zn-iso__doc-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .zn-iso__doc-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    color: theme('colors.ink.950');
+  }
+  .zn-iso__doc-ext {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(18, 22, 28, 0.45);
+    font-family: ui-monospace, "SFMono-Regular", monospace;
+  }
+  .zn-iso__doc-arrow {
+    color: rgba(18, 22, 28, 0.45);
+    transition: transform 320ms ease, color 320ms ease;
+  }
+  .zn-iso__doc:hover .zn-iso__doc-arrow {
+    transform: translate(2px, -2px);
+    color: theme('colors.brand.DEFAULT');
+  }
+
+  /* ────── ЦПРС groups + declaration ───────────────────────────── */
+  .zn-cprs {
+    border: 1px solid rgba(18, 22, 28, 0.08);
+  }
+  .zn-cprs__cell {
+    background: theme('colors.cream.50');
+    transition: background-color 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-cprs__cell:hover { background: #FFFFFF; }
+  .zn-cprs__cell--alt { background: theme('colors.cream.100'); }
+  .zn-cprs__inner {
+    padding: 1.4rem 1.25rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 0.65rem;
+  }
+  @media (min-width: 768px) {
+    .zn-cprs__inner { padding: 1.6rem 1.4rem 1.5rem; }
+  }
+  .zn-cprs__roman {
+    display: block;
+    font-size: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
+    line-height: 0.82;
+    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-cprs__cell:hover .zn-cprs__roman {
+    transform: translateY(-3px);
+  }
+  .zn-cprs__title {
+    font-size: 0.92rem;
+    line-height: 1.2;
+    color: theme('colors.ink.950');
+    font-weight: 600;
+    font-family: theme('fontFamily.display');
+    letter-spacing: -0.005em;
+  }
+  .zn-cprs__body {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: theme('colors.ink.600');
+    max-width: 28ch;
+    flex: 1 1 auto;
+  }
+  .zn-cprs__doc {
+    margin-top: 0.4rem;
+    display: grid;
+    grid-template-columns: 2.4rem 1fr auto;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.55rem 0.5rem 0.5rem;
+    background: rgba(18, 22, 28, 0.045);
+    border: 1px solid rgba(18, 22, 28, 0.08);
+    transition: background-color 320ms ease, border-color 320ms ease;
+  }
+  .zn-cprs__doc:hover {
+    background: #FFFFFF;
+    border-color: rgba(186, 45, 32, 0.35);
+  }
+  .zn-cprs__thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1.3;
+    overflow: hidden;
+    background: rgba(18, 22, 28, 0.08);
+  }
+  .zn-cprs__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-cprs__doc:hover .zn-cprs__thumb img {
+    transform: scale(1.05);
+  }
+  .zn-cprs__doc-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: theme('colors.ink.950');
+  }
+  .zn-cprs__doc svg {
+    color: rgba(18, 22, 28, 0.45);
+    transition: transform 320ms ease, color 320ms ease;
+  }
+  .zn-cprs__doc:hover svg {
+    transform: translate(2px, -2px);
+    color: theme('colors.brand.DEFAULT');
+  }
+
+  /* ════════ LEADERSHIP — people ledger ═════════════════════════ */
+  .zn-people {
+    border: 1px solid rgba(255, 255, 255, 0.10);
+  }
+  .zn-people__cell {
+    background: theme('colors.ink.950');
+    transition: background-color 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-people__cell:hover {
+    background: rgba(186, 45, 32, 0.08);
+  }
+  .zn-people__link {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.5rem 1.6rem;
+    height: 100%;
+    color: inherit;
+  }
+  @media (min-width: 768px) {
+    .zn-people__link { padding: 1.85rem 1.75rem 1.85rem; }
+  }
+  .zn-people__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .zn-people__head > span:first-child {
+    font-size: 1.05rem;
+    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-people__cell:hover .zn-people__head > span:first-child {
+    transform: translateY(-2px);
+  }
+  .zn-people__tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.42);
+    font-family: ui-monospace, "SFMono-Regular", monospace;
+    transition: color 400ms ease, letter-spacing 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .zn-people__cell:hover .zn-people__tag {
+    color: rgba(255, 255, 255, 0.78);
+    letter-spacing: 0.2em;
+  }
+  .zn-people__role {
+    margin-top: 1.4rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    font-weight: 600;
+  }
+  .zn-people__phone {
+    margin-top: 0.5rem;
+    font-size: clamp(1.05rem, 0.8rem + 0.6vw, 1.25rem);
+    line-height: 1.15;
+    color: #FFFFFF;
+    font-variant-numeric: tabular-nums;
+    transition: color 320ms ease;
+  }
+  .zn-people__cell:hover .zn-people__phone {
+    color: theme('colors.brand.DEFAULT');
+  }
+  .zn-people__action {
+    margin-top: auto;
+    padding-top: 1.4rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+    align-self: flex-start;
+    transition: gap 320ms ease, color 320ms ease;
+  }
+  .zn-people__cell:hover .zn-people__action {
+    color: theme('colors.brand.DEFAULT');
+    gap: 0.65rem;
+  }
+
+  /* ════════ CTA backdrop drift ═════════════════════════════════ */
+  .zn-cta__backdrop {
+    animation: zn-cta-drift 32s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  @keyframes zn-cta-drift {
+    0%   { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(1.8rem, 0.6rem, 0); }
+  }
+
+  /* ════════ REDUCED MOTION ══════════════════════════════════════ */
+  @media (prefers-reduced-motion: reduce) {
+    .zn-hero__backdrop,
+    .zn-award__bg,
+    .zn-cta__backdrop {
+      animation: none !important;
+    }
+    .zn-pillar,
+    .zn-pillar__roman,
+    .zn-pillar__step,
+    .zn-pillar__word,
+    .zn-pillar__hr,
+    .zn-iso__cell,
+    .zn-iso__num,
+    .zn-iso__step,
+    .zn-iso__hr,
+    .zn-iso__thumb img,
+    .zn-iso__doc-arrow,
+    .zn-cprs__cell,
+    .zn-cprs__roman,
+    .zn-cprs__thumb img,
+    .zn-cprs__doc svg,
+    .zn-timeline__year,
+    .zn-timeline__dot,
+    .zn-timeline__hr,
+    .zn-timeline__cell,
+    .zn-people__cell,
+    .zn-people__head > span:first-child,
+    .zn-people__tag,
+    .zn-people__phone,
+    .zn-people__action,
+    .zn-dossier__row,
+    .zn-dossier__cta,
+    .zn-award__img,
+    .zn-award__cell {
+      transition: none !important;
+    }
+    .zn-pillar:hover,
+    .zn-iso__cell:hover,
+    .zn-pillar__roman,
+    .zn-iso__num,
+    .zn-cprs__roman,
+    .zn-timeline__year,
+    .zn-people__head > span:first-child,
+    .zn-award__img {
+      transform: none !important;
+    }
+    .zn-pillar__hr,
+    .zn-iso__hr,
+    .zn-timeline__hr { width: 2.5rem !important; }
+  }
+</style>
+
+<script>
+  // ── Stats count-up — pattern shared with /uslugi & /proekti ──
+  const setupCounters = () => {
+    const counters = document.querySelectorAll<HTMLElement>('.zn-stat [data-counter]');
+    if (!counters.length) return;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      counters.forEach((el) => {
+        const t = parseInt(el.dataset.counter ?? '0', 10);
+        const pad = parseInt(el.dataset.pad ?? '0', 10);
+        el.textContent = pad ? String(t).padStart(pad, '0') : String(t);
+      });
+      return;
+    }
+    const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+    const animate = (el: HTMLElement, target: number, pad: number) => {
+      const duration = 2400;
+      const start = performance.now();
+      const tick = (now: number) => {
+        const progress = Math.min(1, (now - start) / duration);
+        const v = Math.round(target * ease(progress));
+        el.textContent = pad ? String(v).padStart(pad, '0') : String(v);
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            const target = parseInt(el.dataset.counter ?? '0', 10);
+            const pad = parseInt(el.dataset.pad ?? '0', 10);
+            animate(el, target, pad);
+            obs.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.4 }
+    );
+    counters.forEach((el) => io.observe(el));
+  };
+
+  setupCounters();
+  document.addEventListener('astro:page-load', setupCounters);
+</script>

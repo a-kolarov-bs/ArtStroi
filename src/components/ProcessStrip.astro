@@ -1,0 +1,68 @@
+---
+import Reveal from './Reveal.astro';
+
+const steps = [
+  {
+    n: '01',
+    title: 'Идея и концепция',
+    body: 'Анализираме територията, изискванията и инвестиционната рамка. Предлагаме подход, който отговаря на регулациите и амбицията на проекта.',
+  },
+  {
+    n: '02',
+    title: 'Проектиране и договор',
+    body: 'Изготвяме инвестиционен проект, спецификации и сертификации. Прозрачна оферта с ясни срокове и качествени стандарти.',
+  },
+  {
+    n: '03',
+    title: 'Изпълнение',
+    body: 'Контрол на качеството във всеки етап — от груб строеж до финиш. Координация на под-изпълнители и сертифицирани материали.',
+  },
+  {
+    n: '04',
+    title: 'Предаване и гаранция',
+    body: 'Handover с пълна документация. Гаранционна поддръжка и експлоатационна намеса по договор.',
+  },
+];
+---
+
+<section class="relative isolate overflow-hidden bg-cream-50 section-padded" aria-labelledby="process-heading">
+  <!-- Architectural sheet — back layer -->
+  <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-c"></div>
+
+  <div class="container-page relative">
+    <Reveal class="max-w-3xl mb-16 md:mb-24">
+      <p class="eyebrow">Подход · Process</p>
+      <h2
+        id="process-heading"
+        class="mt-4 font-display tracking-tight text-ink-950"
+        style="font-size: clamp(2rem, 1rem + 3.5vw, 4rem); line-height: 1.05;"
+      >
+        От първата чертеж <br/>до последния <span class="italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">ключ</span>.
+      </h2>
+      <p class="mt-6 text-base md:text-lg text-ink-600 leading-relaxed max-w-xl">
+        Дисциплиниран четиристъпков процес — без изненади за инвеститора, без компромис в качеството.
+      </p>
+    </Reveal>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-ink-900/10">
+      {steps.map((s, i) => (
+        <Reveal delay={i * 90} class="relative bg-cream-50 p-7 lg:p-9 group">
+          <span
+            aria-hidden="true"
+            class="font-display block text-brand tracking-tight leading-none transition-transform duration-700 ease-out-expo group-hover:-translate-y-1"
+            style="font-size: clamp(2.5rem, 2rem + 1.5vw, 3.25rem); font-variation-settings:'opsz' 144,'SOFT' 0;"
+          >
+            {s.n}
+          </span>
+          <span aria-hidden="true" class="mt-4 block h-px w-10 bg-ink-300 transition-[width,background-color] duration-700 ease-out-expo group-hover:w-20 group-hover:bg-brand"></span>
+          <h3 class="mt-5 font-display text-xl md:text-[1.35rem] leading-tight text-ink-950">
+            {s.title}
+          </h3>
+          <p class="mt-3 text-sm md:text-[14.5px] text-ink-600 leading-[1.65]">
+            {s.body}
+          </p>
+        </Reveal>
+      ))}
+    </div>
+  </div>
+</section>

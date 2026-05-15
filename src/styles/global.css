@@ -1,0 +1,319 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    @apply bg-ink-0 text-ink-900 font-sans;
+    font-feature-settings: 'kern', 'liga', 'calt';
+  }
+
+  /* Selection */
+  ::selection {
+    background: theme('colors.brand.DEFAULT');
+    color: white;
+  }
+
+  /* Headings default */
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight text-ink-950;
+    font-feature-settings: 'kern', 'liga', 'ss01';
+  }
+
+  /* Fluid focus ring */
+  :focus-visible {
+    outline: 2px solid theme('colors.brand.DEFAULT');
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .container-page {
+    /* Bechtel-style: hard max around 1280px, generous viewport padding so
+       content never glues to the screen edge — even on 1920+ displays. */
+    @apply mx-auto w-full max-w-7xl px-6 md:px-10 lg:px-12;
+  }
+
+  .section-padded {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+
+  .eyebrow {
+    @apply text-xs uppercase tracking-eyebrow font-medium text-brand;
+  }
+
+  .btn-brand {
+    @apply inline-flex items-center justify-center gap-2 rounded-full
+           bg-brand text-white px-7 py-3.5 text-sm font-medium
+           transition-all duration-400 ease-out-expo
+           hover:bg-brand-dark hover:shadow-lift
+           focus-visible:bg-brand-dark;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full
+           border border-white/30 text-white px-7 py-3.5 text-sm font-medium
+           transition-all duration-400 ease-out-expo
+           hover:bg-white/10 hover:border-white/60;
+  }
+
+  .btn-ghost-dark {
+    @apply inline-flex items-center justify-center gap-2 rounded-full
+           px-7 py-3.5 text-sm font-medium text-ink-900
+           transition-all duration-400 ease-out-expo
+           glass-dark;
+  }
+  .btn-ghost-dark:hover {
+    color: theme('colors.ink.950');
+  }
+
+  /* ============================================================
+     Apple Liquid Glass — reusable surface utilities.
+     Designed to mimic the iOS 26 / macOS Tahoe Control Center
+     pills: translucent fill, heavy backdrop blur, sharp inset
+     top sheen + soft inner glow falling off downward, gentle
+     outer drop shadow.
+
+     `.glass`      → over DARK backgrounds (hero video, project photos)
+     `.glass-dark` → over LIGHT backgrounds (cream, white, scrolled header)
+     ============================================================ */
+  .glass {
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow:
+      /* sharp 1px top edge highlight */
+      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      /* soft inner top sheen, falls off downward */
+      inset 0 8px 14px -8px rgba(255, 255, 255, 0.35),
+      /* subtle bottom-edge depth */
+      inset 0 -1px 0 rgba(0, 0, 0, 0.06),
+      /* outer drop */
+      0 10px 24px -10px rgba(0, 0, 0, 0.28);
+    transition:
+      background-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .glass:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.38);
+  }
+
+  .glass-dark {
+    /* Apple Tahoe Bluetooth pill, light-mode mirror.
+       Over a light page (cream/white) the pill needs a NEUTRAL DARK
+       translucent fill so its body is visibly lighter-vs-darker than the
+       background — mirroring how the dark-mode Bluetooth pill sits
+       LIGHTER than its dark wallpaper. With a uniform background there's
+       nothing to actually frost, so the visible "glass" comes from the
+       tint + the bright specular top edge. */
+    background: rgba(28, 32, 38, 0.10);
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+    /* Bright rim — gives the pill its highlighted edge against light surfaces */
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      /* sharp specular top edge — the defining Apple sheen */
+      inset 0 1.5px 0 rgba(255, 255, 255, 1),
+      /* soft inner top glow falling off downward */
+      inset 0 6px 12px -6px rgba(255, 255, 255, 0.40),
+      /* bottom-edge depth */
+      inset 0 -1px 0 rgba(0, 0, 0, 0.06),
+      /* outer drop */
+      0 10px 24px -10px rgba(18, 22, 28, 0.22);
+    transition:
+      background-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .glass-dark:hover {
+    background: rgba(28, 32, 38, 0.16);
+    border-color: rgba(255, 255, 255, 0.70);
+  }
+
+  /* Marquee track — duplicated content + 50% translate for seamless loop */
+  .marquee {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 6%,
+      black 94%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 6%,
+      black 94%,
+      transparent 100%
+    );
+    overflow: hidden;
+  }
+
+  .marquee__track {
+    width: max-content;
+    will-change: transform;
+  }
+
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  /* Legacy grid — kept for backwards-compat where used */
+  .bp-grid {
+    background-image:
+      linear-gradient(to right, rgba(18, 22, 28, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(18, 22, 28, 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .bp-grid-dark {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .bp-grid-fine {
+    background-image:
+      linear-gradient(to right, rgba(18, 22, 28, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(18, 22, 28, 0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Blueprint paper texture — plus marks at major intersections + small centre
+     dots between. Mimics drafting paper / plotter sheet rather than a solid
+     grid; reads as "drawing surface" not "grid". */
+  .bp-paper {
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'><g stroke='rgb(18,22,28)' fill='rgb(18,22,28)' stroke-width='1' stroke-linecap='square'><path d='M48 42v12M42 48h12' stroke-opacity='0.13' fill='none'/><circle cx='0' cy='0' r='0.7' fill-opacity='0.10' stroke='none'/><circle cx='96' cy='0' r='0.7' fill-opacity='0.10' stroke='none'/><circle cx='0' cy='96' r='0.7' fill-opacity='0.10' stroke='none'/><circle cx='96' cy='96' r='0.7' fill-opacity='0.10' stroke='none'/></g></svg>");
+    background-size: 96px 96px;
+  }
+  .bp-paper-dark {
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'><g stroke='rgb(255,255,255)' fill='rgb(255,255,255)' stroke-width='1' stroke-linecap='square'><path d='M48 42v12M42 48h12' stroke-opacity='0.10' fill='none'/><circle cx='0' cy='0' r='0.7' fill-opacity='0.08' stroke='none'/><circle cx='96' cy='0' r='0.7' fill-opacity='0.08' stroke='none'/><circle cx='0' cy='96' r='0.7' fill-opacity='0.08' stroke='none'/><circle cx='96' cy='96' r='0.7' fill-opacity='0.08' stroke='none'/></g></svg>");
+    background-size: 96px 96px;
+  }
+  /* Cyanotype — light blue-tint plus marks for the classic blueprint look */
+  .bp-paper-cyan {
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'><g stroke='rgb(180,200,220)' fill='rgb(180,200,220)' stroke-width='1' stroke-linecap='square'><path d='M48 42v12M42 48h12' stroke-opacity='0.18' fill='none'/></g></svg>");
+    background-size: 96px 96px;
+  }
+
+  /* Architectural sheet — large sparse tile (2000×1500). Sits behind every
+     section as ambient backdrop. Solid card backgrounds within sections always
+     cover the sheet; sheet only fills the open margins. */
+  .bp-sheet {
+    background-image: url('/blueprint/sheet.svg');
+    background-repeat: repeat;
+    background-size: 2000px 1500px;
+    background-position: 0 0;
+  }
+  /* Variant offsets — apply on alternating sections so the same tile never
+     appears in the same place twice. Cheaper than authoring multiple SVGs. */
+  .bp-sheet-b { background-position: -700px -400px; }
+  .bp-sheet-c { background-position: -1300px -200px; }
+  .bp-sheet-d { background-position: -300px -900px; }
+  /* Cross-fade mask for blueprints — full opacity centre, fades to edges */
+  .bp-mask {
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 50%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 50%, transparent 100%);
+  }
+  .bp-mask-fade-r {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 60%, black 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 60%, black 100%);
+  }
+  .bp-mask-fade-l {
+    -webkit-mask-image: linear-gradient(to left, transparent 0%, black 60%, black 100%);
+    mask-image: linear-gradient(to left, transparent 0%, black 60%, black 100%);
+  }
+  .bp-mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 60%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 0%, black 60%, transparent 100%);
+  }
+}
+
+/* Brand-red accent inside blueprints — applied to nested groups */
+.bp-accent {
+  stroke: #BA2D20;
+  opacity: 0.5;
+}
+.bp-accent-bright {
+  stroke: #BA2D20;
+  opacity: 0.7;
+}
+.bp-fill-accent {
+  fill: #BA2D20;
+  opacity: 0.5;
+  stroke: none;
+}
+.bp-text {
+  font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", monospace;
+  font-size: 11px;
+  fill: currentColor;
+  stroke: none;
+  letter-spacing: 0.04em;
+}
+.bp-text-accent {
+  font-family: ui-monospace, "SFMono-Regular", monospace;
+  font-size: 11px;
+  fill: #BA2D20;
+  stroke: none;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+/* Mobile horizontal carousel — scroll-snap */
+.snap-x-mandatory {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+}
+.snap-x-mandatory::-webkit-scrollbar { display: none; }
+.snap-start { scroll-snap-align: start; }
+
+/* Reduced motion fallbacks */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee { overflow-x: auto; }
+  .marquee__track { animation: none !important; transform: none !important; }
+}

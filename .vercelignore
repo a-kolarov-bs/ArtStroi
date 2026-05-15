@@ -1,0 +1,15 @@
+.astro
+.claude
+.vercel
+dist
+node_modules
+screenshots
+
+.DS_Store
+public/.DS_Store
+public/**/.DS_Store
+public/**/node_modules
+
+data-extract
+scrape
+scripts/raw-clips

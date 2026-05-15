@@ -1,0 +1,616 @@
+---
+// Capabilities / "About the company" section.
+//
+// iOS-style alarm-picker wheel: as the user scrolls into the section, the
+// stage pins (CSS sticky) and the column of services rolls upward. Two
+// items sit in the focus band at any time; one fades in/out at the top
+// edge ("peek above"); the rest queue below. Once all services have
+// rolled through, the page resumes normal scrolling.
+//
+// Mechanics:
+// • A tall .cap-pin-wrap provides scroll distance for the rolling.
+// • .cap-stage is sticky inside it (top:0, h:100vh) — stays put while
+//   its parent container scrolls past underneath.
+// • A scroll listener computes 0→1 progress through the wrap, drives
+//   --track-y on the wheel, and toggles data-active on focus items.
+//
+// Video: ONE shared <video>, autoplay+loop, no per-service sync. Client
+// will assemble a single composite clip later.
+import Reveal from './Reveal.astro';
+
+const sharedVideo = '/services/sample.mp4';
+const capabilities = [
+  {
+    title: 'Сгради & съоръжения',
+    body: 'Жилищни, обществени и индустриални обекти — пълно изпълнение от груб строеж до завършване.',
+  },
+  {
+    title: 'Пътна инфраструктура',
+    body: 'Улици, площади, тротоари. Реконструкция и възстановяване на градска среда.',
+  },
+  {
+    title: 'Строителство до ключ',
+    body: 'Цялостна координация от проектиране до handover — без изненади за инвеститора.',
+  },
+  {
+    title: 'Електро & ВиК',
+    body: 'Вътрешни и външни инсталации, ОВиК, сертифицирани материали и приемателни актове.',
+  },
+  {
+    title: 'Изолация & саниране',
+    body: 'Топлоизолация, фасадно саниране, енергийна ефективност на жилищни и обществени сгради.',
+  },
+  {
+    title: 'Реконструкция & ремонти',
+    body: 'Рехабилитация на стари сгради, декоративни ремонти, барбекюта и камини по индивидуален проект.',
+  },
+];
+const total = capabilities.length;
+---
+
+<section class="cap-section relative isolate overflow-clip bg-cream-100 text-ink-900" aria-labelledby="capabilities-heading">
+  <span aria-hidden="true" class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand to-transparent opacity-60"></span>
+  <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
+  <span
+    aria-hidden="true"
+    class="absolute -right-12 top-8 select-none font-display italic text-ink-900/[0.07] leading-none pointer-events-none"
+    style="font-size: clamp(14rem, 24vw, 30rem); font-variation-settings:'opsz' 144,'SOFT' 100;"
+  >92</span>
+
+  <div class="container-page relative pt-16 md:pt-20 lg:pt-24">
+    <Reveal class="max-w-3xl">
+      <p class="eyebrow">Услуги · Capabilities</p>
+      <p class="mt-7 text-base md:text-lg text-ink-900/85 font-medium tracking-[-0.005em]">
+        Строителна фирма
+      </p>
+      <h2
+        id="capabilities-heading"
+        class="mt-2 font-display italic text-brand tracking-[-0.025em] leading-[0.95]"
+        style="font-size: clamp(2.5rem, 1.5rem + 4vw, 5rem); font-weight: 500; font-variation-settings:'opsz' 144,'SOFT' 100;"
+      >
+        „АРТСТРОЙ&nbsp;ООД"
+      </h2>
+      <p class="mt-5 max-w-2xl font-display text-ink-950 tracking-[-0.01em] leading-[1.18]" style="font-size: clamp(1.25rem, 0.9rem + 0.9vw, 1.65rem); font-weight: 400;">
+        е добре позната във всички области на строителните услуги.
+      </p>
+      <p class="hidden md:block mt-8 max-w-2xl text-[15.5px] md:text-base text-ink-900/75 leading-[1.75]">
+        Специализирани сме в строителство на сгради и съоръжения, пътна инфраструктура,
+        всички видове довършителни работи и строителство до ключ. Извършваме саниране на
+        обществени и жилищни сгради, строителни ремонти, вътрешни и външни електро и ВиК
+        инсталации, вертикална планировка, възстановяване и рехабилитация на стари сгради.
+      </p>
+    </Reveal>
+  </div>
+
+  <!-- Pin wrap — its tall height (set by JS to stage + scrub distance)
+       provides the scroll distance for the wheel rolling. -->
+  <div class="cap-pin-wrap mt-2 lg:mt-2" data-cap-pin>
+    <div class="cap-stage" data-cap-stage>
+      <div class="container-page h-full flex items-center">
+        <div class="cap-stage-grid">
+          <!-- Wheel column -->
+          <div class="cap-wheel-col">
+            <div class="cap-wheel" data-cap-wheel>
+              <span aria-hidden="true" class="cap-wheel__thread"></span>
+              <div aria-hidden="true" class="cap-wheel__band"></div>
+              <ol class="cap-wheel__track" data-cap-track>
+                {capabilities.map((c, i) => (
+                  <li class="cap-item" data-cap-id={i}>
+                    <span class="cap-item__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}.</span>
+                    <div class="cap-item__col">
+                      <span class="cap-item__title">{c.title}</span>
+                      <span class="cap-item__body">{c.body}</span>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <div aria-hidden="true" class="cap-wheel__counter">
+                <span data-cap-counter>01–02</span>
+                <span class="cap-counter__sep">/</span>
+                <span>{String(total).padStart(2, '0')}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Media column -->
+          <div class="cap-media-col">
+            <div class="cap-media">
+              <video
+                class="cap-video"
+                muted
+                loop
+                autoplay
+                playsinline
+                preload="auto"
+                aria-hidden="true"
+              >
+                <source src={sharedVideo} type="video/mp4" />
+              </video>
+              <span aria-hidden="true" class="cap-scrim"></span>
+            </div>
+            <a href="/uslugi" class="cap-cta cap-cta--desktop" aria-label="Разбери повече за услугите на АРТСТРОЙ ООД">
+              Разбери повече
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cap-mobile-cta container-page" aria-hidden="false">
+    <a href="/uslugi" class="cap-cta cap-cta--mobile" aria-label="Разбери повече за услугите на АРТСТРОЙ ООД">
+      Разбери повече
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <style>
+    /* ──────────── Layout: pin wrap + sticky stage ──────────── */
+    .cap-pin-wrap {
+      position: relative;
+      /* Concrete height is set by JS to (stage.offsetHeight + pin scrub
+         distance in px). The fallback below keeps a usable layout on
+         no-JS / first paint. */
+      min-height: calc(100svh - 11rem + var(--pin-distance, 50vh));
+    }
+    /* Stage docks below the header with equal breathing room below —
+       wheel + video are vertically centred in the visible area. The
+       larger `top` offset also makes the pin engage earlier (when the
+       section's top reaches the header line, not the very top of the
+       viewport). */
+    .cap-stage {
+      position: sticky;
+      top: 5.5rem;
+      height: calc(100svh - 11rem);
+      width: 100%;
+    }
+    @media (min-width: 1024px) {
+      .cap-pin-wrap {
+        min-height: calc(100vh - 12rem + var(--pin-distance, 50vh));
+      }
+      .cap-stage {
+        top: 6rem;
+        height: calc(100vh - 12rem);
+      }
+    }
+    .cap-stage-grid {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      align-items: stretch;
+    }
+    /* Mobile: media first, wheel below it. */
+    .cap-media-col { order: -1; }
+    .cap-wheel-col { order: 0; }
+    @media (min-width: 1024px) {
+      .cap-stage-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+        gap: 0 4rem;
+        align-items: center;
+      }
+      .cap-media-col,
+      .cap-wheel-col { order: 0; }
+    }
+
+    /* ──────────── Wheel ──────────── */
+    .cap-wheel {
+      position: relative;
+      --itemH: 7rem;
+      height: calc(var(--itemH) * 6);
+      /* Sized so wheel + gap + video fit inside the sticky stage on
+         mobile (otherwise content overflows the top of the stage and
+         disappears behind the sticky header). */
+      max-height: 21rem;
+      overflow: hidden;
+      padding-left: 1.5rem;
+      /* Soft fade above & below the focus band */
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.18) 6%,
+        black 26%,
+        black 74%,
+        rgba(0, 0, 0, 0.18) 94%,
+        transparent 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.18) 6%,
+        black 26%,
+        black 74%,
+        rgba(0, 0, 0, 0.18) 94%,
+        transparent 100%
+      );
+    }
+    @media (min-width: 1024px) {
+      .cap-wheel {
+        --itemH: 6.5rem;
+        max-height: 60vh;
+        padding-left: 2rem;
+      }
+    }
+    .cap-wheel__thread {
+      position: absolute;
+      left: 0.6rem;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(186, 45, 32, 0.55) 18%,
+        rgba(186, 45, 32, 0.55) 82%,
+        transparent 100%
+      );
+      pointer-events: none;
+    }
+    @media (min-width: 1024px) {
+      .cap-wheel__thread { left: 0.85rem; }
+    }
+    .cap-wheel__band {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: calc(var(--itemH) * 2);
+      transform: translateY(-50%);
+      pointer-events: none;
+      border-top: 1px solid rgba(186, 45, 32, 0.16);
+      border-bottom: 1px solid rgba(186, 45, 32, 0.16);
+    }
+    .cap-wheel__track {
+      position: absolute;
+      left: 1.5rem;
+      right: 0;
+      top: 50%;
+      /* Initial offset of -1×itemH puts items[0] at top of focus band,
+         items[1] at bottom — matches the user's "start with first two". */
+      transform: translateY(calc(-1 * var(--itemH) - var(--track-y, 0px)));
+      will-change: transform;
+    }
+    @media (min-width: 1024px) {
+      .cap-wheel__track { left: 2rem; }
+    }
+
+    .cap-item {
+      height: var(--itemH);
+      display: grid;
+      grid-template-columns: 3.25rem 1fr;
+      gap: 0.85rem;
+      align-items: start;
+      padding: 0.4rem 1rem 0.4rem 0;
+    }
+    @media (min-width: 1024px) {
+      .cap-item {
+        grid-template-columns: 4.25rem 1fr;
+        gap: 1.5rem;
+        padding: 0.6rem 1rem 0.6rem 0;
+      }
+    }
+    .cap-item__num {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.65rem, 1.25rem + 0.6vw, 2.15rem);
+      line-height: 1.1;
+      color: rgba(186, 45, 32, 0.42);
+      transition: color 350ms ease, transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+      font-variation-settings: 'opsz' 144, 'SOFT' 100;
+    }
+    .cap-item__col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      min-width: 0;
+    }
+    .cap-item__title {
+      font-family: 'Fraunces', serif;
+      font-weight: 400;
+      font-size: clamp(1.5rem, 1.15rem + 0.85vw, 2.05rem);
+      line-height: 1.1;
+      letter-spacing: -0.015em;
+      color: rgba(18, 22, 28, 0.42);
+      transition: color 350ms ease;
+    }
+    .cap-item__body {
+      font-size: clamp(13.5px, 12px + 0.25vw, 15px);
+      line-height: 1.45;
+      color: rgba(18, 22, 28, 0.45);
+      max-width: 48ch;
+      transition: color 350ms ease, opacity 350ms ease;
+      /* Clamp to 3 lines so wrapping doesn't overflow into the next
+         wheel item. Important on mobile where columns are narrow. */
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .cap-item[data-active] .cap-item__num {
+      color: #BA2D20;
+      transform: translateX(0.3rem);
+    }
+    .cap-item[data-active] .cap-item__title {
+      color: #BA2D20;
+    }
+    .cap-item[data-active] .cap-item__body {
+      color: rgba(18, 22, 28, 0.78);
+    }
+
+    .cap-wheel__counter {
+      position: absolute;
+      top: 0.7rem;
+      right: 1rem;
+      display: inline-flex;
+      gap: 0.35rem;
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      color: rgba(18, 22, 28, 0.55);
+      pointer-events: none;
+      z-index: 5;
+    }
+    .cap-counter__sep { opacity: 0.45; }
+
+    /* ──────────── Media ──────────── */
+    .cap-media-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .cap-media {
+      position: relative;
+      width: 100%;
+      /* Shorter aspect on mobile so wheel + video fit comfortably in
+         the sticky stage without overflowing under the header. */
+      aspect-ratio: 16 / 9;
+      max-height: 30svh;
+      border-radius: 14px;
+      overflow: hidden;
+      isolation: isolate;
+      background: #1A1F26;
+      box-shadow: 0 24px 50px -22px rgba(28, 22, 20, 0.28);
+    }
+    @media (min-width: 1024px) {
+      .cap-media {
+        aspect-ratio: 4 / 5;
+        max-height: 60vh;
+      }
+    }
+    .cap-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .cap-scrim {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(
+        180deg,
+        rgba(18, 22, 28, 0.20) 0%,
+        rgba(18, 22, 28, 0.10) 40%,
+        rgba(18, 22, 28, 0.50) 100%
+      );
+    }
+    .cap-cta {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding-block: 0.55rem;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #BA2D20;
+      transition:
+        transform 450ms cubic-bezier(0.16, 1, 0.3, 1),
+        color 350ms ease;
+    }
+    .cap-cta::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 1.25rem;
+      bottom: 0.2rem;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.45;
+      transform-origin: left;
+      transition:
+        opacity 350ms ease,
+        transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cap-cta svg {
+      transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cap-cta:hover,
+    .cap-cta:focus-visible {
+      color: #8F1F15;
+      transform: translateY(-1px);
+    }
+    .cap-cta:hover::after,
+    .cap-cta:focus-visible::after {
+      opacity: 0.8;
+      transform: scaleX(1.08);
+    }
+    .cap-cta:hover svg,
+    .cap-cta:focus-visible svg {
+      transform: translate(2px, -2px);
+    }
+    .cap-cta:focus-visible {
+      outline: 2px solid rgba(186, 45, 32, 0.28);
+      outline-offset: 4px;
+    }
+    .cap-cta--desktop {
+      display: none;
+    }
+    .cap-mobile-cta {
+      margin-top: -0.25rem;
+      padding-bottom: 3.75rem;
+      text-align: center;
+    }
+    .cap-cta--mobile {
+      width: auto;
+    }
+    @media (min-width: 1024px) {
+      .cap-cta--desktop {
+        display: inline-flex;
+        margin-top: 1.15rem;
+        align-self: flex-start;
+      }
+      .cap-mobile-cta {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cap-pin-wrap { height: auto !important; }
+      .cap-stage { position: static !important; height: auto !important; }
+      .cap-wheel {
+        height: auto !important;
+        max-height: none !important;
+        mask-image: none !important;
+        -webkit-mask-image: none !important;
+        padding-left: 1.5rem !important;
+      }
+      .cap-wheel__band { display: none; }
+      .cap-wheel__track { position: static !important; transform: none !important; }
+      .cap-item__num,
+      .cap-item__title {
+        color: #12161C !important;
+        transform: none !important;
+      }
+      .cap-video { display: none; }
+      .cap-cta { transition: none !important; }
+      .cap-cta:hover,
+      .cap-cta:focus-visible { transform: none !important; }
+    }
+  </style>
+
+  <script>
+    type Lenis = { on: (ev: string, cb: () => void) => void };
+
+    let cleanup: (() => void) | null = null;
+
+    const setup = () => {
+      cleanup?.();
+      cleanup = null;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const pinWrap = document.querySelector<HTMLElement>('[data-cap-pin]');
+      const wheel = document.querySelector<HTMLElement>('[data-cap-wheel]');
+      const track = document.querySelector<HTMLElement>('[data-cap-track]');
+      if (!pinWrap || !wheel || !track) return;
+
+      const items = Array.from(track.querySelectorAll<HTMLElement>('.cap-item'));
+      const counterEl = document.querySelector<HTMLElement>('[data-cap-counter]');
+      if (items.length < 3) return;
+
+      const FOCUS_COUNT = 2;
+      const advances = items.length - FOCUS_COUNT;
+      const stage = document.querySelector<HTMLElement>('[data-cap-stage]');
+
+      // Read item height from layout, recompute on resize. Pin-wrap
+      // height is set explicitly so the after-pin gap to the next
+      // section equals the stage's height (not 100vh).
+      let itemHpx = items[0].getBoundingClientRect().height || 70;
+      let pinDist = advances * itemHpx * 1.6;
+
+      const applySize = () => {
+        itemHpx = items[0].getBoundingClientRect().height || 70;
+        pinDist = advances * itemHpx * 1.6;
+        const stageH = stage?.offsetHeight || window.innerHeight;
+        pinWrap.style.height = `${stageH + pinDist}px`;
+        pinWrap.style.setProperty('--pin-distance', `${pinDist}px`);
+      };
+      applySize();
+
+      // Start the rolling a few pixels BEFORE the stage actually pins,
+      // so the wheel feels responsive as the section approaches —
+      // bigger offset on touch (where users skim faster).
+      const isTouch = window.matchMedia('(max-width: 1023px)').matches;
+      const EARLY_START = isTouch ? 80 : 40;
+
+      let raf = 0;
+      const tick = () => {
+        raf = 0;
+        const rect = pinWrap.getBoundingClientRect();
+        const scrolled = -rect.top + EARLY_START;
+        const range = Math.max(1, pinWrap.offsetHeight - window.innerHeight + EARLY_START);
+        const progress = Math.max(0, Math.min(1, scrolled / range));
+
+        const trackY = progress * advances * itemHpx;
+        wheel.style.setProperty('--track-y', `${trackY}px`);
+
+        const focusMid = progress * advances + (FOCUS_COUNT - 1) / 2;
+        // Always exactly FOCUS_COUNT items are active — picked by rounding
+        // focusMid to the nearest pair index so transitions don't briefly
+        // collapse to a single active item between integer boundaries.
+        const lowerIdx = Math.max(
+          0,
+          Math.min(
+            items.length - FOCUS_COUNT,
+            Math.round(focusMid - (FOCUS_COUNT - 1) / 2)
+          )
+        );
+        items.forEach((it, i) => {
+          const inFocus = i >= lowerIdx && i < lowerIdx + FOCUS_COUNT;
+          if (inFocus) it.setAttribute('data-active', '');
+          else it.removeAttribute('data-active');
+        });
+
+        if (counterEl) {
+          counterEl.textContent =
+            `${String(lowerIdx + 1).padStart(2, '0')}–${String(lowerIdx + FOCUS_COUNT).padStart(2, '0')}`;
+        }
+      };
+
+      const onScroll = () => {
+        if (raf) return;
+        raf = requestAnimationFrame(tick);
+      };
+
+      const onResize = () => {
+        applySize();
+        onScroll();
+      };
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onResize);
+
+      // Hook Lenis if available — its smooth-scroll updates are the
+      // real source of truth; native 'scroll' fires too, but this is
+      // belt-and-suspenders for sub-pixel accuracy.
+      const lenis = (window as unknown as { __lenis?: Lenis }).__lenis;
+      const lenisTick = () => onScroll();
+      lenis?.on('scroll', lenisTick);
+
+      tick();
+
+      cleanup = () => {
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onResize);
+        if (raf) cancelAnimationFrame(raf);
+        // Lenis has no `off` in our version — leak is bounded by setup re-run.
+      };
+    };
+
+    setup();
+    document.addEventListener('astro:page-load', setup);
+  </script>
+</section>

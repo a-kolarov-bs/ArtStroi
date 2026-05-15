@@ -1,0 +1,45 @@
+---
+const sectors = [
+  'Жилищно строителство',
+  'Обществени сгради',
+  'Хотели & ваканционни комплекси',
+  'Инфраструктура',
+  'Реконструкции',
+  'Спортни обекти',
+  'Образователни обекти',
+  'Реставрация',
+];
+const track = [...sectors, ...sectors];
+---
+
+<section class="relative isolate bg-cream-100 border-y border-ink-900/10 py-8 md:py-12 overflow-hidden" aria-label="Сектори">
+  <!-- Architectural sheet — back layer -->
+  <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
+  <!-- Brand-red horizontal accent lines that frame the marquee -->
+  <span aria-hidden="true" class="pointer-events-none absolute left-0 right-0 top-2 h-px bg-gradient-to-r from-transparent via-brand/40 to-transparent"></span>
+  <span aria-hidden="true" class="pointer-events-none absolute left-0 right-0 bottom-2 h-px bg-gradient-to-r from-transparent via-brand/40 to-transparent"></span>
+  <div class="marquee">
+    <div class="marquee__track flex items-center gap-12 md:gap-20 animate-marquee">
+      {track.map((s, i) => (
+        <div class="flex items-center gap-12 md:gap-20 shrink-0" aria-hidden={i >= sectors.length ? 'true' : undefined}>
+          <span
+            class="font-display italic text-ink-950 whitespace-nowrap"
+            style="font-size: clamp(1.75rem, 1rem + 2.5vw, 3.5rem); font-variation-settings:'opsz' 144,'SOFT' 100;"
+          >
+            {s}
+          </span>
+          <span aria-hidden="true" class="block h-2 w-2 rounded-full bg-brand shrink-0"></span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .marquee__track {
+    animation-duration: 50s;
+  }
+  @media (max-width: 767px) {
+    .marquee__track { animation-duration: 40s; }
+  }
+</style>

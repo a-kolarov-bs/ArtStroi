@@ -1,0 +1,374 @@
+---
+import Reveal from './Reveal.astro';
+
+const facts = [
+  { label: 'Отличие', value: 'Сграда на годината' },
+  { label: 'Година', value: '2022' },
+  { label: 'Обект', value: 'Вино и СПА хотел Чукара' },
+];
+---
+
+<section class="award-showcase relative isolate overflow-hidden" aria-labelledby="award-showcase-heading">
+  <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b opacity-[0.07]"></div>
+  <img
+    src="/award/chukara/hero.jpg"
+    alt=""
+    loading="lazy"
+    decoding="async"
+    aria-hidden="true"
+    class="award-showcase__backdrop"
+  />
+  <div aria-hidden="true" class="award-showcase__wash"></div>
+
+  <div class="container-page relative">
+    <Reveal>
+      <div class="award-showcase__grid">
+        <div class="award-showcase__copy">
+          <p class="award-showcase__eyebrow">Отличие · Building of the Year</p>
+          <h2 id="award-showcase-heading">
+            <span class="award-showcase__title-main">Сграда на <span>годината.</span></span>
+            <span>Признание за обект, реализиран от АРТСТРОЙ ООД.</span>
+          </h2>
+          <p class="award-showcase__lead">
+            Вино и СПА хотел Чукара е сред проектите, които носят най-ясния знак за нашия стандарт:
+            премерен детайл, силно изпълнение и завършен обект, признат в националния конкурс
+            „Сграда на годината“.
+          </p>
+          <a href="/za-nas#nagrada" class="award-showcase__cta award-showcase__cta--inline">
+            Виж повече
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <figure class="award-showcase__media">
+          <img
+            src="/award/chukara/hero.jpg"
+            alt="Вино и СПА хотел Чукара, отличен в конкурса Сграда на годината"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>
+            <span>Вино и СПА хотел Чукара</span>
+            <strong>Сграда на годината · 2022</strong>
+          </figcaption>
+        </figure>
+      </div>
+    </Reveal>
+
+    <Reveal delay={120}>
+      <div class="award-showcase__facts" aria-label="Данни за отличието">
+        {facts.map((fact) => (
+          <div>
+            <span>{fact.label}</span>
+            <strong>{fact.value}</strong>
+          </div>
+        ))}
+      </div>
+    </Reveal>
+
+    <Reveal delay={180}>
+      <a href="/za-nas#nagrada" class="award-showcase__cta award-showcase__cta--mobile-end">
+        Виж повече
+        <span aria-hidden="true">↗</span>
+      </a>
+    </Reveal>
+  </div>
+</section>
+
+<style>
+  .award-showcase {
+    padding: clamp(5rem, 7vw, 8.5rem) 0;
+    background:
+      linear-gradient(135deg, #171b20 0%, #242931 48%, #343130 100%);
+    color: #fffaf2;
+  }
+
+  .award-showcase__wash {
+    position: absolute;
+    inset: 0;
+    z-index: -9;
+    background:
+      radial-gradient(circle at 86% 16%, rgba(186, 45, 32, 0.24), transparent 30%),
+      linear-gradient(90deg, rgba(10, 12, 15, 0.54), transparent 58%),
+      linear-gradient(0deg, rgba(10, 12, 15, 0.28), transparent 45%);
+  }
+
+  .award-showcase__backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: -10;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 42%;
+    opacity: 0.14;
+    filter: grayscale(0.15) saturate(0.85) contrast(1.05);
+    pointer-events: none;
+  }
+
+  .award-showcase__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(330px, 0.78fr);
+    gap: clamp(2rem, 5vw, 5.5rem);
+    align-items: center;
+  }
+
+  .award-showcase__copy {
+    max-width: 48rem;
+  }
+
+  .award-showcase__eyebrow {
+    color: #f0b3aa;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .award-showcase h2 {
+    margin-top: 1.25rem;
+    color: #fffaf2;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 2rem + 5vw, 7rem);
+    font-weight: 560;
+    line-height: 0.88;
+    letter-spacing: 0;
+  }
+
+  .award-showcase h2 span {
+    display: block;
+    margin-top: 0.28em;
+    max-width: 43rem;
+    color: rgba(255, 250, 242, 0.78);
+    font-size: clamp(1.35rem, 1rem + 1.15vw, 2.15rem);
+    font-weight: 440;
+    line-height: 1.08;
+  }
+
+  .award-showcase h2 .award-showcase__title-main {
+    margin-top: 0;
+    color: #fffaf2;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
+
+  .award-showcase h2 .award-showcase__title-main span {
+    display: inline;
+    margin-top: 0;
+    color: #ba2d20;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
+
+  .award-showcase__lead {
+    margin-top: 1.8rem;
+    max-width: 38rem;
+    color: rgba(255, 250, 242, 0.72);
+    font-size: clamp(1rem, 0.92rem + 0.28vw, 1.12rem);
+    line-height: 1.8;
+  }
+
+  .award-showcase__cta {
+    margin-top: 2.15rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.72rem;
+    border: 1px solid rgba(255, 250, 242, 0.26);
+    border-radius: 999px;
+    background: rgba(255, 250, 242, 0.08);
+    padding: 0.95rem 1.2rem 0.95rem 1.35rem;
+    color: #fffaf2;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transition: background-color 240ms ease, border-color 240ms ease, gap 240ms ease, transform 240ms ease;
+  }
+
+  .award-showcase__cta:hover {
+    gap: 1rem;
+    border-color: rgba(240, 179, 170, 0.72);
+    background: rgba(186, 45, 32, 0.28);
+    transform: translateY(-1px);
+  }
+
+  .award-showcase__cta--mobile-end {
+    display: none;
+  }
+
+  .award-showcase__media {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 4 / 5;
+    min-height: 34rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 250, 242, 0.22);
+    background: rgba(255, 250, 242, 0.08);
+    box-shadow: 0 2rem 4.5rem rgba(0, 0, 0, 0.34);
+  }
+
+  .award-showcase__media::before {
+    content: '';
+    position: absolute;
+    inset: 0.85rem;
+    z-index: 2;
+    border: 1px solid rgba(255, 250, 242, 0.22);
+    pointer-events: none;
+  }
+
+  .award-showcase__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(180deg, transparent 40%, rgba(11, 13, 16, 0.82) 100%),
+      linear-gradient(90deg, rgba(186, 45, 32, 0.16), transparent 44%);
+    pointer-events: none;
+  }
+
+  .award-showcase__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.03);
+  }
+
+  .award-showcase__media figcaption {
+    position: absolute;
+    left: 2rem;
+    right: 2rem;
+    bottom: 1.9rem;
+    z-index: 3;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .award-showcase__media figcaption span,
+  .award-showcase__media figcaption strong {
+    display: block;
+  }
+
+  .award-showcase__media figcaption span {
+    max-width: 15rem;
+    color: rgba(255, 250, 242, 0.84);
+    font-size: 0.95rem;
+    line-height: 1.35;
+  }
+
+  .award-showcase__media figcaption strong {
+    color: #fffaf2;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-align: right;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .award-showcase__facts {
+    margin-top: clamp(2.5rem, 4vw, 4.2rem);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid rgba(255, 250, 242, 0.16);
+    border-bottom: 1px solid rgba(255, 250, 242, 0.16);
+  }
+
+  .award-showcase__facts div {
+    min-height: 7.4rem;
+    padding: 1.3rem clamp(1rem, 2vw, 2rem);
+    border-right: 1px solid rgba(255, 250, 242, 0.13);
+    display: grid;
+    align-content: center;
+    gap: 0.65rem;
+  }
+
+  .award-showcase__facts div:last-child {
+    border-right: 0;
+  }
+
+  .award-showcase__facts span {
+    color: #f0b3aa;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .award-showcase__facts strong {
+    color: #fffaf2;
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 1rem + 0.9vw, 2rem);
+    font-weight: 520;
+    line-height: 1.05;
+  }
+
+  @media (max-width: 1023px) {
+    .award-showcase__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .award-showcase__media {
+      min-height: 28rem;
+      aspect-ratio: 16 / 11;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .award-showcase {
+      padding: 4.75rem 0;
+    }
+
+    .award-showcase h2 {
+      font-size: clamp(2.7rem, 14vw, 4.35rem);
+    }
+
+    .award-showcase__cta--inline {
+      display: none;
+    }
+
+    .award-showcase__cta--mobile-end {
+      display: inline-flex;
+      margin-top: 1.75rem;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .award-showcase__media {
+      min-height: 24rem;
+      aspect-ratio: 4 / 5;
+    }
+
+    .award-showcase__media figcaption {
+      left: 1.35rem;
+      right: 1.35rem;
+      bottom: 1.35rem;
+      display: grid;
+      justify-content: start;
+    }
+
+    .award-showcase__media figcaption strong {
+      text-align: left;
+      white-space: normal;
+    }
+
+    .award-showcase__facts {
+      grid-template-columns: 1fr;
+    }
+
+    .award-showcase__facts div {
+      min-height: 6.2rem;
+      border-right: 0;
+      border-bottom: 1px solid rgba(255, 250, 242, 0.13);
+    }
+
+    .award-showcase__facts div:last-child {
+      border-bottom: 0;
+    }
+  }
+</style>

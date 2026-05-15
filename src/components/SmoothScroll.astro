@@ -1,0 +1,45 @@
+---
+// Lenis smooth scroll — client-only, idle-loaded.
+// Pauses on prefers-reduced-motion via the body media query check.
+---
+
+<script>
+  import Lenis from 'lenis';
+
+  const reduceMotion =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduceMotion) {
+    const lenis = new Lenis({
+      duration: 1.1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      touchMultiplier: 1.6,
+    });
+
+    // Expose Lenis so other components (e.g. scroll-driven wheels) can hook
+    // into its scroll events instead of fighting native scroll.
+    (window as unknown as { __lenis?: typeof lenis }).__lenis = lenis;
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Anchor links — instruct Lenis to scroll to target
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const a = target.closest('a[href^="#"]') as HTMLAnchorElement | null;
+      if (!a) return;
+      const id = a.getAttribute('href');
+      if (!id || id === '#') return;
+      const el = document.querySelector(id);
+      if (el) {
+        e.preventDefault();
+        lenis.scrollTo(el as HTMLElement, { offset: -80 });
+      }
+    });
+  }
+</script>

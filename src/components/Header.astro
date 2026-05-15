@@ -1,0 +1,426 @@
+---
+// Sticky transparent-over-hero header. NO top investment buttons (per CLAUDE.md).
+const nav = [
+  { href: '/', label: 'Начало' },
+  { href: '/uslugi', label: 'Услуги' },
+  { href: '/proekti', label: 'Проекти' },
+  { href: '/za-nas', label: 'За нас' },
+  { href: '/kontakti', label: 'Контакти' },
+];
+---
+
+<header
+  id="site-header"
+  class="fixed inset-x-0 top-0 z-40 transition-colors duration-400 ease-out-expo"
+  data-state="top"
+>
+  <div class="container-page flex h-20 items-center justify-between gap-6">
+    <a
+      href="/"
+      class="group flex items-center transition-transform duration-400 hover:scale-[1.02] focus:outline-none focus-visible:outline-none"
+      aria-label="АРТСТРОЙ ООД — начало"
+    >
+      <img
+        src="/brand/logo-original.png"
+        alt="АРТСТРОЙ ООД"
+        width="478"
+        height="112"
+        class="h-9 md:h-10 w-auto"
+        decoding="async"
+      />
+    </a>
+
+    <nav class="hidden md:flex items-center gap-1" aria-label="Главна навигация">
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          class="rounded-full px-4 py-2 text-sm text-white/85 transition-colors duration-300 hover:text-white hover:bg-white/10"
+          data-nav-link
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a
+        href="/kontakti"
+        class="glass hidden lg:inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs uppercase tracking-eyebrow text-white"
+      >
+        Получи оферта
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+
+      <button
+        type="button"
+        class="glass mobile-menu-button md:hidden grid h-10 w-10 place-items-center rounded-full text-white"
+        aria-label="Отвори менюто"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        data-mobile-menu-toggle
+      >
+        <span class="mobile-menu-button__lines" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="container-page md:hidden">
+    <nav
+      id="mobile-menu"
+      class="mobile-menu glass"
+      aria-label="Мобилна навигация"
+      aria-hidden="true"
+      data-mobile-menu
+      inert
+    >
+      {nav.map((item) => (
+        <a href={item.href} class="mobile-menu__link" data-mobile-menu-link>
+          <span>{item.label}</span>
+          <svg width="15" height="15" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      ))}
+    </nav>
+  </div>
+
+  <!-- Top brand progress bar — fills with scroll -->
+  <div class="absolute inset-x-0 top-0 h-[2px] bg-white/10">
+    <div id="scroll-progress" class="h-full w-0 bg-brand origin-left transition-[width] duration-100 ease-linear"></div>
+  </div>
+</header>
+
+<style is:global>
+  /* When header is scrolled past hero — switch to opaque white.
+     The .has-solid-header body class forces the same look on light pages
+     (project detail, etc.) so the nav text always reads. */
+  #site-header[data-state='scrolled'],
+  body.has-solid-header #site-header {
+    background-color: rgb(255 255 255 / 0.92);
+    backdrop-filter: saturate(140%) blur(12px);
+    -webkit-backdrop-filter: saturate(140%) blur(12px);
+    border-bottom: 1px solid rgb(0 0 0 / 0.06);
+  }
+  #site-header[data-state='scrolled'] [data-nav-link],
+  body.has-solid-header #site-header [data-nav-link] {
+    color: theme('colors.ink.900');
+  }
+  #site-header[data-state='scrolled'] [data-nav-link]:hover,
+  body.has-solid-header #site-header [data-nav-link]:hover {
+    background-color: theme('colors.ink.100');
+  }
+  /* Mirror the .glass-dark recipe so scrolled (light) header pills look like
+     the same Apple Tahoe Bluetooth-style glass as everywhere else. */
+  #site-header[data-state='scrolled'] .glass,
+  body.has-solid-header #site-header .glass {
+    background: rgba(28, 32, 38, 0.10);
+    border-color: rgba(255, 255, 255, 0.55);
+    color: theme('colors.ink.900');
+    box-shadow:
+      inset 0 1.5px 0 rgba(255, 255, 255, 1),
+      inset 0 6px 12px -6px rgba(255, 255, 255, 0.40),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.06),
+      0 10px 24px -10px rgba(18, 22, 28, 0.22);
+  }
+  #site-header[data-state='scrolled'] .glass:hover,
+  body.has-solid-header #site-header .glass:hover {
+    background: rgba(28, 32, 38, 0.16);
+    border-color: rgba(255, 255, 255, 0.70);
+  }
+
+  .mobile-menu-button {
+    position: relative;
+    z-index: 2;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06)),
+      rgba(18, 22, 28, 0.30);
+    border-color: rgba(255, 255, 255, 0.34);
+    box-shadow:
+      inset 0 1.5px 0 rgba(255, 255, 255, 0.76),
+      inset 0 10px 16px -10px rgba(255, 255, 255, 0.46),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.16),
+      0 12px 28px -14px rgba(18, 22, 28, 0.80),
+      0 0 0 1px rgba(18, 22, 28, 0.10);
+  }
+
+  .mobile-menu-button__lines {
+    display: grid;
+    gap: 3.5px;
+    width: 18px;
+  }
+
+  .mobile-menu-button__lines span {
+    display: block;
+    height: 1.5px;
+    width: 18px;
+    border-radius: 999px;
+    background: currentColor;
+    transform-origin: center;
+    transition:
+      transform 400ms theme('transitionTimingFunction.out-expo'),
+      opacity 250ms ease;
+  }
+
+  #site-header[data-menu-open='true'] .mobile-menu-button__lines span:nth-child(1) {
+    transform: translateY(5px) rotate(45deg);
+  }
+
+  #site-header[data-menu-open='true'] .mobile-menu-button__lines span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0.55);
+  }
+
+  #site-header[data-menu-open='true'] .mobile-menu-button__lines span:nth-child(3) {
+    transform: translateY(-5px) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    position: absolute;
+    inset-inline-start: auto;
+    inset-inline-end: 1.5rem;
+    top: calc(100% - 0.25rem);
+    z-index: 1;
+    display: grid;
+    gap: 0.25rem;
+    width: min(16.25rem, calc(100vw - 3rem));
+    padding: 0.45rem;
+    border-radius: 1.35rem;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08)),
+      rgba(18, 22, 28, 0.22);
+    backdrop-filter: blur(28px) saturate(165%);
+    -webkit-backdrop-filter: blur(28px) saturate(165%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px) scale(0.985);
+    transform-origin: top right;
+    transition:
+      opacity 320ms theme('transitionTimingFunction.out-expo'),
+      visibility 320ms step-end,
+      transform 420ms theme('transitionTimingFunction.out-expo');
+  }
+
+  #site-header[data-state='scrolled'] .mobile-menu,
+  body.has-solid-header #site-header .mobile-menu {
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.34)),
+      rgba(247, 247, 245, 0.46);
+  }
+
+  #site-header[data-menu-open='true'] .mobile-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    transition:
+      opacity 280ms theme('transitionTimingFunction.out-expo'),
+      visibility 0ms,
+      transform 420ms theme('transitionTimingFunction.out-expo');
+  }
+
+  .mobile-menu__link {
+    display: flex;
+    min-height: 2.65rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: 1rem;
+    padding: 0.72rem 0.85rem 0.72rem 1rem;
+    color: rgb(255 255 255 / 0.92);
+    font-size: 0.98rem;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+      background-color 260ms theme('transitionTimingFunction.out-expo'),
+      color 260ms theme('transitionTimingFunction.out-expo'),
+      transform 260ms theme('transitionTimingFunction.out-expo');
+  }
+
+  .mobile-menu__link:hover,
+  .mobile-menu__link:focus-visible {
+    background-color: rgb(255 255 255 / 0.14);
+    color: white;
+    transform: translateX(2px);
+  }
+
+  #site-header[data-state='scrolled'] .mobile-menu__link,
+  body.has-solid-header #site-header .mobile-menu__link {
+    color: theme('colors.ink.900');
+  }
+
+  #site-header[data-state='scrolled'] .mobile-menu__link:hover,
+  #site-header[data-state='scrolled'] .mobile-menu__link:focus-visible,
+  body.has-solid-header #site-header .mobile-menu__link:hover,
+  body.has-solid-header #site-header .mobile-menu__link:focus-visible {
+    background-color: rgb(255 255 255 / 0.50);
+    color: theme('colors.ink.950');
+  }
+
+  @media (max-width: 767px) {
+    #site-header[data-state='scrolled'],
+    body.has-solid-header #site-header {
+      background-color: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-bottom: 0;
+    }
+
+    #site-header[data-state='scrolled'] .glass,
+    body.has-solid-header #site-header .glass {
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(255, 255, 255, 0.18);
+      color: white;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        inset 0 8px 14px -8px rgba(255, 255, 255, 0.35),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.06),
+        0 10px 24px -10px rgba(0, 0, 0, 0.28);
+    }
+
+    #site-header[data-state='scrolled'] .mobile-menu-button.glass,
+    body.has-solid-header #site-header .mobile-menu-button.glass,
+    #site-header .mobile-menu-button.glass {
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06)),
+        rgba(18, 22, 28, 0.30);
+      border-color: rgba(255, 255, 255, 0.34);
+      color: white;
+      box-shadow:
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.76),
+        inset 0 10px 16px -10px rgba(255, 255, 255, 0.46),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.16),
+        0 12px 28px -14px rgba(18, 22, 28, 0.80),
+        0 0 0 1px rgba(18, 22, 28, 0.10);
+    }
+
+    #site-header[data-state='scrolled'] .glass:hover,
+    body.has-solid-header #site-header .glass:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.38);
+    }
+
+    #site-header[data-state='scrolled'] .mobile-menu-button.glass:hover,
+    body.has-solid-header #site-header .mobile-menu-button.glass:hover,
+    #site-header .mobile-menu-button.glass:hover {
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08)),
+        rgba(18, 22, 28, 0.38);
+      border-color: rgba(255, 255, 255, 0.46);
+    }
+
+    #site-header[data-state='scrolled'] .mobile-menu,
+    body.has-solid-header #site-header .mobile-menu {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08)),
+        rgba(18, 22, 28, 0.22);
+    }
+
+    #site-header[data-state='scrolled'] .mobile-menu__link,
+    body.has-solid-header #site-header .mobile-menu__link {
+      color: rgb(255 255 255 / 0.92);
+    }
+
+    #site-header[data-state='scrolled'] .mobile-menu__link:hover,
+    #site-header[data-state='scrolled'] .mobile-menu__link:focus-visible,
+    body.has-solid-header #site-header .mobile-menu__link:hover,
+    body.has-solid-header #site-header .mobile-menu__link:focus-visible {
+      background-color: rgb(255 255 255 / 0.14);
+      color: white;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu,
+    .mobile-menu-button__lines span,
+    .mobile-menu__link {
+      transition: none;
+    }
+
+    .mobile-menu__link:hover,
+    .mobile-menu__link:focus-visible {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  const setup = () => {
+    const w = window as Window & { __artstroiHeaderCleanup?: () => void };
+    w.__artstroiHeaderCleanup?.();
+
+    const header = document.getElementById('site-header');
+    const progress = document.getElementById('scroll-progress');
+    const toggle = document.querySelector<HTMLButtonElement>('[data-mobile-menu-toggle]');
+    const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
+    const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-mobile-menu-link]'));
+    if (!header || !progress) return;
+
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    let raf = 0;
+    const closeMenu = () => {
+      header.dataset.menuOpen = 'false';
+      toggle?.setAttribute('aria-expanded', 'false');
+      toggle?.setAttribute('aria-label', 'Отвори менюто');
+      menu?.setAttribute('aria-hidden', 'true');
+      menu?.setAttribute('inert', '');
+    };
+    const openMenu = () => {
+      header.dataset.menuOpen = 'true';
+      toggle?.setAttribute('aria-expanded', 'true');
+      toggle?.setAttribute('aria-label', 'Затвори менюто');
+      menu?.setAttribute('aria-hidden', 'false');
+      menu?.removeAttribute('inert');
+    };
+    const toggleMenu = () => {
+      if (header.dataset.menuOpen === 'true') closeMenu();
+      else openMenu();
+    };
+    const update = () => {
+      raf = 0;
+      const y = window.scrollY;
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = h > 0 ? Math.min(y / h, 1) : 0;
+      progress.style.width = `${ratio * 100}%`;
+      header.dataset.state = y > 80 ? 'scrolled' : 'top';
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    closeMenu();
+    update();
+    toggle?.addEventListener('click', toggleMenu, { signal });
+    links.forEach((link) => link.addEventListener('click', closeMenu, { signal }));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeMenu();
+    }, { signal });
+    document.addEventListener('click', (event) => {
+      if (header.dataset.menuOpen !== 'true') return;
+      const target = event.target;
+      if (target instanceof Node && !header.contains(target)) closeMenu();
+    }, { signal });
+    window.addEventListener('scroll', onScroll, { passive: true, signal });
+    window.addEventListener('resize', () => {
+      closeMenu();
+      onScroll();
+    }, { passive: true, signal });
+
+    w.__artstroiHeaderCleanup = () => {
+      controller.abort();
+      if (raf) cancelAnimationFrame(raf);
+    };
+  };
+
+  setup();
+  document.addEventListener('astro:page-load', setup);
+</script>

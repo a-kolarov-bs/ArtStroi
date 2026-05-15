@@ -1,0 +1,161 @@
+---
+import HeroNewsCarousel from './HeroNewsCarousel.astro';
+
+const heroVideo = '/hero/hero-composite.mp4';
+const heroPoster = '/hero/hero-poster.jpg';
+const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
+---
+
+<section
+  class="relative isolate flex min-h-[100svh] w-full flex-col overflow-hidden bg-ink-950 text-white"
+  aria-label="Hero"
+>
+  <!-- Background media: video on >=md, poster image always; mobile shows only poster -->
+  <picture class="absolute inset-0 -z-10">
+    <source media="(min-width: 768px)" srcset={heroPoster} />
+    <img
+      src={heroPosterMobile}
+      alt=""
+      aria-hidden="true"
+      class="h-full w-full object-cover"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </picture>
+
+  <video
+    class="absolute inset-0 -z-10 hidden h-full w-full object-cover md:block"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    poster={heroPoster}
+    aria-hidden="true"
+    style="filter: contrast(1.06) saturate(1.08) brightness(0.96); transform: scale(1.02); transform-origin: center;"
+  >
+    <source src={heroVideo} type="video/mp4" />
+  </video>
+
+  <!-- Film grain overlay — masks compression artifacts, adds cinematic texture -->
+  <div
+    class="pointer-events-none absolute inset-0 -z-[7] hidden md:block opacity-[0.09] mix-blend-overlay"
+    aria-hidden="true"
+    style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22 stitchTiles=%22stitch%22/><feColorMatrix values=%221 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1.4 0%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>'); background-size: 220px 220px;"
+  ></div>
+
+  <!-- Top + bottom gradient overlays for text legibility -->
+  <div
+    class="pointer-events-none absolute inset-0 -z-[5]"
+    aria-hidden="true"
+    style="background:
+      linear-gradient(to bottom, rgba(18,22,28,0.55) 0%, rgba(18,22,28,0.18) 28%, rgba(18,22,28,0.18) 60%, rgba(18,22,28,0.85) 100%),
+      radial-gradient(ellipse 70% 60% at 30% 50%, rgba(186,45,32,0.10), transparent 60%);"
+  ></div>
+
+  <!-- Hero content (bechtel 1:1 layout: headline left-center, card right-center) -->
+  <div class="hero-layout container-page relative z-10 flex flex-1 items-center pt-24 pb-12">
+    <div class="grid w-full grid-cols-1 lg:grid-cols-12 items-center gap-10">
+      <!-- Headline + subline (signature slogan in Fraunces, red italic accents) -->
+      <div class="hero-copy lg:col-span-7 lg:-translate-y-16 xl:-translate-y-20">
+        <p class="hero-kicker flex items-center gap-4 text-xl md:text-2xl lg:text-3xl text-white font-medium tracking-[-0.005em] whitespace-nowrap">
+          <span aria-hidden="true" class="block h-px w-12 md:w-16 bg-brand shrink-0"></span>
+          <span>От 1992&nbsp;г. до днес.</span>
+          <span aria-hidden="true" class="block h-px w-12 md:w-16 bg-brand shrink-0"></span>
+        </p>
+        <h1
+          class="hero-title mt-6 font-display text-white leading-[1.02] tracking-[-0.02em]"
+          style="font-size: clamp(2rem, 0.6rem + 4vw, 4.5rem); font-weight: 500;"
+        >
+          <span class="block">
+            <span
+              class="italic text-brand"
+              style="font-variation-settings:'opsz' 144,'SOFT' 100;"
+            >Строим,</span> защото
+          </span>
+          <span class="block">
+            го <span
+              class="italic text-brand"
+              style="font-variation-settings:'opsz' 144,'SOFT' 100;"
+            >можем</span>.
+          </span>
+        </h1>
+        <p class="hero-body mt-8 max-w-md text-base md:text-[17px] text-white/90 leading-[1.6]">
+          В <strong class="font-medium text-white">АРТСТРОЙ ООД</strong> работим заедно с
+          нашите клиенти, за да превърнем замислите им в реалност — реализирайки
+          проекти, които оставят трайна следа за хората и общностите.
+        </p>
+      </div>
+
+      <!-- News card carousel — sits below the vertical centre on lg+ (per ref) -->
+      <div class="hero-carousel-slot lg:col-span-5 flex justify-center lg:justify-end lg:mt-48 xl:mt-56">
+        <HeroNewsCarousel />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (max-width: 767px) {
+    .hero-layout {
+      min-height: 100svh;
+      align-items: stretch;
+      padding-top: clamp(6.75rem, 15svh, 8.25rem);
+      padding-bottom: calc(1.1rem + env(safe-area-inset-bottom));
+    }
+
+    .hero-copy {
+      position: absolute;
+      left: 1.5rem;
+      right: 1.5rem;
+      top: clamp(8.2rem, 18svh, 10.2rem);
+      max-width: 100%;
+      transform: none;
+    }
+
+    .hero-kicker {
+      justify-content: center;
+      gap: 0.85rem;
+      font-size: clamp(1.18rem, 5.7vw, 1.58rem);
+    }
+
+    .hero-kicker span[aria-hidden='true'] {
+      width: clamp(2.6rem, 16vw, 4rem);
+    }
+
+    .hero-title {
+      margin-top: 1.05rem;
+      font-size: clamp(2.1rem, 10vw, 3rem) !important;
+      line-height: 0.98;
+    }
+
+    .hero-body {
+      margin-top: 1.05rem;
+      max-width: 19rem;
+      font-size: clamp(0.88rem, 3.65vw, 1rem);
+      line-height: 1.38;
+    }
+
+    .hero-carousel-slot {
+      position: absolute;
+      left: 50%;
+      bottom: max(1.35rem, calc(1rem + env(safe-area-inset-bottom)));
+      width: min(100%, 20rem);
+      transform: translateX(-50%);
+      z-index: 5;
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .hero-copy {
+      top: 7.7rem;
+    }
+
+    .hero-body {
+      max-width: 17.5rem;
+      font-size: 0.84rem;
+      line-height: 1.34;
+    }
+  }
+</style>

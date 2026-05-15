@@ -1,0 +1,16 @@
+.astro/
+.claude/
+.vercel/
+dist/
+node_modules/
+screenshots/
+
+.DS_Store
+public/.DS_Store
+public/**/.DS_Store
+public/**/node_modules/
+*.bak-*
+
+.env
+.env.*
+!.env.example

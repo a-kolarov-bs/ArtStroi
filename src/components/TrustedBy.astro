@@ -1,0 +1,74 @@
+---
+import type { Client } from '../data/clients';
+import Reveal from './Reveal.astro';
+
+interface Props {
+  clients: Client[];
+}
+const { clients } = Astro.props;
+
+// Duplicate the list — second copy is used for the seamless 50% translate loop
+const tracks = [...clients, ...clients];
+---
+
+<section class="relative isolate overflow-hidden py-6 md:py-8 bg-cream-100" aria-labelledby="trusted-heading">
+  <!-- Architectural sheet — back layer -->
+  <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-d"></div>
+  <!-- Brand red horizontal accent at top of section -->
+  <span aria-hidden="true" class="pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-brand/35 to-transparent"></span>
+
+  <div class="container-page relative">
+    <Reveal class="text-center max-w-2xl mx-auto mb-6">
+      <p class="eyebrow">Доверяват ни се</p>
+      <h2
+        id="trusted-heading"
+        class="mt-4 font-display text-display-md tracking-tight text-ink-950"
+      >
+        Те повярваха в нас.
+      </h2>
+      <p class="mt-5 text-base text-ink-600 leading-relaxed">
+        Общини, държавни институции, частни инвеститори и международни организации.
+      </p>
+    </Reveal>
+  </div>
+
+  <!-- Marquee (full-bleed) -->
+  <Reveal>
+    <div class="marquee">
+      <div class="marquee__track flex items-start gap-4 md:gap-16 animate-marquee md:animate-marquee">
+        {tracks.map((c, i) => (
+          <div
+            class="shrink-0 flex flex-col items-center justify-start px-2 w-[140px] md:w-[160px]"
+            aria-hidden={i >= clients.length ? 'true' : undefined}
+          >
+            <div class="h-20 md:h-24 grid place-items-center">
+              <img
+                src={c.logo}
+                alt={i < clients.length ? c.alt : ''}
+                loading="lazy"
+                decoding="async"
+                class="max-h-14 md:max-h-16 w-auto object-contain
+                       drop-shadow-[0_2px_4px_rgba(18,22,28,0.12)]
+                       transition-transform duration-400 ease-out-expo
+                       hover:scale-[1.06]"
+                onerror="this.onerror=null; this.replaceWith(Object.assign(document.createElement('span'), { className: 'font-display text-lg text-ink-600/80 px-3', textContent: this.alt || '' }));"
+              />
+            </div>
+            <p class="text-[11px] md:text-xs leading-tight text-center text-[#B26C3D] font-medium tracking-tight">
+              {c.name}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </Reveal>
+</section>
+
+<style>
+  /* Faster marquee on small screens (desktop keeps default 40s) */
+  @media (max-width: 767px) {
+    .marquee__track {
+      animation-duration: 28s !important;
+    }
+  }
+</style>

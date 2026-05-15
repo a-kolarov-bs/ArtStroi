@@ -1,0 +1,1094 @@
+[
+  {
+    "id": 1,
+    "slug": "baza-za-otdih-ezerata-smolyan",
+    "title": "База за отдих Езерата, Смолян",
+    "location": "гр.Смолян, местността „Лъгът“",
+    "client": "„ИЗАМЕТ“ ООД",
+    "scope": "Груб строеж, Довършителни работи, Ел., ВиК и ОиВ инсталации, Топлоизолация, Вертикална планировка",
+    "description": "Жилищна сграда на три и пет етажа с магазини и офиси в първи етаж и подземни сгради",
+    "cover_image_url": "https://www.artstroismolian.com/projects/1.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/1/1a.jpg",
+      "https://www.artstroismolian.com/projects/1/1b.jpg",
+      "https://www.artstroismolian.com/projects/1/1c.jpg",
+      "https://www.artstroismolian.com/projects/1/1d.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d4229.499823178077!2d24.669341102827875!3d41.618115289996794!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sbg!2sbg!4v1540376402742",
+    "partner_url": "http://www.izamet.com",
+    "partner_logo_url": "https://www.artstroismolian.com/part/1.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect1.html"
+  },
+  {
+    "id": 2,
+    "slug": "remont-na-sgrada-tsdg-radost-gr-aytos",
+    "title": "Ремонт на сграда ЦДГ „Радост“ гр. Айтос",
+    "location": "гр.Айтос",
+    "client": "ЦДГ „Радост“ гр. Айтос",
+    "scope": null,
+    "description": "Извършване на основен ремонт на сграда ЦДГ „Радост „. Топлоизолация,подмяна на дограма, ремонт на покрив",
+    "cover_image_url": "https://www.artstroismolian.com/projects/2.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/2/1a.jpg",
+      "https://www.artstroismolian.com/projects/2/1b.jpg",
+      "https://www.artstroismolian.com/projects/2/1c.jpg",
+      "https://www.artstroismolian.com/projects/2/1d.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2931.8672380718763!2d27.251513414836634!3d42.70653182114415!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a67d3d8e400011%3A0xdf1eb871ae7dd687!2z0KbQtdC70L7QtNC90LXQstC90LAg0JTQtdGC0YHQutCwINCT0YDQsNC00LjQvdCwICIg0KDQsNC00L7RgdGCICI!5e0!3m2!1sbg!2sbg!4v1540376256252",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect2.html"
+  },
+  {
+    "id": 3,
+    "slug": "zhilishtna-sgrada-v-sofiya-bul-p-k-yavorov-44",
+    "title": "Жилищна сграда в София бул. „П.К.Яворов“ №44",
+    "location": "гр.София,бул.“П.К.Яворов“ №44",
+    "client": "„Маунтин стар“ ЕООД",
+    "scope": "Конструктивна",
+    "description": "Многофамилна жилищна сграда с подземен гараж и магазини” в УПИ XI-410 ; кв.176 ; м.”Лозенец-III част",
+    "cover_image_url": "https://www.artstroismolian.com/projects/3.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/3/1a.jpg",
+      "https://www.artstroismolian.com/projects/3/1b.jpg",
+      "https://www.artstroismolian.com/projects/3/1c.jpg",
+      "https://www.artstroismolian.com/projects/3/1d.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m12!1m8!1m3!1d5867.100147858429!2d23.333463!3d42.670889!3m2!1i1024!2i768!4f13.1!2m1!1z0LHRg9C7LiDigJ7Qn9C10LnQviDQmi4g0K_QstC-0YDQvtCy4oCcIDQ0IDExNjQg0LYu0LouINCb0L7Qt9C10L3QtdGGLCDQodC-0YTQuNGP!5e0!3m2!1sbg!2sbg!4v1540376193348",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect3.html"
+  },
+  {
+    "id": 4,
+    "slug": "vila-v-s-stoykite-obsht-smolyan",
+    "title": "Вила в с.Стойките, общ.Смолян",
+    "location": "с.Стойките, общ.Смолян",
+    "client": "Частно лице",
+    "scope": "Груб строеж, Довършителни работи, Ел., ВиК и ОиВ инсталации, Топлоизолация, Вертикална планировка",
+    "description": "Къща на три етажа , с два гаража и барбекю",
+    "cover_image_url": "https://www.artstroismolian.com/projects/4.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/4/1a.jpg",
+      "https://www.artstroismolian.com/projects/4/1b.jpg",
+      "https://www.artstroismolian.com/projects/4/1c.jpg",
+      "https://www.artstroismolian.com/projects/4/1d.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11923.38293065334!2d24.632087!3d41.659075!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac58b9f0e1bdd9%3A0xb6305d6a01ba8767!2z0KHRgtC-0LnQutC40YLQtQ!5e0!3m2!1sbg!2sbg!4v1540376103580",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect4.html"
+  },
+  {
+    "id": 5,
+    "slug": "rekonstruktsiya-sektor-a-stadion-georgi-asparuhov",
+    "title": "Реконструкция Сектор А, стадион „Георги Аспарухов“",
+    "location": "гр.София, кв.Подуене",
+    "client": "Автомагистрали „Черно Море“ АД",
+    "scope": "Направа на тухлена зидария, преградни зидове от гипсокартон, ВиК инсталации, Пожарогасене,шлайфани бетони по подове, довършителни работи",
+    "description": "Реконструкция на „Сектор А“ Стадион „Георги Аспарухов“",
+    "cover_image_url": "https://www.artstroismolian.com/projects/5.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/5/1a.jpg",
+      "https://www.artstroismolian.com/projects/5/1b.jpg",
+      "https://www.artstroismolian.com/projects/5/1c.jpg",
+      "https://www.artstroismolian.com/projects/5/1d.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2931.9236675942566!2d23.36105921483661!3d42.70533702122013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa8f6352f684dd%3A0xafccb12323483a0!2z0KHRgtCw0LTQuNC-0L0g4oCe0JLQuNCy0LDQutC-0Lwg0JDRgNC10L3QsCDQk9C10L7RgNCz0Lgg0JDRgdC_0LDRgNGD0YXQvtCy4oCc!5e0!3m2!1sbg!2sbg!4v1540376050469",
+    "partner_url": "https://amshumen.com",
+    "partner_logo_url": "https://www.artstroismolian.com/part/2.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect5.html"
+  },
+  {
+    "id": 6,
+    "slug": "zhilishtna-sgrada-v-sofiya-ul-s-vrachanski-143",
+    "title": "Жилищна сграда в София, ул. С. Врачански №143",
+    "location": "гр. София ,ул.“Софроний Врачански “ № 143",
+    "client": "„Маунтин стар“ ЕООД",
+    "scope": "Конструктивна",
+    "description": "Жилищна сграда с гаражи УПИ III-132 по плана на гр.София,местност „ГГЦ-Зона В-17",
+    "cover_image_url": "https://www.artstroismolian.com/projects/6.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/6/1a.jpg",
+      "https://www.artstroismolian.com/projects/6/1b.jpg",
+      "https://www.artstroismolian.com/projects/6/1c.jpg",
+      "https://www.artstroismolian.com/projects/6/1d.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5863.400911274917!2d23.317078!3d42.710063!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa8558b5cc66ef%3A0xa1a3fa77d586b605!2z0YPQuy4g4oCe0KHQvtGE0YDQvtC90LjQuSDQktGA0LDRh9Cw0L3RgdC60LjigJwgMTQzLCAxMjMzINC2LtC6LiDQkdCw0L3QuNGI0L7RgNCwLCDQodC-0YTQuNGP!5e0!3m2!1sbg!2sbg!4v1540375855560",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect6.html"
+  },
+  {
+    "id": 7,
+    "slug": "butikov-hotel-iva-i-elena-k-k-pamporovo",
+    "title": "Бутиков хотел „Ива и Елена“, к.к. Пампорово",
+    "location": "к.к.Пампорово, гр.Чепеларе, Община Смолян",
+    "client": "„Стесар“ ЕООД",
+    "scope": "Груб строеж, Довършителни работи, Ел., ВиК и ОиВ инсталации, Топлоизолация, Вертикална планировка",
+    "description": "„База за отдих и ски сервиз“ в УПИ V 234017 Бутиков хотел „Ива – Елена“,стара част. Ремонтни работи. Промяна по време на строителството и топла връзка, външно барбекю, Гаражи",
+    "cover_image_url": "https://www.artstroismolian.com/projects/7.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/7/1a.jpg",
+      "https://www.artstroismolian.com/projects/7/1b.jpg",
+      "https://www.artstroismolian.com/projects/7/1c.jpg",
+      "https://www.artstroismolian.com/projects/7/1d.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d47705.1067507692!2d24.691149!3d41.643443!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x2069e1ed5befc75c!2sHotel+Iva+%26+Elena!5e0!3m2!1sbg!2sbg!4v1540375774727",
+    "partner_url": "http://www.ivaielena.com/",
+    "partner_logo_url": "https://www.artstroismolian.com/part/3.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect7.html"
+  },
+  {
+    "id": 8,
+    "slug": "ploshtad-gr-rakovski",
+    "title": "Площад гр. Раковски",
+    "location": "кв.Секирово, гр.Раковски",
+    "client": "община Раковски",
+    "scope": null,
+    "description": "Реконструкция на централен площад в кв. Секирово ,гр. Раковски – I, II и III етап, Изграждане на кръгообразен декоративен площад",
+    "cover_image_url": "https://www.artstroismolian.com/projects/8.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/8/1a.jpg",
+      "https://www.artstroismolian.com/projects/8/1b.jpg",
+      "https://www.artstroismolian.com/projects/8/1c.jpg",
+      "https://www.artstroismolian.com/projects/8/1d.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23618.667872105183!2d24.926481998024816!3d42.27140417975815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a82b247d8521f9%3A0x400a01269bf54b0!2z0LrQsi4g0KHQtdC60LjRgNC-0LLQviwg0KDQsNC60L7QstGB0LrQuA!5e0!3m2!1sbg!2sbg!4v1540375580140",
+    "partner_url": "http://www.rakovski.bg",
+    "partner_logo_url": "https://www.artstroismolian.com/part/4.jpg",
+    "source_url": "https://www.artstroismolian.com/projects/progect8.html"
+  },
+  {
+    "id": 9,
+    "slug": "remont-na-obshtinski-ulitsi-obshtina-krichim",
+    "title": "Ремонт на общински улици община Кричим",
+    "location": "с.Бяга , с.Исперихово ,с. Козарско ,гр. Кричим",
+    "client": "Община Кричим",
+    "scope": null,
+    "description": "Извършване на строителни работи по рехабилитация и текущ ремонт на общински улици на територията на гр. Кричим и част от общински път № PAZ 1041, /ІІІ-375/, Бяга – Исперихово – Козарско – Кричим /ІІІ – 866/",
+    "cover_image_url": "https://www.artstroismolian.com/projects/9.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/9/2.jpg",
+      "https://www.artstroismolian.com/projects/9/3.jpg",
+      "https://www.artstroismolian.com/projects/9/4.jpg",
+      "https://www.artstroismolian.com/projects/9/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11851.78642932027!2d24.460462077677995!3d42.04432525246928!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac9578d2adc9ad%3A0x400a01269bf5500!2zNDIyMCDQmtGA0LjRh9C40Lw!5e0!3m2!1sbg!2sbg!4v1540463646023",
+    "partner_url": "https://www.krichim.bg/",
+    "partner_logo_url": "https://www.artstroismolian.com/part/20.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect9.html"
+  },
+  {
+    "id": 10,
+    "slug": "zona-za-otdih-charshiyata",
+    "title": "Зона за отдих Чаршията",
+    "location": "кв.Устово, гр.Смолян",
+    "client": "„ЗАПРЯНОВИ 03“ ООД",
+    "scope": null,
+    "description": "Зона за обществен отдих”Чаршията“",
+    "cover_image_url": "https://www.artstroismolian.com/projects/10.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/10/2.jpg",
+      "https://www.artstroismolian.com/projects/10/3.jpg",
+      "https://www.artstroismolian.com/projects/10/4.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d11939.251346433466!2d24.776655327402754!3d41.57329517068046!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z0LrQsi7Qo9GB0YLQvtCy0L4sINCz0YAu0KHQvNC-0LvRj9C9INCf0JvQntCp0JDQlA!5e0!3m2!1sbg!2sbg!4v1540464112634",
+    "partner_url": "http://www.zapryanovi.com/",
+    "partner_logo_url": "https://www.artstroismolian.com/part/6.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect10.html"
+  },
+  {
+    "id": 11,
+    "slug": "izgrazhdane-i-remont-na-trotoari",
+    "title": "Изграждане и ремонт на тротоари",
+    "location": "гр.Брезово, с.Стрелци, с.Дрангово и с.Отец Кирилово",
+    "client": "Община Брезово",
+    "scope": null,
+    "description": "Изграждане на нови, реконструкция и ремонт на съществуващи тротоари в гр.Брезово, с.Стрелци, с.Дрангово и с.Отец Кирилово, Община Брезово",
+    "cover_image_url": "https://www.artstroismolian.com/projects/11.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/11/2.jpg",
+      "https://www.artstroismolian.com/projects/11/3.jpg",
+      "https://www.artstroismolian.com/projects/11/4.jpg",
+      "https://www.artstroismolian.com/projects/11/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d188558.6355708753!2d24.893449439569473!3d42.401575216848116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a9cc81fbcdca61%3A0xce3046c2336a7b83!2z0JHRgNC10LfQvtCy0L4!5e0!3m2!1sbg!2sbg!4v1540464592377",
+    "partner_url": "http://brezovo.bg/news.php",
+    "partner_logo_url": "https://www.artstroismolian.com/part/17.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect11.html"
+  },
+  {
+    "id": 12,
+    "slug": "kashta-v-kv-kaptazha-gr-smolyan",
+    "title": "Къща в кв.Каптажа, гр.Смолян",
+    "location": "кв.Каптажа, гр.Смолян",
+    "client": "Частно лице",
+    "scope": "Довършителни работи, ВиК, Ел.уредби, ОВК инсталации, Вертикална планировка",
+    "description": "Къща на два етажа с гараж",
+    "cover_image_url": "https://www.artstroismolian.com/projects/12.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/12/2.jpg",
+      "https://www.artstroismolian.com/projects/12/3.jpg",
+      "https://www.artstroismolian.com/projects/12/4.jpg",
+      "https://www.artstroismolian.com/projects/12/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8440.665294607408!2d24.676168471909442!3d41.58599692563734!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac5989e771107d%3A0xb2ddb05fdaa6e6f9!2sFibank+ATM!5e0!3m2!1sbg!2sbg!4v1540465000537",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect12.html"
+  },
+  {
+    "id": 13,
+    "slug": "rekonstruktsiya-na-sgrada-v-gr-smolyan",
+    "title": "Реконструкция на сграда в гр. Смолян",
+    "location": "гр.Смолян, ул. Петър Берон № 2",
+    "client": "„АНИТА“ ООД",
+    "scope": "Груб строеж",
+    "description": "Преустройство на съществуващата административна сграда в УПИ XXI – промишлени нужди ПИ № 916.147.01 от кв.141 по плана на /землище/ гр.Смолян с промяна на предназначението за мебелен магазин",
+    "cover_image_url": "https://www.artstroismolian.com/projects/13.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/13/2.jpg",
+      "https://www.artstroismolian.com/projects/13/3.jpg",
+      "https://www.artstroismolian.com/projects/13/4.jpg",
+      "https://www.artstroismolian.com/projects/13/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2984.605308535604!2d24.687128514795226!3d41.57778609213419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac5a228d94181b%3A0x8b0b176a63806a09!2z0YPQuy4g4oCe0JTQvtC60YLQvtGAINCf0LXRgtGK0YAg0JHQtdGA0L7QveKAnCAyLCA0NzAzINCh0YLQsNC90LXQstGB0LrQsCwg0KHQvNC-0LvRj9C9!5e0!3m2!1sbg!2sbg!4v1540465220376",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect13.html"
+  },
+  {
+    "id": 14,
+    "slug": "semeen-hotel-uzunski-gr-smolyan",
+    "title": "Семеен хотел „Узунски“ гр. Смолян",
+    "location": "гр.Смолян кв.Каптажа",
+    "client": "ЕТ „Емил Узунски“",
+    "scope": "Груб строеж, Довършителни работи, Ел., ВиК и ОиВ инсталации, Топлоизолация, Вертикална планировка",
+    "description": "Семеен хотел в УПИ Х160 ,кв.91А гр. Смолян",
+    "cover_image_url": "https://www.artstroismolian.com/projects/14.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/14/2.jpg",
+      "https://www.artstroismolian.com/projects/14/3.jpg",
+      "https://www.artstroismolian.com/projects/14/4.jpg",
+      "https://www.artstroismolian.com/projects/14/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5968.175718671383!2d24.684279!3d41.588982!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x82cd2ea75eac97e3!2sHotel+Uzunski!5e0!3m2!1sbg!2sbg!4v1540465531163",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect14.html"
+  },
+  {
+    "id": 15,
+    "slug": "korektsi-i-razshirenie-na-rechno-korito",
+    "title": "Корекци и разширение на речно корито",
+    "location": "гр. Раковски",
+    "client": "община Раковски",
+    "scope": null,
+    "description": "Предотвратяване на рисковете от наводнения, чрез корекция и разширяване на речното корито на река Сребра в гр. Раковски и с. Шишманци",
+    "cover_image_url": "https://www.artstroismolian.com/projects/15.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/15/2.jpg",
+      "https://www.artstroismolian.com/projects/15/3.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d47230.430120518184!2d24.906327108336797!3d42.28061777683563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a9d35c45a3c41f%3A0xf84575bea0af7db3!2z0KDQsNC60L7QstGB0LrQuA!5e0!3m2!1sbg!2sbg!4v1540466817678",
+    "partner_url": "http://www.rakovski.bg",
+    "partner_logo_url": "https://www.artstroismolian.com/part/4.jpg",
+    "source_url": "https://www.artstroismolian.com/projects/progect15.html"
+  },
+  {
+    "id": 16,
+    "slug": "ploshtadka-s-vievo-obshtina-smolyan",
+    "title": "Площадка с.Виево, Община Смолян",
+    "location": "с.Виево, община Смолян",
+    "client": "община Смолян",
+    "scope": null,
+    "description": "Възстановяване на цветна градина и изграждане кът за игри и отдих на децата",
+    "cover_image_url": "https://www.artstroismolian.com/projects/16.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/16/2.jpg",
+      "https://www.artstroismolian.com/projects/16/3.jpg",
+      "https://www.artstroismolian.com/projects/16/4.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2981.65073983731!2d24.827749364797555!3d41.64168018815615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14acff43cd15d497%3A0xa4dfb58e80445f01!2zNDc0OCDQktC40LXQstC-!5e0!3m2!1sbg!2sbg!4v1540467053817",
+    "partner_url": "https://www.smolyan.bg/bg/home",
+    "partner_logo_url": "https://www.artstroismolian.com/part/11.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect16.html"
+  },
+  {
+    "id": 17,
+    "slug": "detska-ploshtadka-gr-aytos",
+    "title": "Детска площадка гр. Айтос",
+    "location": "гр.Айтос",
+    "client": "община Айтос",
+    "scope": null,
+    "description": "Реновиране на съществуваща детска площадка-гр.Айтос кв.63, УПИ І",
+    "cover_image_url": "https://www.artstroismolian.com/projects/17.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/17/2.jpg",
+      "https://www.artstroismolian.com/projects/17/3.jpg",
+      "https://www.artstroismolian.com/projects/17/4.jpg",
+      "https://www.artstroismolian.com/projects/17/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23455.991750069417!2d27.237657572772253!3d42.703742604069056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a67d1235fd61f7%3A0xd02df78ed5d97238!2zODUwMCDQkNC50YLQvtGB!5e0!3m2!1sbg!2sbg!4v1540467375852",
+    "partner_url": "https://aytos.bg/",
+    "partner_logo_url": "https://www.artstroismolian.com/part/16.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect17.html"
+  },
+  {
+    "id": 18,
+    "slug": "sanirane-na-chitalishte-s-yoakim-gruevo",
+    "title": "Саниране на читалище с. Йоаким Груево",
+    "location": "с.Йоаким Груево, общ.Стамболийски",
+    "client": "Община Стамболийски",
+    "scope": null,
+    "description": "Ремонт на покрив , подмяна на дограма, топлоизолация на сграда, щамповани бетони за вертикална планировка",
+    "cover_image_url": "https://www.artstroismolian.com/projects/18.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/18/2.jpg",
+      "https://www.artstroismolian.com/projects/18/3.jpg",
+      "https://www.artstroismolian.com/projects/18/4.jpg",
+      "https://www.artstroismolian.com/projects/18/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d23675.911128434807!2d24.565558!3d42.118416!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14acc7ca089317df%3A0xa00a014cd0e5370!2z0JnQvtCw0LrQuNC8INCT0YDRg9C10LLQvg!5e0!3m2!1sbg!2sbg!4v1540467637350",
+    "partner_url": "http://www.stamb.info/",
+    "partner_logo_url": "https://www.artstroismolian.com/part/12.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect18.html"
+  },
+  {
+    "id": 19,
+    "slug": "grazhdanska-zashtita-gr-haskovo",
+    "title": "Гражданска защита гр. Хасково",
+    "location": "гр.Хасково",
+    "client": "Министерство на извънредните ситуации",
+    "scope": "Груб строеж, Довършителни работи, Ел., ВиК и ОиВ инсталации, Топлоизолация, Вертикална планировка",
+    "description": "Преустройство и основен ремонт на сгради в териториална дирекция – „Гражданска защита“",
+    "cover_image_url": "https://www.artstroismolian.com/projects/19.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/19/2.jpg",
+      "https://www.artstroismolian.com/projects/19/3.jpg",
+      "https://www.artstroismolian.com/projects/19/4.jpg",
+      "https://www.artstroismolian.com/projects/19/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2968.161357868987!2d25.555601314808147!3d41.93238396999542!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ad50cfa201b4ab%3A0x3a327132a5b3030d!2z0JPQoNCQ0JbQlNCQ0J3QodCa0JAg0JfQkNCp0JjQotCQ!5e0!3m2!1sbg!2sbg!4v1540467982360",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect19.html"
+  },
+  {
+    "id": 20,
+    "slug": "tets-kv-ustovo-gr-smolyan",
+    "title": "ТЕЦ кв. „Устово“, гр. Смолян",
+    "location": "гр.Смолян, кв.Устово",
+    "client": "„Бара груп“ ЕООД",
+    "scope": "Реконструкция на сграда, всички видове довършителни работи, ВиК инсталации, Пожарогасене, Вертикална планировка",
+    "description": "Преустройство на съществуваща сграда за електроцентрала 4,5 МW на биомаса в УПИ XVIII и УПИ XXIII, кв. 34, по ПУП на кв. Устово, гр.Смолян",
+    "cover_image_url": "https://www.artstroismolian.com/projects/20.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/20/2.jpg",
+      "https://www.artstroismolian.com/projects/20/3.jpg",
+      "https://www.artstroismolian.com/projects/20/4.jpg",
+      "https://www.artstroismolian.com/projects/20/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d11939.25134643347!2d24.776655327402747!3d41.573295170680446!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z0KLQldCmINC60LIuIOKAntCj0YHRgtC-0LLQvuKAnCwg0LPRgC4g0KHQvNC-0LvRj9C9!5e0!3m2!1sbg!2sbg!4v1540468357362",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect20.html"
+  },
+  {
+    "id": 21,
+    "slug": "sporten-kompleks-gorna-malina",
+    "title": "Спортен комплекс Горна Малина",
+    "location": "с.Горна Малина , общ.Горна",
+    "client": "Община Горна Малина",
+    "scope": null,
+    "description": "Площадково осветление,специализирано осветление за спортни площадки, сигналноохранителна инсталация и инсталация за видеонаблюдение на Спортен комплекс Горна Малина,УПИ XXV,кв.55",
+    "cover_image_url": "https://www.artstroismolian.com/projects/21.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/21/2.jpg",
+      "https://www.artstroismolian.com/projects/21/3.jpg",
+      "https://www.artstroismolian.com/projects/21/4.jpg",
+      "https://www.artstroismolian.com/projects/21/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2932.6472202154505!2d23.70304281483602!3d42.690014622193836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa65e7db87b9c1%3A0x8a7e46fd5856cfda!2z0KHQv9C-0YDRgtC10L0g0JrQvtC80L_Qu9C10LrRgSDQk9C-0YDQvdCwINCc0LDQu9C40L3QsA!5e0!3m2!1sbg!2sbg!4v1540468587499",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect21.html"
+  },
+  {
+    "id": 22,
+    "slug": "preustroystvo-i-remont-na-infektsiozno-otdelenie",
+    "title": "Преустройство и ремонт на „Инфекциозно отделение“",
+    "location": "гр.Смолян, Бул.България №2",
+    "client": "МБАЛ „Д-р Братан Шукеров” АД",
+    "scope": null,
+    "description": "Преустройство и ремонт на „Инфекциозно отделение“ , Блок „Б“ на 2-ри етаж",
+    "cover_image_url": "https://www.artstroismolian.com/projects/22.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/22/2.jpg",
+      "https://www.artstroismolian.com/projects/22/3.jpg",
+      "https://www.artstroismolian.com/projects/22/4.jpg",
+      "https://www.artstroismolian.com/projects/22/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5969.623008894698!2d24.717372!3d41.573324!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac50a975bc88e7%3A0x6767a8731276e439!2z0LHRg9C7LiDigJ7QkdGK0LvQs9Cw0YDQuNGP4oCcIDIsIDQ3MDAg0LYu0LouINCd0L7QsiDRhtC10L3RgtGK0YAsINCh0LzQvtC70Y_QvQ!5e0!3m2!1sbg!2sbg!4v1540468829316",
+    "partner_url": "http://mbalsmolyan.com/",
+    "partner_logo_url": "https://www.artstroismolian.com/part/9.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect22.html"
+  },
+  {
+    "id": 23,
+    "slug": "rentgenov-kabinet-mbal-d-r-bratan-shukerov-ad",
+    "title": "Рентгенов кабинет МБАЛ „Д-р Братан Шукеров“ АД",
+    "location": "гр.Смолян, Бул.България №2",
+    "client": "МБАЛ „Д-р Братан Шукеров” АД",
+    "scope": null,
+    "description": "Направа на подход и вътрешно преустройство , съгласно изискванията на Ренгенов кабинет",
+    "cover_image_url": "https://www.artstroismolian.com/projects/23.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/23/2.jpg",
+      "https://www.artstroismolian.com/projects/23/3.jpg",
+      "https://www.artstroismolian.com/projects/23/4.jpg",
+      "https://www.artstroismolian.com/projects/23/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5969.623008894698!2d24.717372!3d41.573324!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac50a975bc88e7%3A0x6767a8731276e439!2z0LHRg9C7LiDigJ7QkdGK0LvQs9Cw0YDQuNGP4oCcIDIsIDQ3MDAg0LYu0LouINCd0L7QsiDRhtC10L3RgtGK0YAsINCh0LzQvtC70Y_QvQ!5e0!3m2!1sbg!2sbg!4v1540468829316",
+    "partner_url": "http://mbalsmolyan.com/",
+    "partner_logo_url": "https://www.artstroismolian.com/part/9.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect23.html"
+  },
+  {
+    "id": 24,
+    "slug": "ukrepvane-na-svlachishte-gr-smolyan",
+    "title": "Укрепване на свлачище гр. Смолян",
+    "location": "гр.Смолян, кв.Каптажа",
+    "client": null,
+    "scope": null,
+    "description": "Укрепване на свлачище на обходен път в местността „Белия камък“",
+    "cover_image_url": "https://www.artstroismolian.com/projects/24.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/24/2.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d47752.68037104288!2d24.706135451699392!3d41.579144693053436!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z0LPRgC7QodC80L7Qu9GP0L0sINC60LIu0JrQsNC_0YLQsNC20LA!5e0!3m2!1sbg!2sbg!4v1540469263924",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect24.html"
+  },
+  {
+    "id": 25,
+    "slug": "izpalneni-podporni-steni-gr-smolyan",
+    "title": "Изпълнени подпорни стени гр. Смолян",
+    "location": "гр. Смолян",
+    "client": "Община Смолян",
+    "scope": null,
+    "description": "Изпълнени подпорни стени, водостоци, стълбища на територията на гр.Смолян",
+    "cover_image_url": "https://www.artstroismolian.com/projects/25.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/25/2.jpg",
+      "https://www.artstroismolian.com/projects/25/3.jpg",
+      "https://www.artstroismolian.com/projects/25/4.jpg",
+      "https://www.artstroismolian.com/projects/25/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d47752.68037104288!2d24.706135451699392!3d41.579144693053436!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac598ad0d361bb%3A0x400a01269bf5a80!2z0KHQvNC-0LvRj9C9!5e0!3m2!1sbg!2sbg!4v1540469581100",
+    "partner_url": "https://www.smolyan.bg/bg/home",
+    "partner_logo_url": "https://www.artstroismolian.com/part/11.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect25.html"
+  },
+  {
+    "id": 26,
+    "slug": "zhilishtna-sgrada-v-sofiya-ul-hr-kovachev-22",
+    "title": "Жилищна сграда в София ул. „Хр. Ковачев“ №22",
+    "location": "гр. София ,р-н Оборище, ул.“Хр. Ковачев“ №22",
+    "client": "„Маунтин стар“ ЕООД",
+    "scope": "Конструктивна",
+    "description": "Жилищна сграда с надземни и подземни гаражи в УПИ VIII-85 от кв.720 по плана на гр. София",
+    "cover_image_url": "https://www.artstroismolian.com/projects/26.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/26/2.jpg",
+      "https://www.artstroismolian.com/projects/26/3.jpg",
+      "https://www.artstroismolian.com/projects/26/4.jpg",
+      "https://www.artstroismolian.com/projects/26/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5864.174243774379!2d23.335647!3d42.701876!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa857b84ae530b%3A0xf48ffda4463f64f8!2z0YPQuy4g4oCe0KXRgNC40YHRgtC-INCa0L7QstCw0YfQtdCy4oCcIDIyLCAxNTI3INCm0LXQvdGC0YrRgCwg0KHQvtGE0LjRjw!5e0!3m2!1sbg!2sbg!4v1540469893164",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect26.html"
+  },
+  {
+    "id": 27,
+    "slug": "kashta-za-gosti-v-s-kutela",
+    "title": "Къща за гости в с. Кутела",
+    "location": "с.Кутела, общ.Смолян",
+    "client": "Частно лице",
+    "scope": "Груб строеж, Довършителни работи, Ел., ВиК и ОиВ инсталации ,Топлоизолация, Вертикална планировка",
+    "description": "Къща за гости на два етажа, с гараж и барбекю",
+    "cover_image_url": "https://www.artstroismolian.com/projects/27.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/27/2.jpg",
+      "https://www.artstroismolian.com/projects/27/3.jpg",
+      "https://www.artstroismolian.com/projects/27/4.jpg",
+      "https://www.artstroismolian.com/projects/27/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11923.526787927773!2d24.828607!3d41.658298!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14acff3ccaeae749%3A0xa00a014cd0e7fd0!2zNDc1MiDQmtGD0YLQtdC70LA!5e0!3m2!1sbg!2sbg!4v1540470110213",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect27.html"
+  },
+  {
+    "id": 28,
+    "slug": "lyatna-kashta-za-gosti-v-s-godech",
+    "title": "Лятна къща за гости в с. Годеч",
+    "location": "с.Годеч, Софийска област",
+    "client": "Частно лице",
+    "scope": "Груб строеж, Довършителни работи, Топлоизолация, Вертикална планировка",
+    "description": "Лятна къща за гости на един етаж",
+    "cover_image_url": "https://www.artstroismolian.com/projects/28.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/28/2.jpg",
+      "https://www.artstroismolian.com/projects/28/3.jpg",
+      "https://www.artstroismolian.com/projects/28/4.jpg",
+      "https://www.artstroismolian.com/projects/28/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d46678.688141040046!2d23.045938!3d43.011588!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aacf2017fa5db9%3A0xfcf6d9e9a4be8a57!2zMjI0MCDQk9C-0LTQtdGH!5e0!3m2!1sbg!2sbg!4v1540470310013",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect28.html"
+  },
+  {
+    "id": 29,
+    "slug": "zhilishtna-sgrada-v-plovdiv-ul-ihtimanski-prohod-3",
+    "title": "Жилищна сграда в Пловдив, ул. „Ихтимански проход“ № 3",
+    "location": "гр.Пловдив, ул.“Ихтимански проход“ № 3",
+    "client": "„Боев груп 77“ ЕООД",
+    "scope": "Земни работи,Груб строеж",
+    "description": "„Жилищна сграда с височина 9.00 м., 10.00 м., 12.00 м., 15.00 м. с два гаража, два офиса и пет паркоместа „ в, УПИ XVI-48, от кв.№ 6 – нов, № 9 – стар",
+    "cover_image_url": "https://www.artstroismolian.com/projects/29.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/28/2.jpg",
+      "https://www.artstroismolian.com/projects/29/3.jpg",
+      "https://www.artstroismolian.com/projects/29/4.jpg",
+      "https://www.artstroismolian.com/projects/29/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5916.963195863616!2d24.730746!3d42.13998!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14acd1cc6997d5bd%3A0x113794f17b02c49e!2z0YPQuy4g4oCe0JjRhdGC0LjQvNCw0L3RgdC60Lgg0L_RgNC-0YXQvtC04oCcIDMsIDQwMDIg0KbQtdC90YLRitGALCDQn9C70L7QstC00LjQsg!5e0!3m2!1sbg!2sbg!4v1540470632524",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect29.html"
+  },
+  {
+    "id": 30,
+    "slug": "zhilishtna-sgrada-v-sofiya-ul-belasitsa-9",
+    "title": "Жилищна сграда в София, ул. „Беласица“ №9",
+    "location": "гр.София,ул.”Беласица”№9",
+    "client": "„Маунтин стар“ ЕООД",
+    "scope": "Конструктивна",
+    "description": "Жилищна сграда на пет етажа с подземни гаражи” в УПИ 1-1;кв.89-А;м.”ГГЦ Зона В-17",
+    "cover_image_url": "https://www.artstroismolian.com/projects/30.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/30/2.jpg",
+      "https://www.artstroismolian.com/projects/30/3.jpg",
+      "https://www.artstroismolian.com/projects/30/4.jpg",
+      "https://www.artstroismolian.com/projects/30/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5863.333556630996!2d23.317939!3d42.710776!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa8558a964c7ff%3A0xafc6bb00dbd2f4b6!2z0YPQuy4g4oCe0JHQtdC70LDRgdC40YbQsOKAnCA5LCAxMjMzINC2LtC6LiDQkdCw0L3QuNGI0L7RgNCwLCDQodC-0YTQuNGP!5e0!3m2!1sbg!2sbg!4v1540470859512",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect30.html"
+  },
+  {
+    "id": 31,
+    "slug": "remont-na-chitalishte-s-choba",
+    "title": "Ремонт на читалище с. Чоба",
+    "location": "с.Чоба, общ.Брезово",
+    "client": "Община Брезово",
+    "scope": null,
+    "description": "Ремонт на покрив , подмяна на дограма, ремонт на читалищна зала и сцени",
+    "cover_image_url": "https://www.artstroismolian.com/projects/31.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/31/2.jpg",
+      "https://www.artstroismolian.com/projects/31/3.jpg",
+      "https://www.artstroismolian.com/projects/31/4.jpg",
+      "https://www.artstroismolian.com/projects/31/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d47207.07087391526!2d25.091784!3d42.311772!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a82df5aed46971%3A0xa00a014cd0f61f0!2zNDE2MSDQp9C-0LHQsA!5e0!3m2!1sbg!2sbg!4v1540471142590",
+    "partner_url": "http://brezovo.bg/news.php",
+    "partner_logo_url": "https://www.artstroismolian.com/part/17.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect31.html"
+  },
+  {
+    "id": 32,
+    "slug": "sportno-igrishte-gr-madan",
+    "title": "Спортно игрище гр. Мадан",
+    "location": "гр.Мадан, общ.Мадан",
+    "client": "СНЦ „СПОРТ ЗА ВСИЧКИ – Мадан",
+    "scope": null,
+    "description": "Спортна площадка с изкуствена тревна настилка и вертикална планировка в УПИ IV,кв.53 по ПУП на гр. Мадан",
+    "cover_image_url": "https://www.artstroismolian.com/projects/32.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/32/2.jpg",
+      "https://www.artstroismolian.com/projects/32/3.jpg",
+      "https://www.artstroismolian.com/projects/32/4.jpg",
+      "https://www.artstroismolian.com/projects/32/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11952.904850293035!2d24.929891627359833!3d41.499372439142086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14adac81694878a5%3A0x400a01269bf5a50!2z0JzQsNC00LDQvQ!5e0!3m2!1sbg!2sbg!4v1540471455472",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect32.html"
+  },
+  {
+    "id": 33,
+    "slug": "park-gr-brezovo",
+    "title": "Парк гр. Брезово",
+    "location": "гр.Брезово",
+    "client": "община Брезово",
+    "scope": null,
+    "description": "Реконструкция и благоустрояване на парк УПИ I – парк,кв.26 по ЗРП на гр.Брезово",
+    "cover_image_url": "https://www.artstroismolian.com/projects/33.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/33/2.jpg",
+      "https://www.artstroismolian.com/projects/33/3.jpg",
+      "https://www.artstroismolian.com/projects/33/4.jpg",
+      "https://www.artstroismolian.com/projects/33/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23590.72448738916!2d25.057387871920028!3d42.34592253666582!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a8331c572523fb%3A0xa5065ffb523bf049!2zNDE2MCDQkdGA0LXQt9C-0LLQvg!5e0!3m2!1sbg!2sbg!4v1540471710614",
+    "partner_url": "http://brezovo.bg/news.php",
+    "partner_logo_url": "https://www.artstroismolian.com/part/17.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect33.html"
+  },
+  {
+    "id": 34,
+    "slug": "zhilishtna-sgrada-v-sofiya-ul-aldomirovska-138",
+    "title": "Жилищна сграда в София, „ул. Алдомировска“ 138",
+    "location": "гр. София, р-н Възраждане, ул.“Алдомировска“ № 138-140",
+    "client": "„Маунтин стар“ ЕООД",
+    "scope": "Конструктивна",
+    "description": "Жилищна сграда с надземни гаражи и парко места в УПИ VI-16, 17 от квартал 233, съгласно плана на гр. София",
+    "cover_image_url": "https://www.artstroismolian.com/projects/34.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/34/2.jpg",
+      "https://www.artstroismolian.com/projects/34/3.jpg",
+      "https://www.artstroismolian.com/projects/34/4.jpg",
+      "https://www.artstroismolian.com/projects/34/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2932.2054419057567!2d23.29997061483634!3d42.699370521599256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa854617301e6d%3A0xe01c9499d00cf120!2z0YPQuy4g4oCe0JDQu9C00L7QvNC40YDQvtCy0YHQutCw4oCcIDEzOCwgMTMwOSDQti7Qui4g0JfQvtC90LAg0JEtMTksINCh0L7RhNC40Y8!5e0!3m2!1sbg!2sbg!4v1540472237057",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect34.html"
+  },
+  {
+    "id": 35,
+    "slug": "zhilishtna-sgrada-asenovgrad-ul-tsar-ivan-asen-ii",
+    "title": "Жилищна сграда Асеновград ул.“Цар Иван Асен“ II",
+    "location": "гр.Асеновград, ул.“Цар Иван Асен“ II № 99",
+    "client": "община Асеновград",
+    "scope": null,
+    "description": "Изпълнение на Инженеринг проектиране и изпълнение на СМР във връзка с реализацията на националната програма за енергийна ефективност на многофамилните жилищни сгради на територията на Община Асеновград",
+    "cover_image_url": "https://www.artstroismolian.com/projects/35.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/35/2.jpg",
+      "https://www.artstroismolian.com/projects/35/3.jpg",
+      "https://www.artstroismolian.com/projects/35/4.jpg",
+      "https://www.artstroismolian.com/projects/35/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5928.605619471602!2d24.884531000000003!3d42.01523600000001!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14acd893b3982975%3A0x6be534050723627a!2z0YPQuy4g4oCe0KbQsNGAINCY0LLQsNC9INCQ0YHQtdC9IElJ4oCcIDk5LCDQptC10L3RgtGK0YAsINCQ0YHQtdC90L7QstCz0YDQsNC0!5e0!3m2!1sbg!2sbg!4v1540472430868",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect35.html"
+  },
+  {
+    "id": 36,
+    "slug": "kashta-za-gosti-v-kv-sharenka-gr-madan",
+    "title": "Къща за гости в кв. Шаренка, гр. Мадан",
+    "location": "гр. Мадан,кв. Шаренка",
+    "client": "ЕТ „Ахмед Забитев“",
+    "scope": "Конструктивна , Архитектурна, ВиК, Ел.уредби, ОВК инсталации, Вертикална планировка",
+    "description": "„Къща за гости „в УПИ-I-132 по действащия план на гр. Мадан",
+    "cover_image_url": "https://www.artstroismolian.com/projects/36.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/36/2.jpg",
+      "https://www.artstroismolian.com/projects/36/3.jpg",
+      "https://www.artstroismolian.com/projects/36/4.jpg",
+      "https://www.artstroismolian.com/projects/36/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8451.908773077299!2d24.93257478091351!3d41.499918777004716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14adac81694878a5%3A0x400a01269bf5a50!2z0JzQsNC00LDQvQ!5e0!3m2!1sbg!2sbg!4v1540472707635",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect36.html"
+  },
+  {
+    "id": 37,
+    "slug": "kashta-za-gosti-v-gr-rudozem",
+    "title": "Къща за гости в гр. Рудозем",
+    "location": "гр.Рудозем, обл.Смолян",
+    "client": "ЕТ „Калоян Стоилов 84“",
+    "scope": "Конструктивна , Архитектурна, ВиК, Ел.уредби, ОВК, Вертикална планировка",
+    "description": "Пристройка и преустройство на съществуваща жилищна сграда в къща за гости",
+    "cover_image_url": "https://www.artstroismolian.com/projects/37.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/37/2.jpg",
+      "https://www.artstroismolian.com/projects/36/3.jpg",
+      "https://www.artstroismolian.com/projects/37/4.jpg",
+      "https://www.artstroismolian.com/projects/37/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d47814.87826555618!2d24.852926!3d41.494958!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac4c32b159cf35%3A0x400a01269bf5a70!2zNDk2MCDQoNGD0LTQvtC30LXQvA!5e0!3m2!1sbg!2sbg!4v1540472871530",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect37.html"
+  },
+  {
+    "id": 38,
+    "slug": "pitsariya-s-starosel",
+    "title": "Пицария с.Старосел",
+    "location": "с.Старосел, общ.Хисаря",
+    "client": "„БАЛКАНТАБАКО“ ООД",
+    "scope": "Груб строеж, Довършителни работи, Ел., ВиК инсталации, Топлоизолация, Вертикална планировка",
+    "description": "„Апарт Хотел” , „Изграждане на пицария” , включва „Пицария в ПИ 215025,землище на с.Старосел с ЕКАТТЕ 69016,община Хисаря”",
+    "cover_image_url": "https://www.artstroismolian.com/projects/38.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/38/2.jpg",
+      "https://www.artstroismolian.com/projects/38/3.jpg",
+      "https://www.artstroismolian.com/projects/38/4.jpg",
+      "https://www.artstroismolian.com/projects/38/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d23538.166855839656!2d24.571303!3d42.485794!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a9eec860055b69%3A0xa00a014cd0f2500!2zNDE3NSDQodGC0LDRgNC-0YHQtdC7!5e0!3m2!1sbg!2sbg!4v1540473120749",
+    "partner_url": "http://www.starosel.com/",
+    "partner_logo_url": "https://www.artstroismolian.com/part/7.png",
+    "source_url": "https://www.artstroismolian.com/projects/progect38.html"
+  },
+  {
+    "id": 39,
+    "slug": "fontan-i-detska-ploshtadka-s-srednogortsi",
+    "title": "Фонтан и детска площадка с. Средногорци",
+    "location": "гр.Мадан, общ.Мадан",
+    "client": "НЧ „Никола Й. Вапцаров-1997“",
+    "scope": null,
+    "description": "Изграждане на фонтан пред читалище и детска площадка за малки деца",
+    "cover_image_url": "https://www.artstroismolian.com/projects/39.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/39/2.jpg",
+      "https://www.artstroismolian.com/projects/39/3.jpg",
+      "https://www.artstroismolian.com/projects/39/4.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5973.57502307771!2d24.9056380742871!3d41.53054319865668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14adacabe47dfc73%3A0xa00a014cd0f18e0!2zNDk1NCDQodGA0LXQtNC90L7Qs9C-0YDRhtC4!5e0!3m2!1sbg!2sbg!4v1540474232025",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect39.html"
+  },
+  {
+    "id": 40,
+    "slug": "detska-ploshtadka-kv-ustovo-gr-smolyan",
+    "title": "Детска площадка кв.Устово, гр.Смолян",
+    "location": "кв.Устово, гр.Смолянн",
+    "client": "община Смолян",
+    "scope": null,
+    "description": "Благоустрояване и вертикална планировка кв.70, 73 и 74 ж.к. „Прогреси”, гр.Смолян, „Детски площадки”,Паркоустройство – актуализация,Изместване на кабелен електропровод 20kV.а",
+    "cover_image_url": "https://www.artstroismolian.com/projects/40.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/40/2.jpg",
+      "https://www.artstroismolian.com/projects/40/3.jpg",
+      "https://www.artstroismolian.com/projects/40/4.jpg",
+      "https://www.artstroismolian.com/projects/40/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11939.25134643347!2d24.776655327402747!3d41.573295170680446!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac56b83793c597%3A0x31fbf0ebd3fd5c2f!2zNDcwMiDQo9GB0YLQvtCy0L4sINCh0LzQvtC70Y_QvQ!5e0!3m2!1sbg!2sbg!4v1540474300286",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect40.html"
+  },
+  {
+    "id": 41,
+    "slug": "dom-na-kulturata-gr-rudozem",
+    "title": "Дом на културата гр. Рудозем",
+    "location": "гр.Рудозем, общ.Рудозем",
+    "client": "община Рудозем",
+    "scope": "Топлоизолация, Дограма, ОиВ инсталация система с Ре куператор ,Ел.инсталация",
+    "description": "Строително -монтажни работи за повишаване на енергийната ефективност в Културен дом – гр. Рудозем“ по проект №170 „Повишаване на енергийната ефективност в Културен дом – гр. Рудозем“",
+    "cover_image_url": "https://www.artstroismolian.com/projects/41.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/41/2.jpg",
+      "https://www.artstroismolian.com/projects/41/3.jpg",
+      "https://www.artstroismolian.com/projects/41/4.jpg",
+      "https://www.artstroismolian.com/projects/41/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d191414.37074011544!2d24.680626139135118!3d41.44248621424957!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac4c2d536fa901%3A0x86e9e80eb39f3e12!2z0KDRg9C00L7Qt9C10Lw!5e0!3m2!1sbg!2sbg!4v1540475163226",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect41.html"
+  },
+  {
+    "id": 42,
+    "slug": "preustroystvo-i-remont-na-vatreshno-otdelenie",
+    "title": "Преустройство и ремонт на „Вътрешно отделение“",
+    "location": "гр.Смолян, Бул.България №2",
+    "client": "МБАЛ „Д-р Братан Шукеров” АД",
+    "scope": null,
+    "description": "Преустройство и ремонт на „Вътрешно отделение“, Блок „Б“ на 6-ти етаж",
+    "cover_image_url": "https://www.artstroismolian.com/projects/42.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/42/2.jpg",
+      "https://www.artstroismolian.com/projects/42/3.jpg",
+      "https://www.artstroismolian.com/projects/42/4.jpg",
+      "https://www.artstroismolian.com/projects/42/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1774.775596541104!2d24.717081508972107!3d41.57346748889766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac50a95c83e9eb%3A0x9b27e2d39e2ef806!2z0JzQkdCQ0Jsg4oCe0JHRgNCw0YLQsNC9INCo0YPQutC10YDQvtCyIg!5e0!3m2!1sbg!2sbg!4v1540475705188",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect42.html"
+  },
+  {
+    "id": 43,
+    "slug": "benzonostantsiya-omiks",
+    "title": "Бензоностанция Омикс",
+    "location": "гр.София, кв,Казичене",
+    "client": "„Омикс“ ЕООД",
+    "scope": "Груб строеж, Довършителни работи, Ел., ВиК и ОиВ инсталации, Топлоизолация, Вертикална планировка",
+    "description": "Търговско офисно –сервизен комплекс с бензиностанция и АГСС,КТП за тир ,открита автомивка в УПИ -153 „Казичене Запад",
+    "cover_image_url": "https://www.artstroismolian.com/projects/43.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/43/2.jpg",
+      "https://www.artstroismolian.com/projects/43/3.jpg",
+      "https://www.artstroismolian.com/projects/43/4.jpg",
+      "https://www.artstroismolian.com/projects/43/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23472.890640313904!2d23.441140072665323!3d42.65899612695938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa87923e762cc5%3A0xa00a014cd0e5550!2z0JrQsNC30LjRh9C10L3QtQ!5e0!3m2!1sbg!2sbg!4v1540475579497",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect43.html"
+  },
+  {
+    "id": 44,
+    "slug": "remont-na-chitalishte-s-padarsko",
+    "title": "Ремонт на читалище с. Пъдарско",
+    "location": "с.Пъдарско, общ.Брезово",
+    "client": "Община Брезово",
+    "scope": null,
+    "description": "Ремонт на покрив , подмяна на дограма, ремонт на читалищна зала и сцени",
+    "cover_image_url": "https://www.artstroismolian.com/projects/44.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/44/2.jpg",
+      "https://www.artstroismolian.com/projects/44/3.jpg",
+      "https://www.artstroismolian.com/projects/44/4.jpg",
+      "https://www.artstroismolian.com/projects/44/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11795.087114673952!2d24.883788327856504!3d42.3473888758892!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a9d1e9ac3dcb99%3A0xa00a014cd0ef140!2zNDE1OCDQn9GK0LTQsNGA0YHQutC-!5e0!3m2!1sbg!2sbg!4v1540475459756",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect44.html"
+  },
+  {
+    "id": 45,
+    "slug": "tsnst-gr-panagyurishte",
+    "title": "ЦНСТ гр. Панагюрище",
+    "location": "гр.Панагюрище",
+    "client": "„ЗАПРЯНОВИ 03“ ООД",
+    "scope": null,
+    "description": "Изграждане от основи до „ключ“",
+    "cover_image_url": "https://www.artstroismolian.com/projects/45.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/45/2.jpg",
+      "https://www.artstroismolian.com/projects/45/3.jpg",
+      "https://www.artstroismolian.com/projects/45/4.jpg",
+      "https://www.artstroismolian.com/projects/45/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23532.101256172715!2d24.17263712229074!3d42.50191235718981!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa03373b26b3a3%3A0xd285fc3a8bbab835!2zNDUwMCDQn9Cw0L3QsNCz0Y7RgNC40YnQtQ!5e0!3m2!1sbg!2sbg!4v1540475332306",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect45.html"
+  },
+  {
+    "id": 46,
+    "slug": "zhilishtna-sgrada-v-sofiya-ul-panagyurishte-36",
+    "title": "Жилищна сграда в София, ул. „Панагюрище“ 36",
+    "location": "гр.София, р-н Сердика, ул.“Панагюрище“ №36",
+    "client": "„ПАН 36“ ООД",
+    "scope": "Груб строеж",
+    "description": "Жилищна сграда на три и пет етажа с магазини и офиси в първи етаж и подземни сгради",
+    "cover_image_url": "https://www.artstroismolian.com/projects/46.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/46/2.jpg",
+      "https://www.artstroismolian.com/projects/46/3.jpg",
+      "https://www.artstroismolian.com/projects/46/4.jpg",
+      "https://www.artstroismolian.com/projects/46/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5863.8070036933195!2d23.331335000000003!3d42.705764!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa85625540349f%3A0xc83095c67f20b7c1!2z0YPQuy4g4oCe0J_QsNC90LDQs9GO0YDQuNGJ0LXigJwgMzYsIDEyMDIg0KbQtdC90YLRitGALCDQodC-0YTQuNGP!5e0!3m2!1sbg!2sbg!4v1540477879900",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect46.html"
+  },
+  {
+    "id": 47,
+    "slug": "rekonstruktsiya-na-vila-s-stoykite-obsht-smolyan",
+    "title": "Реконструкция на вила с.Стойките, общ.Смолян",
+    "location": "с.Стойките, общ.Смолян",
+    "client": "Частно лице",
+    "scope": "Груб строеж, Довършителни работи, Ел., ВиК и ОиВ инсталации,Топлоизолация, Вертикална планировка",
+    "description": "Реконструкция на къща на три етажа , с гараж и барбекю",
+    "cover_image_url": "https://www.artstroismolian.com/projects/47.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/47/2.jpg",
+      "https://www.artstroismolian.com/projects/47/3.jpg",
+      "https://www.artstroismolian.com/projects/47/4.jpg",
+      "https://www.artstroismolian.com/projects/47/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11923.38293065334!2d24.632087!3d41.659075!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac58b9f0e1bdd9%3A0xb6305d6a01ba8767!2z0KHRgtC-0LnQutC40YLQtQ!5e0!3m2!1sbg!2sbg!4v1540477737598",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect47.html"
+  },
+  {
+    "id": 48,
+    "slug": "kashta-v-kv-boyana-gr-sofiya",
+    "title": "Къща в кв. Бояна, гр. София",
+    "location": "гр. София, кв.Бояна",
+    "client": "Частно лице",
+    "scope": null,
+    "description": "Конструктивна , Архитектурна, ВиК, Ел.уредби, ОВК инсталации, Вертикална планировка КРАТКО ОПИСАНИЕ: Къща с подземни гаражи и басейн",
+    "cover_image_url": "https://www.artstroismolian.com/projects/48.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/48/2.jpg",
+      "https://www.artstroismolian.com/projects/48/3.jpg",
+      "https://www.artstroismolian.com/projects/48/4.jpg",
+      "https://www.artstroismolian.com/projects/48/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d23477.509603540275!2d23.2745!3d42.646759!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa835fa1cd6267%3A0x2ccbc31cd44aa594!2zMTYxNiDQutCyLiDQkdC-0Y_QvdCwLCDQodC-0YTQuNGP!5e0!3m2!1sbg!2sbg!4v1540477618263",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect48.html"
+  },
+  {
+    "id": 49,
+    "slug": "zhilishtna-sgrada-v-sofiya-ul-strandzha-126",
+    "title": "Жилищна сграда в София ул.“Странджа“ № 126",
+    "location": "гр. София ,ул.“Странджа“ № 126",
+    "client": "„Маунтин стар“ ЕООД",
+    "scope": "Конструктивна",
+    "description": "Жилищна сграда 3 – 5 етажа с гаражи” в УПИ VIII-3; кв.98-а; м.”ГГЦ Зона В-17",
+    "cover_image_url": "https://www.artstroismolian.com/projects/49.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/49/2.jpg",
+      "https://www.artstroismolian.com/projects/49/3.jpg",
+      "https://www.artstroismolian.com/projects/49/4.jpg",
+      "https://www.artstroismolian.com/projects/49/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5863.303138107087!2d23.316607!3d42.711098!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa8558a03b3fc5%3A0x903d3daa9bf4c896!2z0YPQuy4g4oCe0KHRgtGA0LDQvdC00LbQsOKAnCAxNjIsIDEyMzMg0LYu0LouINCR0LDQvdC40YjQvtGA0LAsINCh0L7RhNC40Y8!5e0!3m2!1sbg!2sbg!4v1540477239657",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect49.html"
+  },
+  {
+    "id": 50,
+    "slug": "semeyna-kashta-v-s-momchilovtsi",
+    "title": "Семейна къща в с. Момчиловци",
+    "location": "с.Момчиловци, обл.Смолян",
+    "client": "Частно лице",
+    "scope": "„Жилищни сгради“ УПИ Ι-5.634-жилищно застрояване, кв.99",
+    "description": "Конструктивна , Архитектурна, ВиК, Ел.уредби, ОВК, Вертикална планировка",
+    "cover_image_url": "https://www.artstroismolian.com/projects/50.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/50/2.jpg",
+      "https://www.artstroismolian.com/projects/50/3.jpg",
+      "https://www.artstroismolian.com/projects/50/4.jpg",
+      "https://www.artstroismolian.com/projects/50/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d23846.970631570657!2d24.772786!3d41.658522!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14acf88d1340e6f7%3A0xa00a014cd0ea4a0!2zNDc1MCDQnNC-0LzRh9C40LvQvtCy0YbQuA!5e0!3m2!1sbg!2sbg!4v1540477182842",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect50.html"
+  },
+  {
+    "id": 51,
+    "slug": "zhilishtna-sgrada-ul-chan-4-gr-smolyan",
+    "title": "Жилищна сграда ул. Чан № 4, гр.Смолян",
+    "location": "гр.Смолян, кв.Невястата, ул.Чан 4",
+    "client": "„ЕМ ИНВЕСТ“ ЕООД",
+    "scope": "Земни работи, част конструктивна ,част архитектурна, част електро, част В и К (вътрешна и външна)",
+    "description": "Жилищна група в УПИ ХVI-9170732,кв.221 по плана на гр.Смолян",
+    "cover_image_url": "https://www.artstroismolian.com/projects/51.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/51/2.jpg",
+      "https://www.artstroismolian.com/projects/51/3.jpg",
+      "https://www.artstroismolian.com/projects/51/4.jpg",
+      "https://www.artstroismolian.com/projects/51/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5969.002017194638!2d24.706508!3d41.58004300000001!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac5a024160683d%3A0x17bb9dcc9c449ae7!2z0YPQuy4g4oCe0KfQsNC94oCcIDQsIDQ3MDAg0LYu0LouINCd0LXQstGP0YHRgtCwLCDQodC80L7Qu9GP0L0!5e0!3m2!1sbg!2sbg!4v1540476995196",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect51.html"
+  },
+  {
+    "id": 52,
+    "slug": "zhilishtna-sgrada-ul-evredika-27-gr-smolyan",
+    "title": "Жилищна сграда ул. Евредика №27, гр. Смолян",
+    "location": "гр.Смолян, кв.Невястата, ул.Евредика 27",
+    "client": "гр.Смолян, кв.Невястата, ул.Евредика 27",
+    "scope": "Земни работи, част конструктивна ,част архитектурна, част електро, част В и К (вътрешна и външна)",
+    "description": "„Жилищна сграда“, кв.221 УПИ XVII",
+    "cover_image_url": "https://www.artstroismolian.com/projects/52.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/52/2.jpg",
+      "https://www.artstroismolian.com/projects/52/3.jpg",
+      "https://www.artstroismolian.com/projects/52/4.jpg",
+      "https://www.artstroismolian.com/projects/52/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2984.425557689152!2d24.704790914795332!3d41.58167559189218!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ac59f8a1f0662b%3A0x3ba77a0255b4488c!2z0YPQuy4g4oCe0JXQstGA0LjQtNC40LrQsOKAnCAyNywgNDcwMCDQti7Qui4g0J3QtdCy0Y_RgdGC0LAsINCh0LzQvtC70Y_QvQ!5e0!3m2!1sbg!2sbg!4v1540476833956",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect52.html"
+  },
+  {
+    "id": 53,
+    "slug": "hotel-i-hotel-dve-v-upi-27-za-hotelierstvo-vinarna-selskostopanski-deynosti-i-tr",
+    "title": "„ХОТЕЛ“ И „ХОТЕЛ ДВЕ“ В УПИ 27 - за хотелиерство, винарна, селскостопански дейности и трафопост, ЗЕМЛИЩЕ С.КИСИЙЦИТЕ, ОБЩ.ТРЯВНА, ОБЛ.ГАБРОВО, област ГАБРОВО",
+    "location": "с.Кисийците, Община Трявна, Област Габрово",
+    "client": "„ПРОЕКТ БГ“ ЕООД",
+    "scope": "Земни работи, Част Конструктивна, Част Архитектура, Част Електрическа, Част ВиК, част ОВиК, част Паркоустройство",
+    "description": "„ХОТЕЛ“ И „ХОТЕЛ ДВЕ“ В УПИ 27. Хотелски комплекс, състоящ се от две самостоятелни сгради, ресторант, басейн, дестилерия, детска площадка и стопанска сграда",
+    "cover_image_url": "https://www.artstroismolian.com/projects/53.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/53/1%20%281%29.jpg",
+      "https://www.artstroismolian.com/projects/53/1%20%282%29.jpg",
+      "https://www.artstroismolian.com/projects/53/1%20%283%29.jpg",
+      "https://www.artstroismolian.com/projects/53/1%20%284%29.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2923.4558425381815!2d25.501554975672164!3d42.884328321148956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a91ddb3ee1da13%3A0x38bf050af3080170!2zNTM2NSDQmtC40YHQuNC50YbQuNGC0LU!5e0!3m2!1sbg!2sbg!4v1738847893377!5m2!1sbg!2sbg",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect53.html"
+  },
+  {
+    "id": 54,
+    "slug": "zhilishtna-grupa-sgrada-siti-houm-iii-sgrada-siti-uayt",
+    "title": "Жилищна група: Сграда „СИТИ ХОУМ II“и Сграда „СИТИ УАЙТ“",
+    "location": "гр.Пловдив, бул. „Северен“ №47",
+    "client": "„СИТИ ПРОПЪРТИС“ ЕООД",
+    "scope": "Земни работи, Част Конструктивна, Част Архитектура, Част Електрическа, Част ВиК, част ОВиК, част Паркоустройство",
+    "description": "Жилищната група се състои от две многофамилни жилищни шестетажни сгради с общ сутерен за двете сгради. Обособени са паркоместа в сутерена и прилежащото дворно пространство",
+    "cover_image_url": "https://www.artstroismolian.com/projects/54/1%20%281%29.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/54/1%20%282%29.jpg",
+      "https://www.artstroismolian.com/projects/54/1%20%283%29.jpg",
+      "https://www.artstroismolian.com/projects/54/1%20%284%29.jpg",
+      "https://www.artstroismolian.com/projects/52/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2923.4558425381815!2d25.501554975672164!3d42.884328321148956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a91ddb3ee1da13%3A0x38bf050af3080170!2zNTM2NSDQmtC40YHQuNC50YbQuNGC0LU!5e0!3m2!1sbg!2sbg!4v1738847893377!5m2!1sbg!2sbg",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect54.html"
+  },
+  {
+    "id": 55,
+    "slug": "hotel-za-vinarska-izba-i-destileriya-proizvodstveni-deynosti-i-obshtestveno-osbl",
+    "title": "Хотел за винарска изба и дестилерия, производствени дейности и обществено осблужване в с.Старосел, Община Хисаря, Област Пловдив",
+    "location": "УПИ 215.39 в семлището на с.Старосел, Община Хисаря, Област Пловдив",
+    "client": "„БАЛКАНТАБАКО“ ЕООД",
+    "scope": "Земни работи, Част Конструктивна, Част Архитектура, Част Електрическа, Част ВиК, част ОВиК, част Паркоустройство",
+    "description": "Сградата се състои от пет надземни етажи и един подземен - сутерен, четири хотелски етажа и мансардно частично ниво. Фасадите са с полимерна бяла мазилка и облицовки с HPL. Цокълът на сградата е с каменна облицовка. Сградата е монолитна със стоманобетонова конструкция. Покривът е изпълнен със стоманобетонова рамкова конструкция, два слоя пожароустойчив гипсокартон, дървени ребра, обшивка и керемиди. Фундирането е с обща монолитна стоманобетонна фундаментна плоча с дебелина 60 см. РЗП на хотела - 3 991,96 кв.м (без сутерен)",
+    "cover_image_url": "https://www.artstroismolian.com/projects/55/1.jpg",
+    "gallery_image_urls": [
+      "https://www.artstroismolian.com/projects/55/2.jpg",
+      "https://www.artstroismolian.com/projects/55/3.jpg",
+      "https://www.artstroismolian.com/projects/55/4.jpg",
+      "https://www.artstroismolian.com/projects/55/5.jpg"
+    ],
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2923.4558425381815!2d25.501554975672164!3d42.884328321148956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a91ddb3ee1da13%3A0x38bf050af3080170!2zNTM2NSDQmtC40YHQuNC50YbQuNGC0LU!5e0!3m2!1sbg!2sbg!4v1738847893377!5m2!1sbg!2sbg",
+    "partner_url": null,
+    "partner_logo_url": null,
+    "source_url": "https://www.artstroismolian.com/projects/progect55.html"
+  }
+]

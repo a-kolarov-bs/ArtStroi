@@ -1,0 +1,1286 @@
+---
+/**
+ * Project detail page — premium, relaxed product page.
+ *
+ * Composition (top→bottom, tight):
+ *   1. Breadcrumb strip + archive index
+ *   2. Image-led hero — large cover left, title + key meta right
+ *   3. Story + spec table (two-column, tight)
+ *   4. Dense gallery (Castle-Homes-style wall, 4-col, hairline gaps,
+ *      lightbox with arrow-key nav + frame counter)
+ *   5. Medium-sized contained map card with address pill
+ *   6. Compact next-project CTA
+ *
+ * SEO: CreativeWork + BreadcrumbList JSON-LD, canonical, OG image,
+ * descriptive alts, lazy gallery, eager hero.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Reveal from '../../components/Reveal.astro';
+import ProjectProtocol from '../../components/ProjectProtocol.astro';
+import { projects, getCategory, getProtocol } from '../../data/projects';
+
+export async function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const idx = projects.findIndex((p) => p.id === project.id);
+
+// Pick the next 3 projects in archive order (wrapping). Used in the
+// editorial close-out grid so visitors leave with three concrete onward
+// destinations — a curiosity hook, not just a "next" button.
+const NEXT_COUNT = 3;
+const nextProjects = Array.from({ length: NEXT_COUNT }, (_, i) =>
+  projects[(idx + 1 + i) % projects.length]
+);
+const nextProject = nextProjects[0];
+
+const category = getCategory(project);
+const cover = project.coverImageUrl ?? '/hero/hero-poster.jpg';
+const locationShort = (project.location ?? '').split(',')[0]?.trim() || 'България';
+
+const gallery: string[] = project.galleryImageUrls.length > 0
+  ? project.galleryImageUrls
+  : project.coverImageUrl ? [project.coverImageUrl] : [];
+
+const mapEmbedSrc = project.mapEmbedUrl ??
+  (project.location
+    ? `https://maps.google.com/maps?q=${encodeURIComponent(project.location)}&hl=bg&z=14&output=embed`
+    : null);
+
+const mapsLinkOut = project.location
+  ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(project.location)}`
+  : null;
+
+// Coordinate parsing — legacy Maps embeds encode lat/lng in pb param
+function parseCoords(embedUrl: string | null) {
+  if (!embedUrl) return null;
+  const m = embedUrl.match(/!2d(-?\d+\.\d+)!3d(-?\d+\.\d+)/);
+  if (!m) return null;
+  return { lng: parseFloat(m[1]), lat: parseFloat(m[2]) };
+}
+const coords = parseCoords(project.mapEmbedUrl);
+
+const projectNumber = String(idx + 1).padStart(3, '0');
+const totalProjects = String(projects.length).padStart(3, '0');
+const protocol = getProtocol(project);
+
+// Year extracted from Акт 16 record (format "XII.2020" → "2020"); used
+// in the editorial running-head metadata strip.
+const protocolYear =
+  protocol?.records.find((r) => /^акт/i.test(r.label))?.value.match(/(\d{4})/)?.[1] ?? null;
+const nextProjectNumber = String(((idx + 1) % projects.length) + 1).padStart(3, '0');
+
+const pageTitle = `${project.title}${locationShort && locationShort !== 'България' ? ` — ${locationShort}` : ''} · АРТСТРОЙ ООД`;
+
+// Meta description: template-driven for consistent local-SEO keyword
+// density (executor + location + category + project stats from
+// ПРОТОКОЛ). The prose description sits on the page in the hero — it
+// shouldn't double as meta description for B2B queries.
+const metaLead = `${project.title} — изпълнен от АРТСТРОЙ ООД${
+  locationShort && locationShort !== 'България' ? ` в ${locationShort}` : ''
+}. ${category}.`;
+const metaStats = protocol && protocol.metrics.length > 0
+  ? ' ' + protocol.metrics.map((m) => `${m.value} ${m.label}`).join(' · ') + '.'
+  : '';
+const fullMeta = (metaLead + metaStats).replace(/\s+/g, ' ').trim();
+const pageDescription = fullMeta.length > 160
+  ? fullMeta.slice(0, 157).trimEnd() + '…'
+  : fullMeta;
+
+// ─── SEO ────────────────────────────────────────────────────────
+const siteOrigin = (Astro.site ?? new URL('https://artstroismolian.com')).toString().replace(/\/$/, '');
+const canonical = `${siteOrigin}/proekti/${project.slug}`;
+
+const schemaCreativeWork = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  '@id': canonical,
+  name: project.title,
+  description: project.description ?? undefined,
+  image: project.coverImageUrl ?? undefined,
+  url: canonical,
+  inLanguage: 'bg',
+  creator: {
+    '@type': 'Organization',
+    name: 'АРТСТРОЙ ООД',
+    url: siteOrigin,
+    foundingDate: '1992',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'кв. Устово, ул. „Хаджи Иван Бечев" №6',
+      addressLocality: 'Смолян',
+      postalCode: '4700',
+      addressCountry: 'BG',
+    },
+  },
+  contentLocation: project.location
+    ? {
+        '@type': 'Place',
+        name: project.location,
+        ...(coords && {
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: coords.lat,
+            longitude: coords.lng,
+          },
+        }),
+      }
+    : undefined,
+  ...(project.client && {
+    sponsor: { '@type': 'Organization', name: project.client },
+  }),
+  ...(project.scope && { keywords: project.scope }),
+  genre: category,
+  // Expose ПРОТОКОЛ metrics + records as PropertyValue entries so
+  // crawlers and LLMs can extract structured facts (РЗП, срок, etc.).
+  ...(protocol && {
+    additionalProperty: [
+      ...protocol.metrics.map((m) => ({
+        '@type': 'PropertyValue',
+        name: m.sublabel ? `${m.label} (${m.sublabel})` : m.label,
+        value: m.value.replace(/\s/g, ''),
+      })),
+      ...protocol.records.map((r) => ({
+        '@type': 'PropertyValue',
+        name: r.label,
+        value: r.value,
+      })),
+    ],
+  }),
+};
+
+const schemaBreadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Начало', item: siteOrigin },
+    { '@type': 'ListItem', position: 2, name: 'Проекти', item: `${siteOrigin}/proekti` },
+    { '@type': 'ListItem', position: 3, name: project.title, item: canonical },
+  ],
+};
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} ogImage={cover} solidHeader={true}>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schemaCreativeWork)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schemaBreadcrumb)} />
+
+  <article class="bg-cream-50 pt-20">
+
+    <!-- ════════════════════════════════════════════════════════════
+         1 · Running head — magazine-style metadata strip + back link.
+              Reads like the running header of an architecture
+              publication: archive position · category · location · year.
+         ════════════════════════════════════════════════════════════ -->
+    <nav aria-label="Архив на проекти" class="proj-runhead border-b border-ink-900/10 bg-cream-50">
+      <div class="container-page py-3.5 md:py-4 flex items-center justify-between gap-4 flex-wrap">
+        <ol class="runhead-meta flex items-center flex-wrap gap-x-2.5 md:gap-x-3 gap-y-1">
+          <li class="runhead-item runhead-archive">
+            АРХИВ — Nº <span class="tabular-nums">{projectNumber}</span> <span class="opacity-50">/</span> <span class="tabular-nums">{totalProjects}</span>
+          </li>
+          <li class="runhead-sep" aria-hidden="true">·</li>
+          <li class="runhead-item">{category}</li>
+          {locationShort && locationShort !== 'България' && (
+            <>
+              <li class="runhead-sep" aria-hidden="true">·</li>
+              <li class="runhead-item">{locationShort}</li>
+            </>
+          )}
+          {protocolYear && (
+            <>
+              <li class="runhead-sep" aria-hidden="true">·</li>
+              <li class="runhead-item tabular-nums">{protocolYear}</li>
+            </>
+          )}
+        </ol>
+        <a
+          href="/proekti"
+          class="crumb-back inline-flex items-center gap-2 text-[0.65rem] uppercase tracking-[0.22em] font-medium text-ink-900 hover:text-brand transition-colors duration-300"
+        >
+          <span aria-hidden="true" class="text-brand transition-transform duration-300">←</span>
+          Всички проекти
+        </a>
+      </div>
+    </nav>
+
+    <!-- ════════════════════════════════════════════════════════════
+         2 · HERO — image-led split. Cover on the left (8 cols),
+              title + key meta on the right (4 cols).
+         ════════════════════════════════════════════════════════════ -->
+    <section class="relative isolate overflow-hidden pt-6 md:pt-10 pb-10 md:pb-14">
+      <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet"></div>
+      <div class="container-page">
+        <div class="grid grid-cols-12 gap-y-8 gap-x-6 md:gap-x-10 items-stretch">
+
+          <!-- Cover image -->
+          <div class="col-span-12 lg:col-span-7 flex">
+            <Reveal class="w-full flex">
+              <figure class="hero-figure relative overflow-hidden rounded-xl bg-ink-900 ring-1 ring-ink-900/10 w-full shadow-[0_18px_44px_-22px_rgba(18,22,28,0.28)]">
+                <img
+                  src={cover}
+                  alt={`${project.title}${project.location ? ` — ${project.location}` : ''}`}
+                  fetchpriority="high"
+                  decoding="async"
+                  class="hero-image block w-full h-full object-cover"
+                  style={`view-transition-name: project-${project.slug};`}
+                />
+              </figure>
+            </Reveal>
+          </div>
+
+          <!-- Title + meta column -->
+          <div class="col-span-12 lg:col-span-5 lg:pt-2 flex flex-col">
+            <Reveal>
+              <p class="flex items-center gap-3 text-[0.62rem] uppercase tracking-[0.28em] font-medium text-brand">
+                <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
+                {category}
+              </p>
+            </Reveal>
+
+            <Reveal>
+              <h1
+                class="hero-title mt-5 font-display text-ink-950 max-w-[20ch]"
+                style="font-variation-settings: 'opsz' 96; font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.85rem); line-height: 1.02; letter-spacing: -0.02em;"
+              >
+                {project.title}
+              </h1>
+            </Reveal>
+
+            {project.description && (
+              <Reveal>
+                <p
+                  class="mt-6 text-ink-900/85 text-[15px] leading-[1.65] max-w-[42ch]"
+                  style="font-variation-settings: 'opsz' 24;"
+                >
+                  {project.description.length > 220
+                    ? project.description.slice(0, 217).trimEnd() + '…'
+                    : project.description}
+                </p>
+              </Reveal>
+            )}
+
+            <!-- Compact key-meta list -->
+            <Reveal>
+              <dl class="mt-7 grid grid-cols-1 gap-y-3.5">
+                {project.client && (
+                  <div class="meta-row">
+                    <dt>Възложител</dt>
+                    <dd>
+                      <div class="flex items-center gap-3 flex-wrap">
+                        <span class="client-name">{project.client}</span>
+                        {project.partnerLogoUrl && (
+                          project.partnerUrl ? (
+                            <a
+                              href={project.partnerUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="client-logo-link shrink-0"
+                              aria-label={`Сайт на ${project.client}`}
+                            >
+                              <img
+                                src={project.partnerLogoUrl}
+                                alt={`${project.client} — лого`}
+                                loading="lazy"
+                                decoding="async"
+                                class="client-logo"
+                              />
+                            </a>
+                          ) : (
+                            <img
+                              src={project.partnerLogoUrl}
+                              alt={`${project.client} — лого`}
+                              loading="lazy"
+                              decoding="async"
+                              class="client-logo shrink-0"
+                            />
+                          )
+                        )}
+                      </div>
+                    </dd>
+                  </div>
+                )}
+                {project.scope && (
+                  <div class="meta-row">
+                    <dt>Обхват</dt>
+                    <dd>{project.scope}</dd>
+                  </div>
+                )}
+              </dl>
+            </Reveal>
+
+            {mapEmbedSrc && (
+              <Reveal class="mt-7 flex-1 flex flex-col min-h-[280px]">
+                <div class="mini-map flex-1 relative overflow-hidden rounded-xl ring-1 ring-ink-900/10 bg-ink-100 shadow-[0_18px_44px_-22px_rgba(18,22,28,0.28)]">
+
+                  <iframe
+                    src={mapEmbedSrc}
+                    class="block w-full h-full"
+                    style="border: 0;"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title={`Малка карта на ${project.title}`}
+                  ></iframe>
+
+                  <!-- Soft top wash so the floating pill always reads -->
+                  <span
+                    aria-hidden="true"
+                    class="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-ink-950/22 via-ink-950/6 to-transparent"
+                  ></span>
+
+                  <!-- Bottom address pill -->
+                  {project.location && (
+                    <div class="pointer-events-none absolute left-3 right-3 bottom-3">
+                      <div class="mini-map-addr inline-flex items-start gap-2.5 max-w-full">
+                        <span aria-hidden="true" class="mt-0.5 inline-block h-3.5 w-0.5 bg-brand shrink-0"></span>
+                        <div class="min-w-0">
+                          <p class="text-[0.5rem] uppercase tracking-[0.3em] font-semibold text-brand">
+                            Адрес
+                          </p>
+                          <p
+                            class="mt-0.5 text-ink-950 text-[12px] !leading-[1.35] truncate"
+                            style="font-variation-settings: 'opsz' 24;"
+                          >
+                            {project.location}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Reveal>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════
+         3 · ПРОТОКОЛ — dark editorial proof band. Big metrics +
+              document refs. Renders only when project has protocol
+              data filled in (currently fake placeholder for id=1).
+         ════════════════════════════════════════════════════════════ -->
+    {protocol && (
+      <ProjectProtocol protocol={protocol} number={projectNumber} total={totalProjects} />
+    )}
+
+    <!-- ════════════════════════════════════════════════════════════
+         4 · GALLERY — dense wall, hairline gaps, lightbox.
+              "Castle Homes"-inspired: tightly packed grid, no
+              chrome, count indicator bottom-right.
+         ════════════════════════════════════════════════════════════ -->
+    {gallery.length > 1 && (
+      <section class="relative isolate overflow-hidden bg-cream-50 pt-2 md:pt-4 pb-12 md:pb-16">
+        <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
+        <div class="container-page mb-6 md:mb-8">
+          <div class="flex items-end justify-between gap-4 flex-wrap">
+            <div>
+              <p class="text-[0.6rem] uppercase tracking-[0.28em] font-medium text-brand">
+                Галерия
+              </p>
+              <h2
+                class="mt-2 font-display text-ink-950 !leading-[1.05]"
+                style="font-variation-settings: 'opsz' 72; font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.1rem); letter-spacing: -0.018em;"
+              >
+                Кадри от обекта
+              </h2>
+            </div>
+            <p class="text-[0.62rem] uppercase tracking-[0.22em] font-medium text-ink-600 tabular-nums">
+              <span class="text-ink-950">{String(gallery.length).padStart(2, '0')}</span>
+              <span class="text-ink-300 mx-1">·</span>
+              кадъра
+            </p>
+          </div>
+        </div>
+
+        <div class="gallery-fullbleed">
+          <div class="gallery-slider relative">
+            <div class="gallery-wall" data-gallery role="region" aria-label="Хоризонтална галерия">
+              {gallery.map((src, i) => (
+                <button
+                  type="button"
+                  class="g-tile group"
+                  data-index={i}
+                  aria-label={`Кадър ${i + 1} от ${gallery.length}`}
+                >
+                  <img
+                    src={src}
+                    alt={`${project.title} — кадър ${i + 1}`}
+                    loading={i < 6 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    class="block h-full w-full object-cover transition-transform duration-[1200ms] ease-out-expo group-hover:scale-[1.04]"
+                  />
+                  <span
+                    aria-hidden="true"
+                    class="g-wash absolute inset-0 bg-gradient-to-t from-ink-950/45 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400"
+                  ></span>
+                  <span
+                    aria-hidden="true"
+                    class="g-num absolute left-2.5 bottom-2.5 md:left-3 md:bottom-3 text-[0.6rem] uppercase tracking-[0.2em] font-medium text-white tabular-nums opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style="text-shadow: 0 1px 3px rgba(0,0,0,0.55);"
+                  >
+                    {String(i + 1).padStart(2, '0')} <span class="opacity-50">/</span> {String(gallery.length).padStart(2, '0')}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    class="g-zoom absolute right-2.5 top-2.5 md:right-3 md:top-3 grid place-items-center w-8 h-8 rounded-full bg-white/0 group-hover:bg-white/12 ring-0 group-hover:ring-1 ring-white/30 backdrop-blur-sm transition-all duration-400"
+                  >
+                    <svg width="10" height="10" viewBox="0 0 14 14" fill="none" class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <path d="M2 2h4M2 2v4M12 2H8M12 2v4M2 12h4M2 12v-4M12 12H8M12 12v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            <!-- Edge fades — soften where tiles get clipped at the scroll edges -->
+            <span aria-hidden="true" class="gallery-fade gallery-fade-l pointer-events-none absolute left-0 top-0 bottom-0 w-16 md:w-24 lg:w-32"></span>
+            <span aria-hidden="true" class="gallery-fade gallery-fade-r pointer-events-none absolute right-0 top-0 bottom-0 w-16 md:w-24 lg:w-32"></span>
+
+            <!-- Floating arrow controls -->
+            <button
+              type="button"
+              class="gallery-arrow gallery-arrow-prev"
+              data-gallery-prev
+              aria-label="Предишни кадри"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="gallery-arrow gallery-arrow-next"
+              data-gallery-next
+              aria-label="Следващи кадри"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="container-page">
+          <!-- Live scrubber — tracks horizontal scroll position -->
+          <div class="mt-5 md:mt-6 flex items-center gap-4 text-[0.6rem] uppercase tracking-[0.22em] font-medium text-ink-600">
+            <span class="tabular-nums text-ink-950" data-gallery-current>01</span>
+            <span class="flex-1 h-px bg-ink-900/10 relative overflow-hidden">
+              <span class="absolute left-0 top-0 bottom-0 bg-brand/85 origin-left" data-gallery-progress style="width: 0%;"></span>
+            </span>
+            <span class="tabular-nums text-ink-950">{String(gallery.length).padStart(2, '0')}</span>
+          </div>
+        </div>
+
+        <!-- Lightbox -->
+        <dialog id="gw-lightbox" class="gw-lightbox" aria-label="Преглед на галерия">
+          <div class="gw-stage">
+            <img id="gw-image" alt="" />
+          </div>
+          <div class="gw-topbar pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-between p-5 md:p-6">
+            <span id="gw-label" class="text-white/85 text-[0.62rem] uppercase tracking-[0.25em] font-medium pointer-events-auto">
+              Кадър 01
+            </span>
+            <button type="button" class="gw-btn gw-close pointer-events-auto" data-gw-close aria-label="Затвори">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
+          <button type="button" class="gw-btn gw-prev" data-gw-prev aria-label="Предишен кадър">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <button type="button" class="gw-btn gw-next" data-gw-next aria-label="Следващ кадър">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div class="gw-counter" aria-hidden="true">
+            <span id="gw-current" class="tabular-nums">1</span>
+            <span class="opacity-40 mx-2">/</span>
+            <span class="tabular-nums">{gallery.length}</span>
+          </div>
+        </dialog>
+      </section>
+    )}
+
+    <!-- ════════════════════════════════════════════════════════════
+         4 · STORY — long-form description if longer than the hero
+              snippet justified.
+         ════════════════════════════════════════════════════════════ -->
+    {project.description && project.description.length > 220 && (
+      <section class="relative isolate overflow-hidden bg-cream-50 py-14 md:py-20">
+        <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-c"></div>
+        <div class="container-page">
+          <div class="grid grid-cols-12 gap-x-6 md:gap-x-10 gap-y-8">
+            <div class="col-span-12 lg:col-span-3">
+              <Reveal>
+                <p class="text-[0.6rem] uppercase tracking-[0.28em] font-medium text-brand flex items-center gap-3">
+                  <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
+                  Описание
+                </p>
+              </Reveal>
+            </div>
+            <div class="col-span-12 lg:col-span-8 lg:col-start-5">
+              <Reveal>
+                <p
+                  class="story-prose text-ink-900 max-w-[58ch]"
+                  style="font-variation-settings: 'opsz' 36; font-size: clamp(1.05rem, 0.95rem + 0.35vw, 1.2rem); line-height: 1.62; letter-spacing: -0.003em;"
+                >
+                  {project.description}
+                </p>
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- ════════════════════════════════════════════════════════════
+         5 · NEXT — magazine-style split card, premium hover.
+         ════════════════════════════════════════════════════════════ -->
+    <section class="relative isolate overflow-hidden bg-cream-50 py-10 md:py-14">
+      <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
+      <div class="container-page">
+
+        <!-- Section header — sets up the curiosity hook + total count -->
+        <Reveal>
+          <div class="flex items-end justify-between gap-4 flex-wrap mb-6 md:mb-8">
+            <div>
+              <p class="flex items-center gap-2.5 text-[0.6rem] uppercase tracking-[0.3em] font-semibold text-brand">
+                <span aria-hidden="true" class="inline-block h-px w-7 bg-brand"></span>
+                Продължи в архива
+              </p>
+              <h2
+                class="mt-3 font-display text-ink-950 !leading-[1.05]"
+                style="font-variation-settings: 'opsz' 72; font-size: clamp(1.4rem, 1rem + 1.3vw, 2rem); letter-spacing: -0.018em;"
+              >
+                Още проекти
+              </h2>
+            </div>
+            <a
+              href="/proekti"
+              class="archive-all inline-flex items-center gap-2 text-ink-900 hover:text-brand transition-colors duration-300 text-[0.65rem] uppercase tracking-[0.25em] font-semibold"
+            >
+              Виж всичките {projects.length}
+              <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </Reveal>
+
+        <!-- 3-up grid of vertical cards — same magazine DNA, compacted -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+          {nextProjects.map((p, i) => {
+            const pIdx = projects.findIndex((x) => x.id === p.id);
+            const pNum = String(pIdx + 1).padStart(3, '0');
+            const pCat = getCategory(p);
+            const pLocShort = (p.location ?? '').split(',')[0]?.trim();
+            return (
+              <Reveal class="h-full" delay={i * 80}>
+                <a
+                  href={`/proekti/${p.slug}`}
+                  class="next-card group relative flex flex-col h-full overflow-hidden rounded-xl ring-1 ring-ink-950/10 shadow-[0_18px_44px_-24px_rgba(18,22,28,0.32)] focus-visible:outline-none"
+                  aria-label={`Проект Nº ${pNum}: ${p.title}`}
+                >
+                  <!-- TOP: cover image -->
+                  <div class="relative aspect-[4/3] overflow-hidden bg-ink-900">
+                    <img
+                      src={p.coverImageUrl ?? '/hero/hero-poster.jpg'}
+                      alt={p.title}
+                      loading="lazy"
+                      decoding="async"
+                      class="absolute inset-0 h-full w-full object-cover transition-transform duration-[1500ms] ease-out-expo group-hover:scale-[1.06]"
+                    />
+                    <!-- Top wash so chip reads on bright photos -->
+                    <span
+                      aria-hidden="true"
+                      class="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-ink-950/35 to-transparent"
+                    ></span>
+                    <!-- Category chip top-left -->
+                    <span
+                      class="next-chip absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.5rem] uppercase tracking-[0.22em] font-semibold text-white"
+                    >
+                      <span aria-hidden="true" class="inline-block h-1 w-1 rounded-full bg-brand"></span>
+                      {pCat}
+                    </span>
+                    <!-- Position bottom-right -->
+                    <span
+                      class="absolute right-3 bottom-3 text-[0.5rem] uppercase tracking-[0.26em] font-semibold text-white/95 tabular-nums"
+                      style="text-shadow: 0 1px 3px rgba(0,0,0,0.55);"
+                    >
+                      Nº {pNum}
+                    </span>
+                  </div>
+
+                  <!-- BOTTOM: dark editorial panel -->
+                  <div class="next-panel relative bg-ink-950 text-white flex flex-col justify-between p-5 md:p-6 flex-1">
+                    <div class="relative">
+                      <h3
+                        class="next-title font-display tracking-tight text-balance"
+                        style="font-variation-settings: 'opsz' 72; font-size: clamp(1.25rem, 1rem + 0.7vw, 1.55rem); line-height: 1.1; letter-spacing: -0.02em;"
+                      >
+                        {p.title}
+                      </h3>
+                      {pLocShort && (
+                        <p
+                          class="mt-2.5 text-[12px] !leading-[1.4] text-white/60 flex items-center gap-1.5"
+                          style="font-variation-settings: 'opsz' 24;"
+                        >
+                          <svg width="10" height="12" viewBox="0 0 14 18" fill="none" class="opacity-70 shrink-0">
+                            <path d="M7 1.5C4.24 1.5 2 3.74 2 6.5C2 10.5 7 16.5 7 16.5C7 16.5 12 10.5 12 6.5C12 3.74 9.76 1.5 7 1.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                            <circle cx="7" cy="6.5" r="1.6" fill="currentColor"/>
+                          </svg>
+                          <span class="truncate">{pLocShort}</span>
+                        </p>
+                      )}
+                    </div>
+
+                    <div class="relative mt-5 flex items-center gap-3 pt-4 border-t border-white/12">
+                      <span class="next-cta inline-flex items-center gap-2.5 text-white group-hover:text-brand transition-colors duration-400">
+                        <span class="text-[0.6rem] uppercase tracking-[0.26em] font-semibold">
+                          Отвори
+                        </span>
+                        <span class="next-arrow-wrap inline-flex items-center gap-1 overflow-hidden">
+                          <span aria-hidden="true" class="next-arrow-line block h-px bg-current transition-[width] duration-500 ease-out-expo"></span>
+                          <span aria-hidden="true" class="next-arrow-head transition-transform duration-500 ease-out-expo">
+                            <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                              <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+  </article>
+</BaseLayout>
+
+<style>
+  /* ── Hero figure — wide cinematic frame ── */
+  .hero-figure {
+    aspect-ratio: 4 / 3;
+  }
+  @media (min-width: 1024px) {
+    .hero-figure { aspect-ratio: 5 / 4; }
+  }
+  .hero-image {
+    animation: hero-settle 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes hero-settle {
+    from { transform: scale(1.04); opacity: 0.5; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+
+  /* ── Meta rows — tight definition list ── */
+  .meta-row {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 0.75rem;
+    padding-bottom: 0.875rem;
+    border-bottom: 1px solid rgba(18, 22, 28, 0.08);
+    align-items: baseline;
+  }
+  .meta-row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .meta-row dt {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-weight: 600;
+    color: #BA2D20;
+  }
+  .meta-row dd {
+    color: #12161C;
+    font-size: 14px;
+    line-height: 1.45;
+    font-variation-settings: 'opsz' 24;
+  }
+
+  /* ── Client name + logo ── */
+  .client-name {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #12161C;
+    font-weight: 500;
+    font-variation-settings: 'opsz' 24;
+  }
+  /* Logo sits beside the name. We keep height fixed and let width breathe,
+     so portrait/landscape/square logos all render cleanly without being
+     squashed into a forced square box. */
+  .client-logo {
+    display: block;
+    height: 30px;
+    width: auto;
+    max-width: 120px;
+    object-fit: contain;
+    object-position: left center;
+    opacity: 0.92;
+    filter: saturate(0.95);
+    transition: opacity 250ms cubic-bezier(0.16, 1, 0.3, 1),
+                filter 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .client-logo-link {
+    display: inline-block;
+    line-height: 0;
+    transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .client-logo-link:hover .client-logo {
+    opacity: 1;
+    filter: saturate(1);
+  }
+  .client-logo-link:hover { transform: translateY(-1px); }
+
+  /* ── Mini inline map (right column) — fills available vertical space
+        so its bottom aligns with the cover image's bottom on desktop. */
+  .mini-map {
+    min-height: 200px;
+  }
+  .mini-map iframe {
+    filter: saturate(1.05) contrast(1.02);
+    transition: filter 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .mini-map:hover iframe {
+    filter: saturate(1.15) contrast(1.04);
+  }
+
+  /* Address card sitting at the bottom of the map */
+  .mini-map-addr {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 0.55rem 0.85rem 0.65rem 0.7rem;
+    border-radius: 4px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      0 8px 22px -10px rgba(18, 22, 28, 0.32);
+  }
+
+  /* Subtle pulse on the corner pin — draws the eye without distracting */
+  .mini-map-pin svg {
+    animation: pin-bob 2.4s cubic-bezier(0.45, 0, 0.15, 1) infinite;
+  }
+  @keyframes pin-bob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-2px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mini-map-pin svg { animation: none; }
+  }
+
+  /* ── Crumb hover ── */
+  .crumb-back:hover span[aria-hidden="true"] {
+    transform: translateX(-3px);
+  }
+
+  /* ── Running head — magazine-style page header ── */
+  .runhead-item {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-weight: 500;
+    color: #12161C;
+    line-height: 1.1;
+  }
+  .runhead-archive {
+    color: #BA2D20;
+    font-weight: 600;
+  }
+  .runhead-sep {
+    color: #BA2D20;
+    font-size: 0.62rem;
+    opacity: 0.55;
+    user-select: none;
+  }
+  @media (max-width: 640px) {
+    .runhead-item { font-size: 0.58rem; letter-spacing: 0.18em; }
+    .runhead-sep { font-size: 0.58rem; }
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     GALLERY SLIDER — horizontal-scroll multi-row grid.
+     Mobile: 2 rows · Tablet: 2 rows · Desktop+: 3 rows.
+     Tiles flow column-by-column, so the slider extends to the right
+     as the gallery grows — built to scale to many photos.
+     ───────────────────────────────────────────────────────────── */
+  .gallery-slider {
+    /* Allow arrows to sit slightly outside the wall edge */
+    padding: 4px 0;
+  }
+  .gallery-wall {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-auto-flow: column;
+    grid-auto-columns: clamp(220px, 62vw, 320px);
+    grid-template-columns: unset;
+    gap: 3px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;
+    /* Row height — sets total gallery height (rows × this) */
+    --row-h: 200px;
+    grid-template-rows: repeat(2, var(--row-h));
+  }
+  .gallery-wall::-webkit-scrollbar { display: none; }
+
+  @media (min-width: 768px) {
+    .gallery-wall {
+      grid-auto-columns: clamp(260px, 32vw, 360px);
+      --row-h: 220px;
+      gap: 4px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .gallery-wall {
+      grid-template-rows: repeat(3, var(--row-h));
+      grid-auto-columns: clamp(280px, 26vw, 360px);
+      --row-h: 210px;
+    }
+  }
+
+  .g-tile {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: #1A1F26;
+    cursor: zoom-in;
+    scroll-snap-align: start;
+    border-radius: 6px;
+  }
+  .g-tile:focus-visible {
+    outline: 2px solid #BA2D20;
+    outline-offset: 2px;
+    z-index: 1;
+  }
+
+  /* First tile = feature — spans all rows AND 2 columns so it reads
+     as the "lead" plate at the start of the slider. */
+  .g-tile:nth-child(1) {
+    grid-row: 1 / -1;
+    grid-column: span 2;
+  }
+
+  /* Edge fades — fade tiles into the cream page background */
+  .gallery-fade {
+    z-index: 2;
+  }
+  .gallery-fade-l {
+    background: linear-gradient(to right, #FAF3EA 0%, rgba(250, 243, 234, 0) 100%);
+  }
+  .gallery-fade-r {
+    background: linear-gradient(to left, #FAF3EA 0%, rgba(250, 243, 234, 0) 100%);
+  }
+  /* Hide the corresponding edge fade once the slider can no longer scroll
+     in that direction — visually confirms you've reached the start/end. */
+  .gallery-slider[data-at-start='true'] .gallery-fade-l { opacity: 0; }
+  .gallery-slider[data-at-end='true'] .gallery-fade-r { opacity: 0; }
+  .gallery-fade { transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1); }
+
+  /* Floating arrow controls — Apple glass-dark pills, brand-red on hover */
+  .gallery-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    color: #12161C;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      0 12px 28px -10px rgba(18, 22, 28, 0.30);
+    transition:
+      background 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .gallery-arrow:hover {
+    background: #BA2D20;
+    border-color: #BA2D20;
+    color: white;
+    transform: translateY(-50%) scale(1.05);
+  }
+  .gallery-arrow-prev { left: 18px; }
+  .gallery-arrow-next { right: 18px; }
+  @media (min-width: 768px) {
+    .gallery-arrow-prev { left: 28px; }
+    .gallery-arrow-next { right: 28px; }
+  }
+  @media (min-width: 1280px) {
+    .gallery-arrow-prev { left: 40px; }
+    .gallery-arrow-next { right: 40px; }
+  }
+  .gallery-arrow[disabled],
+  .gallery-arrow.is-disabled {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%) scale(0.92);
+  }
+  @media (max-width: 640px) {
+    .gallery-arrow {
+      width: 40px;
+      height: 40px;
+    }
+    .gallery-arrow-prev { left: 6px; }
+    .gallery-arrow-next { right: 6px; }
+  }
+
+  /* ── Story prose ── */
+  .story-prose {
+    text-wrap: pretty;
+    font-feature-settings: 'kern', 'liga';
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     NEXT-PROJECT CARD — magazine split, dark editorial close-out.
+     ───────────────────────────────────────────────────────────── */
+  .next-card {
+    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .next-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 32px 64px -28px rgba(18, 22, 28, 0.45);
+  }
+
+  /* Category chip on the cover — Apple glass on photo */
+  .next-chip {
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.30);
+  }
+
+  /* Title color shift on hover — fast subtle warmth */
+  .next-title {
+    transition: color 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    color: white;
+  }
+  .next-card:hover .next-title { color: #FAF3EA; }
+
+  /* Arrow line draws from 6px → 28px on hover; head nudges right */
+  .next-arrow-line {
+    width: 6px;
+  }
+  .next-card:hover .next-arrow-line {
+    width: 28px;
+  }
+  .next-card:hover .next-arrow-head {
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 767px) {
+    .next-card .next-title {
+      color: #FAF3EA;
+    }
+    .next-card .next-cta {
+      color: #BA2D20;
+    }
+    .next-card .next-arrow-line {
+      width: 28px;
+    }
+    .next-card .next-arrow-head {
+      transform: translateX(3px);
+    }
+    .next-card img {
+      transform: scale(1.06);
+    }
+  }
+
+  /* "Виж всичките" link — arrow flicks up-right on hover */
+  .archive-all:hover span[aria-hidden="true"] {
+    display: inline-block;
+    transform: translate(2px, -2px);
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Subtle scan-line on the dark panel — adds architectural texture */
+  .next-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.7;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 50%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 50%, transparent 100%);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .next-card,
+    .next-arrow-line,
+    .next-arrow-head,
+    .next-title { transition: none !important; }
+    .next-card:hover { transform: none !important; }
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     LIGHTBOX — native <dialog>, blurred backdrop.
+     ───────────────────────────────────────────────────────────── */
+  .gw-lightbox {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: hidden;
+    color: white;
+  }
+  .gw-lightbox::backdrop {
+    background: rgba(10, 12, 16, 0.97);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+  }
+  .gw-lightbox[open] {
+    animation: gw-fadein 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes gw-fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .gw-stage {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: clamp(3.5rem, 8vh, 5.5rem) clamp(1.5rem, 8vw, 6rem);
+  }
+  #gw-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    animation: gw-image-in 450ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes gw-image-in {
+    from { opacity: 0; transform: scale(0.98); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .gw-btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: white;
+    cursor: pointer;
+    transition: background 240ms cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 240ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .gw-btn:hover {
+    background: #BA2D20;
+    border-color: #BA2D20;
+  }
+  .gw-close { position: static; }
+  .gw-prev {
+    left: clamp(0.75rem, 2vw, 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .gw-next {
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .gw-prev:hover { transform: translateY(-50%) scale(1.06); }
+  .gw-next:hover { transform: translateY(-50%) scale(1.06); }
+  .gw-counter {
+    position: absolute;
+    bottom: clamp(1rem, 3vh, 1.5rem);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.75);
+    padding: 0.55rem 1.15rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    font-variant-numeric: tabular-nums;
+  }
+  .gw-lightbox[data-single] .gw-prev,
+  .gw-lightbox[data-single] .gw-next,
+  .gw-lightbox[data-single] .gw-counter { display: none; }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-image,
+    #gw-image,
+    .gw-lightbox[open] { animation: none !important; transform: none !important; opacity: 1 !important; }
+    .map-card iframe { transition: none !important; filter: none !important; }
+    .g-tile img { transition: none !important; }
+    .next-card img,
+    .next-arrow-line,
+    .next-arrow-head { transition: none !important; }
+    .mini-map-pin svg { animation: none !important; }
+    .crumb-back:hover span,
+    .map-cta:hover span { transform: none !important; }
+  }
+</style>
+
+<script define:vars={{ gallery }}>
+  // ── Lightbox ───────────────────────────────────────────
+  const dialog = document.getElementById('gw-lightbox');
+  const imageEl = document.getElementById('gw-image');
+  const currentEl = document.getElementById('gw-current');
+  const labelEl = document.getElementById('gw-label');
+
+  if (dialog && imageEl && currentEl && gallery.length > 0) {
+    if (gallery.length === 1) dialog.setAttribute('data-single', '');
+
+    let currentIndex = 0;
+
+    const show = (idx) => {
+      currentIndex = ((idx % gallery.length) + gallery.length) % gallery.length;
+      imageEl.style.animation = 'none';
+      imageEl.offsetHeight;
+      imageEl.style.animation = '';
+      imageEl.src = gallery[currentIndex];
+      currentEl.textContent = String(currentIndex + 1);
+      if (labelEl) labelEl.textContent = `Кадър ${String(currentIndex + 1).padStart(2, '0')}`;
+    };
+
+    const open = (idx) => {
+      show(idx);
+      dialog.showModal();
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => dialog.close();
+
+    document.querySelectorAll('[data-gallery] .g-tile').forEach((btn) => {
+      btn.addEventListener('click', () => open(Number(btn.getAttribute('data-index'))));
+    });
+
+    dialog.querySelector('[data-gw-close]')?.addEventListener('click', close);
+    dialog.querySelector('[data-gw-prev]')?.addEventListener('click', () => show(currentIndex - 1));
+    dialog.querySelector('[data-gw-next]')?.addEventListener('click', () => show(currentIndex + 1));
+
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) close();
+    });
+    dialog.addEventListener('close', () => {
+      document.body.style.overflow = '';
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!dialog.open) return;
+      if (e.key === 'ArrowLeft') { e.preventDefault(); show(currentIndex - 1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); show(currentIndex + 1); }
+    });
+  }
+
+  // ── Horizontal slider — arrows, scrubber, edge-fade toggles ──
+  const wall = document.querySelector('[data-gallery]');
+  const slider = wall?.closest('.gallery-slider');
+  const prevBtn = slider?.querySelector('[data-gallery-prev]');
+  const nextBtn = slider?.querySelector('[data-gallery-next]');
+  const progressEl = document.querySelector('[data-gallery-progress]');
+  const currentTileEl = document.querySelector('[data-gallery-current]');
+
+  if (wall && slider) {
+    const tiles = Array.from(wall.querySelectorAll('.g-tile'));
+    const total = tiles.length;
+
+    const tileStep = () => {
+      // Scroll by ~one viewport-width worth, biased to multiples of the
+      // first tile's width so snaps line up nicely.
+      const first = tiles[0];
+      if (!first) return wall.clientWidth * 0.85;
+      const w = first.getBoundingClientRect().width;
+      const cols = Math.max(1, Math.floor(wall.clientWidth / w));
+      return w * cols;
+    };
+
+    const updateState = () => {
+      const max = wall.scrollWidth - wall.clientWidth;
+      const x = wall.scrollLeft;
+      const ratio = max > 0 ? x / max : 0;
+      const atStart = x <= 2;
+      const atEnd = x >= max - 2;
+      slider.dataset.atStart = String(atStart);
+      slider.dataset.atEnd = String(atEnd);
+      if (prevBtn) prevBtn.classList.toggle('is-disabled', atStart);
+      if (nextBtn) nextBtn.classList.toggle('is-disabled', atEnd);
+      if (progressEl) progressEl.style.width = `${Math.max(6, ratio * 100)}%`;
+
+      // Current tile = first one whose left edge is within the viewport
+      const wallRect = wall.getBoundingClientRect();
+      let idx = 0;
+      for (let i = 0; i < tiles.length; i++) {
+        const r = tiles[i].getBoundingClientRect();
+        if (r.left - wallRect.left >= -8) { idx = i; break; }
+      }
+      if (currentTileEl) currentTileEl.textContent = String(idx + 1).padStart(2, '0');
+    };
+
+    prevBtn?.addEventListener('click', () => {
+      wall.scrollBy({ left: -tileStep(), behavior: 'smooth' });
+    });
+    nextBtn?.addEventListener('click', () => {
+      wall.scrollBy({ left: tileStep(), behavior: 'smooth' });
+    });
+
+    let raf = 0;
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(() => { raf = 0; updateState(); });
+    };
+    wall.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', updateState);
+    updateState();
+
+    // Keyboard support — left/right arrows scroll the slider when focused
+    wall.tabIndex = 0;
+    wall.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); wall.scrollBy({ left: -tileStep(), behavior: 'smooth' }); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); wall.scrollBy({ left: tileStep(), behavior: 'smooth' }); }
+    });
+  }
+</script>

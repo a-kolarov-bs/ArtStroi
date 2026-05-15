@@ -1,0 +1,293 @@
+---
+const phones = [
+  { label: 'Управител',           number: '+359 878 715 936' },
+  { label: 'Счетоводство',         number: '+359 878 715 935' },
+  { label: 'Технически директор',  number: '+359 877 766 523' },
+  { label: 'Транспорт',            number: '+359 878 986 797' },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative isolate overflow-hidden bg-stone-100 text-ink-900">
+  <!-- Subtle top hairline — small architectural mark, not a heavy seal -->
+  <span aria-hidden="true" class="absolute inset-x-0 top-0 h-px bg-ink-950/15"></span>
+  <span aria-hidden="true" class="absolute left-0 top-0 h-[2px] w-24 md:w-40 bg-brand"></span>
+
+  <!-- Drafting paper texture — back layer, very subtle -->
+  <div aria-hidden="true" class="absolute inset-0 -z-10 bp-paper opacity-[0.35]"></div>
+
+  <!-- ── Title-block info grid — cream sheet, dark text, hairline cells ── -->
+  <div class="container-page relative pt-16 md:pt-20 pb-14 md:pb-20">
+    <div class="footer-grid">
+      <!-- Brand block: logo + tagline -->
+      <div class="footer-cell footer-cell--brand">
+        <p class="footer-label">Идентичност</p>
+        <img
+          src="/brand/logo-original.png"
+          alt="АРТСТРОЙ ООД"
+          width="478"
+          height="112"
+          class="mt-5 h-12 md:h-14 w-auto"
+          decoding="async"
+        />
+        <p class="mt-5 max-w-sm text-[13.5px] leading-[1.7] text-ink-800">
+          Строителна компания с над три десетилетия опит — жилищни сгради,
+          обществени обекти, хотели и инфраструктура из цяла България.
+        </p>
+      </div>
+
+      <!-- Address -->
+      <div class="footer-cell">
+        <p class="footer-label">Адрес</p>
+        <address class="mt-5 not-italic text-[14px] leading-[1.65] text-ink-900">
+          гр. Смолян 4700<br />
+          кв. Устово<br />
+          ул. „Хаджи&nbsp;Иван&nbsp;Бечев"&nbsp;№6
+        </address>
+        <p class="mt-5 footer-meta">
+          <span>Пон–Пет</span>
+          <span aria-hidden="true" class="footer-meta-sep">·</span>
+          <span>9:00–18:00</span>
+        </p>
+        <a
+          href="mailto:artstroismolian@abv.bg"
+          class="mt-4 inline-block text-[13.5px] text-ink-950 underline decoration-brand decoration-2 underline-offset-[6px] hover:text-brand transition-colors"
+        >
+          artstroismolian@abv.bg
+        </a>
+      </div>
+
+      <!-- Phones — title-block schedule -->
+      <div class="footer-cell footer-cell--phones">
+        <p class="footer-label">Телефони</p>
+        <ul class="mt-5 divide-y divide-ink-200/70">
+          {phones.map((p) => (
+            <li class="flex items-baseline justify-between gap-4 py-3 first:pt-0 last:pb-0">
+              <span class="text-[10.5px] uppercase tracking-[0.18em] text-ink-600 font-medium">
+                {p.label}
+              </span>
+              <a
+                href={`tel:${p.number.replace(/\s+/g, '')}`}
+                class="font-display text-[15px] text-ink-950 hover:text-brand transition-colors whitespace-nowrap tabular-nums tracking-[-0.005em]"
+                style="font-variation-settings:'opsz' 24;"
+              >
+                {p.number}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Bottom imprint band — dark sliver, final stamp of the page ── -->
+  <div class="bg-ink-950 text-ink-300">
+    <div class="container-page py-5 md:py-6 flex flex-col md:flex-row gap-3 md:items-center md:justify-between text-[11.5px]">
+      <p class="flex items-center gap-3">
+        <span aria-hidden="true" class="block h-px w-8 bg-brand"></span>
+        <span>© {year} АРТСТРОЙ ООД</span>
+        <span class="text-ink-300/60">— всички права запазени</span>
+      </p>
+      <nav class="flex gap-7 text-ink-300" aria-label="Footer навигация">
+        <a href="/za-nas" class="hover:text-white transition-colors">За нас</a>
+        <a href="/proekti" class="hover:text-white transition-colors">Проекти</a>
+        <a href="/uslugi" class="hover:text-white transition-colors">Услуги</a>
+        <a href="/kontakti" class="hover:text-white transition-colors">Контакти</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* ───────────────────────────────────────────────────────────
+     Three-column title-block grid (architectural drawing layout)
+     ─────────────────────────────────────────────────────────── */
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1.4fr 1fr 1.1fr;
+    }
+  }
+
+  .footer-cell {
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(18, 22, 28, 0.10);
+  }
+  @media (min-width: 768px) {
+    .footer-cell {
+      padding: 2.5rem 2rem;
+      border-bottom: none;
+      border-right: 1px solid rgba(18, 22, 28, 0.10);
+    }
+    .footer-cell:first-child { padding-left: 0; }
+    .footer-cell:last-child  { padding-right: 0; border-right: none; }
+  }
+
+  .footer-label {
+    font-family: ui-monospace, 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    color: #BA2D20;
+    font-weight: 500;
+  }
+
+  .footer-meta {
+    font-family: ui-monospace, 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(37, 46, 57, 0.85);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .footer-meta-sep { color: #BA2D20; }
+
+  @media (max-width: 767px) {
+    footer {
+      background: #f3ecdf;
+    }
+
+    footer > .container-page {
+      padding-top: 2rem;
+      padding-bottom: 1.8rem;
+    }
+
+    .footer-grid {
+      gap: 0;
+      border-top: 1px solid rgba(18, 22, 28, 0.10);
+    }
+
+    .footer-cell {
+      border: 0;
+      border-bottom: 1px solid rgba(18, 22, 28, 0.10);
+      background: transparent;
+      padding: 1.05rem 0;
+      box-shadow: none;
+    }
+
+    .footer-cell--brand {
+      padding-top: 1.1rem;
+    }
+
+    .footer-cell--brand img {
+      height: 2rem;
+      margin-top: 0.75rem;
+    }
+
+    .footer-cell--brand p:last-child {
+      margin-top: 0.8rem;
+      max-width: 19rem;
+      font-size: 0.78rem;
+      line-height: 1.52;
+      color: rgba(18, 22, 28, 0.70);
+    }
+
+    .footer-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+    }
+
+    .footer-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 0.5rem;
+      margin-top: 0.75rem;
+      font-size: 0.61rem;
+      letter-spacing: 0.12em;
+    }
+
+    .footer-cell address {
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: rgba(18, 22, 28, 0.78);
+    }
+
+    .footer-cell a[href^='mailto'] {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      margin-top: 0.75rem;
+      font-size: 0.78rem;
+      color: rgba(18, 22, 28, 0.82);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
+    .footer-cell--phones ul {
+      margin-top: 0.65rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.45rem 0.75rem;
+      border-top: 0;
+    }
+
+    .footer-cell--phones li {
+      display: grid;
+      gap: 0.22rem;
+      align-items: start;
+      padding: 0;
+      border: 0;
+    }
+
+    .footer-cell--phones li span {
+      max-width: none;
+      line-height: 1.25;
+      font-size: 0.56rem;
+      letter-spacing: 0.13em;
+      color: rgba(18, 22, 28, 0.48);
+    }
+
+    .footer-cell--phones li a {
+      font-family: ui-monospace, "SFMono-Regular", monospace;
+      font-size: 0.72rem;
+      color: rgba(18, 22, 28, 0.68);
+      letter-spacing: 0;
+    }
+
+    footer .bg-ink-950 .container-page {
+      align-items: stretch;
+      gap: 0.75rem;
+      padding-top: 0.9rem;
+      padding-bottom: 0.95rem;
+    }
+
+    footer .bg-ink-950 p {
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.38rem 0.65rem;
+      text-align: center;
+    }
+
+    footer .bg-ink-950 p span:first-child {
+      width: 2.25rem;
+    }
+
+    footer .bg-ink-950 p span:last-child {
+      flex-basis: 100%;
+      font-size: 0.62rem;
+    }
+
+    footer nav {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.25rem;
+      width: 100%;
+    }
+
+    footer nav a {
+      display: grid;
+      min-height: 2rem;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(255, 255, 255, 0.035);
+      font-size: 0.66rem;
+    }
+  }
+
+</style>

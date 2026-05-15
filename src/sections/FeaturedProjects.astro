@@ -1,0 +1,111 @@
+---
+import type { Project } from '../data/projects';
+import ProjectCard from '../components/ProjectCard.astro';
+import Reveal from '../components/Reveal.astro';
+
+interface Props {
+  projects: Project[];
+}
+const { projects } = Astro.props;
+// All featured projects participate in the desktop scroll track.
+const visible = projects;
+---
+
+<section class="relative isolate overflow-hidden bg-cream-50 section-padded" id="featured-projects" aria-labelledby="fp-heading">
+  <!-- Architectural sheet — back layer -->
+  <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-d"></div>
+
+  <div class="container-page relative">
+    <Reveal class="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-14 md:mb-20">
+      <div>
+        <p class="eyebrow">Активни · Active projects</p>
+        <h2
+          id="fp-heading"
+          class="mt-4 font-display text-display-lg tracking-tight text-ink-950 max-w-[14ch]"
+        >
+          Текущи <span class="italic" style="font-variation-settings:'opsz' 144,'SOFT' 100;">проекти</span>.
+        </h2>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/proekti" class="btn-ghost-dark">
+          Виж всички 55
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </Reveal>
+  </div>
+
+  <!-- Tablet+ desktop: full-bleed horizontal scroll track. -->
+  <div class="hidden md:block">
+    <div class="fp-track flex gap-4 lg:gap-5 overflow-x-auto snap-x-mandatory pb-4">
+      {visible.map((p, i) => (
+        <div class="snap-start shrink-0 fp-card">
+          <ProjectCard
+            project={p}
+            index={i}
+            aspect="aspect-[3/4]"
+            size="sm"
+            videoUrl={i === 0 ? '/services/sample.mp4' : undefined}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Mobile: keep existing horizontal scroll-snap with peek -->
+  <div
+    class="md:hidden snap-x-mandatory flex gap-3 overflow-x-auto px-6 pb-4 container-page"
+    style="scroll-padding-inline: 1.5rem;"
+  >
+    {projects.map((p, i) => (
+      <div class="snap-start shrink-0 basis-[72%]">
+        <ProjectCard project={p} index={i} aspect="aspect-[3/4]" size="sm" />
+      </div>
+    ))}
+  </div>
+
+  <!-- Footer row -->
+  <div class="hidden md:flex container-page mt-12 items-center justify-between gap-6 border-t border-ink-200 pt-5">
+    <p class="text-xs uppercase tracking-eyebrow text-ink-600">
+      <span class="text-ink-950">{visible.length}</span> избрани · <span class="text-ink-950">{projects.length}</span> общо
+    </p>
+    <p class="text-xs text-ink-600">
+      Премини през всичките ↗ <a href="/proekti" class="text-brand hover:text-brand-dark transition-colors font-medium">portfolio</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  /* ============================================================
+     FeaturedProjects — desktop scroll track tuning
+     ============================================================ */
+  .fp-track {
+    /* === TWEAK ME: where the first card STARTS (distance from viewport left) ===
+       - Smaller (e.g. 5rem)  → first card closer to the left edge.
+       - Larger  (e.g. 50vw)  → first card closer to the screen middle.
+       Default 38vw = clearly past the heading, near the centre. */
+    --fp-start: 38vw;
+
+    /* === TWEAK ME: card width (min, ideal, max) ===
+       All cards get this exact width, so they're identical sizes. */
+    --fp-card-w: clamp(300px, 26vw, 380px);
+
+    padding-inline-start: var(--fp-start);
+    padding-inline-end: 1.5rem;
+    scroll-padding-inline-start: var(--fp-start);
+    scrollbar-width: none;
+  }
+  .fp-track::-webkit-scrollbar { display: none; }
+
+  /* Each card has explicit width AND aspect-ratio so heights are guaranteed
+     identical regardless of inner content or reveal animation timing. */
+  .fp-card {
+    width: var(--fp-card-w);
+    aspect-ratio: 3 / 4;
+  }
+  .fp-card > a {
+    height: 100%;
+  }
+</style>

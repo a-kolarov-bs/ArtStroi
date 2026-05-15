@@ -1,0 +1,22 @@
+---
+import HeroVideo from '../components/HeroVideo.astro';
+import Manifesto from '../components/Manifesto.astro';
+import StatsCounter from '../components/StatsCounter.tsx';
+import FeaturedProjects from '../sections/FeaturedProjects.astro';
+import AwardProcessTeaser from '../components/AwardProcessTeaser.astro';
+import TrustedBy from '../components/TrustedBy.astro';
+import { featuredProjects } from '../data/projects';
+import { clients } from '../data/clients';
+---
+
+<HeroVideo />
+
+<StatsCounter client:visible />
+
+<Manifesto />
+
+<TrustedBy clients={clients} />
+
+<AwardProcessTeaser />
+
+<FeaturedProjects projects={featuredProjects} />
