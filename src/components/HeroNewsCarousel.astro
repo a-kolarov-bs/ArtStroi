@@ -132,12 +132,7 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
           <h3>{s.title}</h3>
           <p>{s.body}</p>
         </div>
-        <div class="absolute bottom-0 inset-x-0 flex items-center justify-between gap-3 px-3.5 pb-3.5">
-          <div class="flex items-center gap-1">
-            {slides.map((_, j) => (
-              <span data-hero-news-dot={j} class:list={['h-1 rounded-full transition-all duration-300 ease-out-expo', i === j ? 'w-5 bg-brand' : 'w-1.5 bg-ink-200']}></span>
-            ))}
-          </div>
+        <div class="absolute bottom-0 inset-x-0 flex items-center justify-end px-3.5 pb-3.5">
           <span
             aria-hidden="true"
             class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand/15 text-brand group-hover:bg-brand group-hover:text-white transition-colors duration-300"
@@ -455,10 +450,6 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
           else if (pos < -1) slide.dataset.pos = 'hidden-prev';
           else slide.dataset.pos = 'hidden-next';
 
-          slide.querySelectorAll<HTMLElement>('[data-hero-news-dot]').forEach((dot) => {
-            const isActive = Number(dot.dataset.heroNewsDot) === active;
-            dot.className = `h-1 rounded-full transition-all duration-300 ease-out-expo ${isActive ? 'w-5 bg-brand' : 'w-1.5 bg-ink-200'}`;
-          });
         });
       };
 

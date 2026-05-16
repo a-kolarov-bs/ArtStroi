@@ -201,6 +201,10 @@ const mapQuery = encodeURIComponent(officeAddress);
     align-items: start;
   }
 
+  .contact-layout > * {
+    min-width: 0;
+  }
+
   .contact-form-panel,
   .contact-side {
     border-top: 1px solid rgba(18, 22, 28, 0.16);
@@ -216,6 +220,10 @@ const mapQuery = encodeURIComponent(officeAddress);
     column-gap: clamp(1.5rem, 4vw, 4rem);
     row-gap: 0.7rem;
     align-items: end;
+  }
+
+  .contact-form-panel__head > * {
+    min-width: 0;
   }
 
   .contact-form-panel__head .eyebrow {
@@ -241,6 +249,8 @@ const mapQuery = encodeURIComponent(officeAddress);
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1px;
     margin-top: 1.5rem;
+    max-width: 100%;
+    min-width: 0;
     background: rgba(18, 22, 28, 0.14);
     border: 1px solid rgba(18, 22, 28, 0.14);
   }
@@ -505,9 +515,14 @@ const mapQuery = encodeURIComponent(officeAddress);
   }
 
   @media (max-width: 767px) {
+    .contact-page .container-page {
+      padding-left: 1.125rem;
+      padding-right: 1.125rem;
+    }
+
     .contact-page__mark {
       top: 7rem;
-      right: -1.2rem;
+      right: 0;
       font-size: 8.5rem;
     }
 
@@ -521,6 +536,16 @@ const mapQuery = encodeURIComponent(officeAddress);
       padding-left: 1rem;
       font-size: 0.98rem;
       line-height: 1.6;
+    }
+
+    .contact-form-panel__head,
+    .contact-form-panel__head p,
+    .contact-side,
+    .contact-office,
+    .contact-map {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
     }
 
     .contact-form {
@@ -548,6 +573,20 @@ const mapQuery = encodeURIComponent(officeAddress);
       min-height: 17rem;
       aspect-ratio: 16 / 11;
       max-height: 19rem;
+    }
+
+    .contact-map__addr {
+      left: 0.55rem;
+      right: 0.55rem;
+      max-width: calc(100% - 1.1rem);
+    }
+
+    .contact-map__addr > div {
+      min-width: 0;
+    }
+
+    .contact-map__addr strong {
+      white-space: normal;
     }
 
   }
