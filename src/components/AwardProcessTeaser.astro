@@ -174,26 +174,22 @@ const facts = [
     margin-top: 2.15rem;
     display: inline-flex;
     align-items: center;
-    gap: 0.72rem;
-    border: 1px solid rgba(255, 250, 242, 0.26);
-    border-radius: 999px;
-    background: rgba(255, 250, 242, 0.08);
-    padding: 0.95rem 1.2rem 0.95rem 1.35rem;
+    gap: 0.6rem;
+    border-bottom: 1px solid rgba(255, 250, 242, 0.34);
+    padding: 0 0 0.45rem;
     color: #fffaf2;
     font-size: 0.82rem;
     font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    transition: background-color 240ms ease, border-color 240ms ease, gap 240ms ease, transform 240ms ease;
+    transition: border-color 240ms ease, color 240ms ease, gap 240ms ease, transform 240ms ease;
   }
 
   .award-showcase__cta:hover {
-    gap: 1rem;
-    border-color: rgba(240, 179, 170, 0.72);
-    background: rgba(186, 45, 32, 0.28);
-    transform: translateY(-1px);
+    gap: 0.9rem;
+    color: #f0b3aa;
+    border-color: rgba(240, 179, 170, 0.78);
+    transform: translateX(2px);
   }
 
   .award-showcase__cta--mobile-end {
@@ -335,8 +331,9 @@ const facts = [
     .award-showcase__cta--mobile-end {
       display: inline-flex;
       margin-top: 1.75rem;
-      width: 100%;
-      justify-content: center;
+      width: auto;
+      justify-content: flex-start;
+      margin-left: 0;
     }
 
     .award-showcase__media {
@@ -362,9 +359,21 @@ const facts = [
     }
 
     .award-showcase__facts div {
-      min-height: 6.2rem;
+      min-height: 4.85rem;
+      padding: 1rem 1rem;
+      gap: 0.38rem;
       border-right: 0;
       border-bottom: 1px solid rgba(255, 250, 242, 0.13);
+    }
+
+    .award-showcase__facts span {
+      font-size: 0.62rem;
+      letter-spacing: 0.17em;
+    }
+
+    .award-showcase__facts strong {
+      font-size: clamp(1.08rem, 6vw, 1.42rem);
+      line-height: 1.02;
     }
 
     .award-showcase__facts div:last-child {

@@ -169,6 +169,19 @@ const total = capabilities.length;
       height: calc(100svh - 11rem);
       width: 100%;
     }
+    @media (max-width: 767px) {
+      .cap-pin-wrap {
+        margin-top: clamp(1.5rem, 5svh, 2.75rem);
+        min-height: calc(100svh - 10rem + var(--pin-distance, 50vh));
+      }
+      .cap-stage {
+        top: 5.75rem;
+        height: calc(100svh - 7rem);
+      }
+      .cap-stage .container-page {
+        align-items: flex-start;
+      }
+    }
     @media (min-width: 1024px) {
       .cap-pin-wrap {
         min-height: calc(100vh - 12rem + var(--pin-distance, 50vh));
@@ -370,7 +383,7 @@ const total = capabilities.length;
     .cap-media {
       position: relative;
       width: 100%;
-      /* Shorter aspect on mobile so wheel + video fit comfortably in
+      /* Shorter aspect on tablet so wheel + video fit comfortably in
          the sticky stage without overflowing under the header. */
       aspect-ratio: 16 / 9;
       max-height: 30svh;
@@ -380,9 +393,21 @@ const total = capabilities.length;
       background: #1A1F26;
       box-shadow: 0 24px 50px -22px rgba(28, 22, 20, 0.28);
     }
+    @media (max-width: 767px) {
+      .cap-media-col {
+        transform: none;
+      }
+      .cap-media {
+        aspect-ratio: 4 / 3;
+        max-width: min(100%, 19rem);
+        max-height: none;
+        margin-inline: auto;
+      }
+    }
     @media (min-width: 1024px) {
       .cap-media {
         aspect-ratio: 4 / 5;
+        max-width: none;
         max-height: 60vh;
       }
     }
