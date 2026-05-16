@@ -437,8 +437,8 @@ const schemaBreadcrumb = {
             </div>
 
             <!-- Edge fades — soften where tiles get clipped at the scroll edges -->
-            <span aria-hidden="true" class="gallery-fade gallery-fade-l pointer-events-none absolute left-0 top-0 bottom-0 w-16 md:w-24 lg:w-32"></span>
-            <span aria-hidden="true" class="gallery-fade gallery-fade-r pointer-events-none absolute right-0 top-0 bottom-0 w-16 md:w-24 lg:w-32"></span>
+            <span aria-hidden="true" class="gallery-fade gallery-fade-l pointer-events-none absolute left-0 top-0 bottom-0 w-10 md:w-16 lg:w-20"></span>
+            <span aria-hidden="true" class="gallery-fade gallery-fade-r pointer-events-none absolute right-0 top-0 bottom-0 w-10 md:w-16 lg:w-20"></span>
 
             <!-- Floating arrow controls -->
             <button
@@ -880,15 +880,15 @@ const schemaBreadcrumb = {
     grid-column: span 2;
   }
 
-  /* Edge fades — fade tiles into the cream page background */
+  /* Edge fades — subtle scroll hint without washing out the project frames */
   .gallery-fade {
     z-index: 2;
   }
   .gallery-fade-l {
-    background: linear-gradient(to right, #FAF3EA 0%, rgba(250, 243, 234, 0) 100%);
+    background: linear-gradient(to right, rgba(250, 243, 234, 0.58) 0%, rgba(250, 243, 234, 0.18) 42%, rgba(250, 243, 234, 0) 100%);
   }
   .gallery-fade-r {
-    background: linear-gradient(to left, #FAF3EA 0%, rgba(250, 243, 234, 0) 100%);
+    background: linear-gradient(to left, rgba(250, 243, 234, 0.58) 0%, rgba(250, 243, 234, 0.18) 42%, rgba(250, 243, 234, 0) 100%);
   }
   /* Hide the corresponding edge fade once the slider can no longer scroll
      in that direction — visually confirms you've reached the start/end. */
