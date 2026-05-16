@@ -41,12 +41,16 @@ const facts = [
         </div>
 
         <figure class="award-showcase__media">
-          <img
-            src="/award/chukara/hero.jpg"
-            alt="Вино и СПА хотел Чукара, отличен в конкурса Сграда на годината"
-            loading="lazy"
-            decoding="async"
-          />
+          <video
+            src="/award/chukara/hero.mp4"
+            poster="/award/chukara/hero.jpg"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label="Вино и СПА хотел Чукара, отличен в конкурса Сграда на годината"
+          ></video>
           <figcaption>
             <span>Вино и СПА хотел Чукара</span>
             <strong>Сграда на годината · 2022</strong>
@@ -227,7 +231,8 @@ const facts = [
     pointer-events: none;
   }
 
-  .award-showcase__media img {
+  .award-showcase__media img,
+  .award-showcase__media video {
     width: 100%;
     height: 100%;
     object-fit: cover;
