@@ -13,6 +13,7 @@ const nav = [
   id="site-header"
   class="fixed inset-x-0 top-0 z-40 transition-colors duration-400 ease-out-expo"
   data-state="top"
+  data-tone="dark"
 >
   <div class="container-page flex h-20 items-center justify-between gap-6">
     <a
@@ -115,6 +116,10 @@ const nav = [
     backdrop-filter: saturate(140%) blur(12px);
     -webkit-backdrop-filter: saturate(140%) blur(12px);
     border-bottom: 1px solid rgb(0 0 0 / 0.06);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.72) inset,
+      0 18px 46px -34px rgb(18 22 28 / 0.42),
+      0 6px 18px -16px rgb(18 22 28 / 0.26);
   }
   #site-header[data-state='scrolled'] [data-nav-link],
   body.has-solid-header #site-header [data-nav-link] {
@@ -141,6 +146,86 @@ const nav = [
   body.has-solid-header #site-header .glass:hover {
     background: rgba(28, 32, 38, 0.16);
     border-color: rgba(255, 255, 255, 0.70);
+  }
+
+  /* Contrast is separate from scroll position. The script below samples the
+     surface behind the logo and flips this tone while the header stays fixed. */
+  #site-header[data-tone='dark'] {
+    background-color: transparent;
+    border-bottom-color: transparent;
+  }
+
+  body.has-solid-header #site-header[data-tone='dark'],
+  #site-header[data-state='scrolled'][data-tone='dark'] {
+    background-color: rgb(18 22 28 / 0.18);
+    backdrop-filter: saturate(145%) blur(10px);
+    -webkit-backdrop-filter: saturate(145%) blur(10px);
+    border-bottom: 1px solid rgb(255 255 255 / 0.08);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.08) inset,
+      0 20px 50px -34px rgb(0 0 0 / 0.62),
+      0 8px 22px -18px rgb(0 0 0 / 0.42);
+  }
+
+  #site-header[data-tone='dark'] [data-nav-link] {
+    color: rgb(255 255 255 / 0.86);
+  }
+
+  #site-header[data-tone='dark'] [data-nav-link]:hover {
+    background-color: rgb(255 255 255 / 0.10);
+    color: white;
+  }
+
+  #site-header[data-tone='dark'] .glass {
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: white;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      inset 0 8px 14px -8px rgba(255, 255, 255, 0.35),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.06),
+      0 10px 24px -10px rgba(0, 0, 0, 0.28);
+  }
+
+  /* Light-section header: same milky glass material as the light CTA pill,
+     stretched across the header so the nav floats above pale blueprint zones. */
+  body.has-solid-header #site-header[data-tone='light'],
+  #site-header[data-state='scrolled'][data-tone='light'] {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.60), rgba(247, 244, 238, 0.38)),
+      rgba(226, 219, 207, 0.34);
+    backdrop-filter: blur(20px) saturate(178%);
+    -webkit-backdrop-filter: blur(20px) saturate(178%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.58);
+    box-shadow:
+      inset 0 1.5px 0 rgba(255, 255, 255, 0.98),
+      inset 0 8px 16px -10px rgba(255, 255, 255, 0.58),
+      inset 0 -1px 0 rgba(18, 22, 28, 0.045),
+      0 22px 54px -36px rgba(18, 22, 28, 0.34),
+      0 8px 22px -18px rgba(18, 22, 28, 0.20);
+  }
+
+  body.has-solid-header #site-header[data-tone='light'] [data-nav-link],
+  #site-header[data-state='scrolled'][data-tone='light'] [data-nav-link] {
+    color: theme('colors.ink.900');
+  }
+
+  body.has-solid-header #site-header[data-tone='light'] [data-nav-link]:hover,
+  #site-header[data-state='scrolled'][data-tone='light'] [data-nav-link]:hover {
+    background-color: rgb(18 22 28 / 0.07);
+    color: theme('colors.ink.950');
+  }
+
+  body.has-solid-header #site-header[data-tone='light'] .glass,
+  #site-header[data-state='scrolled'][data-tone='light'] .glass {
+    background: rgba(28, 32, 38, 0.10);
+    border-color: rgba(255, 255, 255, 0.55);
+    color: theme('colors.ink.900');
+    box-shadow:
+      inset 0 1.5px 0 rgba(255, 255, 255, 1),
+      inset 0 6px 12px -6px rgba(255, 255, 255, 0.40),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.06),
+      0 10px 24px -10px rgba(18, 22, 28, 0.22);
   }
 
   .site-logo {
@@ -181,6 +266,32 @@ const nav = [
 
   #site-header[data-state='scrolled'] .site-logo__img--dark,
   body.has-solid-header #site-header .site-logo__img--dark {
+    opacity: 0;
+  }
+
+  #site-header[data-tone='dark'] .site-logo__img--light {
+    opacity: 0;
+  }
+
+  #site-header[data-tone='dark'] .site-logo__img--dark {
+    opacity: 1;
+  }
+
+  #site-header[data-tone='light'] .site-logo__img--light {
+    opacity: 1;
+  }
+
+  #site-header[data-tone='light'] .site-logo__img--dark {
+    opacity: 0;
+  }
+
+  body.has-solid-header #site-header[data-tone='light'] .site-logo__img--light,
+  #site-header[data-state='scrolled'][data-tone='light'] .site-logo__img--light {
+    opacity: 1;
+  }
+
+  body.has-solid-header #site-header[data-tone='light'] .site-logo__img--dark,
+  #site-header[data-state='scrolled'][data-tone='light'] .site-logo__img--dark {
     opacity: 0;
   }
 
@@ -417,6 +528,61 @@ const nav = [
     const { signal } = controller;
 
     let raf = 0;
+    const logo = header.querySelector<HTMLElement>('.site-logo');
+
+    const parseRgb = (value: string) => {
+      const match = value.match(/rgba?\(([^)]+)\)/);
+      if (!match) return null;
+      const parts = match[1].split(/,\s*/).map((part) => Number.parseFloat(part));
+      const [r, g, b, a = 1] = parts;
+      if ([r, g, b, a].some((part) => Number.isNaN(part))) return null;
+      return { r, g, b, a };
+    };
+
+    const luminance = ({ r, g, b }: { r: number; g: number; b: number }) => {
+      const channel = (value: number) => {
+        const normal = value / 255;
+        return normal <= 0.03928 ? normal / 12.92 : ((normal + 0.055) / 1.055) ** 2.4;
+      };
+      return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+    };
+
+    const explicitTone = (element: Element | null) => {
+      const toneElement = element?.closest<HTMLElement>('[data-header-tone]');
+      const tone = toneElement?.dataset.headerTone;
+      return tone === 'dark' || tone === 'light' ? tone : null;
+    };
+
+    const inferTone = () => {
+      if (!logo) return window.scrollY > 80 || document.body.classList.contains('has-solid-header') ? 'light' : 'dark';
+
+      const rect = logo.getBoundingClientRect();
+      const x = Math.round(rect.left + rect.width * 0.5);
+      const y = Math.round(rect.top + rect.height * 0.5);
+      const stack = document.elementsFromPoint(x, y);
+      const target = stack.find((element) => !header.contains(element) && element !== document.documentElement && element !== document.body);
+      const explicit = explicitTone(target ?? null);
+      if (explicit) return explicit;
+
+      let current: Element | null = target ?? document.elementFromPoint(x, Math.min(window.innerHeight - 1, y + 48));
+      let levels = 0;
+      while (current && levels < 8) {
+        const explicitCurrent = explicitTone(current);
+        if (explicitCurrent) return explicitCurrent;
+
+        const styles = window.getComputedStyle(current);
+        const color = parseRgb(styles.backgroundColor);
+        if (color && color.a >= 0.35) {
+          return luminance(color) < 0.36 ? 'dark' : 'light';
+        }
+
+        current = current.parentElement;
+        levels += 1;
+      }
+
+      return window.scrollY > 80 || document.body.classList.contains('has-solid-header') ? 'light' : 'dark';
+    };
+
     const closeMenu = () => {
       header.dataset.menuOpen = 'false';
       toggle?.setAttribute('aria-expanded', 'false');
@@ -442,6 +608,7 @@ const nav = [
       const ratio = h > 0 ? Math.min(y / h, 1) : 0;
       progress.style.width = `${ratio * 100}%`;
       header.dataset.state = y > 80 ? 'scrolled' : 'top';
+      header.dataset.tone = inferTone();
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
