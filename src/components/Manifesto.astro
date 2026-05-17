@@ -18,7 +18,9 @@
 // will assemble a single composite clip later.
 import Reveal from './Reveal.astro';
 
-const sharedVideo = '/services/sample.mp4';
+const videoMobile = '/services/sample-mobile.mp4';
+const videoDesktop = '/services/sample-desktop.mp4';
+const videoPoster = '/services/sample-poster.jpg';
 const capabilities = [
   {
     title: 'Сгради & съоръжения',
@@ -122,9 +124,11 @@ const total = capabilities.length;
                 autoplay
                 playsinline
                 preload="auto"
+                poster={videoPoster}
                 aria-hidden="true"
               >
-                <source src={sharedVideo} type="video/mp4" />
+                <source src={videoMobile} type="video/mp4" media="(max-width: 767px)" />
+                <source src={videoDesktop} type="video/mp4" />
               </video>
               <span aria-hidden="true" class="cap-scrim"></span>
             </div>
