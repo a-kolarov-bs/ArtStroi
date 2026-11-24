@@ -38,12 +38,7 @@ const FEATURED_IDS = new Set([1, 7, 5, 3, 8, 14, 41, 53]);
 const LOCAL_ASSETS: Record<number, { cover: string; gallery: string[] }> = {
   1: {
     cover: '/projects/1/cover.jpg',
-    // Temporary seed — 20 entries cycling the 4 local files until the client
-    // delivers real imagery. Repetition is intentional; it lets us preview
-    // the gallery slider behaviour at production-scale image counts.
-    gallery: Array.from({ length: 20 }, (_, i) =>
-      `/projects/1/${['1a', '1b', '1c', '1d'][i % 4]}.jpg`
-    ),
+    gallery: ['1a', '1b', '1c', '1d'].map((f) => `/projects/1/${f}.jpg`),
   },
 };
 
@@ -108,9 +103,9 @@ export function getCategory(p: Project): ProjectCategory {
 // are the smaller monospaced document references below. All values
 // are strings (already formatted for display).
 //
-// FAKE DATA WARNING: values below are placeholders so the section
-// can be visually tested before the client supplies real Акт 16
-// dates, permit refs, gross-area numbers, etc. Replace per project.
+// Only real, client-confirmed data goes here (rechnik §4). A project
+// without an entry shows no protocol section, no year in the running
+// head and no metrics in its meta description / JSON-LD.
 
 export interface ProtocolMetric {
   value: string;
@@ -128,19 +123,7 @@ export interface ProjectProtocol {
   records: ProtocolRecord[];
 }
 
-const PROJECT_PROTOCOLS: Record<number, ProjectProtocol> = {
-  1: {
-    metrics: [
-      { value: '2 400', label: 'm² РЗП' },
-      { value: '16', label: 'месеца', sublabel: 'срок' },
-      { value: '32', label: 'стаи' },
-    ],
-    records: [
-      { label: 'Акт 16', value: 'XII.2020' },
-      { label: 'Гаранция', value: 'до 2030' },
-    ],
-  },
-};
+const PROJECT_PROTOCOLS: Record<number, ProjectProtocol> = {};
 
 export function getProtocol(project: Project): ProjectProtocol | null {
   return PROJECT_PROTOCOLS[project.id] ?? null;

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Reveal from '../components/Reveal.astro';
 import { projects } from '../data/projects';
+import { company, yearsActive as getYearsActive, cprsGroupsLabel } from '../data/company';
 
 // ────────────────────────────────────────────────────────────────
 // За нас — editorial dossier of the firm.
@@ -10,10 +11,17 @@ import { projects } from '../data/projects';
 // that breaks out of container-page on purpose.
 // ────────────────────────────────────────────────────────────────
 
-const FOUNDED = 1992;
 const currentYear = new Date().getFullYear();
-const yearsActive = currentYear - FOUNDED;
+const yearsActive = getYearsActive();
 const totalProjects = projects.length;
+const cprsLabel = cprsGroupsLabel();
+
+const heroStats = [
+  ...(yearsActive !== null ? [{ label: 'Години работа', short: 'Години', value: yearsActive, pad: 0, plus: true }] : []),
+  { label: 'Реализирани обекти', short: 'Обекта', value: totalProjects, pad: 0, plus: false },
+  ...(company.cprsGroups ? [{ label: 'ЦПРС групи', short: 'ЦПРС групи', value: company.cprsGroups.length, pad: 2, plus: false }] : []),
+  { label: 'ISO стандарта', short: 'ISO стандарта', value: 3, pad: 2, plus: false },
+];
 
 // ── Award (Сграда на годината) — Chukara project feature.
 const awardSlots = [
@@ -49,7 +57,7 @@ const isoStandards = [
   },
 ];
 
-const cprsGroups = [
+const cprsCards = [
   {
     roman: 'I',
     title: 'Първа група',
@@ -83,9 +91,12 @@ const declaration = {
   img: 'https://www.artstroismolian.com/sert/8.jpg',
 };
 
-const pageTitle = 'За нас · АРТСТРОЙ ООД — строителна компания от Смолян от 1992';
-const pageDescription =
-  'Над 34 години строителство в Смолян и България. Носители на „Сграда на годината". Сертифицирани по ISO 9001/14001/45001. Вписани в ЦПРС.';
+const pageTitle = `За нас · ${company.name}, строителна фирма от Смолян${
+  company.founded !== null ? ` от ${company.founded} г.` : ''
+}`;
+const pageDescription = `${
+  yearsActive !== null ? `${yearsActive} години строителство в Смолян и България.` : 'Строителна фирма от Смолян.'
+} Изпълнител на обекта, отличен в конкурса „Сграда на годината“ 2022. Сертифицирани по ISO 9001, 14001 и 45001. Вписани в ЦПРС.`;
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -97,13 +108,15 @@ const pageDescription =
     <span aria-hidden="true" class="absolute inset-x-0 top-0 h-[3px] bg-brand"></span>
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-c opacity-[0.16]"></div>
 
-    <span
-      aria-hidden="true"
-      class="zn-hero__backdrop absolute -right-8 -bottom-14 select-none pointer-events-none font-display text-white/[0.045] leading-[0.78]"
-      style="font-size: clamp(11rem, 22vw, 26rem);"
-    >
-      1992
-    </span>
+    {company.founded !== null && (
+      <span
+        aria-hidden="true"
+        class="zn-hero__backdrop absolute -right-8 -bottom-14 select-none pointer-events-none font-display text-white/[0.045] leading-[0.78]"
+        style="font-size: clamp(11rem, 22vw, 26rem);"
+      >
+        {company.founded}
+      </span>
+    )}
 
     <div class="container-page relative pt-32 md:pt-36 lg:pt-40 pb-14 md:pb-20">
       <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-end">
@@ -111,51 +124,32 @@ const pageDescription =
         <Reveal class="lg:col-span-7">
           <p class="eyebrow flex items-center gap-3 flex-wrap text-brand">
             <span class="inline-block h-px w-10 bg-brand"></span>
-            За нас · 1992 → {currentYear}
+            За нас{company.founded !== null && ` · ${company.founded} → ${currentYear}`}
           </p>
           <h1
             class="mt-5 md:mt-7 font-display tracking-tight leading-[0.95] text-white max-w-[22ch]"
             style="font-size: clamp(2.5rem, 1.25rem + 5vw, 6rem); letter-spacing: -0.025em;"
           >
-            Тридесет и четири години
+            {yearsActive !== null ? `${yearsActive} години` : 'Строителна фирма'}
             <span class="block text-brand">
-              под един подпис.
+              {yearsActive !== null ? 'строителство в Смолян.' : 'от Смолян.'}
             </span>
           </h1>
           <p class="mt-7 md:mt-9 max-w-[54ch] text-base md:text-lg text-white/70 leading-[1.65]">
-            „АРТСТРОЙ" ООД работи в Смолян и Родопската област от 1992 г. Строим жилища, обществени сгради и инфраструктура — със собствени бригади, собствено оборудване и ясен контрол на изпълнението.
+            {company.name} строи жилища, обществени сгради и инфраструктура в област Смолян и в други краища на България.{company.founded !== null && ` Работим от ${company.founded} г.`}
           </p>
 
           <!-- Tight inline stats — no separate band -->
-          <dl class="zn-stats mt-9 md:mt-11 gap-x-6 gap-y-4 max-w-2xl border-t border-white/12 pt-6">
-            <div>
-              <dt class="sr-only">Години работа</dt>
-              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem);">
-                <span data-counter={yearsActive}>0</span><span class="text-brand">+</span>
-              </dd>
-              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Години</p>
-            </div>
-            <div>
-              <dt class="sr-only">Реализирани обекти</dt>
-              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem);">
-                <span data-counter={totalProjects}>0</span><span class="text-brand">+</span>
-              </dd>
-              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Обекта</p>
-            </div>
-            <div>
-              <dt class="sr-only">ЦПРС групи</dt>
-              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem);">
-                <span data-counter="4" data-pad="2">0</span>
-              </dd>
-              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">ЦПРС групи</p>
-            </div>
-            <div>
-              <dt class="sr-only">ISO стандарта</dt>
-              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem);">
-                <span data-counter="3" data-pad="2">0</span>
-              </dd>
-              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">ISO стандарта</p>
-            </div>
+          <dl class="zn-stats mt-9 md:mt-11 gap-x-6 gap-y-4 max-w-2xl border-t border-white/12 pt-6" style={`--zn-cols: ${heroStats.length};`}>
+            {heroStats.map((st) => (
+              <div>
+                <dt class="sr-only">{st.label}</dt>
+                <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem);">
+                  <span data-counter={st.value} data-pad={st.pad || undefined}>0</span>{st.plus && <span class="text-brand">+</span>}
+                </dd>
+                <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">{st.short}</p>
+              </div>
+            ))}
           </dl>
         </Reveal>
 
@@ -174,19 +168,21 @@ const pageDescription =
             <dl class="zn-dossier__list">
               <div class="zn-dossier__row">
                 <dt>Седалище</dt>
-                <dd>гр. Смолян 4700 · кв. Устово</dd>
+                <dd>гр. {company.city} {company.postalCode} · {company.district}</dd>
               </div>
               <div class="zn-dossier__row">
                 <dt>Адрес</dt>
-                <dd>ул. „Хаджи Иван Бечев" №6</dd>
+                <dd>{company.street}</dd>
               </div>
-              <div class="zn-dossier__row">
-                <dt>Учредяване</dt>
-                <dd>март 1992 г.</dd>
-              </div>
+              {company.founded !== null && (
+                <div class="zn-dossier__row">
+                  <dt>Учредяване</dt>
+                  <dd>{company.founded} г.</dd>
+                </div>
+              )}
               <div class="zn-dossier__row">
                 <dt>Регистър</dt>
-                <dd>ЦПРС · I · II · III · IV група</dd>
+                <dd>{cprsLabel ? `ЦПРС · ${cprsLabel}` : 'ЦПРС'}</dd>
               </div>
               <div class="zn-dossier__row">
                 <dt>Стандарти</dt>
@@ -260,26 +256,15 @@ const pageDescription =
 
           <Reveal class="lg:col-span-7" delay={120}>
             <figure class="zn-award__hero">
-              <video
-                class="zn-award__video"
-                poster="/award/chukara/hero.jpg"
-                src="/award/chukara/drone.mp4"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                aria-label="Въздушен обход на Вино и СПА хотел Чукара"
-              ></video>
               <img
                 src="/award/chukara/hero.jpg"
-                alt="Вино и СПА хотел Чукара, гр. Трявна"
+                alt="Вино и СПА хотел Чукара, с. Кисийците, общ. Трявна"
                 loading="lazy"
                 decoding="async"
                 class="zn-award__poster"
               />
               <figcaption class="zn-award__hero-caption">
                 <span>Вино и СПА хотел Чукара</span>
-                <span>Тук ще бъде поставен drone клипът</span>
               </figcaption>
             </figure>
           </Reveal>
@@ -376,7 +361,7 @@ const pageDescription =
         </Reveal>
         <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
           <p class="text-[14.5px] md:text-[15px] text-ink-600 leading-[1.65] max-w-[46ch]">
-            Системата ни за управление на качеството, околната среда, здравето и безопасността при работа е изградена в съответствие с международните стандарти ISO и е валидирана от независим орган. Всички сертификати са актуални и налични за инспекция.
+            Системата ни за управление на качеството, околната среда, здравето и безопасността при работа е изградена в съответствие с международните стандарти ISO и е валидирана от независим орган.
           </p>
         </Reveal>
       </div>
@@ -438,7 +423,7 @@ const pageDescription =
         </Reveal>
 
         <ol class="zn-cprs grid grid-cols-2 lg:grid-cols-5 gap-px bg-ink-900/12">
-          {cprsGroups.map((g, i) => (
+          {cprsCards.map((g, i) => (
             <Reveal as="li" delay={i * 60} class="zn-cprs__cell group">
               <article class="zn-cprs__inner">
                 <span class="zn-cprs__roman font-display text-brand">
@@ -460,7 +445,7 @@ const pageDescription =
           ))}
 
           <!-- Declaration as a 5th, distinct cell -->
-          <Reveal as="li" delay={cprsGroups.length * 60} class="zn-cprs__cell zn-cprs__cell--alt group">
+          <Reveal as="li" delay={cprsCards.length * 60} class="zn-cprs__cell zn-cprs__cell--alt group">
             <article class="zn-cprs__inner">
               <span class="zn-cprs__roman font-display text-brand">
                 §
@@ -516,7 +501,7 @@ const pageDescription =
         </Reveal>
         <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
           <p class="text-[15px] md:text-base text-ink-600 leading-[1.65] max-w-[44ch]">
-            Първа консултация без ангажимент. Отговаряме в работно време — Пон–Пет 9:00–18:00.
+            Пишете ни или се обадете. Отговаряме {company.hoursDays} {company.hoursTime}.
           </p>
           <div class="mt-7 flex flex-wrap gap-3">
             <a href="/kontakti" class="btn-brand">
@@ -545,7 +530,7 @@ const pageDescription =
      is used). 4 cols at >=520px, 2 cols below. */
   .zn-stats {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--zn-cols, 4), minmax(0, 1fr));
     column-gap: 1.5rem;
     row-gap: 1rem;
   }
@@ -808,16 +793,12 @@ const pageDescription =
       min-height: 0;
     }
   }
-  .zn-award__video,
   .zn-award__poster {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-  .zn-award__video {
-    z-index: 2;
   }
   .zn-award__poster {
     z-index: 1;

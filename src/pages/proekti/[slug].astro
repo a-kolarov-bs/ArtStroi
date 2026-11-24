@@ -18,6 +18,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Reveal from '../../components/Reveal.astro';
 import ProjectProtocol from '../../components/ProjectProtocol.astro';
 import { projects, getCategory, getProtocol } from '../../data/projects';
+import { company } from '../../data/company';
 
 export async function getStaticPaths() {
   return projects.map((project) => ({
@@ -106,14 +107,14 @@ const schemaCreativeWork = {
   inLanguage: 'bg',
   creator: {
     '@type': 'Organization',
-    name: 'АРТСТРОЙ ООД',
+    name: company.name,
     url: siteOrigin,
-    foundingDate: '1992',
+    ...(company.founded !== null && { foundingDate: String(company.founded) }),
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'кв. Устово, ул. „Хаджи Иван Бечев" №6',
-      addressLocality: 'Смолян',
-      postalCode: '4700',
+      streetAddress: `${company.district}, ${company.street}`,
+      addressLocality: company.city,
+      postalCode: company.postalCode,
       addressCountry: 'BG',
     },
   },

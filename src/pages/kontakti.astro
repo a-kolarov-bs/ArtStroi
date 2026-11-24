@@ -1,14 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Reveal from '../components/Reveal.astro';
+import { company, fullAddress, mapQuery as officeMapQuery } from '../data/company';
 
-const officeAddress = 'Промишлена зона Бяла река, ул. „Хаджи Иван Бечев“ 6, Смолян, България';
-const mapQuery = encodeURIComponent(officeAddress);
+const mapQuery = encodeURIComponent(officeMapQuery);
 ---
 
 <BaseLayout
-  title="Контакти — АРТСТРОЙ ООД"
-  description="Контакти на АРТСТРОЙ ООД, Смолян. Офис на ул. „Хаджи Иван Бечев“ 6, Промишлена зона Бяла река."
+  title={`Контакти — ${company.name}`}
+  description={`Контакти на ${company.name}. Офис: ${fullAddress}.`}
   solidHeader
 >
   <section class="contact-page relative isolate overflow-hidden bg-cream-50 text-ink-950">
@@ -41,7 +41,7 @@ const mapQuery = encodeURIComponent(officeAddress);
               </p>
             </div>
 
-            <form class="contact-form" data-contact-form novalidate>
+            <form class="contact-form" data-contact-form data-mailto={company.email} novalidate>
               <div class="contact-field">
                 <label for="first-name">Име</label>
                 <input id="first-name" name="firstName" type="text" autocomplete="given-name" />
@@ -101,18 +101,18 @@ const mapQuery = encodeURIComponent(officeAddress);
             <div class="contact-office">
               <div class="contact-office__head">
                 <p class="eyebrow">Офис</p>
-                <h2>Бяла река, Смолян</h2>
+                <h2>{company.district}, {company.city}</h2>
               </div>
 
               <address>
-                ул. „Хаджи Иван Бечев“ 6<br />
-                Промишлена зона Бяла река<br />
-                Смолян, България
+                {company.street}<br />
+                {company.district}<br />
+                гр. {company.city} {company.postalCode}
               </address>
 
               <div class="contact-map" aria-label="Карта с локацията на офиса">
                 <iframe
-                  title="АРТСТРОЙ ООД — офис Смолян"
+                  title={`${company.name}, офис ${company.city}`}
                   src={`https://maps.google.com/maps?q=${mapQuery}&output=embed`}
                   loading="lazy"
                   referrerpolicy="no-referrer-when-downgrade"
@@ -124,7 +124,7 @@ const mapQuery = encodeURIComponent(officeAddress);
                   <span class="contact-map__bar"></span>
                   <div>
                     <p>Адрес</p>
-                    <strong>ул. „Хаджи Иван Бечев“ 6, Смолян</strong>
+                    <strong>{company.street}, {company.city}</strong>
                   </div>
                 </div>
               </div>
@@ -672,7 +672,7 @@ const mapQuery = encodeURIComponent(officeAddress);
         ].join('\n');
 
         if (status) status.textContent = 'Отваряме имейл клиент с попълненото запитване.';
-        window.location.href = `mailto:artstroismolian@abv.bg?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = `mailto:${form.dataset.mailto}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       });
     });
   };

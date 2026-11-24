@@ -4,6 +4,8 @@ import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SmoothScroll from '../components/SmoothScroll.astro';
+import { company } from '../data/company';
+import { projects } from '../data/projects';
 
 interface Props {
   title?: string;
@@ -18,7 +20,7 @@ interface Props {
 
 const {
   title = 'АРТСТРОЙ ООД — Строителство в Смолян и България',
-  description = 'Строителна компания АРТСТРОЙ ООД от Смолян. Жилищни сгради, обществени обекти, хотели и инфраструктура. Над 55 реализирани проекта от 1992.',
+  description = `Строителна фирма ${company.name} от ${company.city}. Жилищни сгради, обществени обекти, хотели и инфраструктура. ${projects.length} реализирани обекта${company.founded !== null ? ` от ${company.founded} г. насам` : ''}.`,
   ogImage = '/og-default.jpg',
   noHeader = false,
   noFooter = false,

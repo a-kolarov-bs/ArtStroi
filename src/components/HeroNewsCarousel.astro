@@ -1,4 +1,6 @@
 ---
+import { company } from '../data/company';
+
 interface Slide {
   code: string;
   label: string;
@@ -41,10 +43,13 @@ const slides: Slide[] = [
     code: 'ЦПРС',
     label: 'Регистър',
     title: 'Вписване в строителния регистър',
-    body: 'Първа, втора, трета и четвърта група строежи.',
+    body: company.cprsGroups
+      ? `Вписани за ${company.cprsGroups.join(' · ')} група строежи.`
+      : 'Вписани в Централния професионален регистър на строителя.',
     image: 'https://www.artstroismolian.com/sert/4.jpg',
     href: '/za-nas#certs-heading',
-    accent: 'I-IV',
+    // Joined with dots, not a dash: „I-IV“ would read as a range.
+    accent: company.cprsGroups ? company.cprsGroups.join('·') : '№04',
   },
   {
     code: 'HSE',

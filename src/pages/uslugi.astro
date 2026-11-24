@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Reveal from '../components/Reveal.astro';
-import { projects } from '../data/projects';
+import { projects, getCategory } from '../data/projects';
+import { company, yearsActive as getYearsActive, phone, telHref, cprsGroupsLabel } from '../data/company';
 
 // ────────────────────────────────────────────────────────────────
 // Spec-sheet services page — dense editorial, six disciplines,
@@ -9,10 +10,21 @@ import { projects } from '../data/projects';
 // ────────────────────────────────────────────────────────────────
 
 const currentYear = new Date().getFullYear();
-const yearsActive = currentYear - 1992;
+const yearsActive = getYearsActive();
 const totalProjects = projects.length;
+const cprsLabel = cprsGroupsLabel();
+const ctaPhones = [phone('Управител'), phone('Технически директор'), phone('Транспорт')];
 
-const services = [
+// „1 проект“ / „N проекта“
+const projectsWord = (n: number) => (n === 1 ? 'проект' : 'проекта');
+
+const heroStats = [
+  ...(yearsActive !== null ? [{ label: 'Години работа', value: yearsActive, pad: 0, plus: true }] : []),
+  { label: 'Реализирани обекта', value: totalProjects, pad: 0, plus: false },
+  { label: 'Дисциплини', value: 6, pad: 2, plus: false },
+];
+
+const serviceDefs = [
   {
     code: 'A.01',
     slug: 'arch',
@@ -33,7 +45,6 @@ const services = [
       'Фасади и довършителни работи',
       'Партери и общи части',
     ],
-    refCount: 14,
     refCat: 'Жилищни сгради',
   },
   {
@@ -56,7 +67,6 @@ const services = [
       'Приемателни актове 12 / 15 / 16',
       'Инвестиционен надзор',
     ],
-    refCount: 18,
     refCat: 'Обществени сгради',
   },
   {
@@ -80,7 +90,6 @@ const services = [
       'Дъждовна канализация',
       'Пътна маркировка',
     ],
-    refCount: 12,
     refCat: 'Инфраструктура',
   },
   {
@@ -103,7 +112,6 @@ const services = [
       'Конструктивно усилване',
       'Сертификат за енергийна ефективност',
     ],
-    refCount: 7,
     refCat: 'Обществени сгради',
   },
   {
@@ -126,7 +134,6 @@ const services = [
       'Слаботокови инсталации',
       'Външни мрежи и съоръжения',
     ],
-    refCount: 9,
     refCat: 'Обществени сгради',
   },
   {
@@ -149,10 +156,16 @@ const services = [
       'Барбекюта и камини',
       'Парапети и ковано желязо',
     ],
-    refCount: 5,
     refCat: 'Обществени сгради',
   },
 ];
+
+// The count on each card is the number of cards the linked /proekti
+// filter shows, so the two can never disagree.
+const services = serviceDefs.map((s) => ({
+  ...s,
+  refCount: projects.filter((p) => getCategory(p) === s.refCat).length,
+}));
 
 const inHouse = [
   'Главно изпълнение',
@@ -179,7 +192,7 @@ const method = [
   {
     n: '02',
     title: 'Договор',
-    body: 'Изготвяме спецификации, оферта и срокове. Прозрачно ценообразуване по позиции — без скрити линии и междинни корекции.',
+    body: 'Изготвяме спецификации, оферта и срокове. Цената в офертата е разписана по позиции.',
   },
   {
     n: '03',
@@ -189,13 +202,15 @@ const method = [
   {
     n: '04',
     title: 'Предаване',
-    body: 'Предаване с пълна изпълнителна документация. Гаранционна поддръжка и експлоатационна намеса по договор.',
+    body: 'Предаваме обекта с пълна изпълнителна документация. Поддръжката след това е по договор.',
   },
 ];
 
 const pageTitle = 'Услуги · АРТСТРОЙ ООД — пълен обхват строителни услуги';
 const pageDescription =
-  'Жилищно и обществено строителство, инфраструктура, реконструкция, енергийно саниране, инсталации и реставрация. 33 години изпълнение под един договор.';
+  `Жилищно и обществено строителство, инфраструктура, реконструкция, енергийно саниране, инсталации и реставрация. ${
+    yearsActive !== null ? `${yearsActive} години строителство в Смолян и областта.` : 'Строителна фирма от Смолян.'
+  }`;
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -223,7 +238,7 @@ const pageDescription =
         <Reveal class="lg:col-span-7">
           <p class="eyebrow flex items-center gap-3 flex-wrap text-brand">
             <span class="inline-block h-px w-10 bg-brand"></span>
-            Услуги · 1992 → {currentYear}
+            Услуги{company.founded !== null && ` · ${company.founded} → ${currentYear}`}
           </p>
           <h1
             class="mt-5 md:mt-7 font-display tracking-tight leading-[0.95] text-white max-w-[20ch]"
@@ -235,32 +250,23 @@ const pageDescription =
             </span>
           </h1>
           <p class="mt-7 md:mt-9 max-w-[52ch] text-base md:text-lg text-white/70 leading-[1.65]">
-            От първия изкоп до Акт 16 — пълен обхват строителни услуги под покрива на една фирма. Без външни подизпълнители на ключовите позиции, без размити отговорности.
+            Строим от първия изкоп до Акт 16. Под всяка услуга има връзка към изпълнените обекти от същия вид.
           </p>
 
           <!-- Tight inline stats — no separate band section -->
-          <dl class="mt-9 md:mt-11 grid grid-cols-3 gap-x-6 gap-y-4 max-w-xl border-t border-white/12 pt-6">
-            <div>
-              <dt class="sr-only">Години работа</dt>
-              <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem);">
-                <span data-counter={yearsActive}>0</span><span class="text-brand">+</span>
-              </dd>
-              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Години работа</p>
-            </div>
-            <div>
-              <dt class="sr-only">Реализирани обекти</dt>
-              <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem);">
-                <span data-counter={totalProjects}>0</span><span class="text-brand">+</span>
-              </dd>
-              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Реализирани обекта</p>
-            </div>
-            <div>
-              <dt class="sr-only">Дисциплини</dt>
-              <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem);">
-                <span data-counter="6" data-pad="2">0</span>
-              </dd>
-              <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Дисциплини</p>
-            </div>
+          <dl
+            class="mt-9 md:mt-11 grid gap-x-6 gap-y-4 max-w-xl border-t border-white/12 pt-6"
+            style={`grid-template-columns: repeat(${heroStats.length}, minmax(0, 1fr));`}
+          >
+            {heroStats.map((st) => (
+              <div>
+                <dt class="sr-only">{st.label}</dt>
+                <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem);">
+                  <span data-counter={st.value} data-pad={st.pad || undefined}>0</span>{st.plus && <span class="text-brand">+</span>}
+                </dd>
+                <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">{st.label}</p>
+              </div>
+            ))}
           </dl>
         </Reveal>
 
@@ -372,7 +378,7 @@ const pageDescription =
 
               <footer class="us-card__foot">
                 <a href={`/proekti?cat=${encodeURIComponent(s.refCat)}`} class="us-card__more">
-                  <span>{s.refCount} проекта в архива</span>
+                  <span>{s.refCount} {projectsWord(s.refCount)} в архива</span>
                   <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                     <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -400,10 +406,10 @@ const pageDescription =
             class="mt-3 font-display tracking-tight text-ink-950"
             style="font-size: clamp(1.6rem, 1rem + 1.5vw, 2.3rem); line-height: 1.1;"
           >
-            Какво поемаме <span class="text-brand">сами</span>.
+            Обхват на <span class="text-brand">обекта</span>.
           </h2>
           <p class="mt-5 max-w-md text-[15px] text-ink-600 leading-[1.65]">
-            Ключовите дисциплини са под собствен контрол — собствени бригади, собствено оборудване, прозрачен график. Специализираните работи — с дългогодишни партньори.
+            Строителните работи и специализираните дейности, които координираме по всеки обект.
           </p>
         </Reveal>
 
@@ -411,7 +417,7 @@ const pageDescription =
           <div class="grid sm:grid-cols-2 gap-px bg-ink-900/12">
             <div class="bg-cream-100 p-6 md:p-7">
               <div class="flex items-baseline justify-between mb-5">
-                <p class="text-[10.5px] uppercase tracking-eyebrow text-brand font-semibold">Собствено изпълнение</p>
+                <p class="text-[10.5px] uppercase tracking-eyebrow text-brand font-semibold">Строителни работи</p>
                 <span class="font-display text-ink-900/35 tabular-nums text-sm">
                   {String(inHouse.length).padStart(2, '0')}
                 </span>
@@ -427,7 +433,7 @@ const pageDescription =
             </div>
             <div class="bg-cream-100 p-6 md:p-7">
               <div class="flex items-baseline justify-between mb-5">
-                <p class="text-[10.5px] uppercase tracking-eyebrow text-ink-900/60 font-semibold">Сертифицирани партньори</p>
+                <p class="text-[10.5px] uppercase tracking-eyebrow text-ink-900/60 font-semibold">Проектиране и контрол</p>
                 <span class="font-display text-ink-900/35 tabular-nums text-sm">
                   {String(partners.length).padStart(2, '0')}
                 </span>
@@ -507,7 +513,7 @@ const pageDescription =
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-d"></div>
 
     <div class="container-page relative">
-      <ul class="us-standards grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-px bg-ink-900/10">
+      <ul class="us-standards grid grid-cols-1 md:grid-cols-3 gap-px bg-ink-900/10">
         <li class="us-standards__cell bg-cream-50 px-5 py-5 md:px-7 md:py-6 flex items-baseline gap-4">
           <span class="font-display text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem);">
             ISO
@@ -516,20 +522,13 @@ const pageDescription =
             9001 / 14001 / 45001
           </span>
         </li>
-        <li class="us-standards__cell bg-cream-50 px-5 py-5 md:px-7 md:py-6 flex items-baseline gap-4">
-          <span class="font-display text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem);">
-            10
-          </span>
-          <span class="text-[12.5px] md:text-[13px] uppercase tracking-eyebrow text-ink-600">
-            години гаранция на стр. конструкции
-          </span>
-        </li>
+
         <li class="us-standards__cell bg-cream-50 px-5 py-5 md:px-7 md:py-6 flex items-baseline gap-4">
           <span class="font-display text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem);">
             ЦПРС
           </span>
           <span class="text-[12.5px] md:text-[13px] uppercase tracking-eyebrow text-ink-600">
-            вписани · I · II · IV · V&nbsp;група
+            Централен професионален регистър на строителя{cprsLabel && ` · ${cprsLabel}`}
           </span>
         </li>
         <li class="us-standards__cell bg-cream-50 px-5 py-5 md:px-7 md:py-6 flex items-baseline gap-4">
@@ -549,13 +548,15 @@ const pageDescription =
        ════════════════════════════════════════════════════════════ -->
   <section class="us-cta relative isolate overflow-hidden bg-ink-950 text-white py-16 md:py-24" aria-labelledby="us-cta-heading">
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet opacity-[0.18]"></div>
-    <span
-      aria-hidden="true"
-      class="us-cta__backdrop absolute -left-6 top-4 select-none pointer-events-none font-display text-white/[0.045] leading-[0.78]"
-      style="font-size: clamp(10rem, 22vw, 22rem);"
-    >
-      1992
-    </span>
+    {company.founded !== null && (
+      <span
+        aria-hidden="true"
+        class="us-cta__backdrop absolute -left-6 top-4 select-none pointer-events-none font-display text-white/[0.045] leading-[0.78]"
+        style="font-size: clamp(10rem, 22vw, 22rem);"
+      >
+        {company.founded}
+      </span>
+    )}
 
     <div class="container-page relative">
       <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-end">
@@ -577,28 +578,18 @@ const pageDescription =
         </Reveal>
         <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
           <p class="us-cta__lead text-[15px] md:text-base text-white/70 leading-[1.65] max-w-[44ch]">
-            Първа консултация без ангажимент. Отговаряме в работно време и за необичайни задачи — реставрация, аварийни укрепвания, общински инвестиции.
+            Отговаряме {company.hoursDays} {company.hoursTime}. Пишете ни и за по-необичайни задачи: реставрация, аварийни укрепвания, общински инвестиции.
           </p>
 
           <ul class="us-phone mt-7 grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/12 rounded-[4px] overflow-hidden">
-            <li class="us-phone__cell bg-ink-950 px-4 py-3.5">
-              <p class="text-[10.5px] uppercase tracking-eyebrow text-brand">Управител</p>
-              <a href="tel:+359878715936" class="mt-1 block text-[14.5px] text-white tabular-nums hover:text-brand transition-colors">
-                +359 878 715 936
-              </a>
-            </li>
-            <li class="us-phone__cell bg-ink-950 px-4 py-3.5">
-              <p class="text-[10.5px] uppercase tracking-eyebrow text-brand">Тех. директор</p>
-              <a href="tel:+359877766523" class="mt-1 block text-[14.5px] text-white tabular-nums hover:text-brand transition-colors">
-                +359 877 766 523
-              </a>
-            </li>
-            <li class="us-phone__cell bg-ink-950 px-4 py-3.5">
-              <p class="text-[10.5px] uppercase tracking-eyebrow text-brand">Транспорт</p>
-              <a href="tel:+359878986797" class="mt-1 block text-[14.5px] text-white tabular-nums hover:text-brand transition-colors">
-                +359 878 986 797
-              </a>
-            </li>
+            {ctaPhones.map((p) => (
+              <li class="us-phone__cell bg-ink-950 px-4 py-3.5">
+                <p class="text-[10.5px] uppercase tracking-eyebrow text-brand">{p.roleShort}</p>
+                <a href={telHref(p.number)} class="mt-1 block text-[14.5px] text-white tabular-nums hover:text-brand transition-colors">
+                  {p.number}
+                </a>
+              </li>
+            ))}
           </ul>
 
           <div class="us-cta__actions mt-7 flex flex-wrap gap-3">
