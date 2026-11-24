@@ -90,26 +90,33 @@
     @apply text-xs uppercase tracking-eyebrow font-medium text-brand;
   }
 
+  /* Buttons — one family, one size (48px, 14px, sentence case):
+       .btn-brand       primary, solid red
+       .btn-ghost       secondary on a dark surface (white hairline)
+       .btn-ghost-dark  secondary on a light surface (dark glass)
+     Pages add only layout utilities (width, margin); no own font size,
+     letter-spacing, uppercase or height. */
+  .btn-brand,
+  .btn-ghost,
+  .btn-ghost-dark {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full
+           px-7 py-0 text-sm font-medium leading-none
+           transition-all duration-400 ease-out-expo;
+  }
+
   .btn-brand {
-    @apply inline-flex items-center justify-center gap-2 rounded-full
-           bg-brand text-white px-7 py-3.5 text-sm font-medium
-           transition-all duration-400 ease-out-expo
+    @apply bg-brand text-white
            hover:bg-brand-dark hover:shadow-lift
            focus-visible:bg-brand-dark;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-full
-           border border-white/30 text-white px-7 py-3.5 text-sm font-medium
-           transition-all duration-400 ease-out-expo
+    @apply border border-white/30 text-white
            hover:bg-white/10 hover:border-white/60;
   }
 
   .btn-ghost-dark {
-    @apply inline-flex items-center justify-center gap-2 rounded-full
-           px-7 py-3.5 text-sm font-medium text-ink-900
-           transition-all duration-400 ease-out-expo
-           glass-dark;
+    @apply text-ink-900 glass-dark;
   }
   .btn-ghost-dark:hover {
     color: theme('colors.ink.950');

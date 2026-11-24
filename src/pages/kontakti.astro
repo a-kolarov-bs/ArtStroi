@@ -87,7 +87,7 @@ const mapQuery = encodeURIComponent(officeMapQuery);
                 <p data-contact-status aria-live="polite">
                   Проверяваме имейла и текста преди изпращане.
                 </p>
-                <button type="submit">
+                <button type="submit" class="btn-brand shrink-0">
                   Изпрати имейл
                   <span aria-hidden="true">↗</span>
                 </button>
@@ -339,29 +339,6 @@ const mapQuery = encodeURIComponent(officeMapQuery);
     line-height: 1.5;
   }
 
-  .contact-form__footer button {
-    display: inline-flex;
-    min-height: 3.1rem;
-    align-items: center;
-    justify-content: center;
-    gap: 0.65rem;
-    border: 1px solid rgba(255, 251, 244, 0.18);
-    border-radius: 999px;
-    background: #ba2d20;
-    padding: 0 1.2rem;
-    color: #fffaf2;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    transition: background-color 220ms ease, transform 220ms ease;
-  }
-
-  .contact-form__footer button:hover,
-  .contact-form__footer button:focus-visible {
-    background: #d43a2c;
-    transform: translateY(-1px);
-  }
 
   .contact-side {
     display: grid;
