@@ -71,4 +71,10 @@ const tracks = [...clients, ...clients];
       animation-duration: 28s !important;
     }
   }
+  /* The rule above outranks the global reduced-motion reset — stop here too. */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track {
+      animation: none !important;
+    }
+  }
 </style>
