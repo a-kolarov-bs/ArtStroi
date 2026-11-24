@@ -10,7 +10,9 @@ const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
   class="relative isolate flex min-h-[100svh] w-full flex-col overflow-hidden bg-ink-950 text-white"
   aria-label="Hero"
 >
-  <!-- Background media: poster fallback behind the autoplay video. -->
+  <!-- Background media: poster behind the video. The video has no `autoplay`
+       attribute; src/scripts/motion-video.ts starts it unless the visitor
+       asked for reduced motion (then the poster stays). -->
   <picture class="absolute inset-0 -z-20">
     <source media="(min-width: 768px)" srcset={heroPoster} />
     <img
@@ -24,9 +26,8 @@ const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
   </picture>
 
   <video
-    data-hero-video
+    data-motion-video
     class="hero-video absolute inset-0 -z-10 h-full w-full object-cover"
-    autoplay
     muted
     loop
     playsinline
@@ -171,35 +172,8 @@ const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
 </style>
 
 <script>
-  function initHeroVideoPlayback() {
-    const videos = document.querySelectorAll<HTMLVideoElement>('[data-hero-video]');
+  import { initMotionVideos } from '../scripts/motion-video';
 
-    videos.forEach((video) => {
-      video.muted = true;
-      video.defaultMuted = true;
-      video.playsInline = true;
-
-      const play = () => {
-        if (!video.paused && video.currentTime > 0) return;
-        video.play().catch(() => {
-          // iOS Low Power Mode can still block autoplay until first user input.
-        });
-      };
-
-      if (video.readyState >= 2) play();
-      else video.addEventListener('canplay', play, { once: true });
-
-      window.requestAnimationFrame(play);
-      window.setTimeout(play, 450);
-      document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) play();
-      });
-      window.addEventListener('pageshow', play);
-      window.addEventListener('pointerdown', play, { once: true, passive: true });
-      window.addEventListener('touchstart', play, { once: true, passive: true });
-    });
-  }
-
-  initHeroVideoPlayback();
-  document.addEventListener('astro:page-load', initHeroVideoPlayback);
+  initMotionVideos();
+  document.addEventListener('astro:page-load', initMotionVideos);
 </script>

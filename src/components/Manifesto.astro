@@ -122,9 +122,9 @@ const total = capabilities.length;
             <div class="cap-media">
               <video
                 class="cap-video"
+                data-motion-video
                 muted
                 loop
-                autoplay
                 playsinline
                 preload="auto"
                 poster={videoPoster}
@@ -523,7 +523,6 @@ const total = capabilities.length;
         color: #12161C !important;
         transform: none !important;
       }
-      .cap-video { display: none; }
       .cap-cta { transition: none !important; }
       .cap-cta:hover,
       .cap-cta:focus-visible { transform: none !important; }
@@ -531,6 +530,11 @@ const total = capabilities.length;
   </style>
 
   <script>
+    import { initMotionVideos } from '../scripts/motion-video';
+    // The services video stays on its poster under reduced motion.
+    initMotionVideos();
+    document.addEventListener('astro:page-load', initMotionVideos);
+
     type Lenis = { on: (ev: string, cb: () => void) => void };
 
     let cleanup: (() => void) | null = null;
