@@ -14,6 +14,7 @@
  * Falls back to nothing when project has no protocol data.
  */
 import type { ProjectProtocol } from '../data/projects';
+import { company } from '../data/company';
 
 interface Props {
   protocol: ProjectProtocol;
@@ -59,7 +60,7 @@ const { protocol, number, total } = Astro.props;
         <span aria-hidden="true" class="text-brand">◢</span>
         <span>ПРОТОКОЛ Nº {number} / {total}</span>
       </p>
-      <p class="pp-eyebrow text-cream-50/55">АРТСТРОЙ ООД · от 1992</p>
+      <p class="pp-eyebrow text-cream-50/55">{company.name}{company.founded !== null && ` · от ${company.founded}`}</p>
     </div>
 
     <!-- Big metrics row -->
@@ -233,14 +234,14 @@ const { protocol, number, total } = Astro.props;
 </style>
 
 <script>
-  // ── Number count-up — mirrors StatsCounter.tsx behaviour ──
+  // ── Number count-up ──
   // easeOutExpo timing, 2800ms duration, 180ms stagger between metrics,
   // IntersectionObserver threshold 0.4, honours prefers-reduced-motion.
   const easeOutExpo = (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
   // Format with thin-space thousands separator (Bulgarian typography).
   // toLocaleString('bg-BG') skips the separator for 4-digit numbers; we
-  // want it on 2 400 for parity with the static value in the data.
+  // want it on 4-digit values too, for parity with the static value in the data.
   const formatNum = (n: number) =>
     n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
