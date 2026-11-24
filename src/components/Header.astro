@@ -44,7 +44,7 @@ const nav = [
       {nav.map((item) => (
         <a
           href={item.href}
-          class="rounded-full px-4 py-2 text-sm text-white/85 transition-colors duration-300 hover:text-white hover:bg-white/10"
+          class="text-ink [--ink:0.03em] rounded-full px-4 py-2 text-[15px] text-white/90 transition-colors duration-300 hover:text-white hover:bg-white/10"
           data-nav-link
         >
           {item.label}
@@ -55,7 +55,7 @@ const nav = [
     <div class="flex items-center gap-3">
       <a
         href="/kontakti"
-        class="glass hidden lg:inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs uppercase tracking-eyebrow text-white"
+        class="glass text-ink [--ink:0.03em] hidden lg:inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs uppercase tracking-eyebrow text-white"
       >
         Получи оферта
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -408,6 +408,7 @@ const nav = [
     color: rgb(255 255 255 / 0.94);
     font-family: theme('fontFamily.display');
     font-size: clamp(1.18rem, 5.9vw, 1.62rem);
+    -webkit-text-stroke: 0.03em currentColor;
     font-weight: 500;
     line-height: 1;
     letter-spacing: 0;

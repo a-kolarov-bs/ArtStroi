@@ -99,8 +99,8 @@ const pageDescription =
 
     <span
       aria-hidden="true"
-      class="zn-hero__backdrop absolute -right-8 -bottom-14 select-none pointer-events-none font-display italic text-white/[0.045] leading-[0.78]"
-      style="font-size: clamp(11rem, 22vw, 26rem); font-variation-settings:'opsz' 144,'SOFT' 100;"
+      class="zn-hero__backdrop absolute -right-8 -bottom-14 select-none pointer-events-none font-display text-white/[0.045] leading-[0.78]"
+      style="font-size: clamp(11rem, 22vw, 26rem);"
     >
       1992
     </span>
@@ -118,7 +118,7 @@ const pageDescription =
             style="font-size: clamp(2.5rem, 1.25rem + 5vw, 6rem); letter-spacing: -0.025em;"
           >
             Тридесет и четири години
-            <span class="italic block text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+            <span class="block text-brand">
               под един подпис.
             </span>
           </h1>
@@ -130,28 +130,28 @@ const pageDescription =
           <dl class="zn-stats mt-9 md:mt-11 gap-x-6 gap-y-4 max-w-2xl border-t border-white/12 pt-6">
             <div>
               <dt class="sr-only">Години работа</dt>
-              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem); font-variation-settings:'opsz' 144;">
+              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem);">
                 <span data-counter={yearsActive}>0</span><span class="text-brand">+</span>
               </dd>
               <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Години</p>
             </div>
             <div>
               <dt class="sr-only">Реализирани обекти</dt>
-              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem); font-variation-settings:'opsz' 144;">
+              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem);">
                 <span data-counter={totalProjects}>0</span><span class="text-brand">+</span>
               </dd>
               <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Обекта</p>
             </div>
             <div>
               <dt class="sr-only">ЦПРС групи</dt>
-              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem); font-variation-settings:'opsz' 144;">
+              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem);">
                 <span data-counter="4" data-pad="2">0</span>
               </dd>
               <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">ЦПРС групи</p>
             </div>
             <div>
               <dt class="sr-only">ISO стандарта</dt>
-              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem); font-variation-settings:'opsz' 144;">
+              <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem);">
                 <span data-counter="3" data-pad="2">0</span>
               </dd>
               <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">ISO стандарта</p>
@@ -166,7 +166,7 @@ const pageDescription =
               <p class="text-[10.5px] uppercase tracking-eyebrow text-white/55">
                 Профил · Стр.&nbsp;А
               </p>
-              <p class="font-display italic text-white/55 text-sm tabular-nums" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+              <p class="font-display text-white/55 text-sm tabular-nums">
                 01 / 07
               </p>
             </div>
@@ -246,7 +246,7 @@ const pageDescription =
               style="font-size: clamp(3.4rem, 1.6rem + 6vw, 7.8rem); line-height: 0.9; letter-spacing: -0.03em;"
             >
               Сграда
-              <span class="italic block text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">на годината.</span>
+              <span class="block text-brand">на годината.</span>
             </h2>
             <p class="mt-6 md:mt-8 max-w-[48ch] text-[15.5px] md:text-[16.5px] text-white/72 leading-[1.7]">
               „АРТСТРОЙ“ ООД е изпълнител на отличения проект „Вино и СПА хотел Чукара“ в Националния конкурс „Сграда на годината“ 2022. Това е признание за реално изпълнение, детайл и строителна дисциплина.
@@ -371,7 +371,7 @@ const pageDescription =
             style="font-size: clamp(1.85rem, 1rem + 2vw, 2.85rem); line-height: 1.05;"
           >
             Документи под
-            <span class="italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">подпис</span>.
+            <span class="text-brand">подпис</span>.
           </h2>
         </Reveal>
         <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
@@ -387,7 +387,7 @@ const pageDescription =
           <Reveal as="li" delay={i * 80} class="zn-iso__cell group">
             <article class="zn-iso__inner">
               <header class="zn-iso__head">
-                <span class="zn-iso__num font-display italic tabular-nums text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                <span class="zn-iso__num font-display tabular-nums text-brand">
                   ISO
                 </span>
                 <span class="zn-iso__step">№{String(i + 1).padStart(2, '0')}</span>
@@ -441,7 +441,7 @@ const pageDescription =
           {cprsGroups.map((g, i) => (
             <Reveal as="li" delay={i * 60} class="zn-cprs__cell group">
               <article class="zn-cprs__inner">
-                <span class="zn-cprs__roman font-display italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                <span class="zn-cprs__roman font-display text-brand">
                   {g.roman}
                 </span>
                 <h4 class="zn-cprs__title">{g.title}</h4>
@@ -462,7 +462,7 @@ const pageDescription =
           <!-- Declaration as a 5th, distinct cell -->
           <Reveal as="li" delay={cprsGroups.length * 60} class="zn-cprs__cell zn-cprs__cell--alt group">
             <article class="zn-cprs__inner">
-              <span class="zn-cprs__roman font-display italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+              <span class="zn-cprs__roman font-display text-brand">
                 §
               </span>
               <h4 class="zn-cprs__title">{declaration.title}</h4>
@@ -490,8 +490,8 @@ const pageDescription =
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet"></div>
     <span
       aria-hidden="true"
-      class="zn-cta__backdrop absolute -left-6 top-4 select-none pointer-events-none font-display italic text-ink-900/[0.05] leading-[0.78]"
-      style="font-size: clamp(10rem, 22vw, 22rem); font-variation-settings:'opsz' 144,'SOFT' 100;"
+      class="zn-cta__backdrop absolute -left-6 top-4 select-none pointer-events-none font-display text-ink-900/[0.05] leading-[0.78]"
+      style="font-size: clamp(10rem, 22vw, 22rem);"
     >
       ARTSTROY
     </span>
@@ -509,7 +509,7 @@ const pageDescription =
             style="font-size: clamp(2rem, 1rem + 4vw, 4.5rem); letter-spacing: -0.025em;"
           >
             Имаш проект?
-            <span class="italic block text-ink-900/55" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+            <span class="block text-ink-900/55">
               Започни от един разговор.
             </span>
           </h2>
@@ -774,10 +774,8 @@ const pageDescription =
     display: block;
     color: theme('colors.brand.DEFAULT');
     font-family: theme('fontFamily.display');
-    font-style: italic;
     font-size: clamp(3rem, 2.2rem + 2vw, 4.6rem);
     line-height: 0.85;
-    font-variation-settings: 'opsz' 144, 'SOFT' 100;
   }
   .zn-award__seal strong,
   .zn-award__seal em {
@@ -881,8 +879,6 @@ const pageDescription =
     font-family: theme('fontFamily.display');
     font-size: clamp(2rem, 1.4rem + 2vw, 3.6rem);
     line-height: 0.9;
-    font-style: italic;
-    font-variation-settings: 'opsz' 144, 'SOFT' 100;
   }
   .zn-award__metric-label {
     display: block;

@@ -51,13 +51,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
     <meta property="og:locale" content="bg_BG" />
 
-    <!-- Fonts: Fraunces only — single-family system covering body, UI and
-         display headings. Cyrillic + Latin subsets, italics included. -->
+    <!-- Fonts: the original АРТСТРОЙ pair — Poiret One (headings) +
+         Didact Gothic (body/UI). Both ship a single 400 weight with
+         Cyrillic; css2 serves subsets via unicode-range. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,600&display=swap&subset=cyrillic,latin"
+      href="https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Poiret+One&display=swap"
     />
 
     <ClientRouter />

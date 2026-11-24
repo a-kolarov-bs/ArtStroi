@@ -52,8 +52,11 @@
 | `ink-0` | `#FFFFFF` | фон |
 
 ### Шрифтове
-- **Fraunces** — display/заглавия (с optical sizing, кирилица)
-- **Inter** — body/UI (кирилица)
+Шрифтовете на оригиналния сайт (потвърдено от `<link>` към Google Fonts на artstroismolian.com, 24.11.2026):
+- **Poiret One** — всички заглавия (h1–h4, `font-display`, display размери). Тънък ар деко, кирилица.
+- **Didact Gothic** — body/UI (`font-sans`). Кирилица.
+
+И двата имат само тегло 400 и без курсив. В `global.css` е `font-synthesis: none`, затова `font-medium/semibold/bold` и `italic` не дават фалшив bold/курсив; йерархията се прави с размер, цвят и letter-spacing. Акцентът в заглавията е цвят (`text-brand`), не курсив. CSS променливи: `--font-display`, `--font-sans`.
 
 Зареждат се от Google Fonts в [src/layouts/BaseLayout.astro](src/layouts/BaseLayout.astro).
 
@@ -155,12 +158,12 @@ node scripts/screenshot.mjs / mobile
 
 ## Design principles (2026 premium)
 
-- **Typography is the hero.** Display шрифтът (Fraunces) носи основното визуално тегло. Body не е автоматично 16px — ползвай `clamp()` fluid sizes (`text-display-*` вече са такива в [tailwind.config.ts](tailwind.config.ts)).
+- **Typography is the hero.** Display шрифтът (Poiret One) носи основното визуално тегло. Body не е автоматично 16px — ползвай `clamp()` fluid sizes (`text-display-*` вече са такива в [tailwind.config.ts](tailwind.config.ts)).
 - **Щедро section spacing.** `py-24 md:py-32` (96–128px) е Vercel/Linear benchmark. По-малко = cramped, повече от `py-40` = самоиндулгенция.
 - **Motion is signage, not decoration.** Всяка анимация трябва да отговаря: "какво обяснява?" — йерархия, ориентация, feedback. Ако отговорът е "изглежда готино" → режи.
 - **Accessibility-first motion.** `@media (prefers-reduced-motion: reduce)` fallback е **задължителен**, не nice-to-have. Заменяй transform-и с opacity-only или директно финално състояние.
 - **Performance е design принцип.** Lighthouse Performance ≥ 95 е baseline, не цел. Под 95 = дизайн bug.
-- **Variable font axes.** Fraunces има `opsz` и `SOFT` — размерът влияе на характера (не само на px). Използвай за hero numerals и extra-large headings.
+- **Само тегло 400.** Poiret One е тънък: върху снимка/видео заглавието иска достатъчен размер и лек `text-shadow`; не разчитай на bold.
 
 ## Animation stack
 

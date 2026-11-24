@@ -5,9 +5,14 @@
 @layer base {
   :root {
     color-scheme: light;
+    --font-display: theme('fontFamily.display');
+    --font-sans: theme('fontFamily.sans');
   }
 
   html {
+    /* Poiret One and Didact Gothic exist only at 400 upright. Never let the
+       browser fake bold/italic — hierarchy comes from size, colour, tracking. */
+    font-synthesis: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -190,6 +195,13 @@
 @layer utilities {
   .text-balance { text-wrap: balance; }
   .text-pretty { text-wrap: pretty; }
+
+  /* Optical weight for the 400-only fonts (Poiret One / Didact Gothic).
+     A currentColor stroke thickens the real glyph outlines instead of the
+     browser's fake bold. Tune per use with --ink (em, so it scales). */
+  .text-ink {
+    -webkit-text-stroke: var(--ink, 0.025em) currentColor;
+  }
 
   /* Legacy grid — kept for backwards-compat where used */
   .bp-grid {

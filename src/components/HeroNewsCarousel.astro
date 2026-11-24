@@ -229,7 +229,6 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
     color: #14171b;
     font-family: var(--font-display);
     font-size: clamp(2.55rem, 2.1rem + 1.2vw, 3.35rem);
-    font-weight: 560;
     line-height: 0.86;
     letter-spacing: 0;
   }
@@ -390,6 +389,9 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
     }
     .cert-card__code {
       font-size: 1.95rem;
+      /* Poiret One is wide: force "ISO / 14001" onto two lines so the code
+         never runs under the certificate thumbnail. */
+      max-width: 6rem;
     }
     .cert-card__seal {
       width: 3.2rem;

@@ -55,8 +55,8 @@ const total = capabilities.length;
   <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
   <span
     aria-hidden="true"
-    class="absolute -right-12 top-8 select-none font-display italic text-ink-900/[0.07] leading-none pointer-events-none"
-    style="font-size: clamp(14rem, 24vw, 30rem); font-variation-settings:'opsz' 144,'SOFT' 100;"
+    class="absolute -right-12 top-8 select-none font-display text-ink-900/[0.07] leading-none pointer-events-none"
+    style="font-size: clamp(14rem, 24vw, 30rem);"
   >92</span>
 
   <div class="container-page relative pt-16 md:pt-20 lg:pt-24">
@@ -67,8 +67,8 @@ const total = capabilities.length;
       </p>
       <h2
         id="capabilities-heading"
-        class="mt-2 font-display italic text-brand tracking-[-0.025em] leading-[0.95]"
-        style="font-size: clamp(2.5rem, 1.5rem + 4vw, 5rem); font-weight: 500; font-variation-settings:'opsz' 144,'SOFT' 100;"
+        class="mt-2 font-display text-brand tracking-[-0.025em] leading-[0.95]"
+        style="font-size: clamp(2.5rem, 1.5rem + 4vw, 5rem);"
       >
         „АРТСТРОЙ&nbsp;ООД"
       </h2>
@@ -313,14 +313,12 @@ const total = capabilities.length;
       }
     }
     .cap-item__num {
-      font-family: 'Fraunces', serif;
-      font-style: italic;
+      font-family: var(--font-display);
       font-weight: 400;
       font-size: clamp(1.65rem, 1.25rem + 0.6vw, 2.15rem);
       line-height: 1.1;
       color: rgba(186, 45, 32, 0.42);
       transition: color 350ms ease, transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
-      font-variation-settings: 'opsz' 144, 'SOFT' 100;
     }
     .cap-item__col {
       display: flex;
@@ -329,7 +327,7 @@ const total = capabilities.length;
       min-width: 0;
     }
     .cap-item__title {
-      font-family: 'Fraunces', serif;
+      font-family: var(--font-display);
       font-weight: 400;
       font-size: clamp(1.5rem, 1.15rem + 0.85vw, 2.05rem);
       line-height: 1.1;
@@ -367,8 +365,7 @@ const total = capabilities.length;
       right: 1rem;
       display: inline-flex;
       gap: 0.35rem;
-      font-family: 'Fraunces', serif;
-      font-style: italic;
+      font-family: var(--font-display);
       font-size: 0.78rem;
       letter-spacing: 0.06em;
       color: rgba(18, 22, 28, 0.55);

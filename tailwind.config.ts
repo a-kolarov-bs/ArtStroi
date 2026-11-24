@@ -40,10 +40,10 @@ export default {
         },
       },
       fontFamily: {
-        // Site-wide single-family system: Fraunces is THE typeface for body
-        // and headings alike (its variable opsz axis handles every size).
-        display: ['Fraunces', 'Georgia', 'serif'],
-        sans: ['Fraunces', 'Georgia', 'serif'],
+        // Original АРТСТРОЙ pair (artstroismolian.com): Poiret One for
+        // headings, Didact Gothic for body/UI. Both are 400-only.
+        display: ['"Poiret One"', '"Century Gothic"', 'Futura', '"Avenir Next"', 'sans-serif'],
+        sans: ['"Didact Gothic"', '"Century Gothic"', '"Avenir Next"', '"Segoe UI"', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         // Fluid display sizes via clamp(min, preferred, max)

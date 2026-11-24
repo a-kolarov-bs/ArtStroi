@@ -211,8 +211,8 @@ const pageDescription =
 
     <span
       aria-hidden="true"
-      class="us-hero__backdrop absolute -right-6 -bottom-12 select-none pointer-events-none font-display italic text-white/[0.045] leading-[0.78]"
-      style="font-size: clamp(12rem, 22vw, 26rem); font-variation-settings:'opsz' 144,'SOFT' 100;"
+      class="us-hero__backdrop absolute -right-6 -bottom-12 select-none pointer-events-none font-display text-white/[0.045] leading-[0.78]"
+      style="font-size: clamp(12rem, 22vw, 26rem);"
     >
       дисциплини
     </span>
@@ -230,7 +230,7 @@ const pageDescription =
             style="font-size: clamp(2.5rem, 1.25rem + 5vw, 6rem); letter-spacing: -0.025em;"
           >
             Шест дисциплини.
-            <span class="italic block text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+            <span class="block text-brand">
               Един договор.
             </span>
           </h1>
@@ -242,21 +242,21 @@ const pageDescription =
           <dl class="mt-9 md:mt-11 grid grid-cols-3 gap-x-6 gap-y-4 max-w-xl border-t border-white/12 pt-6">
             <div>
               <dt class="sr-only">Години работа</dt>
-              <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem); font-variation-settings:'opsz' 144;">
+              <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem);">
                 <span data-counter={yearsActive}>0</span><span class="text-brand">+</span>
               </dd>
               <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Години работа</p>
             </div>
             <div>
               <dt class="sr-only">Реализирани обекти</dt>
-              <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem); font-variation-settings:'opsz' 144;">
+              <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem);">
                 <span data-counter={totalProjects}>0</span><span class="text-brand">+</span>
               </dd>
               <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Реализирани обекта</p>
             </div>
             <div>
               <dt class="sr-only">Дисциплини</dt>
-              <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem); font-variation-settings:'opsz' 144;">
+              <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem);">
                 <span data-counter="6" data-pad="2">0</span>
               </dd>
               <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">Дисциплини</p>
@@ -271,7 +271,7 @@ const pageDescription =
               <p class="text-[10.5px] uppercase tracking-eyebrow text-white/55">
                 Указател · Стр.&nbsp;А
               </p>
-              <p class="font-display italic text-white/55 text-sm tabular-nums" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+              <p class="font-display text-white/55 text-sm tabular-nums">
                 06 / 06
               </p>
             </div>
@@ -279,13 +279,13 @@ const pageDescription =
               {services.map((s) => (
                 <li>
                   <a href={`#${s.slug}`} class="us-index__row group">
-                    <span class="us-index__code font-display italic tabular-nums" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                    <span class="us-index__code font-display tabular-nums">
                       {s.code}
                     </span>
                     <span class="us-index__tag" aria-hidden="true">{s.tag}</span>
                     <span class="us-index__title">{s.title}</span>
                     <span class="us-index__leaders" aria-hidden="true"></span>
-                    <span class="us-index__count font-display italic tabular-nums" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                    <span class="us-index__count font-display tabular-nums">
                       {s.refCount}
                     </span>
                     <span class="us-index__arrow" aria-hidden="true">
@@ -319,7 +319,7 @@ const pageDescription =
           class="mt-3 font-display tracking-tight text-ink-950"
           style="font-size: clamp(1.6rem, 1rem + 1.6vw, 2.45rem); line-height: 1.1;"
         >
-          Какво е под нашия <span class="italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">подпис</span>.
+          Какво е под нашия <span class="text-brand">подпис</span>.
         </h2>
       </Reveal>
 
@@ -329,7 +329,7 @@ const pageDescription =
             <article id={s.slug} class="us-card__inner">
               <header class="us-card__head">
                 <span class="us-card__code" aria-hidden="true">{s.code} · {s.tag}</span>
-                <span class="us-card__count font-display italic tabular-nums" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                <span class="us-card__count font-display tabular-nums">
                   №{String(i + 1).padStart(2, '0')}
                 </span>
               </header>
@@ -400,7 +400,7 @@ const pageDescription =
             class="mt-3 font-display tracking-tight text-ink-950"
             style="font-size: clamp(1.6rem, 1rem + 1.5vw, 2.3rem); line-height: 1.1;"
           >
-            Какво поемаме <span class="italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">сами</span>.
+            Какво поемаме <span class="text-brand">сами</span>.
           </h2>
           <p class="mt-5 max-w-md text-[15px] text-ink-600 leading-[1.65]">
             Ключовите дисциплини са под собствен контрол — собствени бригади, собствено оборудване, прозрачен график. Специализираните работи — с дългогодишни партньори.
@@ -412,7 +412,7 @@ const pageDescription =
             <div class="bg-cream-100 p-6 md:p-7">
               <div class="flex items-baseline justify-between mb-5">
                 <p class="text-[10.5px] uppercase tracking-eyebrow text-brand font-semibold">Собствено изпълнение</p>
-                <span class="font-display italic text-ink-900/35 tabular-nums text-sm" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                <span class="font-display text-ink-900/35 tabular-nums text-sm">
                   {String(inHouse.length).padStart(2, '0')}
                 </span>
               </div>
@@ -428,7 +428,7 @@ const pageDescription =
             <div class="bg-cream-100 p-6 md:p-7">
               <div class="flex items-baseline justify-between mb-5">
                 <p class="text-[10.5px] uppercase tracking-eyebrow text-ink-900/60 font-semibold">Сертифицирани партньори</p>
-                <span class="font-display italic text-ink-900/35 tabular-nums text-sm" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+                <span class="font-display text-ink-900/35 tabular-nums text-sm">
                   {String(partners.length).padStart(2, '0')}
                 </span>
               </div>
@@ -465,7 +465,7 @@ const pageDescription =
             class="mt-4 font-display tracking-tight text-white max-w-[20ch]"
             style="font-size: clamp(1.85rem, 1rem + 2.2vw, 3rem); line-height: 1.05;"
           >
-            Четири стъпки — една <span class="italic text-brand" style="font-variation-settings:'opsz' 144,'SOFT' 100;">отговорност</span>.
+            Четири стъпки — една <span class="text-brand">отговорност</span>.
           </h2>
         </Reveal>
         <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
@@ -481,7 +481,7 @@ const pageDescription =
             <div class="flex items-baseline justify-between">
               <span
                 class="us-method__n font-display block text-brand leading-none"
-                style="font-size: clamp(2.5rem, 2rem + 1.4vw, 3.25rem); font-variation-settings:'opsz' 144,'SOFT' 0;"
+                style="font-size: clamp(2.5rem, 2rem + 1.4vw, 3.25rem);"
               >
                 {m.n}
               </span>
@@ -509,7 +509,7 @@ const pageDescription =
     <div class="container-page relative">
       <ul class="us-standards grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-px bg-ink-900/10">
         <li class="us-standards__cell bg-cream-50 px-5 py-5 md:px-7 md:py-6 flex items-baseline gap-4">
-          <span class="font-display italic text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem); font-variation-settings:'opsz' 144,'SOFT' 100;">
+          <span class="font-display text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem);">
             ISO
           </span>
           <span class="text-[12.5px] md:text-[13px] uppercase tracking-eyebrow text-ink-600">
@@ -517,7 +517,7 @@ const pageDescription =
           </span>
         </li>
         <li class="us-standards__cell bg-cream-50 px-5 py-5 md:px-7 md:py-6 flex items-baseline gap-4">
-          <span class="font-display italic text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem); font-variation-settings:'opsz' 144,'SOFT' 100;">
+          <span class="font-display text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem);">
             10
           </span>
           <span class="text-[12.5px] md:text-[13px] uppercase tracking-eyebrow text-ink-600">
@@ -525,7 +525,7 @@ const pageDescription =
           </span>
         </li>
         <li class="us-standards__cell bg-cream-50 px-5 py-5 md:px-7 md:py-6 flex items-baseline gap-4">
-          <span class="font-display italic text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem); font-variation-settings:'opsz' 144,'SOFT' 100;">
+          <span class="font-display text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem);">
             ЦПРС
           </span>
           <span class="text-[12.5px] md:text-[13px] uppercase tracking-eyebrow text-ink-600">
@@ -533,7 +533,7 @@ const pageDescription =
           </span>
         </li>
         <li class="us-standards__cell bg-cream-50 px-5 py-5 md:px-7 md:py-6 flex items-baseline gap-4">
-          <span class="font-display italic text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem); font-variation-settings:'opsz' 144,'SOFT' 100;">
+          <span class="font-display text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem);">
             Акт&nbsp;16
           </span>
           <span class="text-[12.5px] md:text-[13px] uppercase tracking-eyebrow text-ink-600">
@@ -551,8 +551,8 @@ const pageDescription =
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet opacity-[0.18]"></div>
     <span
       aria-hidden="true"
-      class="us-cta__backdrop absolute -left-6 top-4 select-none pointer-events-none font-display italic text-white/[0.045] leading-[0.78]"
-      style="font-size: clamp(10rem, 22vw, 22rem); font-variation-settings:'opsz' 144,'SOFT' 100;"
+      class="us-cta__backdrop absolute -left-6 top-4 select-none pointer-events-none font-display text-white/[0.045] leading-[0.78]"
+      style="font-size: clamp(10rem, 22vw, 22rem);"
     >
       1992
     </span>
@@ -570,7 +570,7 @@ const pageDescription =
             style="font-size: clamp(2rem, 1rem + 4vw, 4.5rem); letter-spacing: -0.025em;"
           >
             Имаш проект?
-            <span class="italic block text-white/65" style="font-variation-settings:'opsz' 144,'SOFT' 100;">
+            <span class="block text-white/65">
               Започни от един разговор.
             </span>
           </h2>
@@ -946,7 +946,6 @@ const pageDescription =
   .us-method__n {
     transition:
       transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
-      font-variation-settings 600ms ease,
       color 500ms ease;
     will-change: transform;
   }
@@ -992,7 +991,7 @@ const pageDescription =
     transition: background-color 400ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   /* Mobile (1-col rows) — body text aligns across all 4 rows because
-     the italic numeral block has a fixed min-width. Without this each
+     the numeral block has a fixed min-width. Without this each
      row's body started at a different x because numerals differ in
      width (ISO vs 10 vs Акт 16). */
   @media (max-width: 639px) {
