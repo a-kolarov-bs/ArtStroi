@@ -1,12 +1,8 @@
 ---
-const phones = [
-  { label: 'Управител',           number: '+359 878 715 936' },
-  { label: 'Счетоводство',         number: '+359 878 715 935' },
-  { label: 'Технически директор',  number: '+359 877 766 523' },
-  { label: 'Транспорт',            number: '+359 878 986 797' },
-];
+import { company, yearsActive, telHref } from '../data/company';
 
 const year = new Date().getFullYear();
+const years = yearsActive();
 ---
 
 <footer class="relative isolate overflow-hidden bg-stone-100 text-ink-900">
@@ -32,8 +28,9 @@ const year = new Date().getFullYear();
           decoding="async"
         />
         <p class="mt-5 max-w-sm text-[13.5px] leading-[1.7] text-ink-800">
-          Строителна компания с над три десетилетия опит — жилищни сгради,
-          обществени обекти, хотели и инфраструктура из цяла България.
+          {years !== null
+            ? `Строителна фирма от Смолян с ${years} години опит. Жилищни сгради, обществени обекти, хотели и инфраструктура из цяла България.`
+            : 'Строителна фирма от Смолян. Жилищни сгради, обществени обекти, хотели и инфраструктура из цяла България.'}
         </p>
       </div>
 
@@ -41,20 +38,20 @@ const year = new Date().getFullYear();
       <div class="footer-cell">
         <p class="footer-label">Адрес</p>
         <address class="mt-5 not-italic text-[14px] leading-[1.65] text-ink-900">
-          гр. Смолян 4700<br />
-          кв. Устово<br />
-          ул. „Хаджи&nbsp;Иван&nbsp;Бечев"&nbsp;№6
+          гр. {company.city} {company.postalCode}<br />
+          {company.district}<br />
+          {company.street}
         </address>
         <p class="mt-5 footer-meta">
-          <span>Пон–Пет</span>
+          <span>{company.hoursDays}</span>
           <span aria-hidden="true" class="footer-meta-sep">·</span>
-          <span>9:00–18:00</span>
+          <span>{company.hoursTime}</span>
         </p>
         <a
-          href="mailto:artstroismolian@abv.bg"
+          href={`mailto:${company.email}`}
           class="mt-4 inline-block text-[13.5px] text-ink-950 underline decoration-brand decoration-2 underline-offset-[6px] hover:text-brand transition-colors"
         >
-          artstroismolian@abv.bg
+          {company.email}
         </a>
       </div>
 
@@ -62,13 +59,13 @@ const year = new Date().getFullYear();
       <div class="footer-cell footer-cell--phones">
         <p class="footer-label">Телефони</p>
         <ul class="mt-5 divide-y divide-ink-200/70">
-          {phones.map((p) => (
+          {company.phones.map((p) => (
             <li class="flex items-baseline justify-between gap-4 py-3 first:pt-0 last:pb-0">
               <span class="text-[10.5px] uppercase tracking-[0.18em] text-ink-600 font-medium">
-                {p.label}
+                {p.role}
               </span>
               <a
-                href={`tel:${p.number.replace(/\s+/g, '')}`}
+                href={telHref(p.number)}
                 class="font-sans text-[15px] text-ink-950 hover:text-brand transition-colors whitespace-nowrap tabular-nums tracking-[-0.005em]"
               >
                 {p.number}
@@ -85,7 +82,7 @@ const year = new Date().getFullYear();
     <div class="container-page py-5 md:py-6 flex flex-col md:flex-row gap-3 md:items-center md:justify-between text-[11.5px]">
       <p class="flex items-center gap-3">
         <span aria-hidden="true" class="block h-px w-8 bg-brand"></span>
-        <span>© {year} АРТСТРОЙ ООД</span>
+        <span>© {year} {company.name}</span>
         <span class="text-ink-300/60">— всички права запазени</span>
       </p>
       <nav class="flex gap-7 text-ink-300" aria-label="Footer навигация">
