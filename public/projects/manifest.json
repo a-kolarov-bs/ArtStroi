@@ -2,21 +2,21 @@
  "files": {
   "https://www.artstroismolian.com/projects/1.jpg": {
    "path": "/projects/1/1.webp",
-   "width": 1600,
-   "height": 1066,
-   "bytes": 150740
+   "width": 750,
+   "height": 500,
+   "bytes": 70310
   },
   "https://www.artstroismolian.com/projects/1/1a.jpg": {
    "path": "/projects/1/1a.webp",
-   "width": 1600,
-   "height": 1199,
-   "bytes": 141314
+   "width": 1067,
+   "height": 800,
+   "bytes": 95930
   },
   "https://www.artstroismolian.com/projects/1/1b.jpg": {
    "path": "/projects/1/1b.webp",
-   "width": 1600,
-   "height": 1199,
-   "bytes": 198608
+   "width": 1067,
+   "height": 800,
+   "bytes": 137630
   },
   "https://www.artstroismolian.com/projects/1/1c.jpg": {
    "path": "/projects/1/1c.webp",
@@ -26,171 +26,171 @@
   },
   "https://www.artstroismolian.com/projects/1/1d.jpg": {
    "path": "/projects/1/1d.webp",
-   "width": 1600,
-   "height": 1199,
-   "bytes": 192952
+   "width": 1067,
+   "height": 800,
+   "bytes": 132070
   },
   "https://www.artstroismolian.com/projects/10.jpg": {
    "path": "/projects/10/10.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 375316
+   "width": 1333,
+   "height": 1000,
+   "bytes": 337434
   },
   "https://www.artstroismolian.com/projects/10/2.jpg": {
    "path": "/projects/10/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 138710
+   "width": 1333,
+   "height": 1000,
+   "bytes": 128768
   },
   "https://www.artstroismolian.com/projects/10/3.jpg": {
    "path": "/projects/10/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 133582
+   "width": 640,
+   "height": 480,
+   "bytes": 51476
   },
   "https://www.artstroismolian.com/projects/10/4.jpg": {
    "path": "/projects/10/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 113168
+   "width": 640,
+   "height": 480,
+   "bytes": 43084
   },
   "https://www.artstroismolian.com/projects/11.jpg": {
    "path": "/projects/11/11.webp",
-   "width": 1600,
-   "height": 993,
-   "bytes": 147612
+   "width": 1450,
+   "height": 900,
+   "bytes": 157968
   },
   "https://www.artstroismolian.com/projects/11/2.jpg": {
    "path": "/projects/11/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 201772
+   "width": 1200,
+   "height": 900,
+   "bytes": 178320
   },
   "https://www.artstroismolian.com/projects/11/3.jpg": {
    "path": "/projects/11/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 200182
+   "width": 1200,
+   "height": 900,
+   "bytes": 176276
   },
   "https://www.artstroismolian.com/projects/11/4.jpg": {
    "path": "/projects/11/4.webp",
-   "width": 901,
-   "height": 1600,
-   "bytes": 142402
+   "width": 507,
+   "height": 900,
+   "bytes": 83634
   },
   "https://www.artstroismolian.com/projects/11/5.jpg": {
    "path": "/projects/11/5.webp",
-   "width": 1600,
-   "height": 1010,
-   "bytes": 97078
+   "width": 1425,
+   "height": 900,
+   "bytes": 98074
   },
   "https://www.artstroismolian.com/projects/12.jpg": {
    "path": "/projects/12/12.webp",
-   "width": 1600,
-   "height": 1276,
-   "bytes": 184864
+   "width": 960,
+   "height": 766,
+   "bytes": 109080
   },
   "https://www.artstroismolian.com/projects/12/2.jpg": {
    "path": "/projects/12/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 328042
+   "width": 1200,
+   "height": 900,
+   "bytes": 284882
   },
   "https://www.artstroismolian.com/projects/12/3.jpg": {
    "path": "/projects/12/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 103790
+   "width": 1200,
+   "height": 900,
+   "bytes": 86628
   },
   "https://www.artstroismolian.com/projects/12/4.jpg": {
    "path": "/projects/12/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 75784
+   "width": 1200,
+   "height": 900,
+   "bytes": 60826
   },
   "https://www.artstroismolian.com/projects/12/5.jpg": {
    "path": "/projects/12/5.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 150174
+   "width": 1597,
+   "height": 900,
+   "bytes": 169342
   },
   "https://www.artstroismolian.com/projects/13.jpg": {
    "path": "/projects/13/13.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 189640
+   "width": 1200,
+   "height": 900,
+   "bytes": 162968
   },
   "https://www.artstroismolian.com/projects/13/2.jpg": {
    "path": "/projects/13/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 162286
+   "width": 1200,
+   "height": 900,
+   "bytes": 134598
   },
   "https://www.artstroismolian.com/projects/13/3.jpg": {
    "path": "/projects/13/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 153774
+   "width": 1200,
+   "height": 900,
+   "bytes": 126798
   },
   "https://www.artstroismolian.com/projects/13/4.jpg": {
    "path": "/projects/13/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 235072
+   "width": 1200,
+   "height": 900,
+   "bytes": 205360
   },
   "https://www.artstroismolian.com/projects/13/5.jpg": {
    "path": "/projects/13/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 255598
+   "width": 1200,
+   "height": 900,
+   "bytes": 218308
   },
   "https://www.artstroismolian.com/projects/14.jpg": {
    "path": "/projects/14/14.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 102532
+   "width": 800,
+   "height": 600,
+   "bytes": 50790
   },
   "https://www.artstroismolian.com/projects/14/2.jpg": {
    "path": "/projects/14/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 262304
+   "width": 1200,
+   "height": 900,
+   "bytes": 223030
   },
   "https://www.artstroismolian.com/projects/14/3.jpg": {
    "path": "/projects/14/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 326092
+   "width": 1200,
+   "height": 900,
+   "bytes": 269468
   },
   "https://www.artstroismolian.com/projects/14/4.jpg": {
    "path": "/projects/14/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 160430
+   "width": 1200,
+   "height": 900,
+   "bytes": 141426
   },
   "https://www.artstroismolian.com/projects/14/5.jpg": {
    "path": "/projects/14/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 132942
+   "width": 1200,
+   "height": 900,
+   "bytes": 109188
   },
   "https://www.artstroismolian.com/projects/15.jpg": {
    "path": "/projects/15/15.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 197574
+   "width": 1280,
+   "height": 960,
+   "bytes": 159310
   },
   "https://www.artstroismolian.com/projects/15/2.jpg": {
    "path": "/projects/15/2.webp",
-   "width": 1600,
-   "height": 1317,
-   "bytes": 113272
+   "width": 425,
+   "height": 350,
+   "bytes": 28586
   },
   "https://www.artstroismolian.com/projects/15/3.jpg": {
    "path": "/projects/15/3.webp",
-   "width": 1600,
-   "height": 1317,
-   "bytes": 107694
+   "width": 425,
+   "height": 350,
+   "bytes": 27998
   },
   "https://www.artstroismolian.com/projects/16.jpg": {
    "path": "/projects/16/16.webp",
@@ -224,63 +224,63 @@
   },
   "https://www.artstroismolian.com/projects/17/2.jpg": {
    "path": "/projects/17/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 272196
+   "width": 960,
+   "height": 720,
+   "bytes": 156908
   },
   "https://www.artstroismolian.com/projects/17/3.jpg": {
    "path": "/projects/17/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 327270
+   "width": 960,
+   "height": 720,
+   "bytes": 187044
   },
   "https://www.artstroismolian.com/projects/17/4.jpg": {
    "path": "/projects/17/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 196658
+   "width": 960,
+   "height": 720,
+   "bytes": 118160
   },
   "https://www.artstroismolian.com/projects/17/5.jpg": {
    "path": "/projects/17/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 237952
+   "width": 960,
+   "height": 720,
+   "bytes": 138532
   },
   "https://www.artstroismolian.com/projects/18.jpg": {
    "path": "/projects/18/18.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 117316
+   "width": 1200,
+   "height": 900,
+   "bytes": 95852
   },
   "https://www.artstroismolian.com/projects/18/2.jpg": {
    "path": "/projects/18/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 200192
+   "width": 1200,
+   "height": 900,
+   "bytes": 175912
   },
   "https://www.artstroismolian.com/projects/18/3.jpg": {
    "path": "/projects/18/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 113150
+   "width": 1200,
+   "height": 900,
+   "bytes": 95202
   },
   "https://www.artstroismolian.com/projects/18/4.jpg": {
    "path": "/projects/18/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 116872
+   "width": 1200,
+   "height": 900,
+   "bytes": 94292
   },
   "https://www.artstroismolian.com/projects/18/5.jpg": {
    "path": "/projects/18/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 164360
+   "width": 1200,
+   "height": 900,
+   "bytes": 140974
   },
   "https://www.artstroismolian.com/projects/19.jpg": {
    "path": "/projects/19/19.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 220560
+   "width": 1200,
+   "height": 900,
+   "bytes": 190320
   },
   "https://www.artstroismolian.com/projects/19/2.jpg": {
    "path": "/projects/19/2.webp",
@@ -290,39 +290,39 @@
   },
   "https://www.artstroismolian.com/projects/19/3.jpg": {
    "path": "/projects/19/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 106428
+   "width": 1200,
+   "height": 900,
+   "bytes": 89082
   },
   "https://www.artstroismolian.com/projects/19/4.jpg": {
    "path": "/projects/19/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 90812
+   "width": 1200,
+   "height": 900,
+   "bytes": 76108
   },
   "https://www.artstroismolian.com/projects/19/5.jpg": {
    "path": "/projects/19/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 100290
+   "width": 1200,
+   "height": 900,
+   "bytes": 85124
   },
   "https://www.artstroismolian.com/projects/2.jpg": {
    "path": "/projects/2/2.webp",
-   "width": 1600,
-   "height": 1066,
-   "bytes": 136316
+   "width": 750,
+   "height": 500,
+   "bytes": 63762
   },
   "https://www.artstroismolian.com/projects/2/1a.jpg": {
    "path": "/projects/2/1a.webp",
-   "width": 1600,
-   "height": 1160,
-   "bytes": 246110
+   "width": 600,
+   "height": 435,
+   "bytes": 88490
   },
   "https://www.artstroismolian.com/projects/2/1b.jpg": {
    "path": "/projects/2/1b.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 277364
+   "width": 1597,
+   "height": 900,
+   "bytes": 316242
   },
   "https://www.artstroismolian.com/projects/2/1c.jpg": {
    "path": "/projects/2/1c.webp",
@@ -338,21 +338,21 @@
   },
   "https://www.artstroismolian.com/projects/20.jpg": {
    "path": "/projects/20/20.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 93960
+   "width": 1200,
+   "height": 900,
+   "bytes": 80592
   },
   "https://www.artstroismolian.com/projects/20/2.jpg": {
    "path": "/projects/20/2.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 192694
+   "width": 1597,
+   "height": 900,
+   "bytes": 219242
   },
   "https://www.artstroismolian.com/projects/20/3.jpg": {
    "path": "/projects/20/3.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 243096
+   "width": 1597,
+   "height": 900,
+   "bytes": 265238
   },
   "https://www.artstroismolian.com/projects/20/4.jpg": {
    "path": "/projects/20/4.webp",
@@ -362,219 +362,219 @@
   },
   "https://www.artstroismolian.com/projects/20/5.jpg": {
    "path": "/projects/20/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 159916
+   "width": 1200,
+   "height": 900,
+   "bytes": 136664
   },
   "https://www.artstroismolian.com/projects/21.jpg": {
    "path": "/projects/21/21.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 93148
+   "width": 1597,
+   "height": 900,
+   "bytes": 102220
   },
   "https://www.artstroismolian.com/projects/21/2.jpg": {
    "path": "/projects/21/2.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 105888
+   "width": 1597,
+   "height": 900,
+   "bytes": 123706
   },
   "https://www.artstroismolian.com/projects/21/3.jpg": {
    "path": "/projects/21/3.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 112816
+   "width": 1597,
+   "height": 900,
+   "bytes": 125662
   },
   "https://www.artstroismolian.com/projects/21/4.jpg": {
    "path": "/projects/21/4.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 87826
+   "width": 1597,
+   "height": 900,
+   "bytes": 98756
   },
   "https://www.artstroismolian.com/projects/21/5.jpg": {
    "path": "/projects/21/5.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 59896
+   "width": 1597,
+   "height": 900,
+   "bytes": 67202
   },
   "https://www.artstroismolian.com/projects/22.jpg": {
    "path": "/projects/22/22.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 29852
+   "width": 1200,
+   "height": 900,
+   "bytes": 23716
   },
   "https://www.artstroismolian.com/projects/22/2.jpg": {
    "path": "/projects/22/2.webp",
-   "width": 1200,
-   "height": 1600,
-   "bytes": 42292
+   "width": 675,
+   "height": 900,
+   "bytes": 23820
   },
   "https://www.artstroismolian.com/projects/22/3.jpg": {
    "path": "/projects/22/3.webp",
-   "width": 1600,
-   "height": 1199,
-   "bytes": 57016
+   "width": 1067,
+   "height": 800,
+   "bytes": 38788
   },
   "https://www.artstroismolian.com/projects/22/4.jpg": {
    "path": "/projects/22/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 35330
+   "width": 1200,
+   "height": 900,
+   "bytes": 25528
   },
   "https://www.artstroismolian.com/projects/22/5.jpg": {
    "path": "/projects/22/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 57764
+   "width": 1200,
+   "height": 900,
+   "bytes": 46266
   },
   "https://www.artstroismolian.com/projects/23.jpg": {
    "path": "/projects/23/23.webp",
-   "width": 1600,
-   "height": 900,
-   "bytes": 35720
+   "width": 960,
+   "height": 540,
+   "bytes": 21134
   },
   "https://www.artstroismolian.com/projects/23/2.jpg": {
    "path": "/projects/23/2.webp",
-   "width": 1600,
-   "height": 900,
-   "bytes": 45468
+   "width": 960,
+   "height": 540,
+   "bytes": 26256
   },
   "https://www.artstroismolian.com/projects/23/3.jpg": {
    "path": "/projects/23/3.webp",
-   "width": 1600,
-   "height": 900,
-   "bytes": 29134
+   "width": 960,
+   "height": 540,
+   "bytes": 16698
   },
   "https://www.artstroismolian.com/projects/23/4.jpg": {
    "path": "/projects/23/4.webp",
-   "width": 1600,
-   "height": 900,
-   "bytes": 26612
+   "width": 960,
+   "height": 540,
+   "bytes": 15210
   },
   "https://www.artstroismolian.com/projects/23/5.jpg": {
    "path": "/projects/23/5.webp",
-   "width": 1600,
-   "height": 900,
-   "bytes": 52184
+   "width": 960,
+   "height": 540,
+   "bytes": 30594
   },
   "https://www.artstroismolian.com/projects/24.jpg": {
    "path": "/projects/24/24.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 288768
+   "width": 960,
+   "height": 720,
+   "bytes": 164010
   },
   "https://www.artstroismolian.com/projects/24/2.jpg": {
    "path": "/projects/24/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 239990
+   "width": 960,
+   "height": 720,
+   "bytes": 143330
   },
   "https://www.artstroismolian.com/projects/25.jpg": {
    "path": "/projects/25/25.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 350972
+   "width": 1200,
+   "height": 900,
+   "bytes": 300382
   },
   "https://www.artstroismolian.com/projects/25/2.jpg": {
    "path": "/projects/25/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 209920
+   "width": 1200,
+   "height": 900,
+   "bytes": 183582
   },
   "https://www.artstroismolian.com/projects/25/3.jpg": {
    "path": "/projects/25/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 280154
+   "width": 1200,
+   "height": 900,
+   "bytes": 245180
   },
   "https://www.artstroismolian.com/projects/25/4.jpg": {
    "path": "/projects/25/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 190060
+   "width": 1200,
+   "height": 900,
+   "bytes": 162268
   },
   "https://www.artstroismolian.com/projects/25/5.jpg": {
    "path": "/projects/25/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 149880
+   "width": 1200,
+   "height": 900,
+   "bytes": 130030
   },
   "https://www.artstroismolian.com/projects/26.jpg": {
    "path": "/projects/26/26.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 270384
+   "width": 1200,
+   "height": 900,
+   "bytes": 230748
   },
   "https://www.artstroismolian.com/projects/26/2.jpg": {
    "path": "/projects/26/2.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 207256
+   "width": 1597,
+   "height": 900,
+   "bytes": 234728
   },
   "https://www.artstroismolian.com/projects/26/3.jpg": {
    "path": "/projects/26/3.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 271598
+   "width": 1597,
+   "height": 900,
+   "bytes": 312660
   },
   "https://www.artstroismolian.com/projects/26/4.jpg": {
    "path": "/projects/26/4.webp",
-   "width": 1600,
-   "height": 1338,
-   "bytes": 221744
+   "width": 1076,
+   "height": 900,
+   "bytes": 156092
   },
   "https://www.artstroismolian.com/projects/26/5.jpg": {
    "path": "/projects/26/5.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 195886
+   "width": 1597,
+   "height": 900,
+   "bytes": 222838
   },
   "https://www.artstroismolian.com/projects/27.jpg": {
    "path": "/projects/27/27.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 104956
+   "width": 1200,
+   "height": 900,
+   "bytes": 93006
   },
   "https://www.artstroismolian.com/projects/27/2.jpg": {
    "path": "/projects/27/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 297276
+   "width": 1200,
+   "height": 900,
+   "bytes": 249442
   },
   "https://www.artstroismolian.com/projects/27/3.jpg": {
    "path": "/projects/27/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 254184
+   "width": 1200,
+   "height": 900,
+   "bytes": 209466
   },
   "https://www.artstroismolian.com/projects/27/4.jpg": {
    "path": "/projects/27/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 223942
+   "width": 1200,
+   "height": 900,
+   "bytes": 190752
   },
   "https://www.artstroismolian.com/projects/27/5.jpg": {
    "path": "/projects/27/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 163894
+   "width": 1200,
+   "height": 900,
+   "bytes": 138322
   },
   "https://www.artstroismolian.com/projects/28.jpg": {
    "path": "/projects/28/28.webp",
-   "width": 1600,
-   "height": 898,
-   "bytes": 130418
+   "width": 960,
+   "height": 539,
+   "bytes": 83232
   },
   "https://www.artstroismolian.com/projects/28/2.jpg": {
    "path": "/projects/28/2.webp",
-   "width": 1600,
-   "height": 898,
-   "bytes": 230536
+   "width": 960,
+   "height": 539,
+   "bytes": 135602
   },
   "https://www.artstroismolian.com/projects/28/3.jpg": {
    "path": "/projects/28/3.webp",
-   "width": 1600,
-   "height": 898,
-   "bytes": 216368
+   "width": 960,
+   "height": 539,
+   "bytes": 124370
   },
   "https://www.artstroismolian.com/projects/28/4.jpg": {
    "path": "/projects/28/4.webp",
@@ -590,117 +590,117 @@
   },
   "https://www.artstroismolian.com/projects/29.jpg": {
    "path": "/projects/29/29.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 109316
+   "width": 1200,
+   "height": 900,
+   "bytes": 92286
   },
   "https://www.artstroismolian.com/projects/29/3.jpg": {
    "path": "/projects/29/3.webp",
-   "width": 1600,
-   "height": 1079,
-   "bytes": 109690
+   "width": 1334,
+   "height": 900,
+   "bytes": 100540
   },
   "https://www.artstroismolian.com/projects/29/4.jpg": {
    "path": "/projects/29/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 160126
+   "width": 1200,
+   "height": 900,
+   "bytes": 138242
   },
   "https://www.artstroismolian.com/projects/29/5.jpg": {
    "path": "/projects/29/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 220294
+   "width": 1200,
+   "height": 900,
+   "bytes": 189970
   },
   "https://www.artstroismolian.com/projects/3.jpg": {
    "path": "/projects/3/3.webp",
-   "width": 1600,
-   "height": 1066,
-   "bytes": 155030
+   "width": 750,
+   "height": 500,
+   "bytes": 73538
   },
   "https://www.artstroismolian.com/projects/3/1a.jpg": {
    "path": "/projects/3/1a.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 155198
+   "width": 1200,
+   "height": 900,
+   "bytes": 135428
   },
   "https://www.artstroismolian.com/projects/3/1b.jpg": {
    "path": "/projects/3/1b.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 194230
+   "width": 1200,
+   "height": 900,
+   "bytes": 161440
   },
   "https://www.artstroismolian.com/projects/3/1c.jpg": {
    "path": "/projects/3/1c.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 86528
+   "width": 640,
+   "height": 480,
+   "bytes": 32536
   },
   "https://www.artstroismolian.com/projects/3/1d.jpg": {
    "path": "/projects/3/1d.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 252304
+   "width": 1200,
+   "height": 900,
+   "bytes": 212238
   },
   "https://www.artstroismolian.com/projects/30.jpg": {
    "path": "/projects/30/30.webp",
-   "width": 1600,
-   "height": 1255,
-   "bytes": 134100
+   "width": 612,
+   "height": 480,
+   "bytes": 49120
   },
   "https://www.artstroismolian.com/projects/30/2.jpg": {
    "path": "/projects/30/2.webp",
-   "width": 901,
-   "height": 1600,
-   "bytes": 173778
+   "width": 507,
+   "height": 900,
+   "bytes": 96230
   },
   "https://www.artstroismolian.com/projects/30/3.jpg": {
    "path": "/projects/30/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 217016
+   "width": 1200,
+   "height": 900,
+   "bytes": 190752
   },
   "https://www.artstroismolian.com/projects/30/4.jpg": {
    "path": "/projects/30/4.webp",
-   "width": 901,
-   "height": 1600,
-   "bytes": 190612
+   "width": 507,
+   "height": 900,
+   "bytes": 105982
   },
   "https://www.artstroismolian.com/projects/30/5.jpg": {
    "path": "/projects/30/5.webp",
-   "width": 899,
-   "height": 1600,
-   "bytes": 162318
+   "width": 506,
+   "height": 900,
+   "bytes": 89006
   },
   "https://www.artstroismolian.com/projects/31.jpg": {
    "path": "/projects/31/31.webp",
-   "width": 1600,
-   "height": 1014,
-   "bytes": 109496
+   "width": 1262,
+   "height": 800,
+   "bytes": 93878
   },
   "https://www.artstroismolian.com/projects/31/2.jpg": {
    "path": "/projects/31/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 128314
+   "width": 1200,
+   "height": 900,
+   "bytes": 111994
   },
   "https://www.artstroismolian.com/projects/31/3.jpg": {
    "path": "/projects/31/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 142818
+   "width": 1200,
+   "height": 900,
+   "bytes": 124874
   },
   "https://www.artstroismolian.com/projects/31/4.jpg": {
    "path": "/projects/31/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 206928
+   "width": 1200,
+   "height": 900,
+   "bytes": 175890
   },
   "https://www.artstroismolian.com/projects/31/5.jpg": {
    "path": "/projects/31/5.webp",
-   "width": 1600,
-   "height": 1010,
-   "bytes": 66566
+   "width": 1267,
+   "height": 800,
+   "bytes": 57634
   },
   "https://www.artstroismolian.com/projects/32.jpg": {
    "path": "/projects/32/32.webp",
@@ -710,15 +710,15 @@
   },
   "https://www.artstroismolian.com/projects/32/2.jpg": {
    "path": "/projects/32/2.webp",
-   "width": 1200,
-   "height": 1600,
-   "bytes": 215688
+   "width": 750,
+   "height": 1000,
+   "bytes": 135754
   },
   "https://www.artstroismolian.com/projects/32/3.jpg": {
    "path": "/projects/32/3.webp",
-   "width": 899,
-   "height": 1600,
-   "bytes": 101424
+   "width": 562,
+   "height": 1000,
+   "bytes": 67862
   },
   "https://www.artstroismolian.com/projects/32/4.jpg": {
    "path": "/projects/32/4.webp",
@@ -734,27 +734,27 @@
   },
   "https://www.artstroismolian.com/projects/33.jpg": {
    "path": "/projects/33/33.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 268638
+   "width": 1333,
+   "height": 1000,
+   "bytes": 242536
   },
   "https://www.artstroismolian.com/projects/33/2.jpg": {
    "path": "/projects/33/2.webp",
-   "width": 1600,
-   "height": 1007,
-   "bytes": 157740
+   "width": 1589,
+   "height": 1000,
+   "bytes": 178160
   },
   "https://www.artstroismolian.com/projects/33/3.jpg": {
    "path": "/projects/33/3.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 205658
+   "width": 960,
+   "height": 541,
+   "bytes": 118490
   },
   "https://www.artstroismolian.com/projects/33/4.jpg": {
    "path": "/projects/33/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 255934
+   "width": 1333,
+   "height": 1000,
+   "bytes": 236376
   },
   "https://www.artstroismolian.com/projects/33/5.jpg": {
    "path": "/projects/33/5.webp",
@@ -764,75 +764,75 @@
   },
   "https://www.artstroismolian.com/projects/34.jpg": {
    "path": "/projects/34/34.webp",
-   "width": 1600,
-   "height": 1384,
-   "bytes": 201146
+   "width": 1000,
+   "height": 865,
+   "bytes": 128092
   },
   "https://www.artstroismolian.com/projects/34/2.jpg": {
    "path": "/projects/34/2.webp",
-   "width": 898,
-   "height": 1600,
-   "bytes": 145002
+   "width": 449,
+   "height": 800,
+   "bytes": 76246
   },
   "https://www.artstroismolian.com/projects/34/3.jpg": {
    "path": "/projects/34/3.webp",
-   "width": 898,
-   "height": 1600,
-   "bytes": 150588
+   "width": 449,
+   "height": 800,
+   "bytes": 77904
   },
   "https://www.artstroismolian.com/projects/34/4.jpg": {
    "path": "/projects/34/4.webp",
-   "width": 898,
-   "height": 1600,
-   "bytes": 140876
+   "width": 449,
+   "height": 800,
+   "bytes": 71800
   },
   "https://www.artstroismolian.com/projects/34/5.jpg": {
    "path": "/projects/34/5.webp",
-   "width": 900,
-   "height": 1600,
-   "bytes": 118228
+   "width": 450,
+   "height": 800,
+   "bytes": 62096
   },
   "https://www.artstroismolian.com/projects/35.jpg": {
    "path": "/projects/35/35.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 85192
+   "width": 960,
+   "height": 720,
+   "bytes": 49528
   },
   "https://www.artstroismolian.com/projects/35/2.jpg": {
    "path": "/projects/35/2.webp",
-   "width": 897,
-   "height": 1600,
-   "bytes": 95008
+   "width": 505,
+   "height": 900,
+   "bytes": 54070
   },
   "https://www.artstroismolian.com/projects/35/3.jpg": {
    "path": "/projects/35/3.webp",
-   "width": 897,
-   "height": 1600,
-   "bytes": 145080
+   "width": 505,
+   "height": 900,
+   "bytes": 81508
   },
   "https://www.artstroismolian.com/projects/35/4.jpg": {
    "path": "/projects/35/4.webp",
-   "width": 897,
-   "height": 1600,
-   "bytes": 101120
+   "width": 505,
+   "height": 900,
+   "bytes": 59448
   },
   "https://www.artstroismolian.com/projects/35/5.jpg": {
    "path": "/projects/35/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 64458
+   "width": 960,
+   "height": 720,
+   "bytes": 36882
   },
   "https://www.artstroismolian.com/projects/36.jpg": {
    "path": "/projects/36/36.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 115426
+   "width": 960,
+   "height": 720,
+   "bytes": 66542
   },
   "https://www.artstroismolian.com/projects/36/2.jpg": {
    "path": "/projects/36/2.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 390936
+   "width": 1597,
+   "height": 900,
+   "bytes": 439878
   },
   "https://www.artstroismolian.com/projects/36/3.jpg": {
    "path": "/projects/36/3.webp",
@@ -842,39 +842,39 @@
   },
   "https://www.artstroismolian.com/projects/36/4.jpg": {
    "path": "/projects/36/4.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 88338
+   "width": 960,
+   "height": 541,
+   "bytes": 54890
   },
   "https://www.artstroismolian.com/projects/36/5.jpg": {
    "path": "/projects/36/5.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 111030
+   "width": 960,
+   "height": 541,
+   "bytes": 64000
   },
   "https://www.artstroismolian.com/projects/37.jpg": {
    "path": "/projects/37/37.webp",
-   "width": 1600,
-   "height": 1058,
-   "bytes": 102134
+   "width": 960,
+   "height": 635,
+   "bytes": 59670
   },
   "https://www.artstroismolian.com/projects/37/2.jpg": {
    "path": "/projects/37/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 159364
+   "width": 1200,
+   "height": 900,
+   "bytes": 138382
   },
   "https://www.artstroismolian.com/projects/37/4.jpg": {
    "path": "/projects/37/4.webp",
-   "width": 1600,
-   "height": 1060,
-   "bytes": 155720
+   "width": 960,
+   "height": 636,
+   "bytes": 91260
   },
   "https://www.artstroismolian.com/projects/37/5.jpg": {
    "path": "/projects/37/5.webp",
-   "width": 1600,
-   "height": 1060,
-   "bytes": 280568
+   "width": 960,
+   "height": 636,
+   "bytes": 160506
   },
   "https://www.artstroismolian.com/projects/38.jpg": {
    "path": "/projects/38/38.webp",
@@ -884,69 +884,69 @@
   },
   "https://www.artstroismolian.com/projects/38/2.jpg": {
    "path": "/projects/38/2.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 370768
+   "width": 1597,
+   "height": 900,
+   "bytes": 416748
   },
   "https://www.artstroismolian.com/projects/38/3.jpg": {
    "path": "/projects/38/3.webp",
-   "width": 1600,
-   "height": 1010,
-   "bytes": 164868
+   "width": 1426,
+   "height": 900,
+   "bytes": 168584
   },
   "https://www.artstroismolian.com/projects/38/4.jpg": {
    "path": "/projects/38/4.webp",
-   "width": 1600,
-   "height": 1036,
-   "bytes": 143392
+   "width": 1390,
+   "height": 900,
+   "bytes": 141312
   },
   "https://www.artstroismolian.com/projects/38/5.jpg": {
    "path": "/projects/38/5.webp",
-   "width": 1600,
-   "height": 1013,
-   "bytes": 133396
+   "width": 1421,
+   "height": 900,
+   "bytes": 130428
   },
   "https://www.artstroismolian.com/projects/39.jpg": {
    "path": "/projects/39/39.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 168322
+   "width": 1333,
+   "height": 1000,
+   "bytes": 160566
   },
   "https://www.artstroismolian.com/projects/39/2.jpg": {
    "path": "/projects/39/2.webp",
-   "width": 899,
-   "height": 1600,
-   "bytes": 164554
+   "width": 562,
+   "height": 1000,
+   "bytes": 108580
   },
   "https://www.artstroismolian.com/projects/39/3.jpg": {
    "path": "/projects/39/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 168322
+   "width": 1333,
+   "height": 1000,
+   "bytes": 160566
   },
   "https://www.artstroismolian.com/projects/39/4.jpg": {
    "path": "/projects/39/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 155256
+   "width": 1333,
+   "height": 1000,
+   "bytes": 145114
   },
   "https://www.artstroismolian.com/projects/4.jpg": {
    "path": "/projects/4/4.webp",
-   "width": 1600,
-   "height": 1066,
-   "bytes": 66640
+   "width": 750,
+   "height": 500,
+   "bytes": 30134
   },
   "https://www.artstroismolian.com/projects/4/1a.jpg": {
    "path": "/projects/4/1a.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 175138
+   "width": 1200,
+   "height": 900,
+   "bytes": 152940
   },
   "https://www.artstroismolian.com/projects/4/1b.jpg": {
    "path": "/projects/4/1b.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 168870
+   "width": 1200,
+   "height": 900,
+   "bytes": 147546
   },
   "https://www.artstroismolian.com/projects/4/1c.jpg": {
    "path": "/projects/4/1c.webp",
@@ -956,27 +956,27 @@
   },
   "https://www.artstroismolian.com/projects/4/1d.jpg": {
    "path": "/projects/4/1d.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 113146
+   "width": 1200,
+   "height": 900,
+   "bytes": 96924
   },
   "https://www.artstroismolian.com/projects/40.jpg": {
    "path": "/projects/40/40.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 199362
+   "width": 1333,
+   "height": 1000,
+   "bytes": 181420
   },
   "https://www.artstroismolian.com/projects/40/2.jpg": {
    "path": "/projects/40/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 283458
+   "width": 1333,
+   "height": 1000,
+   "bytes": 255090
   },
   "https://www.artstroismolian.com/projects/40/3.jpg": {
    "path": "/projects/40/3.webp",
-   "width": 1200,
-   "height": 1600,
-   "bytes": 201186
+   "width": 720,
+   "height": 960,
+   "bytes": 119996
   },
   "https://www.artstroismolian.com/projects/40/4.jpg": {
    "path": "/projects/40/4.webp",
@@ -986,15 +986,15 @@
   },
   "https://www.artstroismolian.com/projects/40/5.jpg": {
    "path": "/projects/40/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 306984
+   "width": 1333,
+   "height": 1000,
+   "bytes": 277964
   },
   "https://www.artstroismolian.com/projects/41.jpg": {
    "path": "/projects/41/41.webp",
-   "width": 1600,
-   "height": 1000,
-   "bytes": 73134
+   "width": 1440,
+   "height": 900,
+   "bytes": 72714
   },
   "https://www.artstroismolian.com/projects/41/2.jpg": {
    "path": "/projects/41/2.webp",
@@ -1010,9 +1010,9 @@
   },
   "https://www.artstroismolian.com/projects/41/4.jpg": {
    "path": "/projects/41/4.webp",
-   "width": 1600,
-   "height": 1201,
-   "bytes": 178962
+   "width": 960,
+   "height": 721,
+   "bytes": 106628
   },
   "https://www.artstroismolian.com/projects/41/5.jpg": {
    "path": "/projects/41/5.webp",
@@ -1022,33 +1022,33 @@
   },
   "https://www.artstroismolian.com/projects/42.jpg": {
    "path": "/projects/42/42.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 44012
+   "width": 1200,
+   "height": 900,
+   "bytes": 35144
   },
   "https://www.artstroismolian.com/projects/42/2.jpg": {
    "path": "/projects/42/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 38262
+   "width": 1200,
+   "height": 900,
+   "bytes": 29158
   },
   "https://www.artstroismolian.com/projects/42/3.jpg": {
    "path": "/projects/42/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 62304
+   "width": 1200,
+   "height": 900,
+   "bytes": 51612
   },
   "https://www.artstroismolian.com/projects/42/4.jpg": {
    "path": "/projects/42/4.webp",
-   "width": 1600,
-   "height": 1199,
-   "bytes": 51730
+   "width": 1067,
+   "height": 800,
+   "bytes": 34026
   },
   "https://www.artstroismolian.com/projects/42/5.jpg": {
    "path": "/projects/42/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 28208
+   "width": 1200,
+   "height": 900,
+   "bytes": 21084
   },
   "https://www.artstroismolian.com/projects/43.jpg": {
    "path": "/projects/43/43.webp",
@@ -1082,189 +1082,189 @@
   },
   "https://www.artstroismolian.com/projects/44.jpg": {
    "path": "/projects/44/44.webp",
-   "width": 1600,
-   "height": 1007,
-   "bytes": 186850
+   "width": 1430,
+   "height": 900,
+   "bytes": 188106
   },
   "https://www.artstroismolian.com/projects/44/2.jpg": {
    "path": "/projects/44/2.webp",
-   "width": 1600,
-   "height": 1487,
-   "bytes": 238708
+   "width": 968,
+   "height": 900,
+   "bytes": 145012
   },
   "https://www.artstroismolian.com/projects/44/3.jpg": {
    "path": "/projects/44/3.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 292804
+   "width": 1597,
+   "height": 900,
+   "bytes": 334824
   },
   "https://www.artstroismolian.com/projects/44/4.jpg": {
    "path": "/projects/44/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 102966
+   "width": 1200,
+   "height": 900,
+   "bytes": 86370
   },
   "https://www.artstroismolian.com/projects/44/5.jpg": {
    "path": "/projects/44/5.webp",
-   "width": 1600,
-   "height": 1010,
-   "bytes": 90972
+   "width": 1267,
+   "height": 800,
+   "bytes": 77320
   },
   "https://www.artstroismolian.com/projects/45.jpg": {
    "path": "/projects/45/45.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 172132
+   "width": 1200,
+   "height": 900,
+   "bytes": 145728
   },
   "https://www.artstroismolian.com/projects/45/2.jpg": {
    "path": "/projects/45/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 293784
+   "width": 1200,
+   "height": 900,
+   "bytes": 246528
   },
   "https://www.artstroismolian.com/projects/45/3.jpg": {
    "path": "/projects/45/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 202372
+   "width": 1200,
+   "height": 900,
+   "bytes": 173198
   },
   "https://www.artstroismolian.com/projects/45/4.jpg": {
    "path": "/projects/45/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 256096
+   "width": 1200,
+   "height": 900,
+   "bytes": 217170
   },
   "https://www.artstroismolian.com/projects/45/5.jpg": {
    "path": "/projects/45/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 270836
+   "width": 1200,
+   "height": 900,
+   "bytes": 242060
   },
   "https://www.artstroismolian.com/projects/46.jpg": {
    "path": "/projects/46/46.webp",
-   "width": 1600,
-   "height": 1199,
-   "bytes": 194846
+   "width": 1067,
+   "height": 800,
+   "bytes": 136664
   },
   "https://www.artstroismolian.com/projects/46/2.jpg": {
    "path": "/projects/46/2.webp",
-   "width": 1600,
-   "height": 986,
-   "bytes": 219178
+   "width": 1298,
+   "height": 800,
+   "bytes": 191400
   },
   "https://www.artstroismolian.com/projects/46/3.jpg": {
    "path": "/projects/46/3.webp",
-   "width": 1600,
-   "height": 1199,
-   "bytes": 200120
+   "width": 1067,
+   "height": 800,
+   "bytes": 140296
   },
   "https://www.artstroismolian.com/projects/46/4.jpg": {
    "path": "/projects/46/4.webp",
-   "width": 902,
-   "height": 1600,
-   "bytes": 95532
+   "width": 451,
+   "height": 800,
+   "bytes": 50574
   },
   "https://www.artstroismolian.com/projects/46/5.jpg": {
    "path": "/projects/46/5.webp",
-   "width": 902,
-   "height": 1600,
-   "bytes": 130056
+   "width": 451,
+   "height": 800,
+   "bytes": 67614
   },
   "https://www.artstroismolian.com/projects/47.jpg": {
    "path": "/projects/47/47.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 138452
+   "width": 960,
+   "height": 720,
+   "bytes": 83054
   },
   "https://www.artstroismolian.com/projects/47/2.jpg": {
    "path": "/projects/47/2.webp",
-   "width": 880,
-   "height": 1600,
-   "bytes": 110874
+   "width": 528,
+   "height": 960,
+   "bytes": 65550
   },
   "https://www.artstroismolian.com/projects/47/3.jpg": {
    "path": "/projects/47/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 191582
+   "width": 960,
+   "height": 720,
+   "bytes": 114368
   },
   "https://www.artstroismolian.com/projects/47/4.jpg": {
    "path": "/projects/47/4.webp",
-   "width": 1200,
-   "height": 1600,
-   "bytes": 61648
+   "width": 720,
+   "height": 960,
+   "bytes": 37058
   },
   "https://www.artstroismolian.com/projects/47/5.jpg": {
    "path": "/projects/47/5.webp",
-   "width": 1200,
-   "height": 1600,
-   "bytes": 51322
+   "width": 720,
+   "height": 960,
+   "bytes": 28836
   },
   "https://www.artstroismolian.com/projects/48.jpg": {
    "path": "/projects/48/48.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 122142
+   "width": 1597,
+   "height": 900,
+   "bytes": 137902
   },
   "https://www.artstroismolian.com/projects/48/2.jpg": {
    "path": "/projects/48/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 478684
+   "width": 1200,
+   "height": 900,
+   "bytes": 397928
   },
   "https://www.artstroismolian.com/projects/48/3.jpg": {
    "path": "/projects/48/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 345638
+   "width": 1200,
+   "height": 900,
+   "bytes": 288774
   },
   "https://www.artstroismolian.com/projects/48/4.jpg": {
    "path": "/projects/48/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 165248
+   "width": 1200,
+   "height": 900,
+   "bytes": 145644
   },
   "https://www.artstroismolian.com/projects/48/5.jpg": {
    "path": "/projects/48/5.webp",
-   "width": 1600,
-   "height": 901,
-   "bytes": 168438
+   "width": 1597,
+   "height": 900,
+   "bytes": 195086
   },
   "https://www.artstroismolian.com/projects/49.jpg": {
    "path": "/projects/49/49.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 294556
+   "width": 1000,
+   "height": 750,
+   "bytes": 176124
   },
   "https://www.artstroismolian.com/projects/49/2.jpg": {
    "path": "/projects/49/2.webp",
-   "width": 1200,
-   "height": 1600,
-   "bytes": 194658
+   "width": 675,
+   "height": 900,
+   "bytes": 106346
   },
   "https://www.artstroismolian.com/projects/49/3.jpg": {
    "path": "/projects/49/3.webp",
-   "width": 1200,
-   "height": 1600,
-   "bytes": 254020
+   "width": 675,
+   "height": 900,
+   "bytes": 139372
   },
   "https://www.artstroismolian.com/projects/49/4.jpg": {
    "path": "/projects/49/4.webp",
-   "width": 1200,
-   "height": 1600,
-   "bytes": 182546
+   "width": 675,
+   "height": 900,
+   "bytes": 102406
   },
   "https://www.artstroismolian.com/projects/49/5.jpg": {
    "path": "/projects/49/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 175644
+   "width": 1200,
+   "height": 900,
+   "bytes": 156388
   },
   "https://www.artstroismolian.com/projects/5.jpg": {
    "path": "/projects/5/5.webp",
-   "width": 1600,
-   "height": 1066,
-   "bytes": 233990
+   "width": 750,
+   "height": 500,
+   "bytes": 100580
   },
   "https://www.artstroismolian.com/projects/5/1a.jpg": {
    "path": "/projects/5/1a.webp",
@@ -1280,111 +1280,111 @@
   },
   "https://www.artstroismolian.com/projects/5/1c.jpg": {
    "path": "/projects/5/1c.webp",
-   "width": 1600,
-   "height": 898,
-   "bytes": 46406
+   "width": 960,
+   "height": 539,
+   "bytes": 28912
   },
   "https://www.artstroismolian.com/projects/5/1d.jpg": {
    "path": "/projects/5/1d.webp",
-   "width": 1600,
-   "height": 898,
-   "bytes": 42736
+   "width": 960,
+   "height": 539,
+   "bytes": 26402
   },
   "https://www.artstroismolian.com/projects/50.jpg": {
    "path": "/projects/50/50.webp",
-   "width": 1600,
-   "height": 898,
-   "bytes": 296960
+   "width": 1425,
+   "height": 800,
+   "bytes": 291064
   },
   "https://www.artstroismolian.com/projects/50/2.jpg": {
    "path": "/projects/50/2.webp",
-   "width": 1600,
-   "height": 902,
-   "bytes": 258346
+   "width": 1419,
+   "height": 800,
+   "bytes": 252356
   },
   "https://www.artstroismolian.com/projects/50/3.jpg": {
    "path": "/projects/50/3.webp",
-   "width": 1600,
-   "height": 902,
-   "bytes": 208246
+   "width": 1419,
+   "height": 800,
+   "bytes": 203618
   },
   "https://www.artstroismolian.com/projects/50/4.jpg": {
    "path": "/projects/50/4.webp",
-   "width": 1600,
-   "height": 902,
-   "bytes": 201200
+   "width": 1419,
+   "height": 800,
+   "bytes": 196628
   },
   "https://www.artstroismolian.com/projects/50/5.jpg": {
    "path": "/projects/50/5.webp",
-   "width": 1600,
-   "height": 1004,
-   "bytes": 200944
+   "width": 1275,
+   "height": 800,
+   "bytes": 169018
   },
   "https://www.artstroismolian.com/projects/51.jpg": {
    "path": "/projects/51/51.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 135572
+   "width": 1200,
+   "height": 900,
+   "bytes": 116808
   },
   "https://www.artstroismolian.com/projects/51/2.jpg": {
    "path": "/projects/51/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 281788
+   "width": 1200,
+   "height": 900,
+   "bytes": 236736
   },
   "https://www.artstroismolian.com/projects/51/3.jpg": {
    "path": "/projects/51/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 164246
+   "width": 1200,
+   "height": 900,
+   "bytes": 134154
   },
   "https://www.artstroismolian.com/projects/51/4.jpg": {
    "path": "/projects/51/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 169038
+   "width": 1200,
+   "height": 900,
+   "bytes": 148634
   },
   "https://www.artstroismolian.com/projects/51/5.jpg": {
    "path": "/projects/51/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 208772
+   "width": 1200,
+   "height": 900,
+   "bytes": 179256
   },
   "https://www.artstroismolian.com/projects/52.jpg": {
    "path": "/projects/52/52.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 129562
+   "width": 1200,
+   "height": 900,
+   "bytes": 110160
   },
   "https://www.artstroismolian.com/projects/52/2.jpg": {
    "path": "/projects/52/2.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 209160
+   "width": 1200,
+   "height": 900,
+   "bytes": 184470
   },
   "https://www.artstroismolian.com/projects/52/3.jpg": {
    "path": "/projects/52/3.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 171704
+   "width": 1200,
+   "height": 900,
+   "bytes": 151754
   },
   "https://www.artstroismolian.com/projects/52/4.jpg": {
    "path": "/projects/52/4.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 246394
+   "width": 1200,
+   "height": 900,
+   "bytes": 208544
   },
   "https://www.artstroismolian.com/projects/52/5.jpg": {
    "path": "/projects/52/5.webp",
-   "width": 1600,
-   "height": 1200,
-   "bytes": 114492
+   "width": 1200,
+   "height": 900,
+   "bytes": 98164
   },
   "https://www.artstroismolian.com/projects/53.jpg": {
    "path": "/projects/53/53.webp",
-   "width": 1600,
-   "height": 1066,
-   "bytes": 193462
+   "width": 750,
+   "height": 500,
+   "bytes": 86632
   },
   "https://www.artstroismolian.com/projects/53/1%20%281%29.jpg": {
    "path": "/projects/53/1 (1).webp",
@@ -1406,9 +1406,9 @@
   },
   "https://www.artstroismolian.com/projects/53/1%20%284%29.jpg": {
    "path": "/projects/53/1 (4).webp",
-   "width": 1600,
-   "height": 791,
-   "bytes": 116352
+   "width": 1520,
+   "height": 752,
+   "bytes": 120236
   },
   "https://www.artstroismolian.com/projects/54/1%20%281%29.jpg": {
    "path": "/projects/54/1 (1).webp",
@@ -1466,15 +1466,15 @@
   },
   "https://www.artstroismolian.com/projects/6.jpg": {
    "path": "/projects/6/6.webp",
-   "width": 1600,
-   "height": 1066,
-   "bytes": 115318
+   "width": 750,
+   "height": 500,
+   "bytes": 53080
   },
   "https://www.artstroismolian.com/projects/6/1a.jpg": {
    "path": "/projects/6/1a.webp",
-   "width": 897,
-   "height": 1600,
-   "bytes": 231368
+   "width": 505,
+   "height": 900,
+   "bytes": 126606
   },
   "https://www.artstroismolian.com/projects/6/1b.jpg": {
    "path": "/projects/6/1b.webp",
@@ -1496,9 +1496,9 @@
   },
   "https://www.artstroismolian.com/projects/7.jpg": {
    "path": "/projects/7/7.webp",
-   "width": 1600,
-   "height": 1066,
-   "bytes": 150938
+   "width": 750,
+   "height": 500,
+   "bytes": 69998
   },
   "https://www.artstroismolian.com/projects/7/1a.jpg": {
    "path": "/projects/7/1a.webp",
@@ -1520,15 +1520,15 @@
   },
   "https://www.artstroismolian.com/projects/7/1d.jpg": {
    "path": "/projects/7/1d.webp",
-   "width": 1600,
-   "height": 945,
-   "bytes": 68330
+   "width": 1300,
+   "height": 768,
+   "bytes": 62688
   },
   "https://www.artstroismolian.com/projects/8.jpg": {
    "path": "/projects/8/8.webp",
-   "width": 1600,
-   "height": 1066,
-   "bytes": 105808
+   "width": 750,
+   "height": 500,
+   "bytes": 49112
   },
   "https://www.artstroismolian.com/projects/8/1a.jpg": {
    "path": "/projects/8/1a.webp",
@@ -1550,39 +1550,39 @@
   },
   "https://www.artstroismolian.com/projects/8/1d.jpg": {
    "path": "/projects/8/1d.webp",
-   "width": 1600,
-   "height": 1061,
-   "bytes": 178900
+   "width": 1508,
+   "height": 1000,
+   "bytes": 196392
   },
   "https://www.artstroismolian.com/projects/9.jpg": {
    "path": "/projects/9/9.webp",
-   "width": 1600,
-   "height": 1066,
-   "bytes": 140384
+   "width": 750,
+   "height": 500,
+   "bytes": 66874
   },
   "https://www.artstroismolian.com/projects/9/2.jpg": {
    "path": "/projects/9/2.webp",
-   "width": 901,
-   "height": 1600,
-   "bytes": 168754
+   "width": 507,
+   "height": 900,
+   "bytes": 94206
   },
   "https://www.artstroismolian.com/projects/9/3.jpg": {
    "path": "/projects/9/3.webp",
-   "width": 901,
-   "height": 1600,
-   "bytes": 161090
+   "width": 507,
+   "height": 900,
+   "bytes": 90738
   },
   "https://www.artstroismolian.com/projects/9/4.jpg": {
    "path": "/projects/9/4.webp",
-   "width": 901,
-   "height": 1600,
-   "bytes": 149142
+   "width": 507,
+   "height": 900,
+   "bytes": 82282
   },
   "https://www.artstroismolian.com/projects/9/5.jpg": {
    "path": "/projects/9/5.webp",
-   "width": 901,
-   "height": 1600,
-   "bytes": 142248
+   "width": 507,
+   "height": 900,
+   "bytes": 83154
   }
  },
  "failed": []

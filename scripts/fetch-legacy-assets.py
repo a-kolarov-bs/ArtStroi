@@ -25,6 +25,11 @@ def dest(u):
     m = re.match(r'projects/(\d+)/(.+)\.\w+$', path)      # gallery
     return f'public/projects/{m[1]}/{m[2]}.webp'
 
+def px(f):
+    o = subprocess.run(['sips', '-g', 'pixelWidth', '-g', 'pixelHeight', f], capture_output=True, text=True).stdout.split()
+    try: return int(o[o.index('pixelWidth:')+1]), int(o[o.index('pixelHeight:')+1])
+    except ValueError: return None, None
+
 def one(u):
     d = dest(u); out = f'{ROOT}/{d}'
     if u.lower().endswith('.pdf'): out = f'{ROOT}/' + d
@@ -38,7 +43,10 @@ def one(u):
         os.replace(tmp, out)
     else:
         sc = tmp + '.s.png'
-        r = subprocess.run(['sips', '-Z', '1600', '-s', 'format', 'png', tmp, '--out', sc], capture_output=True)  # -Z only shrinks
+        # sips -Z also enlarges small images, so resize only when the long side exceeds 1600px.
+        w, h = px(tmp)
+        resize = ['-Z', '1600'] if max(w or 0, h or 0) > 1600 else []
+        r = subprocess.run(['sips', *resize, '-s', 'format', 'png', tmp, '--out', sc], capture_output=True)
         if r.returncode == 0:
             r = subprocess.run(['cwebp', '-quiet', '-q', '80', sc, '-o', out], capture_output=True)
         for t in (tmp, sc):
