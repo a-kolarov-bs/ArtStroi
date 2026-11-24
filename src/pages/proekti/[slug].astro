@@ -19,6 +19,7 @@ import Reveal from '../../components/Reveal.astro';
 import ProjectProtocol from '../../components/ProjectProtocol.astro';
 import { projects, getCategory, getProtocol } from '../../data/projects';
 import { company } from '../../data/company';
+import { imageSize } from '../../data/assets';
 
 export async function getStaticPaths() {
   return projects.map((project) => ({
@@ -102,7 +103,7 @@ const schemaCreativeWork = {
   '@id': canonical,
   name: project.title,
   description: project.description ?? undefined,
-  image: project.coverImageUrl ?? undefined,
+  image: project.coverImageUrl ? `${siteOrigin}${project.coverImageUrl}` : undefined,
   url: canonical,
   inLanguage: 'bg',
   creator: {
@@ -225,6 +226,7 @@ const schemaBreadcrumb = {
               <figure class="hero-figure relative overflow-hidden rounded-xl bg-ink-900 ring-1 ring-ink-900/10 w-full shadow-[0_18px_44px_-22px_rgba(18,22,28,0.28)]">
                 <img
                   src={cover}
+                  {...imageSize(cover)}
                   alt={`${project.title}${project.location ? ` — ${project.location}` : ''}`}
                   fetchpriority="high"
                   decoding="async"
@@ -285,6 +287,7 @@ const schemaBreadcrumb = {
                             >
                               <img
                                 src={project.partnerLogoUrl}
+                                {...imageSize(project.partnerLogoUrl)}
                                 alt={`${project.client} — лого`}
                                 loading="lazy"
                                 decoding="async"
@@ -294,6 +297,7 @@ const schemaBreadcrumb = {
                           ) : (
                             <img
                               src={project.partnerLogoUrl}
+                              {...imageSize(project.partnerLogoUrl)}
                               alt={`${project.client} — лого`}
                               loading="lazy"
                               decoding="async"
@@ -411,6 +415,7 @@ const schemaBreadcrumb = {
                 >
                   <img
                     src={src}
+                    {...imageSize(src)}
                     alt={`${project.title} — кадър ${i + 1}`}
                     loading={i < 6 ? 'eager' : 'lazy'}
                     decoding="async"
@@ -594,6 +599,7 @@ const schemaBreadcrumb = {
                   <div class="relative aspect-[4/3] overflow-hidden bg-ink-900">
                     <img
                       src={p.coverImageUrl ?? '/hero/hero-poster.jpg'}
+                      {...imageSize(p.coverImageUrl)}
                       alt={p.title}
                       loading="lazy"
                       decoding="async"

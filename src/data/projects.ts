@@ -1,4 +1,5 @@
 import legacy from './legacy-projects.json';
+import { localAsset } from './assets';
 
 export interface Project {
   id: number;
@@ -33,17 +34,9 @@ interface LegacyRecord {
 
 const FEATURED_IDS = new Set([1, 7, 5, 3, 8, 14, 41, 53]);
 
-// Locally-hosted assets for projects whose imagery has been brought in-house.
-// When present, these override the legacy artstroismolian.com URLs.
-const LOCAL_ASSETS: Record<number, { cover: string; gallery: string[] }> = {
-  1: {
-    cover: '/projects/1/cover.jpg',
-    gallery: ['1a', '1b', '1c', '1d'].map((f) => `/projects/1/${f}.jpg`),
-  },
-};
-
+// The legacy record keeps the old-site image URLs as data; every one is
+// served from our own copy under public/ (see ./assets).
 function fromLegacy(r: LegacyRecord): Project {
-  const local = LOCAL_ASSETS[r.id];
   return {
     id: r.id,
     slug: r.slug,
@@ -52,11 +45,11 @@ function fromLegacy(r: LegacyRecord): Project {
     client: r.client,
     scope: r.scope,
     description: r.description,
-    coverImageUrl: local?.cover ?? r.cover_image_url,
-    galleryImageUrls: local?.gallery ?? r.gallery_image_urls,
+    coverImageUrl: r.cover_image_url ? localAsset(r.cover_image_url) : null,
+    galleryImageUrls: r.gallery_image_urls.map(localAsset),
     mapEmbedUrl: r.map_embed_url ?? null,
     partnerUrl: r.partner_url ?? null,
-    partnerLogoUrl: r.partner_logo_url ?? null,
+    partnerLogoUrl: r.partner_logo_url ? localAsset(r.partner_logo_url) : null,
     featured: FEATURED_IDS.has(r.id),
   };
 }
