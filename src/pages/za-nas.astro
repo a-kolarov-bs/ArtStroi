@@ -370,7 +370,8 @@ const pageDescription = `${
       <!-- ISO row — three feature cards -->
       <ol class="zn-iso grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ink-900/12">
         {isoStandards.map((s, i) => (
-          <Reveal as="li" delay={i * 80} class="zn-iso__cell group">
+          <Reveal as="li" delay={i * 80} class="relative hover:z-[2]">
+           <div class="zn-iso__cell group h-full">
             <article class="zn-iso__inner">
               <header class="zn-iso__head">
                 <span class="zn-iso__num font-display tabular-nums text-brand">
@@ -403,6 +404,7 @@ const pageDescription = `${
                 </svg>
               </a>
             </article>
+           </div>
           </Reveal>
         ))}
       </ol>
@@ -425,7 +427,8 @@ const pageDescription = `${
 
         <ol class="zn-cprs grid grid-cols-2 lg:grid-cols-5 gap-px bg-ink-900/12">
           {cprsCards.map((g, i) => (
-            <Reveal as="li" delay={i * 60} class="zn-cprs__cell group">
+            <Reveal as="li" delay={i * 60}>
+             <div class="zn-cprs__cell group h-full">
               <article class="zn-cprs__inner">
                 <span class="zn-cprs__roman font-display text-brand">
                   {g.roman}
@@ -442,11 +445,13 @@ const pageDescription = `${
                   </svg>
                 </a>
               </article>
+             </div>
             </Reveal>
           ))}
 
           <!-- Declaration as a 5th, distinct cell -->
-          <Reveal as="li" delay={cprsCards.length * 60} class="zn-cprs__cell zn-cprs__cell--alt group">
+          <Reveal as="li" delay={cprsCards.length * 60}>
+           <div class="zn-cprs__cell zn-cprs__cell--alt group h-full">
             <article class="zn-cprs__inner">
               <span class="zn-cprs__roman font-display text-brand">
                 §
@@ -463,6 +468,7 @@ const pageDescription = `${
                 </svg>
               </a>
             </article>
+           </div>
           </Reveal>
         </ol>
       </div>

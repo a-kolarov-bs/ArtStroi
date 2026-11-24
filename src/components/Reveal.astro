@@ -1,4 +1,8 @@
 ---
+// `class` here takes Tailwind utilities only. A class from the calling page's
+// <style> would not apply (this element carries Reveal's scope, not the
+// page's) — wrap it: <Reveal as="li"><div class="us-card">…</div></Reveal>.
+// Enforced by scripts/check-scoped-class.mjs (runs before every build).
 interface Props {
   delay?: number;
   as?: keyof HTMLElementTagNameMap;
