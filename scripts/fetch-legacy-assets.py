@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Downloads legacy project photos and certificates from the client's old site,
-converts images to WebP (long side <= 1600px) and writes manifests.
+"""Downloads legacy project photos, certificates and partner logos from the client's old site,
+converts images to WebP (long side <= 1600px) and writes manifests to src/data/legacy-assets/<group>.json
+(old URL -> local path + size; read by src/data/assets.ts, kept out of public/ so they are not published).
 Usage: python3 scripts/fetch-legacy-assets.py   (idempotent: skips existing files)"""
 from urllib.parse import unquote
 import json, re, subprocess, os, sys, glob, tempfile
@@ -11,14 +12,19 @@ urls = set()
 for p in json.load(open(f'{ROOT}/data-extract/projects.json')):
     if p.get('cover_image_url'): urls.add(p['cover_image_url'])
     urls |= set(p.get('gallery_image_urls') or [])
+    if p.get('partner_logo_url'): urls.add(p['partner_logo_url'])
+# src/ no longer holds the legacy URLs once they are rewritten; keep what the manifests already know.
+for k in ('projects', 'sert', 'part'):
+    if os.path.exists(f'{ROOT}/src/data/legacy-assets/{k}.json'):
+        urls |= set(json.load(open(f'{ROOT}/src/data/legacy-assets/{k}.json'))['files'])
 for f in glob.glob(f'{ROOT}/src/**/*', recursive=True):
     if os.path.isfile(f) and f.endswith(('.astro', '.ts', '.tsx', '.json')):
         urls |= set(re.findall(r'https?://(?:www\.)?artstroismolian\.com/(?:projects|sert)/[^"\'\s)>`]+\.(?:jpg|jpeg|png|pdf)', open(f).read()))
-urls = sorted(u for u in urls if re.search(r'/(projects|sert)/', u))
+urls = sorted(u for u in urls if re.search(r'/(projects|sert|part)/', u))
 
 def dest(u):
     path = unquote(u.split('artstroismolian.com/')[1])
-    if path.startswith('sert/'):
+    if path.startswith(('sert/', 'part/')):
         return 'public/' + path
     m = re.match(r'projects/(\d+)\.\w+$', path)          # cover
     if m: return f'public/projects/{m[1]}/{m[1]}.webp'
@@ -59,11 +65,12 @@ def dims(f):
     if not f.endswith('.webp'): return None, None
     o = subprocess.run(['sips', '-g', 'pixelWidth', '-g', 'pixelHeight', f], capture_output=True, text=True).stdout.split()
     return int(o[o.index('pixelWidth:')+1]), int(o[o.index('pixelHeight:')+1])
-man = {'projects': {}, 'sert': {}}; bad = []
+def group(u): return re.search(r'artstroismolian\.com/(projects|sert|part)/', u)[1]
+man = {'projects': {}, 'sert': {}, 'part': {}}; bad = []
 for u, out, st in res:
     if not out: bad.append([u, st]); continue
     w, h = dims(out)
-    man['sert' if '/sert/' in u else 'projects'][u] = {'path': '/' + os.path.relpath(out, f'{ROOT}/public'), 'width': w, 'height': h, 'bytes': os.path.getsize(out)}
+    man[group(u)][u] = {'path': '/' + os.path.relpath(out, f'{ROOT}/public'), 'width': w, 'height': h, 'bytes': os.path.getsize(out)}
 for k in man:
-    json.dump({'files': man[k], 'failed': [b for b in bad if ('/sert/' in b[0]) == (k == 'sert')]}, open(f'{ROOT}/public/{k}/manifest.json', 'w'), indent=1, ensure_ascii=False)
+    json.dump({'files': man[k], 'failed': [b for b in bad if group(b[0]) == k]}, open(f'{ROOT}/src/data/legacy-assets/{k}.json', 'w'), indent=1, ensure_ascii=False)
 print(len(urls), 'urls;', len(urls) - len(bad), 'ok;', 'failed:', bad)

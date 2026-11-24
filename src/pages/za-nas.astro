@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Reveal from '../components/Reveal.astro';
 import { projects } from '../data/projects';
+import { imageSize } from '../data/assets';
 import { company, yearsActive as getYearsActive, cprsGroupsLabel } from '../data/company';
 
 // ────────────────────────────────────────────────────────────────
@@ -31,29 +32,29 @@ const awardSlots = [
 ];
 
 // ── Certificates — sourced verbatim from /sert.html of legacy site ────
-// Image URLs are absolute to the legacy host for now. When/if the client
-// uploads scans we'll mirror them to /public/certs/.
+// Scans mirrored from the legacy host into public/sert/
+// (scripts/fetch-legacy-assets.py).
 const isoStandards = [
   {
     code: 'ISO 9001:2015',
     title: 'Управление на качеството',
     body: 'Сертифицирана система за управление на качеството — приложима за пълния обхват на строително-монтажните работи.',
-    img: 'https://www.artstroismolian.com/sert/1.jpg',
-    pdf: 'https://www.artstroismolian.com/sert/1.pdf',
+    img: '/sert/1.webp',
+    pdf: '/sert/1.pdf',
   },
   {
     code: 'ISO 14001:2015',
     title: 'Околна среда',
     body: 'Управление по отношение на околната среда — намалено въздействие на строителния процес върху терена и общността.',
-    img: 'https://www.artstroismolian.com/sert/2.jpg',
-    pdf: 'https://www.artstroismolian.com/sert/2.pdf',
+    img: '/sert/2.webp',
+    pdf: '/sert/2.pdf',
   },
   {
     code: 'ISO 45001:2018',
     title: 'Здраве и безопасност',
     body: 'Система за управление на здравето и безопасността при работа — оценен риск на всяко работно място на обекта.',
-    img: 'https://www.artstroismolian.com/sert/3.jpg',
-    pdf: 'https://www.artstroismolian.com/sert/3.pdf',
+    img: '/sert/3.webp',
+    pdf: '/sert/3.pdf',
   },
 ];
 
@@ -62,33 +63,33 @@ const cprsCards = [
     roman: 'I',
     title: 'Първа група',
     body: 'Строежи от високото строителство и прилежащата му инфраструктура.',
-    img: 'https://www.artstroismolian.com/sert/4.jpg',
+    img: '/sert/4.webp',
   },
   {
     roman: 'II',
     title: 'Втора група',
     body: 'Строежи от транспортната инфраструктура — пътища, тротоари, площади.',
-    img: 'https://www.artstroismolian.com/sert/5.jpg',
+    img: '/sert/5.webp',
   },
   {
     roman: 'III',
     title: 'Трета група',
     body: 'Строежи от енергийната инфраструктура — електро, ВиК, външни мрежи.',
-    img: 'https://www.artstroismolian.com/sert/6.jpg',
+    img: '/sert/6.webp',
   },
   {
     roman: 'IV',
     title: 'Четвърта група',
     body: 'Строежи от благоустройствената инфраструктура — паркове, ВиК съоръжения.',
-    img: 'https://www.artstroismolian.com/sert/7.jpg',
+    img: '/sert/7.webp',
   },
 ];
 
 const declaration = {
   title: 'Декларация за целите и ангажиментите',
   body: 'Политика на ръководството по качество, околна среда, здраве и безопасност при работа. Документът е публичен и неразделна част от интегрираната ни система.',
-  pdf: 'https://www.artstroismolian.com/sert/doc07412420240403151358.pdf',
-  img: 'https://www.artstroismolian.com/sert/8.jpg',
+  pdf: '/sert/doc07412420240403151358.pdf',
+  img: '/sert/8.webp',
 };
 
 const pageTitle = `За нас · ${company.name}, строителна фирма от Смолян${
@@ -391,7 +392,7 @@ const pageDescription = `${
                    upload new versions -->
               <a class="zn-iso__doc group/doc" href={s.pdf} target="_blank" rel="noopener noreferrer">
                 <span class="zn-iso__thumb">
-                  <img src={s.img} alt={`Сертификат ${s.code}`} loading="lazy" decoding="async" />
+                  <img src={s.img} {...imageSize(s.img)} alt={`Сертификат ${s.code}`} loading="lazy" decoding="async" />
                 </span>
                 <span class="zn-iso__doc-meta">
                   <span class="zn-iso__doc-label">Виж сертификата</span>
@@ -433,7 +434,7 @@ const pageDescription = `${
                 <p class="zn-cprs__body">{g.body}</p>
                 <a class="zn-cprs__doc" href={g.img} target="_blank" rel="noopener noreferrer" aria-label={`Удостоверение ${g.title}`}>
                   <span class="zn-cprs__thumb">
-                    <img src={g.img} alt="" loading="lazy" decoding="async" />
+                    <img src={g.img} {...imageSize(g.img)} alt="" loading="lazy" decoding="async" />
                   </span>
                   <span class="zn-cprs__doc-label">Удостоверение</span>
                   <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -454,7 +455,7 @@ const pageDescription = `${
               <p class="zn-cprs__body">{declaration.body}</p>
               <a class="zn-cprs__doc" href={declaration.pdf} target="_blank" rel="noopener noreferrer" aria-label="Декларация PDF">
                 <span class="zn-cprs__thumb">
-                  <img src={declaration.img} alt="" loading="lazy" decoding="async" />
+                  <img src={declaration.img} {...imageSize(declaration.img)} alt="" loading="lazy" decoding="async" />
                 </span>
                 <span class="zn-cprs__doc-label">Декларация · PDF</span>
                 <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">

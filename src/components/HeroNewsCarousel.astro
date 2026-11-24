@@ -1,5 +1,6 @@
 ---
 import { company } from '../data/company';
+import { imageSize } from '../data/assets';
 
 interface Slide {
   code: string;
@@ -17,7 +18,7 @@ const slides: Slide[] = [
     label: 'Качество',
     title: 'Управление на качеството',
     body: 'Сертифицирана система за строително-монтажни работи.',
-    image: 'https://www.artstroismolian.com/sert/1.jpg',
+    image: '/sert/1.webp',
     href: '/za-nas#certs-heading',
     accent: '№01',
   },
@@ -26,7 +27,7 @@ const slides: Slide[] = [
     label: 'Среда',
     title: 'Околна среда',
     body: 'Контрол върху въздействието на строителния процес.',
-    image: 'https://www.artstroismolian.com/sert/2.jpg',
+    image: '/sert/2.webp',
     href: '/za-nas#certs-heading',
     accent: '№02',
   },
@@ -35,7 +36,7 @@ const slides: Slide[] = [
     label: 'Безопасност',
     title: 'Здраве и безопасност',
     body: 'Система за оценка и управление на риска на обект.',
-    image: 'https://www.artstroismolian.com/sert/3.jpg',
+    image: '/sert/3.webp',
     href: '/za-nas#certs-heading',
     accent: '№03',
   },
@@ -46,7 +47,7 @@ const slides: Slide[] = [
     body: company.cprsGroups
       ? `Вписани за ${company.cprsGroups.join(' · ')} група строежи.`
       : 'Вписани в Централния професионален регистър на строителя.',
-    image: 'https://www.artstroismolian.com/sert/4.jpg',
+    image: '/sert/4.webp',
     href: '/za-nas#certs-heading',
     // Joined with dots, not a dash: „I-IV“ would read as a range.
     accent: company.cprsGroups ? company.cprsGroups.join('·') : '№04',
@@ -56,7 +57,7 @@ const slides: Slide[] = [
     label: 'Политика',
     title: 'Декларация за ангажименти',
     body: 'Качество, околна среда, здраве и безопасност при работа.',
-    image: 'https://www.artstroismolian.com/sert/8.jpg',
+    image: '/sert/8.webp',
     href: '/za-nas#certs-heading',
     accent: 'DOC',
   },
@@ -128,6 +129,7 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
             <span class="cert-card__thumb">
               <img
                 src={s.image}
+                {...imageSize(s.image)}
                 alt=""
                 loading={i === 0 ? 'eager' : 'lazy'}
                 decoding="async"

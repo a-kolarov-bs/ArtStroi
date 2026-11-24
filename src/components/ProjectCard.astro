@@ -1,5 +1,6 @@
 ---
 import type { Project } from '../data/projects';
+import { imageSize } from '../data/assets';
 
 interface Props {
   project: Project;
@@ -42,6 +43,7 @@ const description = project.description?.trim() || '';
   <div class="absolute inset-0">
     <img
       src={cover}
+      {...imageSize(cover)}
       alt={project.title}
       loading="lazy"
       decoding="async"
@@ -69,6 +71,7 @@ const description = project.description?.trim() || '';
       {hoverImages.map((url, idx) => (
         <img
           src={url}
+          {...imageSize(url)}
           alt=""
           loading="lazy"
           decoding="async"
