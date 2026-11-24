@@ -4,6 +4,10 @@
 import projectFiles from './legacy-assets/projects.json';
 import sertFiles from './legacy-assets/sert.json';
 import partFiles from './legacy-assets/part.json';
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+const publicDir = fileURLToPath(new URL('../../public', import.meta.url));
 
 interface LocalAsset {
   path: string;
@@ -28,6 +32,9 @@ export function localAsset(url: string): string {
   const asset = byUrl[key];
   if (!asset) {
     throw new Error(`${url} is not mirrored locally; run scripts/fetch-legacy-assets.py`);
+  }
+  if (!existsSync(publicDir + asset.path)) {
+    throw new Error(`${asset.path} is in the manifest but missing from public/; run scripts/fetch-legacy-assets.py`);
   }
   return asset.path;
 }

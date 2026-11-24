@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Downloads legacy project photos, certificates and partner logos from the client's old site,
 converts images to WebP (long side <= 1600px) and writes manifests to src/data/legacy-assets/<group>.json
-(old URL -> local path + size; read by src/data/legacy-assets.ts, kept out of public/ so they are not published).
+(old URL -> local path + size; read by src/data/assets.ts, kept out of public/ so they are not published).
 Usage: python3 scripts/fetch-legacy-assets.py   (idempotent: skips existing files)"""
 from urllib.parse import unquote
 import json, re, subprocess, os, sys, glob, tempfile
