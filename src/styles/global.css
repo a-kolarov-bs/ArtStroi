@@ -49,9 +49,27 @@
     font-feature-settings: 'kern', 'liga', 'ss01';
   }
 
-  /* Fluid focus ring */
+  /* Focus ring — one rule for the whole site.
+     The colour is an inherited custom property, so the NEAREST surface wins:
+     brand red on light surfaces, cream on dark ones (red on ink is ~3:1 and
+     disappears over the hero video). A dark section marks itself with a
+     bg-ink-* class or data-surface="dark"; a light block inside it resets.
+     The value is set on a surface's CHILDREN (`> *`): the ring is drawn
+     outside the focused element, so a dark card on a cream section keeps
+     the cream section's red ring.
+     Components never set `outline: none` on focus without a replacement —
+     use outline: 2px solid var(--focus-ring) on the element or its wrapper. */
+  :root,
+  :is(.bg-cream-50, .bg-cream-100, .bg-white, .bg-stone-100, .bg-ink-100,
+      [data-surface='light']) > * {
+    --focus-ring: theme('colors.brand.DEFAULT');
+  }
+  :is(.bg-ink-950, .bg-ink-900, .bg-ink-800,
+      [data-surface='dark'], #site-header[data-tone='dark']) > * {
+    --focus-ring: theme('colors.cream.50');
+  }
   :focus-visible {
-    outline: 2px solid theme('colors.brand.DEFAULT');
+    outline: 2px solid var(--focus-ring);
     outline-offset: 3px;
     border-radius: 4px;
   }

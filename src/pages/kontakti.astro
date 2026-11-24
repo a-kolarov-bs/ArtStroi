@@ -83,7 +83,7 @@ const mapQuery = encodeURIComponent(officeMapQuery);
                 <span class="contact-error" id="message-error" data-error-for="message"></span>
               </div>
 
-              <div class="contact-form__footer">
+              <div class="contact-form__footer" data-surface="dark">
                 <p data-contact-status aria-live="polite">
                   Проверяваме имейла и текста преди изпращане.
                 </p>
@@ -303,6 +303,11 @@ const mapQuery = encodeURIComponent(officeMapQuery);
   .contact-field input:focus,
   .contact-field textarea:focus {
     box-shadow: inset 0 -2px 0 #ba2d20;
+  }
+  /* The input itself has no outline; the whole field carries the ring. */
+  .contact-field:has(:focus-visible) {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
   }
 
   .contact-field:has([aria-invalid="true"]) {

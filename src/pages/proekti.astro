@@ -328,6 +328,11 @@ const pageDescription = `${projects.length} реализирани обекта$
 </BaseLayout>
 
 <style>
+  /* The search input has no outline of its own; the underline row carries the ring. */
+  .search-wrap:has(:focus-visible) {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 6px;
+  }
   /* ─── HERO REEL — auto-scrolling film strip ───────────── */
   .reel-wrap {
     /* Sized so the transparent header (h-20 = 80px) overlays a dark area

@@ -592,7 +592,7 @@ const schemaBreadcrumb = {
               <Reveal class="h-full" delay={i * 80}>
                 <a
                   href={`/proekti/${p.slug}`}
-                  class="next-card group relative flex flex-col h-full overflow-hidden rounded-xl ring-1 ring-ink-950/10 shadow-[0_18px_44px_-24px_rgba(18,22,28,0.32)] focus-visible:outline-none"
+                  class="next-card group relative flex flex-col h-full overflow-hidden rounded-xl ring-1 ring-ink-950/10 shadow-[0_18px_44px_-24px_rgba(18,22,28,0.32)]"
                   aria-label={`Проект Nº ${pNum}: ${p.title}`}
                 >
                   <!-- TOP: cover image -->
@@ -874,7 +874,7 @@ const schemaBreadcrumb = {
     border-radius: 6px;
   }
   .g-tile:focus-visible {
-    outline: 2px solid #BA2D20;
+    outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
     z-index: 1;
   }
