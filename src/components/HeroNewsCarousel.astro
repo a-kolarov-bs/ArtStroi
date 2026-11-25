@@ -2,6 +2,7 @@
 import { company } from '../data/company';
 import { imageSize } from '../data/assets';
 
+
 interface Slide {
   code: string;
   label: string;
@@ -18,7 +19,7 @@ const slides: Slide[] = [
     label: 'Качество',
     title: 'Управление на качеството',
     body: 'Сертифицирана система за строително-монтажни работи.',
-    image: '/sert/1.webp',
+    image: '/sert/thumb/1.webp',
     href: '/za-nas#certs-heading',
     accent: '№01',
   },
@@ -27,7 +28,7 @@ const slides: Slide[] = [
     label: 'Среда',
     title: 'Околна среда',
     body: 'Контрол върху въздействието на строителния процес.',
-    image: '/sert/2.webp',
+    image: '/sert/thumb/2.webp',
     href: '/za-nas#certs-heading',
     accent: '№02',
   },
@@ -36,7 +37,7 @@ const slides: Slide[] = [
     label: 'Безопасност',
     title: 'Здраве и безопасност',
     body: 'Система за оценка и управление на риска на обект.',
-    image: '/sert/3.webp',
+    image: '/sert/thumb/3.webp',
     href: '/za-nas#certs-heading',
     accent: '№03',
   },
@@ -47,7 +48,7 @@ const slides: Slide[] = [
     body: company.cprsGroups
       ? `Вписани за ${company.cprsGroups.join(' · ')} група строежи.`
       : 'Вписани в Централния професионален регистър на строителя.',
-    image: '/sert/4.webp',
+    image: '/sert/thumb/4.webp',
     href: '/za-nas#certs-heading',
     // Joined with dots, not a dash: „I-IV“ would read as a range.
     accent: company.cprsGroups ? company.cprsGroups.join('·') : '№04',
@@ -57,7 +58,7 @@ const slides: Slide[] = [
     label: 'Декларация',
     title: 'Декларация за ангажименти',
     body: 'Качество, околна среда, здраве и безопасност при работа.',
-    image: '/sert/8.webp',
+    image: '/sert/thumb/8.webp',
     href: '/za-nas#certs-heading',
     accent: '№05',
   },

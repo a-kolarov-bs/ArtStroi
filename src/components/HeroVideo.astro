@@ -2,8 +2,12 @@
 import HeroNewsCarousel from './HeroNewsCarousel.astro';
 
 const heroVideo = '/hero/hero-composite.mp4';
-const heroPoster = '/hero/hero-poster.jpg';
-const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
+const heroPoster = '/hero/hero-poster.webp';
+const heroPosterMobile = '/hero/hero-poster-mobile.webp';
+// The <picture> below is the poster (mobile and desktop sizes). The video gets
+// a transparent one so it keeps showing the picture until it plays, without
+// downloading the desktop JPEG again on phones.
+const transparentPoster = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 ---
 
 <section
@@ -17,6 +21,8 @@ const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
     <source media="(min-width: 768px)" srcset={heroPoster} />
     <img
       src={heroPosterMobile}
+      width="960"
+      height="720"
       alt=""
       aria-hidden="true"
       class="h-full w-full object-cover"
@@ -33,7 +39,7 @@ const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
     playsinline
     webkit-playsinline
     preload="auto"
-    poster={heroPoster}
+    poster={transparentPoster}
     aria-hidden="true"
     style="filter: contrast(1.06) saturate(1.08) brightness(0.96); transform: scale(1.02); transform-origin: center;"
   >
