@@ -27,9 +27,9 @@ const heroStats = [
 
 // ── Award (Сграда на годината) — Chukara project feature.
 const awardSlots = [
-  { file: '/award/chukara/detail-1.jpg', alt: 'Вино и СПА хотел Чукара — фасада', caption: 'Естествен камък и дървени ламели' },
-  { file: '/award/chukara/detail-2.jpg', alt: 'Вино и СПА хотел Чукара — общ изглед', caption: 'Планински хотелски ансамбъл' },
-  { file: '/award/chukara/detail-3.jpg', alt: 'Вино и СПА хотел Чукара — интериор и екстериор', caption: 'Хотел, СПА и винена програма' },
+  { file: '/award/chukara/detail-1', width: 1600, height: 1068, alt: 'Вино и СПА хотел Чукара — фасада', caption: 'Естествен камък и дървени ламели' },
+  { file: '/award/chukara/detail-2', width: 1600, height: 1068, alt: 'Вино и СПА хотел Чукара — общ изглед', caption: 'Планински хотелски ансамбъл' },
+  { file: '/award/chukara/detail-3', width: 1600, height: 1200, alt: 'Вино и СПА хотел Чукара — интериор и екстериор', caption: 'Хотел, СПА и винена програма' },
 ];
 
 // ── Certificates — sourced verbatim from /sert.html of legacy site ────
@@ -213,6 +213,8 @@ const pageDescription = `${
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b opacity-[0.10]"></div>
     <img
       src="/award/chukara/hero.jpg"
+      width="1800"
+      height="1048"
       alt=""
       loading="lazy"
       decoding="async"
@@ -253,6 +255,8 @@ const pageDescription = `${
             <figure class="zn-award__hero">
               <img
                 src="/award/chukara/hero.jpg"
+                width="1800"
+                height="1048"
                 alt="Вино и СПА хотел Чукара, с. Кисийците, общ. Трявна"
                 loading="lazy"
                 decoding="async"
@@ -315,7 +319,17 @@ const pageDescription = `${
               {awardSlots.map((s, i) => (
                 <li class="zn-award__slot group">
                   <figure class="zn-award__figure">
-                    <img src={s.file} alt={s.alt} loading="lazy" decoding="async" class="zn-award__img" />
+                    <img
+                      src={`${s.file}-800.webp`}
+                      srcset={`${s.file}-800.webp 800w, ${s.file}-1600.webp 1600w`}
+                      sizes="(min-width: 1024px) min(38vw, 560px), (min-width: 768px) 56vw, 92vw"
+                      width={s.width}
+                      height={s.height}
+                      alt={s.alt}
+                      loading="lazy"
+                      decoding="async"
+                      class="zn-award__img"
+                    />
                     <figcaption class="zn-award__caption">
                       <span class="text-[10.5px] uppercase tracking-eyebrow text-brand">0{i + 1}</span>
                       <span class="mt-1 block text-[13px] md:text-[13.5px] text-white">{s.caption}</span>
