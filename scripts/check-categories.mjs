@@ -9,7 +9,9 @@
 //      top repeats N; a service with refCat: null shows no number anywhere
 //      and links to /proekti. No two services may share a category;
 //   4. every project detail page names its category in JSON-LD and the
-//      JSON-LD image is an absolute URL.
+//      JSON-LD image is an absolute URL;
+//   5. every project detail page draws at least one gallery tile: the hero
+//      cover is hidden below 1024 px, so a phone sees only the gallery.
 // Usage: node scripts/check-categories.mjs [distDir]   (runs as postbuild)
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -82,7 +84,7 @@ for (const r of data) {
   const file = join(dist, 'proekti', r.slug, 'index.html');
   if (!existsSync(file)) { errors.push(`missing detail page ${r.slug}`); continue; }
   const html = readFileSync(file, 'utf8');
-
+  if (!/class="g-tile[\s"]/.test(html)) errors.push(`${r.slug}: no gallery tile, a phone shows no photo of this project`);
   const ld = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)]
     .map((m) => JSON.parse(m[1]))
     .find((o) => o['@type'] === 'CreativeWork');

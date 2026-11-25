@@ -50,6 +50,10 @@ const locationShort = (project.location ?? '').split(',')[0]?.trim() || 'Бъл�
 const gallery: string[] = project.galleryImageUrls.length > 0
   ? project.galleryImageUrls
   : project.coverImageUrl ? [project.coverImageUrl] : [];
+// The cover is hidden below lg, so the gallery is drawn for every project
+// with at least one photo: a phone always sees one. When the gallery is
+// only the cover itself, desktop already shows it in the hero.
+const galleryOnlyCover = project.galleryImageUrls.length === 0;
 // A description up to ~3 short sentences stays whole in the hero; only a
 // longer one gets its own section (and a shortened copy in the hero).
 const hasLongStory = (project.description?.length ?? 0) > 320;
@@ -399,14 +403,14 @@ const schemaBreadcrumb = {
               "Castle Homes"-inspired: tightly packed grid, no
               chrome, count indicator bottom-right.
          ════════════════════════════════════════════════════════════ -->
-    {gallery.length > 1 && (
-      <section class="relative isolate overflow-hidden bg-cream-50 pt-2 lg:pt-4 pb-8 md:pb-10 lg:pb-12 max-lg:order-3" aria-labelledby="gallery-label">
+    {gallery.length > 0 && (
+      <section class:list={['relative isolate overflow-hidden bg-cream-50 pt-2 lg:pt-4 pb-8 md:pb-10 lg:pb-12 max-lg:order-3', { 'lg:hidden': galleryOnlyCover }]} aria-labelledby="gallery-label">
         <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
         <div class="container-page mb-4 md:mb-5">
           <div class="flex items-baseline justify-between gap-4">
             <p id="gallery-label" class="eyebrow">Галерия</p>
             <p class="text-xs uppercase tracking-[0.18em] font-medium text-ink-600 tabular-nums">
-              {gallery.length} кадъра
+              {gallery.length === 1 ? '1 кадър' : `${gallery.length} кадъра`}
             </p>
           </div>
         </div>
@@ -966,6 +970,9 @@ const schemaBreadcrumb = {
     }
     .gallery-grid[data-count='3'] .g-tile:not(:first-child) {
       grid-column: span 2;
+    }
+    .gallery-grid[data-count='1'] .g-tile {
+      grid-column: span 4;
     }
   }
 
