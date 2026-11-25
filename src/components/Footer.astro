@@ -18,7 +18,7 @@ const years = yearsActive();
     <div class="footer-grid">
       <!-- Brand block: logo + tagline -->
       <div class="footer-cell footer-cell--brand">
-        <p class="footer-label">Идентичност</p>
+        <p class="footer-label">Фирмата</p>
         <img
           src="/brand/logo-original.png"
           alt="АРТСТРОЙ ООД"
@@ -62,7 +62,8 @@ const years = yearsActive();
           {company.phones.map((p) => (
             <li class="flex items-baseline justify-between gap-4 py-3 first:pt-0 last:pb-0">
               <span class="text-[10.5px] uppercase tracking-[0.18em] text-ink-600 font-medium">
-                {p.role}
+                <span class="lg:max-xl:hidden">{p.role}</span>
+                <span class="hidden lg:max-xl:inline">{p.roleShort}</span>
               </span>
               <a
                 href={telHref(p.number)}
@@ -83,9 +84,9 @@ const years = yearsActive();
       <p class="flex items-center gap-3">
         <span aria-hidden="true" class="block h-px w-8 bg-brand"></span>
         <span>© {year} {company.name}</span>
-        <span class="text-ink-300/60">— всички права запазени</span>
+        <span class="text-ink-300/60">Всички права запазени.</span>
       </p>
-      <nav class="flex gap-7 text-ink-300" aria-label="Footer навигация">
+      <nav class="flex gap-7 text-ink-300" aria-label="Връзки в долната част">
         <a href="/za-nas" class="hover:text-white transition-colors">За нас</a>
         <a href="/proekti" class="hover:text-white transition-colors">Проекти</a>
         <a href="/uslugi" class="hover:text-white transition-colors">Услуги</a>
@@ -97,30 +98,60 @@ const years = yearsActive();
 
 <style>
   /* ───────────────────────────────────────────────────────────
-     Three-column title-block grid (architectural drawing layout)
+     Title-block grid (architectural drawing layout)
+       < 768     one column
+       768–1023  firm on its own row; address | phones below
+       ≥ 1024    three columns
      ─────────────────────────────────────────────────────────── */
   .footer-grid {
     display: grid;
     grid-template-columns: 1fr;
-  }
-  @media (min-width: 768px) {
-    .footer-grid {
-      grid-template-columns: 1.4fr 1fr 1.1fr;
-    }
   }
 
   .footer-cell {
     padding: 2rem 0;
     border-bottom: 1px solid rgba(18, 22, 28, 0.10);
   }
+
   @media (min-width: 768px) {
+    .footer-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    }
     .footer-cell {
+      padding: 2rem 2rem 0.5rem 0;
+      border-bottom: none;
+      border-right: 1px solid rgba(18, 22, 28, 0.10);
+    }
+    .footer-cell--brand {
+      grid-column: 1 / -1;
+      padding: 0 0 2rem;
+      border-right: none;
+      border-bottom: 1px solid rgba(18, 22, 28, 0.10);
+    }
+    .footer-cell:last-child {
+      padding: 2rem 0 0.5rem 2rem;
+      border-right: none;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-grid {
+      grid-template-columns: 1.4fr 1fr 1.1fr;
+    }
+    .footer-cell,
+    .footer-cell--brand {
+      grid-column: auto;
       padding: 2.5rem 2rem;
       border-bottom: none;
       border-right: 1px solid rgba(18, 22, 28, 0.10);
     }
     .footer-cell:first-child { padding-left: 0; }
-    .footer-cell:last-child  { padding-right: 0; border-right: none; }
+    /* Restate the full padding: the 768px :last-child rule is more specific. */
+    .footer-cell:last-child  { padding: 2.5rem 0 2.5rem 2rem; border-right: none; }
+  }
+
+  .footer-meta span {
+    white-space: nowrap;
   }
 
   .footer-label {
