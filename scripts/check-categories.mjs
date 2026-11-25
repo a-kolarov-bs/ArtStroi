@@ -39,8 +39,8 @@ for (const c of chips) {
 }
 
 const uslugi = readFileSync(join(dist, 'uslugi/index.html'), 'utf8');
-const links = [...uslugi.matchAll(/href="\/proekti\?cat=([^"]+)"[^>]*>\s*<span[^>]*>(\d+) (проект|проекта) в архива<\/span>/g)];
-if (links.length === 0) errors.push('/uslugi: no "N проекта в архива" links found');
+const links = [...uslugi.matchAll(/href="\/proekti\?cat=([^"]+)"[^>]*>\s*<span[^>]*>(\d+) (реализиран обект|реализирани обекта)<\/span>/g)];
+if (links.length === 0) errors.push('/uslugi: no "N реализирани обекта" links found');
 // The index at the top of /uslugi repeats the same numbers, in card order.
 const indexCounts = [...uslugi.matchAll(/us-index__count[^>]*>\s*(\d+)\s*</g)].map((m) => m[1]);
 if (indexCounts.join() !== links.map((l) => l[2]).join())
