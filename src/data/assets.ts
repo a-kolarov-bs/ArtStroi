@@ -72,6 +72,7 @@ export function responsiveImage(
   const size = imageSize(path);
   const copies = VARIANT_WIDTHS.filter((w) => existsSync(publicDir + variantPath(path, w)));
   if (!copies.length || !size.width) return { src: path, ...size };
-  const srcset = [...copies.map((w) => `${variantPath(path, w)} ${w}w`), `${path} ${size.width}w`].join(', ');
+  // encodeURI: a space in a file name would split the srcset entry and void it.
+  const srcset = [...copies.map((w) => `${encodeURI(variantPath(path, w))} ${w}w`), `${encodeURI(path)} ${size.width}w`].join(', ');
   return { src: path, srcset, sizes, ...size };
 }

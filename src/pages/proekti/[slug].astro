@@ -57,7 +57,7 @@ const galleryStatic = gallery.length < 6;
 // the lead tile is twice as wide.
 const tileSizes = (i: number) =>
   galleryStatic
-    ? '(min-width: 1280px) 600px, (min-width: 768px) 50vw, 100vw'
+    ? '(min-width: 1280px) 900px, (min-width: 768px) 75vw, 100vw'
     : i === 0
       ? '(min-width: 768px) 720px, 124vw'
       : '(min-width: 768px) 360px, 62vw';
@@ -251,7 +251,7 @@ const schemaBreadcrumb = {
                 <picture class="contents">
                   <source media="(max-width: 1023.98px)" srcset={blankImage} />
                   <img
-                    {...responsiveImage(cover, '(min-width: 1280px) 700px, 58vw')}
+                    {...responsiveImage(cover, '(min-width: 1280px) 700px, 72vw')}
                     alt={`${project.title}${project.location ? ` — ${project.location}` : ''}`}
                     fetchpriority="high"
                     decoding="async"
