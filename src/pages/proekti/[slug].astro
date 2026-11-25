@@ -47,9 +47,14 @@ const category = project.category;
 const cover = project.coverImageUrl ?? '/hero/hero-poster.jpg';
 const locationShort = (project.location ?? '').split(',')[0]?.trim() || 'България';
 
-const gallery: string[] = project.galleryImageUrls.length > 0
-  ? project.galleryImageUrls
-  : project.coverImageUrl ? [project.coverImageUrl] : [];
+const gallery: string[] = project.galleryImageUrls;
+// The hero cover is desktop only. Below lg the cover opens the gallery as
+// its first frame (often the only photo of the finished building; the
+// gallery is mostly the site during works). On lg it is hidden there and
+// shown in the hero, so it never appears twice.
+const coverTile = project.coverImageUrl;
+const frameCount = (gallery.length + (coverTile ? 1 : 0));
+const framesLabel = (n: number) => (n === 1 ? '1 кадър' : `${n} кадъра`);
 // A description up to ~3 short sentences stays whole in the hero; only a
 // longer one gets its own section (and a shortened copy in the hero).
 const hasLongStory = (project.description?.length ?? 0) > 320;
@@ -217,7 +222,7 @@ const schemaBreadcrumb = {
               takes its place at the top of the page via order utils.
          ════════════════════════════════════════════════════════════ -->
     <section class="relative isolate overflow-hidden pt-6 md:pt-8 lg:pt-10 pb-6 md:pb-8 lg:pb-12 max-lg:order-2">
-      <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet"></div>
+      <div aria-hidden="true" class="proj-sheet absolute inset-0 -z-10 bp-sheet"></div>
       <div class="container-page">
         <div class="grid grid-cols-12 gap-y-8 gap-x-6 md:gap-x-10 items-stretch">
 
@@ -399,18 +404,38 @@ const schemaBreadcrumb = {
               "Castle Homes"-inspired: tightly packed grid, no
               chrome, count indicator bottom-right.
          ════════════════════════════════════════════════════════════ -->
-    {gallery.length > 1 && (
-      <section class="relative isolate overflow-hidden bg-cream-50 pt-2 lg:pt-4 pb-8 md:pb-10 lg:pb-12 max-lg:order-3" aria-labelledby="gallery-label">
-        <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
+    {frameCount > 0 && (
+      <section class:list={['relative isolate overflow-hidden bg-cream-50 pt-2 lg:pt-4 pb-8 md:pb-10 lg:pb-12 max-lg:order-3', { 'lg:hidden': gallery.length === 0 }]} aria-labelledby="gallery-label">
+        <div aria-hidden="true" class="proj-sheet absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
         <div class="container-page mb-4 md:mb-5">
           <div class="flex items-baseline justify-between gap-4">
-            <p id="gallery-label" class="eyebrow">Галерия</p>
+            <p id="gallery-label" class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Галерия</p>
             <p class="text-xs uppercase tracking-[0.18em] font-medium text-ink-600 tabular-nums">
-              {gallery.length} кадъра
+              <span class="lg:hidden">{framesLabel(frameCount)}</span>
+              <span class="hidden lg:inline">{framesLabel(gallery.length)}</span>
             </p>
           </div>
         </div>
 
+        {coverTile && (
+          <div class="container-page lg:hidden" data-gallery-cover>
+            <button type="button" class="g-tile g-tile--cover group" aria-label="Основна снимка на обекта, на цял екран">
+              <picture class="contents">
+                <source media="(min-width: 1024px)" srcset={blankImage} />
+                <img
+                  {...responsiveImage(coverTile, '(min-width: 768px) 90vw, 100vw')}
+                  data-full={coverTile}
+                  alt={`${project.title}${project.location ? ` — ${project.location}` : ''}`}
+                  fetchpriority="high"
+                  decoding="async"
+                  class="block h-full w-full object-cover"
+                />
+              </picture>
+            </button>
+          </div>
+        )}
+
+        {gallery.length > 0 && (
         <div class={galleryStatic ? 'container-page' : 'gallery-fullbleed'}>
           <div class="gallery-slider relative">
             <div
@@ -425,7 +450,7 @@ const schemaBreadcrumb = {
                   type="button"
                   class="g-tile group"
                   data-index={i}
-                  aria-label={`Кадър ${i + 1} от ${gallery.length}`}
+                  aria-label={`Кадър ${i + 1}, на цял екран`}
                 >
                   <img
                     {...responsiveImage(src, tileSizes(i))}
@@ -487,6 +512,7 @@ const schemaBreadcrumb = {
             </>)}
           </div>
         </div>
+        )}
 
         {!galleryStatic && (
         <div class="container-page">
@@ -510,7 +536,7 @@ const schemaBreadcrumb = {
             <span id="gw-label" class="text-white/85 text-xs uppercase tracking-[0.2em] font-medium pointer-events-auto">
               Кадър 01
             </span>
-            <button type="button" class="gw-btn gw-close pointer-events-auto" data-gw-close aria-label="Затвори">
+            <button type="button" class="gw-btn gw-close pointer-events-auto" data-gw-close aria-label="Затворете">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
               </svg>
@@ -529,7 +555,7 @@ const schemaBreadcrumb = {
           <div class="gw-counter" aria-hidden="true">
             <span id="gw-current" class="tabular-nums">1</span>
             <span class="opacity-40 mx-2">/</span>
-            <span class="tabular-nums">{gallery.length}</span>
+            <span id="gw-total" class="tabular-nums">{frameCount}</span>
           </div>
         </dialog>
       </section>
@@ -541,7 +567,7 @@ const schemaBreadcrumb = {
          ════════════════════════════════════════════════════════════ -->
     {hasLongStory && (
       <section class="relative isolate overflow-hidden bg-cream-50 py-10 md:py-14 max-lg:order-5">
-        <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-c"></div>
+        <div aria-hidden="true" class="proj-sheet absolute inset-0 -z-10 bp-sheet bp-sheet-c"></div>
         <div class="container-page">
           <div class="grid grid-cols-12 gap-x-6 md:gap-x-10 gap-y-8">
             <div class="col-span-12 lg:col-span-3">
@@ -847,6 +873,15 @@ const schemaBreadcrumb = {
     scroll-snap-align: start;
     border-radius: 6px;
   }
+  /* Cover as the first frame below lg: one wide plate above the grid. */
+  .g-tile--cover {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    margin-bottom: 4px;
+  }
+  @media (min-width: 768px) {
+    .g-tile--cover { aspect-ratio: 16 / 9; margin-bottom: 6px; }
+  }
   .g-tile:focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
@@ -966,6 +1001,19 @@ const schemaBreadcrumb = {
     }
     .gallery-grid[data-count='3'] .g-tile:not(:first-child) {
       grid-column: span 2;
+    }
+    .gallery-grid[data-count='1'] .g-tile {
+      grid-column: span 4;
+    }
+  }
+
+  /* Below lg the text runs the full width, so the drawing would cross it:
+     keep only a faint strip of it at the right edge, away from the words. */
+  @media (max-width: 1023.98px) {
+    .proj-sheet {
+      opacity: 0.5;
+      -webkit-mask-image: linear-gradient(to right, transparent 62%, black 100%);
+      mask-image: linear-gradient(to right, transparent 62%, black 100%);
     }
   }
 
@@ -1141,10 +1189,19 @@ const schemaBreadcrumb = {
     const imageEl = document.getElementById('gw-image') as HTMLImageElement | null;
     const currentEl = document.getElementById('gw-current');
     const labelEl = document.getElementById('gw-label');
-    const tiles = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-gallery] .g-tile'));
-    const frames = tiles.map((t) => t.querySelector('img')?.dataset.full ?? '');
-    if (!dialog || !imageEl || !currentEl || tiles.length === 0) return;
-    dialog.toggleAttribute('data-single', frames.length === 1);
+    const totalEl = document.getElementById('gw-total');
+    // The cover tile exists only below lg, so the frame list is taken from
+    // the tiles that are drawn when the lightbox opens.
+    const allTiles = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-gallery-cover] .g-tile, [data-gallery] .g-tile'));
+    if (!dialog || !imageEl || !currentEl || allTiles.length === 0) return;
+    let tiles = allTiles;
+    let frames: string[] = [];
+    const collect = () => {
+      tiles = allTiles.filter((t) => t.getClientRects().length > 0);
+      frames = tiles.map((t) => t.querySelector('img')?.dataset.full ?? '');
+      dialog.toggleAttribute('data-single', frames.length === 1);
+      if (totalEl) totalEl.textContent = String(frames.length);
+    };
 
     let currentIndex = 0;
     const show = (idx: number) => {
@@ -1157,14 +1214,15 @@ const schemaBreadcrumb = {
       currentEl.textContent = String(currentIndex + 1);
       if (labelEl) labelEl.textContent = `Кадър ${String(currentIndex + 1).padStart(2, '0')}`;
     };
-    const open = (idx: number) => {
-      show(idx);
+    const open = (btn: HTMLButtonElement) => {
+      collect();
+      show(Math.max(0, tiles.indexOf(btn)));
       dialog.showModal();
       document.body.style.overflow = 'hidden';
     };
     const close = () => dialog.close();
 
-    tiles.forEach((btn, i) => btn.addEventListener('click', () => open(i), { signal }));
+    allTiles.forEach((btn) => btn.addEventListener('click', () => open(btn), { signal }));
     dialog.querySelector('[data-gw-close]')?.addEventListener('click', close, { signal });
     dialog.querySelector('[data-gw-prev]')?.addEventListener('click', () => show(currentIndex - 1), { signal });
     dialog.querySelector('[data-gw-next]')?.addEventListener('click', () => show(currentIndex + 1), { signal });
@@ -1246,7 +1304,7 @@ const schemaBreadcrumb = {
 
   function initProjectPage() {
     release();
-    if (!document.querySelector('[data-gallery], iframe[data-map-src]')) return;
+    if (!document.querySelector('[data-gallery], [data-gallery-cover], iframe[data-map-src]')) return;
     const scope = new AbortController();
     pageScope = scope;
     initMiniMap(scope.signal);
