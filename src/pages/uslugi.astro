@@ -9,19 +9,21 @@ import { company, yearsActive as getYearsActive, phone, telHref, cprsGroupsLabel
 // drafted in the language of a real construction specification book.
 // ────────────────────────────────────────────────────────────────
 
+import CtaBand from '../components/CtaBand.astro';
+import { imageSize } from '../data/assets';
+
 const currentYear = new Date().getFullYear();
 const yearsActive = getYearsActive();
 const totalProjects = projects.length;
 const cprsLabel = cprsGroupsLabel();
-const ctaPhones = [phone('Управител'), phone('Технически директор'), phone('Транспорт')];
 
-// „1 проект“ / „N проекта“
-const projectsWord = (n: number) => (n === 1 ? 'проект' : 'проекта');
+// „1 реализиран обект“ / „N реализирани обекта“
+const objectsLabel = (n: number) => (n === 1 ? '1 реализиран обект' : `${n} реализирани обекта`);
 
 const heroStats = [
   ...(yearsActive !== null ? [{ label: 'Години работа', value: yearsActive, pad: 0, plus: true }] : []),
   { label: 'Реализирани обекта', value: totalProjects, pad: 0, plus: false },
-  { label: 'Дисциплини', value: 6, pad: 2, plus: false },
+  { label: 'Услуги', value: 6, pad: 2, plus: false },
 ];
 
 const serviceDefs = [
@@ -31,7 +33,7 @@ const serviceDefs = [
     tag: 'ЖИЛ',
     title: 'Жилищно строителство',
     summary:
-      'Многофамилни блокове, затворени комплекси, фамилни къщи и вили. Поемаме целия цикъл — от изкопа до Акт 16.',
+      'Многофамилни блокове, затворени комплекси, фамилни къщи и вили. Поемаме целия цикъл, от изкопа до Акт 16.',
     segments: [
       'Многофамилни жилищни блокове',
       'Затворени жилищни комплекси',
@@ -46,6 +48,7 @@ const serviceDefs = [
       'Партери и общи части',
     ],
     refCat: 'Жилищни сгради',
+    photoId: 51,
   },
   {
     code: 'P.02',
@@ -53,7 +56,7 @@ const serviceDefs = [
     tag: 'ОБЩ',
     title: 'Обществени и индустриални сгради',
     summary:
-      'Училища, читалища, спортни зали, общински и производствени обекти. Дълъг опит с обществени поръчки и държавни инвеститори.',
+      'Училища, читалища, спортни зали, общински и производствени обекти. Изпълняваме обществени поръчки за общини и държавни институции.',
     segments: [
       'Образователни обекти',
       'Здравни заведения',
@@ -68,6 +71,7 @@ const serviceDefs = [
       'Инвестиционен надзор',
     ],
     refCat: 'Обществени сгради',
+    photoId: 21,
   },
   {
     code: 'I.03',
@@ -75,7 +79,7 @@ const serviceDefs = [
     tag: 'ПЪТ',
     title: 'Пътна и градска инфраструктура',
     summary:
-      'Улици, площади, тротоари, подпорни стени и корекции на речни корита — включително възстановяване след свлачища.',
+      'Улици, площади, тротоари, подпорни стени и корекции на речни корита, включително укрепване на свлачища.',
     segments: [
       'Общински улици и тротоари',
       'Градски площади',
@@ -91,6 +95,7 @@ const serviceDefs = [
       'Пътна маркировка',
     ],
     refCat: 'Инфраструктура',
+    photoId: 9,
   },
   {
     code: 'R.04',
@@ -98,7 +103,7 @@ const serviceDefs = [
     tag: 'РЕК',
     title: 'Реконструкция и енергийно саниране',
     summary:
-      'Цялостна рехабилитация на стари сгради и фасадно саниране за нормативна енергийна ефективност — с пълна документация.',
+      'Цялостна рехабилитация на стари сгради и саниране на фасади и покриви до нормативната енергийна ефективност, с пълна документация.',
     segments: [
       'Жилищни блокове',
       'Обществени сгради',
@@ -113,6 +118,7 @@ const serviceDefs = [
       'Сертификат за енергийна ефективност',
     ],
     refCat: 'Обществени сгради',
+    photoId: 18,
   },
   {
     code: 'M.05',
@@ -120,7 +126,7 @@ const serviceDefs = [
     tag: 'ИНС',
     title: 'Електро, ВиК и инсталации',
     summary:
-      'Вътрешни и външни инсталации — електро, ВиК, ОВиК — със сертифицирани материали, проби и приемателни актове.',
+      'Вътрешни и външни инсталации: електро, ВиК, отопление, вентилация и климатизация. Със сертифицирани материали, проби и приемателни актове.',
     segments: [
       'Жилищни обекти',
       'Обществени и образователни',
@@ -135,6 +141,7 @@ const serviceDefs = [
       'Външни мрежи и съоръжения',
     ],
     refCat: 'Обществени сгради',
+    photoId: 41,
   },
   {
     code: 'F.06',
@@ -142,7 +149,7 @@ const serviceDefs = [
     tag: 'ФИН',
     title: 'Реставрация и довършителен финиш',
     summary:
-      'Декоративни ремонти, реставрация на исторически фасади, барбекюта и камини по индивидуален проект — където детайлът е продукт.',
+      'Декоративни ремонти, реставрация на исторически фасади, барбекюта и камини по индивидуален проект.',
     segments: [
       'Исторически фасади',
       'Луксозни интериори',
@@ -157,6 +164,7 @@ const serviceDefs = [
       'Парапети и ковано желязо',
     ],
     refCat: 'Обществени сгради',
+    photoId: 12,
   },
 ];
 
@@ -197,7 +205,7 @@ const method = [
   {
     n: '03',
     title: 'Изпълнение',
-    body: 'Координиран екип на обекта — груб строеж, инсталации, фасади и финиш. Контрол по етапи с протоколи и снимков отчет.',
+    body: 'Координиран екип на обекта: груб строеж, инсталации, фасади и довършителни работи. Контрол по етапи с протоколи и снимков отчет.',
   },
   {
     n: '04',
@@ -206,7 +214,16 @@ const method = [
   },
 ];
 
-const pageTitle = 'Услуги · АРТСТРОЙ ООД — пълен обхват строителни услуги';
+// Card photo: `photoId` picks a real project of the same kind; its cover
+// and title come from the data. A missing project or cover fails the build
+// instead of showing a gap.
+const cards = services.map((s) => {
+  const ref = projects.find((p) => p.id === s.photoId);
+  if (!ref || !ref.coverImageUrl) throw new Error(`uslugi: project ${s.photoId} has no cover`);
+  return { ...s, photo: { src: ref.coverImageUrl, title: ref.title, href: `/proekti/${ref.slug}` } };
+});
+
+const pageTitle = 'Строителни услуги · АРТСТРОЙ ООД, Смолян';
 const pageDescription =
   `Жилищно и обществено строителство, инфраструктура, реконструкция, енергийно саниране, инсталации и реставрация. ${
     yearsActive !== null ? `${yearsActive} години строителство в Смолян и областта.` : 'Строителна фирма от Смолян.'
@@ -224,16 +241,8 @@ const pageDescription =
 
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-d opacity-[0.16]"></div>
 
-    <span
-      aria-hidden="true"
-      class="us-hero__backdrop absolute -right-6 -bottom-12 select-none pointer-events-none font-display text-white/[0.045] leading-[0.78]"
-      style="font-size: clamp(12rem, 22vw, 26rem);"
-    >
-      дисциплини
-    </span>
-
-    <div class="container-page relative pt-32 md:pt-36 lg:pt-40 pb-14 md:pb-20">
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-end">
+    <div class="container-page relative pt-28 md:pt-32 lg:pt-36 pb-12 md:pb-16">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-start">
         <!-- LEFT — editorial title block -->
         <Reveal class="lg:col-span-7">
           <p class="eyebrow flex items-center gap-3 flex-wrap text-brand">
@@ -244,13 +253,13 @@ const pageDescription =
             class="mt-5 md:mt-7 font-display tracking-tight leading-[0.95] text-white max-w-[20ch]"
             style="font-size: clamp(2.5rem, 1.25rem + 5vw, 6rem); letter-spacing: -0.025em;"
           >
-            Шест дисциплини.
+            Строителни
             <span class="block text-brand">
-              Един договор.
+              услуги.
             </span>
           </h1>
           <p class="mt-7 md:mt-9 max-w-[52ch] text-base md:text-lg text-white/70 leading-[1.65]">
-            Строим от първия изкоп до Акт 16. Под всяка услуга има връзка към изпълнените обекти от същия вид.
+            Строим от изкопа до Акт&nbsp;16: жилищни и обществени сгради, улици и подпорни стени, саниране, инсталации и довършителни работи. Под всяка услуга има снимка и връзка към изпълнените обекти от същия вид.
           </p>
 
           <!-- Tight inline stats — no separate band section -->
@@ -264,18 +273,18 @@ const pageDescription =
                 <dd class="us-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.8rem, 1rem + 1.8vw, 2.75rem);">
                   <span data-counter={st.value} data-pad={st.pad || undefined}>0</span>{st.plus && <span class="text-brand">+</span>}
                 </dd>
-                <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">{st.label}</p>
+                <p class="mt-3 text-xs uppercase tracking-eyebrow text-white/60">{st.label}</p>
               </div>
             ))}
           </dl>
         </Reveal>
 
         <!-- RIGHT — live spec-sheet index, jump-links to each card -->
-        <Reveal class="lg:col-span-5" delay={120}>
+        <Reveal class="hidden md:block lg:col-span-5 lg:pt-10" delay={120}>
           <div class="us-index relative">
             <div class="flex items-baseline justify-between border-b border-white/15 pb-3">
-              <p class="text-[10.5px] uppercase tracking-eyebrow text-white/55">
-                Указател · Стр.&nbsp;А
+              <p class="text-xs uppercase tracking-eyebrow text-white/60">
+                Указател
               </p>
               <p class="font-display text-white/55 text-sm tabular-nums">
                 06 / 06
@@ -319,21 +328,31 @@ const pageDescription =
 
     <div class="container-page relative">
       <Reveal class="max-w-3xl mb-10 md:mb-14">
-        <p class="eyebrow">Спецификации</p>
+        <p class="eyebrow">Шест направления</p>
         <h2
           id="services-grid-heading"
           class="mt-3 font-display tracking-tight text-ink-950"
           style="font-size: clamp(1.6rem, 1rem + 1.6vw, 2.45rem); line-height: 1.1;"
         >
-          Какво е под нашия <span class="text-brand">подпис</span>.
+          Какво <span class="text-brand">строим</span>.
         </h2>
       </Reveal>
 
-      <ol class="us-grid grid grid-cols-2 lg:grid-cols-3 gap-x-px gap-y-0 lg:gap-px bg-ink-900/30 sm:bg-ink-900/10 -mx-3 sm:mx-0">
-        {services.map((s, i) => (
+      <ol class="us-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ink-900/10">
+        {cards.map((s, i) => (
           <Reveal as="li" delay={i * 80} class="relative hover:z-[2]">
            <div class="us-card group h-full">
             <article id={s.slug} class="us-card__inner">
+              <a href={s.photo.href} class="us-card__photo" aria-label={`Обект: ${s.photo.title}`}>
+                <img
+                  src={s.photo.src}
+                  {...imageSize(s.photo.src)}
+                  alt={s.photo.title}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="us-card__photo-cap">{s.photo.title}</span>
+              </a>
               <header class="us-card__head">
                 <span class="us-card__code" aria-hidden="true">{s.code} · {s.tag}</span>
                 <span class="us-card__count font-display tabular-nums">
@@ -354,8 +373,15 @@ const pageDescription =
                 {s.summary}
               </p>
 
+              <details class="us-card__spec" open>
+              <summary class="us-card__spec-toggle">
+                <span>Обекти и обхват</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </summary>
               <section class="us-card__block">
-                <p class="us-card__label">Сегменти</p>
+                <p class="us-card__label">Обекти</p>
                 <ul class="us-card__bul">
                   {s.segments.map((seg) => (
                     <li>{seg}</li>
@@ -376,10 +402,11 @@ const pageDescription =
                   ))}
                 </ul>
               </section>
+              </details>
 
               <footer class="us-card__foot">
                 <a href={`/proekti?cat=${encodeURIComponent(s.refCat)}`} class="us-card__more">
-                  <span>{s.refCount} {projectsWord(s.refCount)} в архива</span>
+                  <span>{objectsLabel(s.refCount)}</span>
                   <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                     <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -390,6 +417,14 @@ const pageDescription =
           </Reveal>
         ))}
       </ol>
+      <script is:inline>
+        // Phones: object types and scope fold under one tap so six
+        // full-width cards stay short. Runs during parse (no layout jump);
+        // without JS every card stays open.
+        if (window.matchMedia('(max-width: 639px)').matches) {
+          document.querySelectorAll('details.us-card__spec').forEach(function (d) { d.open = false; });
+        }
+      </script>
     </div>
   </section>
 
@@ -400,9 +435,9 @@ const pageDescription =
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
 
     <div class="container-page relative">
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-        <Reveal class="lg:col-span-4">
-          <p class="eyebrow">Контрол</p>
+      <div class="grid lg:grid-cols-12 gap-x-12 gap-y-6 md:gap-y-8 items-end">
+        <Reveal class="lg:col-span-7">
+          <p class="eyebrow">Обхват</p>
           <h2
             id="matrix-heading"
             class="mt-3 font-display tracking-tight text-ink-950"
@@ -410,21 +445,23 @@ const pageDescription =
           >
             Обхват на <span class="text-brand">обекта</span>.
           </h2>
-          <p class="mt-5 max-w-md text-[15px] text-ink-600 leading-[1.65]">
+        </Reveal>
+        <Reveal class="lg:col-span-5 lg:pb-1" delay={60}>
+          <p class="max-w-md text-[15px] text-ink-600 leading-[1.65]">
             Строителните работи и специализираните дейности, които координираме по всеки обект.
           </p>
         </Reveal>
 
-        <Reveal class="lg:col-span-8" delay={120}>
-          <div class="grid sm:grid-cols-2 gap-px bg-ink-900/12">
+        <Reveal class="lg:col-span-12" delay={120}>
+          <div class="grid md:grid-cols-2 gap-px bg-ink-900/12">
             <div class="bg-cream-100 p-6 md:p-7">
               <div class="flex items-baseline justify-between mb-5">
-                <p class="text-[10.5px] uppercase tracking-eyebrow text-brand font-semibold">Строителни работи</p>
+                <p class="text-xs uppercase tracking-eyebrow text-brand">Строителни работи</p>
                 <span class="font-display text-ink-900/35 tabular-nums text-sm">
                   {String(inHouse.length).padStart(2, '0')}
                 </span>
               </div>
-              <ul class="space-y-2.5">
+              <ul class="grid lg:grid-cols-2 gap-x-6 gap-y-2.5">
                 {inHouse.map((x) => (
                   <li class="us-matrix__row flex items-baseline gap-3 text-[14.5px] text-ink-950">
                     <span aria-hidden="true" class="mt-2 inline-block h-1.5 w-1.5 rounded-full bg-brand shrink-0"></span>
@@ -435,12 +472,12 @@ const pageDescription =
             </div>
             <div class="bg-cream-100 p-6 md:p-7">
               <div class="flex items-baseline justify-between mb-5">
-                <p class="text-[10.5px] uppercase tracking-eyebrow text-ink-900/60 font-semibold">Проектиране и контрол</p>
+                <p class="text-xs uppercase tracking-eyebrow text-ink-900/70">Проектиране и контрол</p>
                 <span class="font-display text-ink-900/35 tabular-nums text-sm">
                   {String(partners.length).padStart(2, '0')}
                 </span>
               </div>
-              <ul class="space-y-2.5">
+              <ul class="grid lg:grid-cols-2 gap-x-6 gap-y-2.5">
                 {partners.map((x) => (
                   <li class="us-matrix__row us-matrix__row--alt flex items-baseline gap-3 text-[14.5px] text-ink-600">
                     <span aria-hidden="true" class="mt-[5px] inline-block h-px w-3 bg-ink-900/40 shrink-0"></span>
@@ -473,12 +510,12 @@ const pageDescription =
             class="mt-4 font-display tracking-tight text-white max-w-[20ch]"
             style="font-size: clamp(1.85rem, 1rem + 2.2vw, 3rem); line-height: 1.05;"
           >
-            Четири стъпки — една <span class="text-brand">отговорност</span>.
+            Как <span class="text-brand">работим</span>.
           </h2>
         </Reveal>
         <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
           <p class="text-[15px] md:text-base text-white/70 leading-[1.65] max-w-[44ch]">
-            Дисциплиниран процес от анализ до предаване на ключа. Прозрачни срокове, протоколи по етапи и пълна изпълнителна документация.
+            Четири стъпки от първия оглед до Акт 16 и предаване на обекта. Всеки етап завършва с протокол, а накрая получавате пълната изпълнителна документация.
           </p>
         </Reveal>
       </div>
@@ -517,7 +554,7 @@ const pageDescription =
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-d"></div>
 
     <div class="container-page relative">
-      <ul class="us-standards grid grid-cols-1 md:grid-cols-3 gap-px bg-ink-900/10">
+      <ul class="us-standards grid grid-cols-1 lg:grid-cols-3 gap-px bg-ink-900/10">
         <li class="us-standards__cell bg-cream-50 px-5 py-5 md:px-7 md:py-6 flex items-baseline gap-4">
           <span class="font-display text-brand tabular-nums leading-none" style="font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem);">
             ISO
@@ -547,70 +584,7 @@ const pageDescription =
     </div>
   </section>
 
-  <!-- ════════════════════════════════════════════════════════════
-       6 · CTA — compact split with phone rail.
-       ════════════════════════════════════════════════════════════ -->
-  <section class="us-cta relative isolate overflow-hidden bg-ink-950 text-white py-16 md:py-24" aria-labelledby="us-cta-heading">
-    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet opacity-[0.18]"></div>
-    {company.founded !== null && (
-      <span
-        aria-hidden="true"
-        class="us-cta__backdrop absolute -left-6 top-4 select-none pointer-events-none font-display text-white/[0.045] leading-[0.78]"
-        style="font-size: clamp(10rem, 22vw, 22rem);"
-      >
-        {company.founded}
-      </span>
-    )}
-
-    <div class="container-page relative">
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-end">
-        <Reveal class="lg:col-span-7">
-          <p class="eyebrow text-brand flex items-center gap-3">
-            <span class="inline-block h-px w-10 bg-brand"></span>
-            Започни проект
-          </p>
-          <h2
-            id="us-cta-heading"
-            class="us-cta__title mt-5 font-display tracking-tight leading-[1.02] text-white max-w-[20ch]"
-            style="font-size: clamp(2rem, 1rem + 4vw, 4.5rem); letter-spacing: -0.025em;"
-          >
-            Имаш проект?
-            <span class="block text-white/65">
-              Започни от един разговор.
-            </span>
-          </h2>
-        </Reveal>
-        <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
-          <p class="us-cta__lead text-[15px] md:text-base text-white/70 leading-[1.65] max-w-[44ch]">
-            Отговаряме {company.hoursDays} {company.hoursTime}. Пишете ни и за по-необичайни задачи: реставрация, аварийни укрепвания, общински инвестиции.
-          </p>
-
-          <ul class="us-phone mt-7 grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/12 rounded-[4px] overflow-hidden">
-            {ctaPhones.map((p) => (
-              <li class="us-phone__cell bg-ink-950 px-4 py-3.5">
-                <p class="text-[10.5px] uppercase tracking-eyebrow text-brand">{p.roleShort}</p>
-                <a href={telHref(p.number)} class="mt-1 block text-[14.5px] text-white tabular-nums hover:text-brand transition-colors">
-                  {p.number}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <div class="us-cta__actions mt-7 flex flex-wrap gap-3">
-            <a href="/kontakti" class="us-cta__primary btn-brand">
-              Получи оферта
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-            <a href="/proekti" class="us-cta__secondary btn-ghost">
-              Виж архива
-            </a>
-          </div>
-        </Reveal>
-      </div>
-    </div>
-  </section>
+  <CtaBand />
 </BaseLayout>
 
 <style>
@@ -642,8 +616,8 @@ const pageDescription =
     letter-spacing: 0.02em;
   }
   .us-index__tag {
-    font-size: 0.62rem;
-    letter-spacing: 0.16em;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.42);
     font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", monospace;
@@ -715,16 +689,63 @@ const pageDescription =
     100% { box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent; background: theme('colors.cream.50'); }
   }
   .us-card__inner {
-    padding: 1.6rem 1.4rem 1.5rem;
+    --pad-t: 1.25rem;
+    --pad-x: 1.25rem;
+    padding: var(--pad-t) var(--pad-x) 1.5rem;
     display: flex;
     flex-direction: column;
     height: 100%;
   }
   @media (min-width: 768px) {
-    .us-card__inner { padding: 1.85rem 1.7rem 1.7rem; }
+    .us-card__inner { --pad-t: 1.5rem; --pad-x: 1.6rem; padding-bottom: 1.7rem; }
   }
   @media (min-width: 1024px) {
-    .us-card__inner { padding: 2rem 1.85rem 1.85rem; }
+    .us-card__inner { --pad-t: 1.6rem; --pad-x: 1.85rem; padding-bottom: 1.85rem; }
+  }
+  /* Cover of a real project of the same kind, edge to edge on top of
+     the card. 2:1 keeps six stacked cards on a phone from growing tall. */
+  .us-card__photo {
+    position: relative;
+    display: block;
+    margin: calc(var(--pad-t) * -1) calc(var(--pad-x) * -1) 1.25rem;
+    aspect-ratio: 2 / 1;
+    overflow: hidden;
+    background: theme('colors.ink.900');
+  }
+  .us-card__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (max-width: 639px) {
+    .us-card__photo { aspect-ratio: 16 / 7; }
+  }
+  .us-card:hover .us-card__photo img { transform: scale(1.04); }
+  .us-card__photo::after {
+    content: "";
+    position: absolute;
+    inset: 45% 0 0;
+    background: linear-gradient(to top, rgba(18, 22, 28, 0.82), transparent);
+    pointer-events: none;
+  }
+  .us-card__photo-cap {
+    position: absolute;
+    z-index: 1;
+    left: var(--pad-x);
+    right: var(--pad-x);
+    bottom: 0.7rem;
+    font-size: 0.8125rem;
+    line-height: 1.3;
+    color: #FFFFFF;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .us-card__photo:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: -2px;
   }
   .us-card__head {
     display: flex;
@@ -733,8 +754,8 @@ const pageDescription =
     gap: 0.75rem;
   }
   .us-card__code {
-    font-size: 0.62rem;
-    letter-spacing: 0.16em;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: rgba(186, 45, 32, 0.85);
     font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", monospace;
@@ -752,61 +773,81 @@ const pageDescription =
     transition: color 400ms ease, letter-spacing 500ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .us-card:hover .us-card__code {
-    letter-spacing: 0.20em;
+    letter-spacing: 0.18em;
   }
   .us-card__title {
-    margin-top: 1.1rem;
+    margin-top: 0.75rem;
     transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .us-card:hover .us-card__title {
     transform: translateY(-1px);
-  }
-  .us-card__bul li::before {
-    transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .us-card:hover .us-card__bul li::before {
-    transform: scale(1.35);
   }
   .us-card__hr {
     display: block;
     height: 1px;
     width: 2.5rem;
     background: rgba(186, 45, 32, 0.55);
-    margin: 1.1rem 0 1rem;
+    margin: 0.9rem 0 0.9rem;
     transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .us-card:hover .us-card__hr { width: 5rem; }
   .us-card__summary { max-width: 44ch; }
-  .us-card__block { margin-top: 1.25rem; }
-  .us-card__label {
-    font-size: 0.62rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(18, 22, 28, 0.55);
-    font-weight: 600;
-    margin-bottom: 0.6rem;
+  /* The spec lists sit in <details>: open (toggle hidden) from 640px up,
+     folded under one tap on phones (inline script under the grid). */
+  .us-card__spec-toggle { display: none; }
+  @media (max-width: 639px) {
+    .us-card__spec-toggle {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      min-height: 44px;
+      padding: 0 0.1rem;
+      border-top: 1px solid rgba(18, 22, 28, 0.12);
+      border-bottom: 1px solid rgba(18, 22, 28, 0.12);
+      font-size: 0.875rem;
+      color: theme('colors.ink.950');
+      cursor: pointer;
+      list-style: none;
+    }
+    .us-card__spec-toggle::-webkit-details-marker { display: none; }
+    .us-card__spec-toggle svg {
+      color: theme('colors.brand.DEFAULT');
+      transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .us-card__spec[open] > .us-card__spec-toggle svg { transform: rotate(180deg); }
+    .us-card__spec-toggle:focus-visible {
+      outline: 2px solid var(--focus-ring);
+      outline-offset: 2px;
+    }
   }
+  @media (prefers-reduced-motion: reduce) {
+    .us-card__spec-toggle svg { transition: none; }
+  }
+  .us-card__block { margin-top: 1.15rem; }
+  .us-card__label {
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(18, 22, 28, 0.62);
+    margin-bottom: 0.5rem;
+  }
+  /* Object types as wrapping tags: two short rows instead of a column of
+     four bullets, and never split mid-phrase. */
   .us-card__bul {
     display: flex;
-    flex-direction: column;
-    gap: 0.32rem;
+    flex-wrap: wrap;
+    gap: 0.35rem;
   }
   .us-card__bul li {
-    font-size: 13.5px;
-    line-height: 1.45;
+    font-size: 13px;
+    line-height: 1.3;
     color: theme('colors.ink.950');
-    padding-left: 0.95rem;
-    position: relative;
-  }
-  .us-card__bul li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.55em;
-    width: 0.32rem;
-    height: 0.32rem;
-    background: theme('colors.brand.DEFAULT');
-    border-radius: 50%;
+    padding: 0.3rem 0.55rem;
+    border: 1px solid rgba(18, 22, 28, 0.14);
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.5);
   }
   .us-card__check {
     display: flex;
@@ -818,7 +859,7 @@ const pageDescription =
     grid-template-columns: 1.15rem 1fr;
     gap: 0.45rem;
     align-items: baseline;
-    font-size: 13.5px;
+    font-size: 14px;
     line-height: 1.5;
     color: theme('colors.ink.600');
   }
@@ -849,80 +890,6 @@ const pageDescription =
     gap: 0.7rem;
   }
 
-  /* ─── Mobile compact cards (2-col) ──────────────────────── */
-  /* On narrow viewports services switch to a 2-column grid; everything
-     inside the card scales down so all spec content remains visible. */
-  @media (max-width: 639px) {
-    .us-card__inner {
-      padding: 1.05rem 0.7rem 1.1rem;
-    }
-    .us-card__head { gap: 0.4rem; }
-    .us-card__code {
-      font-size: 0.52rem;
-      letter-spacing: 0.12em;
-    }
-    .us-card__count {
-      font-size: 0.78rem;
-    }
-    .us-card__title {
-      font-size: 1rem !important;
-      line-height: 1.12;
-      margin-top: 0.7rem;
-      letter-spacing: -0.01em;
-    }
-    .us-card__hr {
-      width: 1.6rem;
-      margin: 0.8rem 0 0.75rem;
-    }
-    .us-card:hover .us-card__hr { width: 3rem; }
-    .us-card__summary {
-      font-size: 12px;
-      line-height: 1.5;
-      max-width: 100%;
-    }
-    .us-card__block { margin-top: 0.95rem; }
-    .us-card__label {
-      font-size: 0.52rem;
-      letter-spacing: 0.14em;
-      margin-bottom: 0.45rem;
-    }
-    .us-card__bul { gap: 0.22rem; }
-    .us-card__bul li {
-      font-size: 11.5px;
-      line-height: 1.35;
-      padding-left: 0.75rem;
-    }
-    .us-card__bul li::before {
-      width: 0.28rem;
-      height: 0.28rem;
-      top: 0.5em;
-    }
-    .us-card__check { gap: 0.25rem; }
-    .us-card__check li {
-      grid-template-columns: 0.9rem 1fr;
-      gap: 0.35rem;
-      font-size: 11.5px;
-      line-height: 1.4;
-    }
-    .us-card__check li svg {
-      width: 9px;
-      height: 9px;
-    }
-    .us-card__foot {
-      padding-top: 1rem;
-    }
-    .us-card__more {
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      gap: 0.35rem;
-      padding-bottom: 0.25rem;
-    }
-    .us-card__more svg {
-      width: 10px;
-      height: 10px;
-    }
-  }
-
   /* ─── Method (dark band) ────────────────────────────────── */
   .us-method__cell {
     background: theme('colors.ink.950');
@@ -949,7 +916,7 @@ const pageDescription =
     color: #FFFFFF;
   }
   .us-method__step {
-    font-size: 0.62rem;
+    font-size: 0.75rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.45);
@@ -959,6 +926,21 @@ const pageDescription =
   .us-method__cell:hover .us-method__step {
     color: rgba(255, 255, 255, 0.85);
     letter-spacing: 0.2em;
+  }
+  /* Phone: number in a left column next to title and text, so four steps
+     take four short rows instead of four tall cells. */
+  @media (max-width: 767px) {
+    .us-method__cell {
+      display: grid;
+      grid-template-columns: 3.75rem 1fr;
+      column-gap: 0.75rem;
+      padding: 1.25rem 1.25rem 1.35rem;
+    }
+    .us-method__cell > :first-child { grid-row: 1 / span 3; }
+    .us-method__cell > :first-child .us-method__n { font-size: 2.25rem !important; }
+    .us-method__step,
+    .us-method__cell > span[aria-hidden="true"] { display: none; }
+    .us-method__cell > h3 { margin-top: 0.1rem; }
   }
 
   /* ─── Capability matrix item hover ──────────────────────── */
@@ -985,11 +967,10 @@ const pageDescription =
   .us-standards__cell {
     transition: background-color 400ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  /* Mobile (1-col rows) — body text aligns across all 4 rows because
-     the numeral block has a fixed min-width. Without this each
-     row's body started at a different x because numerals differ in
-     width (ISO vs 10 vs Акт 16). */
-  @media (max-width: 639px) {
+  /* One row per standard below 1024px (three cells at 768 cut the text,
+     vizualen Н5). The numeral block has a fixed width so the text starts
+     at the same x on every row (ISO, ЦПРС and Акт 16 differ in width). */
+  @media (max-width: 1023px) {
     .us-standards__cell {
       padding-inline: 1.25rem;
       padding-block: 1.1rem;
@@ -1024,101 +1005,11 @@ const pageDescription =
     color: theme('colors.ink.950');
   }
 
-  /* ─── Phone rail hover ──────────────────────────────────── */
-  .us-phone__cell {
-    transition: background-color 400ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .us-phone__cell:hover {
-    background: rgba(186, 45, 32, 0.10);
-  }
-  @media (max-width: 639px) {
-    .us-cta {
-      padding-block: 3.25rem 3.6rem;
-    }
-    .us-cta__backdrop {
-      left: -1.2rem;
-      top: 0.35rem;
-      font-size: clamp(7rem, 34vw, 9.5rem) !important;
-    }
-    .us-cta .eyebrow {
-      gap: 0.75rem;
-    }
-    .us-cta .eyebrow > span {
-      width: 2.15rem;
-    }
-    .us-cta__title {
-      margin-top: 1rem !important;
-      max-width: 12ch;
-      font-size: clamp(2rem, 12vw, 3.05rem) !important;
-      line-height: 0.96 !important;
-    }
-    .us-cta__title span {
-      margin-top: 0.1rem;
-    }
-    .us-cta__lead {
-      margin-top: -0.4rem;
-      max-width: 32ch;
-      font-size: 14px !important;
-      line-height: 1.55 !important;
-    }
-    .us-phone {
-      margin-top: 1.35rem !important;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      background: rgba(255, 255, 255, 0.10);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-    }
-    .us-phone__cell {
-      padding: 0.8rem 0.85rem;
-      background: rgba(18, 22, 28, 0.72);
-    }
-    .us-phone__cell:first-child {
-      grid-column: 1 / -1;
-    }
-    .us-phone__cell p {
-      font-size: 0.58rem;
-      letter-spacing: 0.18em;
-    }
-    .us-phone__cell a {
-      margin-top: 0.25rem;
-      font-size: 13.5px;
-      white-space: nowrap;
-    }
-    .us-cta__actions {
-      margin-top: 1.25rem !important;
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      gap: 0.65rem;
-    }
-    .us-cta__primary,
-    .us-cta__secondary {
-      width: 100%;
-      padding-inline: 1rem;
-    }
-  }
-
   /* ─── Stats (hero band) — fade-in via reveal ────────────── */
   .us-stat { display: inline-block; }
   .us-stat > span[data-counter] {
     display: inline-block;
     transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  /* ─── Hero & CTA backdrop drifts ────────────────────────── */
-  .us-hero__backdrop {
-    animation: us-backdrop-drift 28s ease-in-out infinite alternate;
-    will-change: transform;
-  }
-  .us-cta__backdrop {
-    animation: us-backdrop-drift-rev 32s ease-in-out infinite alternate;
-    will-change: transform;
-  }
-  @keyframes us-backdrop-drift {
-    0%   { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-2rem, -0.6rem, 0); }
-  }
-  @keyframes us-backdrop-drift-rev {
-    0%   { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(1.8rem, 0.6rem, 0); }
   }
 
   /* ─── Hero index — per-row stagger entry ────────────────── */
@@ -1153,22 +1044,19 @@ const pageDescription =
     .us-method__cell,
     .us-method__n,
     .us-method__step,
-    .us-phone__cell,
+    .us-card__photo img,
     .us-stat > span[data-counter] {
       transition: none !important;
       animation: none !important;
     }
     .us-card:hover,
     .us-method__cell:hover,
-    .us-standards__cell:hover .us-standards__cell > span:first-child {
+    .us-method__cell:hover .us-method__n,
+    .us-card:hover .us-card__photo img,
+    .us-standards__cell:hover > span:first-child {
       transform: none !important;
     }
     .us-card__hr { width: 2.5rem !important; }
-    .us-card:hover .us-card__bul li::before { transform: none !important; }
-    .us-hero__backdrop,
-    .us-cta__backdrop {
-      animation: none !important;
-    }
     .us-index__list li {
       opacity: 1 !important;
       transform: none !important;
