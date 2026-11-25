@@ -53,13 +53,13 @@ const slides: Slide[] = [
     accent: company.cprsGroups ? company.cprsGroups.join('·') : '№04',
   },
   {
-    code: 'HSE',
-    label: 'Политика',
+    code: 'Политика',
+    label: 'Декларация',
     title: 'Декларация за ангажименти',
     body: 'Качество, околна среда, здраве и безопасност при работа.',
     image: '/sert/8.webp',
     href: '/za-nas#certs-heading',
-    accent: 'DOC',
+    accent: '№05',
   },
 ];
 
@@ -105,7 +105,13 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
             <span class="cert-card__accent">{s.accent}</span>
           </div>
           <div class="cert-card__stage">
-            <span class="cert-card__code">{s.code}</span>
+            <span
+              class:list={[
+                'cert-card__code',
+                // A whole word („Политика“) cannot wrap like „ISO / 14001“.
+                { 'cert-card__code--word': !/\d/.test(s.code) && s.code.length > 4 },
+              ]}
+            >{s.code}</span>
             <span class="cert-card__seal" aria-hidden="true">
               <svg class="cert-card__seal-svg" viewBox="0 0 100 100" focusable="false">
                 <defs>
@@ -239,6 +245,9 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
     font-size: clamp(2.55rem, 2.1rem + 1.2vw, 3.35rem);
     line-height: 0.86;
     letter-spacing: 0;
+  }
+  .cert-card__code--word {
+    font-size: clamp(1.75rem, 1.45rem + 0.7vw, 2.15rem);
   }
   .cert-card__seal {
     position: absolute;
@@ -400,6 +409,9 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
       /* Poiret One is wide: force "ISO / 14001" onto two lines so the code
          never runs under the certificate thumbnail. */
       max-width: 6rem;
+    }
+    .cert-card__code--word {
+      font-size: 1.4rem;
     }
     .cert-card__seal {
       width: 3.2rem;
