@@ -271,7 +271,7 @@ const pageDescription = `${
           </Reveal>
         </div>
 
-        <div class="mt-8 md:mt-10 grid lg:grid-cols-12 gap-px bg-white/12">
+        <div class="mt-8 md:mt-10 grid grid-cols-2 lg:grid-cols-12 gap-px bg-white/12">
           <Reveal class="lg:col-span-3">
             <div class="zn-award__cell h-full">
             <p class="zn-award__label">Нашата роля</p>
@@ -744,6 +744,10 @@ const pageDescription = `${
   @media (min-width: 768px) {
     .zn-award__cell { padding: 1.45rem 1.55rem 1.55rem; }
   }
+  /* Phone: 2×2 cells sized by their text, no empty band between label and value. */
+  @media (max-width: 767px) {
+    .zn-award__cell { min-height: 0; padding: 1rem 1rem 1.1rem; }
+  }
   .zn-award__cell:hover {
     background: rgba(18, 22, 28, 0.86);
   }
@@ -761,6 +765,9 @@ const pageDescription = `${
     font-size: clamp(1rem, 0.9rem + 0.35vw, 1.18rem);
     line-height: 1.15;
     font-family: theme('fontFamily.display');
+  }
+  @media (max-width: 767px) {
+    .zn-award__value { margin-top: 0.75rem; }
   }
   .zn-award__seal {
     margin-top: 2rem;
