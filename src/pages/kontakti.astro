@@ -21,7 +21,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
       <Reveal>
         <div class="contact-hero">
           <div>
-            <p class="eyebrow">Контакти · Смолян</p>
+            <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Контакти · Смолян</p>
             <h1>Пишете ни</h1>
           </div>
           <p class="contact-hero__text">
@@ -34,7 +34,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
       <div class="contact-layout mt-11 md:mt-14">
         <Reveal class="min-w-0 min-[1180px]:col-start-2 min-[1180px]:row-start-1">
           <section class="contact-call" aria-labelledby="contact-call-heading">
-            <p class="eyebrow">Телефони</p>
+            <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Телефони</p>
             <h2 id="contact-call-heading">Обадете се</h2>
 
             <div class="contact-call__body">
@@ -66,7 +66,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
         <Reveal class="min-w-0 min-[1180px]:col-start-1 min-[1180px]:row-start-1 min-[1180px]:row-span-2">
           <section class="contact-form-panel" aria-labelledby="contact-form-heading">
             <div class="contact-form-panel__head">
-              <p class="eyebrow">Запитване</p>
+              <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Запитване</p>
               <h2 id="contact-form-heading">Разкажете ни накратко.</h2>
               <p>
                 Формата подготвя писмо до нас във вашата поща. Чертежи и снимки добавете
@@ -91,7 +91,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
               </div>
 
               <div class="contact-field">
-                <label for="email">Имейл <span class="contact-field__req" aria-hidden="true">*</span></label>
+                <label for="email">Имейл</label>
                 <input
                   id="email"
                   name="email"
@@ -99,7 +99,6 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
                   autocomplete="email"
                   aria-describedby="email-error"
                   placeholder="ime@primer.bg"
-                  required
                 />
                 <span class="contact-error" id="email-error" data-error-for="email"></span>
               </div>
@@ -140,7 +139,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
 
         <Reveal delay={120} class="min-w-0 min-[1180px]:col-start-2 min-[1180px]:row-start-2">
           <section class="contact-office" aria-labelledby="contact-office-heading">
-            <p class="eyebrow">Офис</p>
+            <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Офис</p>
             <h2 id="contact-office-heading">{company.district}, {company.city}</h2>
 
             <address>
@@ -741,7 +740,9 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
 
         const email = getValue(emailInput);
         const message = getValue(messageInput);
-        const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        // Optional: the letter leaves from the visitor's own mailbox, so the
+        // address is only checked when someone types one.
+        const emailIsValid = email === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         let hasError = false;
 
         setError('email', '');
@@ -770,7 +771,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
         const body = [
           `Име: ${[firstName, lastName].filter(Boolean).join(' ') || '-'}`,
           `Телефон: ${phone || '-'}`,
-          `Имейл: ${email}`,
+          `Имейл: ${email || '-'}`,
           '',
           'Текст:',
           message,
