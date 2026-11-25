@@ -215,8 +215,9 @@ const years = yearsActive();
       color: rgba(18, 22, 28, 0.70);
     }
 
+    /* Phones: no text under 12px, every link at least 40px tall to tap. */
     .footer-label {
-      font-size: 0.62rem;
+      font-size: 0.75rem;
       letter-spacing: 0.2em;
     }
 
@@ -225,7 +226,7 @@ const years = yearsActive();
       flex-wrap: wrap;
       gap: 0.25rem 0.5rem;
       margin-top: 0.75rem;
-      font-size: 0.61rem;
+      font-size: 0.75rem;
       letter-spacing: 0.12em;
     }
 
@@ -237,9 +238,12 @@ const years = yearsActive();
     }
 
     .footer-cell a[href^='mailto'] {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.5rem;
       max-width: 100%;
       overflow-wrap: anywhere;
-      margin-top: 0.75rem;
+      margin-top: 0.25rem;
       font-size: 0.78rem;
       color: rgba(18, 22, 28, 0.82);
       text-decoration-thickness: 1px;
@@ -250,7 +254,7 @@ const years = yearsActive();
       margin-top: 0.65rem;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.45rem 0.75rem;
+      gap: 0.35rem 0.75rem;
       border-top: 0;
     }
 
@@ -265,15 +269,18 @@ const years = yearsActive();
     .footer-cell--phones li span {
       max-width: none;
       line-height: 1.25;
-      font-size: 0.56rem;
-      letter-spacing: 0.13em;
-      color: rgba(18, 22, 28, 0.48);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: rgba(18, 22, 28, 0.6);
     }
 
     .footer-cell--phones li a {
+      display: flex;
+      align-items: center;
+      min-height: 2.5rem;
       font-family: ui-monospace, "SFMono-Regular", monospace;
-      font-size: 0.72rem;
-      color: rgba(18, 22, 28, 0.68);
+      font-size: 0.875rem;
+      color: rgba(18, 22, 28, 0.78);
       letter-spacing: 0;
     }
 
@@ -282,6 +289,7 @@ const years = yearsActive();
       gap: 0.75rem;
       padding-top: 0.9rem;
       padding-bottom: 0.95rem;
+      font-size: 0.75rem;
     }
 
     footer .bg-ink-950 p {
@@ -297,7 +305,7 @@ const years = yearsActive();
 
     footer .bg-ink-950 p span:last-child {
       flex-basis: 100%;
-      font-size: 0.62rem;
+      font-size: 0.75rem;
     }
 
     footer nav {
@@ -309,11 +317,11 @@ const years = yearsActive();
 
     footer nav a {
       display: grid;
-      min-height: 2rem;
+      min-height: 2.75rem;
       place-items: center;
       border: 1px solid rgba(255, 255, 255, 0.10);
       background: rgba(255, 255, 255, 0.035);
-      font-size: 0.66rem;
+      font-size: 0.75rem;
     }
   }
 
