@@ -1,5 +1,12 @@
 ---
 // Sticky transparent-over-hero header. NO top investment buttons (per CLAUDE.md).
+// Layout by width:
+//   < 768   logo · call chip · menu chip
+//   768–1023 logo · „Получете оферта“ · call chip · menu chip
+//   ≥ 1024  logo · five links · „Получете оферта“
+// The menu panel (< 1024) carries the links plus „Обадете се“ and the offer.
+import { phone, telHref } from '../data/company';
+
 const nav = [
   { href: '/', label: 'Начало' },
   { href: '/uslugi', label: 'Услуги' },
@@ -7,19 +14,27 @@ const nav = [
   { href: '/za-nas', label: 'За нас' },
   { href: '/kontakti', label: 'Контакти' },
 ];
+
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isCurrent = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(`${href}/`);
+
+const manager = phone('Управител');
+const managerTel = telHref(manager.number);
 ---
 
 <header
   id="site-header"
   class="fixed inset-x-0 top-0 z-40 transition-colors duration-400 ease-out-expo"
   data-state="top"
-  data-tone="dark"
 >
+  <span class="menu-scrim" aria-hidden="true" data-menu-scrim></span>
+
   <div class="container-page flex h-20 items-center justify-between gap-6">
     <a
       href="/"
       class="site-logo group flex items-center transition-transform duration-400 hover:scale-[1.02] focus:outline-none focus-visible:outline-none"
-      aria-label="АРТСТРОЙ ООД — начало"
+      aria-label="АРТСТРОЙ ООД, начало"
     >
       <img
         src="/brand/logo-original.png"
@@ -40,11 +55,12 @@ const nav = [
       />
     </a>
 
-    <nav class="hidden md:flex items-center gap-1" aria-label="Главна навигация">
+    <nav class="hidden lg:flex items-center gap-1" aria-label="Главна навигация">
       {nav.map((item) => (
         <a
           href={item.href}
-          class="text-ink [--ink:0.03em] rounded-full px-4 py-2 text-[15px] text-white/90 transition-colors duration-300 hover:text-white hover:bg-white/10"
+          class="site-nav-link text-ink [--ink:0.03em] rounded-full px-4 py-2 text-[15px] transition-colors duration-300"
+          aria-current={isCurrent(item.href) ? 'page' : undefined}
           data-nav-link
         >
           {item.label}
@@ -52,21 +68,31 @@ const nav = [
       ))}
     </nav>
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2.5 md:gap-3">
       <a
         href="/kontakti"
-        class="btn-ghost glass text-ink [--ink:0.03em] hidden lg:inline-flex px-6"
+        class="btn-ghost glass text-ink [--ink:0.03em] hidden md:inline-flex px-6"
       >
-        Получи оферта
+        Получете оферта
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
 
+      <a
+        href={managerTel}
+        class="header-chip header-chip--call grid lg:hidden"
+        aria-label={`Обадете се на управителя, ${manager.number}`}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5.2 3.5h3.1l1.6 4.1-2.1 1.3a11.4 11.4 0 0 0 7.3 7.3l1.3-2.1 4.1 1.6v3.1a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 3.2 5.7a2 2 0 0 1 2-2.2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        </svg>
+      </a>
+
       <button
         type="button"
-        class="glass mobile-menu-button md:hidden grid h-10 w-10 place-items-center rounded-full text-white"
-        aria-label="Отвори менюто"
+        class="header-chip grid lg:hidden"
+        aria-label="Отворете менюто"
         aria-controls="mobile-menu"
         aria-expanded="false"
         data-mobile-menu-toggle
@@ -80,7 +106,7 @@ const nav = [
     </div>
   </div>
 
-  <div class="container-page md:hidden">
+  <div class="container-page lg:hidden">
     <nav
       id="mobile-menu"
       class="mobile-menu"
@@ -90,26 +116,45 @@ const nav = [
       inert
     >
       {nav.map((item) => (
-        <a href={item.href} class="mobile-menu__link" data-mobile-menu-link>
+        <a
+          href={item.href}
+          class="mobile-menu__link"
+          aria-current={isCurrent(item.href) ? 'page' : undefined}
+          data-mobile-menu-link
+        >
           <span>{item.label}</span>
           <svg width="15" height="15" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
       ))}
+
+      <div class="mobile-menu__actions">
+        <a href={managerTel} class="btn-brand w-full justify-between" data-mobile-menu-link>
+          <span>Обадете се</span>
+          <span class="tabular-nums">{manager.number}</span>
+        </a>
+        <a href="/kontakti" class="btn-ghost w-full" data-mobile-menu-link>
+          Получете оферта
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <p class="mobile-menu__note">Управител · пон.–пет. 9:00–18:00</p>
+      </div>
     </nav>
   </div>
 
-  <!-- Top brand progress bar — fills with scroll -->
+  <!-- Top brand progress bar, fills with scroll -->
   <div class="absolute inset-x-0 top-0 h-[2px] bg-white/10">
     <div id="scroll-progress" class="h-full w-0 bg-brand origin-left transition-[width] duration-100 ease-linear"></div>
   </div>
 </header>
 
 <style is:global>
-  /* When header is scrolled past hero — switch to opaque white.
-     The .has-solid-header body class forces the same look on light pages
-     (project detail, etc.) so the nav text always reads. */
+  /* ── Bar behind the header ─────────────────────────────────────────
+     Scrolled past the hero, or on a page with body.has-solid-header,
+     the header gets a bar; its material follows the tone below. */
   #site-header[data-state='scrolled'],
   body.has-solid-header #site-header {
     background-color: rgb(255 255 255 / 0.92);
@@ -121,35 +166,7 @@ const nav = [
       0 18px 46px -34px rgb(18 22 28 / 0.42),
       0 6px 18px -16px rgb(18 22 28 / 0.26);
   }
-  #site-header[data-state='scrolled'] [data-nav-link],
-  body.has-solid-header #site-header [data-nav-link] {
-    color: theme('colors.ink.900');
-  }
-  #site-header[data-state='scrolled'] [data-nav-link]:hover,
-  body.has-solid-header #site-header [data-nav-link]:hover {
-    background-color: theme('colors.ink.100');
-  }
-  /* Mirror the .glass-dark recipe so scrolled (light) header pills look like
-     the same Apple Tahoe Bluetooth-style glass as everywhere else. */
-  #site-header[data-state='scrolled'] .glass,
-  body.has-solid-header #site-header .glass {
-    background: rgba(28, 32, 38, 0.10);
-    border-color: rgba(255, 255, 255, 0.55);
-    color: theme('colors.ink.900');
-    box-shadow:
-      inset 0 1.5px 0 rgba(255, 255, 255, 1),
-      inset 0 6px 12px -6px rgba(255, 255, 255, 0.40),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.06),
-      0 10px 24px -10px rgba(18, 22, 28, 0.22);
-  }
-  #site-header[data-state='scrolled'] .glass:hover,
-  body.has-solid-header #site-header .glass:hover {
-    background: rgba(28, 32, 38, 0.16);
-    border-color: rgba(255, 255, 255, 0.70);
-  }
 
-  /* Contrast is separate from scroll position. The script below samples the
-     surface behind the logo and flips this tone while the header stays fixed. */
   #site-header[data-tone='dark'] {
     background-color: transparent;
     border-bottom-color: transparent;
@@ -167,28 +184,6 @@ const nav = [
       0 8px 22px -18px rgb(0 0 0 / 0.42);
   }
 
-  #site-header[data-tone='dark'] [data-nav-link] {
-    color: rgb(255 255 255 / 0.86);
-  }
-
-  #site-header[data-tone='dark'] [data-nav-link]:hover {
-    background-color: rgb(255 255 255 / 0.10);
-    color: white;
-  }
-
-  #site-header[data-tone='dark'] .glass {
-    background: rgba(255, 255, 255, 0.10);
-    border-color: rgba(255, 255, 255, 0.18);
-    color: white;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.55),
-      inset 0 8px 14px -8px rgba(255, 255, 255, 0.35),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.06),
-      0 10px 24px -10px rgba(0, 0, 0, 0.28);
-  }
-
-  /* Light-section header: same milky glass material as the light CTA pill,
-     stretched across the header so the nav floats above pale blueprint zones. */
   body.has-solid-header #site-header[data-tone='light'],
   #site-header[data-state='scrolled'][data-tone='light'] {
     background:
@@ -205,29 +200,124 @@ const nav = [
       0 8px 22px -18px rgba(18, 22, 28, 0.20);
   }
 
-  body.has-solid-header #site-header[data-tone='light'] [data-nav-link],
-  #site-header[data-state='scrolled'][data-tone='light'] [data-nav-link] {
-    color: theme('colors.ink.900');
+  /* ── Tone → colours of links and the glass button ───────────────────
+     The tone (set by the script from what is behind the logo) only sets
+     these variables. The links and .glass read them in exactly one rule
+     each, and :hover is one rule on top, so no tone selector can outrank
+     the hover state. Before the script runs there is no data-tone:
+     a solid-header page starts light, every other page starts dark. */
+  #site-header {
+    --hdr-link: rgb(255 255 255 / 0.86);
+    --hdr-link-hover: #fff;
+    --hdr-link-hover-bg: rgb(255 255 255 / 0.10);
+    --hdr-glass-bg: rgba(255, 255, 255, 0.10);
+    --hdr-glass-bg-hover: rgba(255, 255, 255, 0.20);
+    --hdr-glass-border: rgba(255, 255, 255, 0.18);
+    --hdr-glass-border-hover: rgba(255, 255, 255, 0.45);
+    --hdr-glass-color: #fff;
+    --hdr-glass-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      inset 0 8px 14px -8px rgba(255, 255, 255, 0.35),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.06),
+      0 10px 24px -10px rgba(0, 0, 0, 0.28);
   }
 
-  body.has-solid-header #site-header[data-tone='light'] [data-nav-link]:hover,
-  #site-header[data-state='scrolled'][data-tone='light'] [data-nav-link]:hover {
-    background-color: rgb(18 22 28 / 0.07);
-    color: theme('colors.ink.950');
-  }
-
-  body.has-solid-header #site-header[data-tone='light'] .glass,
-  #site-header[data-state='scrolled'][data-tone='light'] .glass {
-    background: rgba(28, 32, 38, 0.10);
-    border-color: rgba(255, 255, 255, 0.55);
-    color: theme('colors.ink.900');
-    box-shadow:
+  #site-header[data-tone='light'],
+  body.has-solid-header #site-header:not([data-tone]) {
+    --hdr-link: theme('colors.ink.900');
+    --hdr-link-hover: theme('colors.ink.950');
+    --hdr-link-hover-bg: rgb(18 22 28 / 0.07);
+    --hdr-glass-bg: rgba(28, 32, 38, 0.10);
+    --hdr-glass-bg-hover: rgba(28, 32, 38, 0.18);
+    --hdr-glass-border: rgba(255, 255, 255, 0.55);
+    --hdr-glass-border-hover: rgba(255, 255, 255, 0.80);
+    --hdr-glass-color: theme('colors.ink.900');
+    --hdr-glass-shadow:
       inset 0 1.5px 0 rgba(255, 255, 255, 1),
       inset 0 6px 12px -6px rgba(255, 255, 255, 0.40),
       inset 0 -1px 0 rgba(0, 0, 0, 0.06),
       0 10px 24px -10px rgba(18, 22, 28, 0.22);
   }
 
+  #site-header [data-nav-link] {
+    position: relative;
+    color: var(--hdr-link);
+  }
+  #site-header [data-nav-link]:hover {
+    color: var(--hdr-link-hover);
+    background-color: var(--hdr-link-hover-bg);
+  }
+  /* Current page: full-strength text and a short red rule under the label. */
+  #site-header [data-nav-link][aria-current='page'] {
+    color: var(--hdr-link-hover);
+  }
+  #site-header [data-nav-link][aria-current='page']::after {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    bottom: 0.2rem;
+    height: 2px;
+    border-radius: 2px;
+    background: theme('colors.brand.DEFAULT');
+  }
+
+  #site-header .glass {
+    background: var(--hdr-glass-bg);
+    border-color: var(--hdr-glass-border);
+    color: var(--hdr-glass-color);
+    box-shadow: var(--hdr-glass-shadow);
+  }
+  #site-header .glass:hover {
+    background: var(--hdr-glass-bg-hover);
+    border-color: var(--hdr-glass-border-hover);
+  }
+
+  /* ── Round chips (call, menu): dark glass, readable on any surface ── */
+  .header-chip {
+    position: relative;
+    z-index: 2;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: 999px;
+    color: #fff;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06)),
+      rgba(18, 22, 28, 0.66);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    box-shadow:
+      inset 0 1.5px 0 rgba(255, 255, 255, 0.76),
+      inset 0 10px 16px -10px rgba(255, 255, 255, 0.46),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.16),
+      0 12px 28px -14px rgba(18, 22, 28, 0.80),
+      0 0 0 1px rgba(18, 22, 28, 0.10);
+    transition:
+      background-color 300ms theme('transitionTimingFunction.out-expo'),
+      border-color 300ms theme('transitionTimingFunction.out-expo');
+  }
+  .header-chip:hover {
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08)),
+      rgba(18, 22, 28, 0.78);
+    border-color: rgba(255, 255, 255, 0.50);
+  }
+  /* The call chip is the one-tap action on phones and tablets: brand red. */
+  .header-chip--call {
+    border-color: rgba(255, 255, 255, 0.28);
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0)),
+      theme('colors.brand.DEFAULT');
+  }
+  .header-chip--call:hover {
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0)),
+      theme('colors.brand.dark');
+  }
+
+  /* ── Logo: light and dark versions cross-fade with the tone ─────── */
   .site-logo {
     position: relative;
     margin-inline-start: -0.18rem;
@@ -295,21 +385,7 @@ const nav = [
     opacity: 0;
   }
 
-  .mobile-menu-button {
-    position: relative;
-    z-index: 2;
-    background:
-      linear-gradient(145deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06)),
-      rgba(18, 22, 28, 0.30);
-    border-color: rgba(255, 255, 255, 0.34);
-    box-shadow:
-      inset 0 1.5px 0 rgba(255, 255, 255, 0.76),
-      inset 0 10px 16px -10px rgba(255, 255, 255, 0.46),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.16),
-      0 12px 28px -14px rgba(18, 22, 28, 0.80),
-      0 0 0 1px rgba(18, 22, 28, 0.10);
-  }
-
+  /* ── Menu button lines → cross when open ───────────────────────── */
   .mobile-menu-button__lines {
     display: grid;
     gap: 3.5px;
@@ -341,6 +417,30 @@ const nav = [
     transform: translateY(-5px) rotate(-45deg);
   }
 
+  /* ── Scrim behind the open menu ────────────────────────────────────
+     Absolute, not fixed: the header's backdrop-filter makes it the
+     containing block for fixed children. The header sits at top 0, so
+     top 0 + 100dvh covers the viewport either way. */
+  .menu-scrim {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    background: rgb(18 22 28 / 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 320ms theme('transitionTimingFunction.out-expo');
+  }
+
+  #site-header[data-menu-open='true'] .menu-scrim {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Menu panel (< 1024) ───────────────────────────────────────── */
   .mobile-menu {
     position: absolute;
     inset-inline-start: auto;
@@ -350,15 +450,19 @@ const nav = [
     display: grid;
     gap: 0.05rem;
     width: min(32.5rem, calc(100vw - 3rem));
+    max-height: calc(100dvh - 6.5rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
     padding: clamp(0.72rem, 3.2vw, 1.15rem);
+    border: 1px solid rgba(255, 255, 255, 0.28);
     border-radius: clamp(1.65rem, 6vw, 2.35rem);
+    color: #fff;
     background:
       radial-gradient(circle at 12% 100%, rgba(186, 45, 32, 0.18), transparent 44%),
       linear-gradient(145deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.045) 44%, rgba(18, 22, 28, 0.18)),
-      rgba(19, 23, 30, 0.94);
+      rgba(19, 23, 30, 0.96);
     backdrop-filter: blur(30px) saturate(150%);
     -webkit-backdrop-filter: blur(30px) saturate(150%);
-    border-color: rgba(255, 255, 255, 0.28);
     box-shadow:
       inset 0 1.5px 0 rgba(255, 255, 255, 0.62),
       inset 0 22px 36px -28px rgba(255, 255, 255, 0.54),
@@ -376,14 +480,16 @@ const nav = [
       transform 420ms theme('transitionTimingFunction.out-expo');
   }
 
-  #site-header[data-state='scrolled'] .mobile-menu,
-  body.has-solid-header #site-header .mobile-menu {
-    background:
-      radial-gradient(circle at 12% 100%, rgba(186, 45, 32, 0.18), transparent 44%),
-      linear-gradient(145deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.045) 44%, rgba(18, 22, 28, 0.18)),
-      rgba(19, 23, 30, 0.94);
-    border-color: rgba(255, 255, 255, 0.30);
-    color: white;
+  @media (min-width: 768px) {
+    .mobile-menu {
+      inset-inline-end: 2.5rem;
+      width: min(26rem, calc(100vw - 5rem));
+    }
+  }
+
+  /* The panel is dark on every surface, so its focus ring is cream. */
+  .mobile-menu > * {
+    --focus-ring: theme('colors.cream.50');
   }
 
   #site-header[data-menu-open='true'] .mobile-menu {
@@ -398,18 +504,18 @@ const nav = [
   }
 
   .mobile-menu__link {
+    position: relative;
     display: flex;
-    min-height: clamp(2.55rem, 8.6vw, 3.55rem);
+    min-height: max(2.75rem, clamp(2.55rem, 8.6vw, 3.55rem));
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
     border-radius: 1.15rem;
     padding: 0.34rem clamp(0.65rem, 2.7vw, 0.95rem);
-    color: rgb(255 255 255 / 0.94);
+    color: rgb(255 255 255 / 0.9);
     font-family: theme('fontFamily.display');
     font-size: clamp(1.18rem, 5.9vw, 1.62rem);
     -webkit-text-stroke: 0.03em currentColor;
-    font-weight: 500;
     line-height: 1;
     letter-spacing: 0;
     text-decoration: none;
@@ -419,11 +525,34 @@ const nav = [
       transform 260ms theme('transitionTimingFunction.out-expo');
   }
 
+  @media (min-width: 768px) {
+    .mobile-menu__link {
+      font-size: 1.45rem;
+    }
+  }
+
   .mobile-menu__link:hover,
   .mobile-menu__link:focus-visible {
-    background-color: rgb(255 255 255 / 0.11);
-    color: white;
+    background-color: rgb(255 255 255 / 0.12);
+    color: #fff;
     transform: translateX(2px);
+  }
+
+  /* Current page: tinted row and a red bar on the left edge. */
+  .mobile-menu__link[aria-current='page'] {
+    background-color: rgb(255 255 255 / 0.08);
+    color: #fff;
+  }
+  .mobile-menu__link[aria-current='page']::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 3px;
+    height: 1.25rem;
+    border-radius: 3px;
+    background: theme('colors.brand.DEFAULT');
+    transform: translateY(-50%);
   }
 
   .mobile-menu__link svg {
@@ -433,96 +562,26 @@ const nav = [
     opacity: 0.94;
   }
 
-  #site-header[data-state='scrolled'] .mobile-menu__link,
-  body.has-solid-header #site-header .mobile-menu__link {
-    color: rgb(255 255 255 / 0.94);
+  .mobile-menu__actions {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid rgb(255 255 255 / 0.12);
   }
 
-  #site-header[data-state='scrolled'] .mobile-menu__link:hover,
-  #site-header[data-state='scrolled'] .mobile-menu__link:focus-visible,
-  body.has-solid-header #site-header .mobile-menu__link:hover,
-  body.has-solid-header #site-header .mobile-menu__link:focus-visible {
-    background-color: rgb(255 255 255 / 0.50);
-    color: theme('colors.ink.950');
+  .mobile-menu__note {
+    padding-top: 0.15rem;
+    text-align: center;
+    color: rgb(255 255 255 / 0.6);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
   }
 
-  @media (max-width: 767px) {
-    #site-header[data-state='scrolled'],
-    body.has-solid-header #site-header {
-      background-color: transparent;
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-      border-bottom: 0;
-    }
-
-    #site-header[data-state='scrolled'] .glass,
-    body.has-solid-header #site-header .glass {
-      background: rgba(255, 255, 255, 0.10);
-      border-color: rgba(255, 255, 255, 0.18);
-      color: white;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.55),
-        inset 0 8px 14px -8px rgba(255, 255, 255, 0.35),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.06),
-        0 10px 24px -10px rgba(0, 0, 0, 0.28);
-    }
-
-    #site-header[data-state='scrolled'] .mobile-menu-button.glass,
-    body.has-solid-header #site-header .mobile-menu-button.glass,
-    #site-header .mobile-menu-button.glass {
-      background:
-        linear-gradient(145deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06)),
-        rgba(18, 22, 28, 0.30);
-      border-color: rgba(255, 255, 255, 0.34);
-      color: white;
-      box-shadow:
-        inset 0 1.5px 0 rgba(255, 255, 255, 0.76),
-        inset 0 10px 16px -10px rgba(255, 255, 255, 0.46),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.16),
-        0 12px 28px -14px rgba(18, 22, 28, 0.80),
-        0 0 0 1px rgba(18, 22, 28, 0.10);
-    }
-
-    #site-header[data-state='scrolled'] .glass:hover,
-    body.has-solid-header #site-header .glass:hover {
-      background: rgba(255, 255, 255, 0.18);
-      border-color: rgba(255, 255, 255, 0.38);
-    }
-
-    #site-header[data-state='scrolled'] .mobile-menu-button.glass:hover,
-    body.has-solid-header #site-header .mobile-menu-button.glass:hover,
-    #site-header .mobile-menu-button.glass:hover {
-      background:
-        linear-gradient(145deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08)),
-        rgba(18, 22, 28, 0.38);
-      border-color: rgba(255, 255, 255, 0.46);
-    }
-
-    #site-header[data-state='scrolled'] .mobile-menu,
-    body.has-solid-header #site-header .mobile-menu {
-      background:
-        radial-gradient(circle at 12% 100%, rgba(186, 45, 32, 0.18), transparent 44%),
-        linear-gradient(145deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.045) 44%, rgba(18, 22, 28, 0.18)),
-        rgba(19, 23, 30, 0.94);
-      border-color: rgba(255, 255, 255, 0.30);
-    }
-
-    #site-header[data-state='scrolled'] .mobile-menu__link,
-    body.has-solid-header #site-header .mobile-menu__link {
-      color: rgb(255 255 255 / 0.92);
-    }
-
-    #site-header[data-state='scrolled'] .mobile-menu__link:hover,
-    #site-header[data-state='scrolled'] .mobile-menu__link:focus-visible,
-    body.has-solid-header #site-header .mobile-menu__link:hover,
-    body.has-solid-header #site-header .mobile-menu__link:focus-visible {
-      background-color: rgb(255 255 255 / 0.14);
-      color: white;
-    }
-  }
 
   @media (prefers-reduced-motion: reduce) {
     .mobile-menu,
+    .menu-scrim,
     .mobile-menu-button__lines span,
     .mobile-menu__link {
       transition: none;
@@ -537,13 +596,17 @@ const nav = [
 
 <script>
   const setup = () => {
-    const w = window as Window & { __artstroiHeaderCleanup?: () => void };
+    const w = window as Window & {
+      __artstroiHeaderCleanup?: () => void;
+      __lenis?: { stop: () => void; start: () => void };
+    };
     w.__artstroiHeaderCleanup?.();
 
     const header = document.getElementById('site-header');
     const progress = document.getElementById('scroll-progress');
     const toggle = document.querySelector<HTMLButtonElement>('[data-mobile-menu-toggle]');
     const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
+    const scrim = document.querySelector<HTMLElement>('[data-menu-scrim]');
     const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-mobile-menu-link]'));
     if (!header || !progress) return;
 
@@ -606,22 +669,36 @@ const nav = [
       return window.scrollY > 80 || document.body.classList.contains('has-solid-header') ? 'light' : 'dark';
     };
 
+    // While the menu is open the page behind the scrim does not scroll.
+    const lockScroll = (locked: boolean) => {
+      const value = locked ? 'hidden' : '';
+      document.documentElement.style.overflow = value;
+      document.body.style.overflow = value;
+      if (locked) w.__lenis?.stop();
+      else w.__lenis?.start();
+    };
+
+    const isOpen = () => header.dataset.menuOpen === 'true';
+
     const closeMenu = () => {
+      const wasOpen = isOpen();
       header.dataset.menuOpen = 'false';
       toggle?.setAttribute('aria-expanded', 'false');
-      toggle?.setAttribute('aria-label', 'Отвори менюто');
+      toggle?.setAttribute('aria-label', 'Отворете менюто');
       menu?.setAttribute('aria-hidden', 'true');
       menu?.setAttribute('inert', '');
+      if (wasOpen) lockScroll(false);
     };
     const openMenu = () => {
       header.dataset.menuOpen = 'true';
       toggle?.setAttribute('aria-expanded', 'true');
-      toggle?.setAttribute('aria-label', 'Затвори менюто');
+      toggle?.setAttribute('aria-label', 'Затворете менюто');
       menu?.setAttribute('aria-hidden', 'false');
       menu?.removeAttribute('inert');
+      lockScroll(true);
     };
     const toggleMenu = () => {
-      if (header.dataset.menuOpen === 'true') closeMenu();
+      if (isOpen()) closeMenu();
       else openMenu();
     };
     const update = () => {
@@ -637,15 +714,26 @@ const nav = [
       if (!raf) raf = requestAnimationFrame(update);
     };
 
+    header.dataset.menuOpen = 'false';
     closeMenu();
     update();
     toggle?.addEventListener('click', toggleMenu, { signal });
+    scrim?.addEventListener('click', closeMenu, { signal });
     links.forEach((link) => link.addEventListener('click', closeMenu, { signal }));
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeMenu();
+      if (event.key !== 'Escape' || !isOpen()) return;
+      closeMenu();
+      toggle?.focus();
+    }, { signal });
+    // Tabbing out of the open menu closes it, so focus never lands on the
+    // page hidden behind the scrim.
+    header.addEventListener('focusout', (event) => {
+      if (!isOpen()) return;
+      const next = event.relatedTarget;
+      if (next instanceof Node && !header.contains(next)) closeMenu();
     }, { signal });
     document.addEventListener('click', (event) => {
-      if (header.dataset.menuOpen !== 'true') return;
+      if (!isOpen()) return;
       const target = event.target;
       if (target instanceof Node && !header.contains(target)) closeMenu();
     }, { signal });
@@ -656,6 +744,7 @@ const nav = [
     }, { passive: true, signal });
 
     w.__artstroiHeaderCleanup = () => {
+      closeMenu();
       controller.abort();
       if (raf) cancelAnimationFrame(raf);
     };
