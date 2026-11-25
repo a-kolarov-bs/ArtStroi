@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Reveal from '../components/Reveal.astro';
-import { projects, type ProjectCategory } from '../data/projects';
+import { projects } from '../data/projects';
+import { services as serviceDefs } from '../data/services';
 import { company, yearsActive as getYearsActive, cprsGroupsLabel } from '../data/company';
 
 // ────────────────────────────────────────────────────────────────
@@ -26,154 +27,8 @@ const heroStats = [
   { label: 'Услуги', value: 6, pad: 2, plus: false },
 ];
 
-const serviceDefs = [
-  {
-    code: 'A.01',
-    slug: 'arch',
-    tag: 'ЖИЛ',
-    title: 'Жилищно строителство',
-    summary:
-      'Многофамилни блокове, затворени комплекси, фамилни къщи и вили. Поемаме целия цикъл, от изкопа до Акт 16.',
-    segments: [
-      'Многофамилни жилищни блокове',
-      'Затворени жилищни комплекси',
-      'Еднофамилни къщи и вили',
-      'Апартхотели и ваканционни обекти',
-    ],
-    scope: [
-      'Кофраж и стоманобетон',
-      'Зидария и преградни стени',
-      'Покривни конструкции',
-      'Фасади и довършителни работи',
-      'Партери и общи части',
-    ],
-    refCat: 'Жилищни сгради',
-    photoId: 51,
-  },
-  {
-    code: 'P.02',
-    slug: 'pub',
-    tag: 'ОБЩ',
-    title: 'Обществени и индустриални сгради',
-    summary:
-      'Училища, читалища, спортни зали, общински и производствени обекти. Изпълняваме обществени поръчки за общини и държавни институции.',
-    segments: [
-      'Образователни обекти',
-      'Здравни заведения',
-      'Спортни и културни обекти',
-      'Производствени халета',
-    ],
-    scope: [
-      'Изпълнение по работни проекти',
-      'Сертифицирани материали',
-      'Контрол по ЗУТ',
-      'Приемателни актове 12 / 15 / 16',
-      'Инвестиционен надзор',
-    ],
-    refCat: 'Обществени сгради',
-    photoId: 45,
-  },
-  {
-    code: 'I.03',
-    slug: 'inf',
-    tag: 'ПЪТ',
-    title: 'Пътна и градска инфраструктура',
-    summary:
-      'Улици, площади, тротоари, подпорни стени и корекции на речни корита, включително укрепване на свлачища.',
-    segments: [
-      'Общински улици и тротоари',
-      'Градски площади',
-      'Подпорни конструкции',
-      'Свлачищни укрепвания',
-      'Корекции на речни корита',
-    ],
-    scope: [
-      'Земни работи',
-      'Асфалтови настилки',
-      'Бетонови съоръжения',
-      'Дъждовна канализация',
-      'Пътна маркировка',
-    ],
-    refCat: 'Инфраструктура',
-    photoId: 9,
-  },
-  {
-    code: 'R.04',
-    slug: 'rnv',
-    tag: 'РЕК',
-    title: 'Реконструкция и енергийно саниране',
-    summary:
-      'Цялостна рехабилитация на стари сгради и саниране на фасади и покриви до нормативната енергийна ефективност, с пълна документация.',
-    segments: [
-      'Жилищни блокове',
-      'Обществени сгради',
-      'Хотели и СПА',
-      'Исторически градски обекти',
-    ],
-    scope: [
-      'Топлоизолация фасади и покриви',
-      'Подмяна на дограма',
-      'Хидроизолации',
-      'Конструктивно усилване',
-      'Сертификат за енергийна ефективност',
-    ],
-    refCat: null,
-    photoId: 18,
-  },
-  {
-    code: 'M.05',
-    slug: 'mep',
-    tag: 'ИНС',
-    title: 'Електро, ВиК и инсталации',
-    summary:
-      'Вътрешни и външни инсталации: електро, ВиК, отопление, вентилация и климатизация. Със сертифицирани материали, проби и приемателни актове.',
-    segments: [
-      'Жилищни обекти',
-      'Обществени и образователни',
-      'Хотели и комплекси',
-      'Промишлени халета',
-    ],
-    scope: [
-      'Електро ниско напрежение',
-      'Водопровод и канализация',
-      'Отопление и охлаждане',
-      'Слаботокови инсталации',
-      'Външни мрежи и съоръжения',
-    ],
-    refCat: null,
-    photoId: 41,
-  },
-  {
-    code: 'F.06',
-    slug: 'fin',
-    tag: 'ФИН',
-    title: 'Реставрация и довършителен финиш',
-    summary:
-      'Декоративни ремонти, реставрация на исторически фасади, барбекюта и камини по индивидуален проект.',
-    segments: [
-      'Исторически фасади',
-      'Луксозни интериори',
-      'Открити терени и градини',
-      'Бутикови хотели',
-    ],
-    scope: [
-      'Каменни облицовки',
-      'Дървени и метални детайли',
-      'Реставрация на мазилки',
-      'Барбекюта и камини',
-      'Парапети и ковано желязо',
-    ],
-    refCat: null,
-    photoId: 12,
-  },
-] satisfies ({ refCat: ProjectCategory | null } & Record<string, unknown>)[];
-
-// `refCat` is set only when a project category matches the service one to
-// one. Then the card and the index show the number of cards the linked
-// /proekti filter shows, so the two can never disagree. A service without
-// its own category (refCat: null) shows no number and links to all objects:
-// a borrowed category would count projects that are not this kind of work.
-// scripts/check-categories.mjs reads these refCat values and checks dist/.
+// The count on a card is the number of cards the linked /proekti filter
+// shows (see refCat in src/data/services.ts).
 const services = serviceDefs.map((s) => ({
   ...s,
   refCount: s.refCat ? projects.filter((p) => p.category === s.refCat).length : null,
@@ -249,8 +104,8 @@ const pageDescription =
       <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-start">
         <!-- LEFT — editorial title block -->
         <Reveal class="lg:col-span-7">
-          <p class="eyebrow flex items-center gap-3 flex-wrap text-brand">
-            <span class="inline-block h-px w-10 bg-brand"></span>
+          <p class="eyebrow flex items-center gap-3 flex-wrap">
+            <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
             Услуги{company.founded !== null && ` · ${company.founded} → ${currentYear}`}
           </p>
           <h1
@@ -295,13 +150,12 @@ const pageDescription =
               </p>
             </div>
             <ol class="us-index__list">
-              {services.map((s) => (
+              {services.map((s, i) => (
                 <li>
                   <a href={`#${s.slug}`} class="us-index__row group">
-                    <span class="us-index__code font-display tabular-nums">
-                      {s.code}
+                    <span class="us-index__code font-display tabular-nums" aria-hidden="true">
+                      {String(i + 1).padStart(2, '0')}
                     </span>
-                    <span class="us-index__tag" aria-hidden="true">{s.tag}</span>
                     <span class="us-index__title">{s.title}</span>
                     <span class:list={['us-index__leaders', { 'us-index__leaders--wide': s.refCount === null }]} aria-hidden="true"></span>
                     {s.refCount !== null && (
@@ -334,7 +188,7 @@ const pageDescription =
 
     <div class="container-page relative">
       <Reveal class="max-w-3xl mb-10 md:mb-14">
-        <p class="eyebrow">Шест направления</p>
+        <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Шест направления</p>
         <h2
           id="services-grid-heading"
           class="mt-3 font-display tracking-tight text-ink-950"
@@ -359,7 +213,6 @@ const pageDescription =
                 <span class="us-card__photo-cap">{s.photo.title}</span>
               </a>
               <header class="us-card__head">
-                <span class="us-card__code" aria-hidden="true">{s.code} · {s.tag}</span>
                 <span class="us-card__count font-display tabular-nums">
                   №{String(i + 1).padStart(2, '0')}
                 </span>
@@ -512,8 +365,8 @@ const pageDescription =
     <div class="container-page relative">
       <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-end mb-10 md:mb-14">
         <Reveal class="lg:col-span-7">
-          <p class="eyebrow text-brand flex items-center gap-3">
-            <span class="inline-block h-px w-10 bg-brand"></span>
+          <p class="eyebrow flex items-center gap-3">
+            <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
             Метод
           </p>
           <h2
@@ -606,7 +459,7 @@ const pageDescription =
   .us-index__list { margin-top: 0.25rem; }
   .us-index__row {
     display: grid;
-    grid-template-columns: 3.4rem 2.8rem 1fr auto auto 1.1rem;
+    grid-template-columns: 2.2rem 1fr auto auto 1.1rem;
     align-items: baseline;
     gap: 0.7rem;
     padding: 0.85rem 0;
@@ -622,16 +475,9 @@ const pageDescription =
   }
   .us-index__list li:last-child .us-index__row { border-bottom: none; }
   .us-index__code {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     color: rgba(186, 45, 32, 0.85);
     letter-spacing: 0.02em;
-  }
-  .us-index__tag {
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.42);
-    font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", monospace;
   }
   .us-index__title {
     font-size: 0.95rem;
@@ -667,7 +513,7 @@ const pageDescription =
   }
   @media (max-width: 639px) {
     .us-index__row {
-      grid-template-columns: 2.8rem 2.4rem 1fr auto 0.9rem;
+      grid-template-columns: 2rem 1fr auto 0.9rem;
       gap: 0.55rem;
       padding: 0.75rem 0;
     }
@@ -790,27 +636,13 @@ const pageDescription =
     justify-content: space-between;
     gap: 0.75rem;
   }
-  .us-card__code {
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(186, 45, 32, 0.85);
-    font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", monospace;
-  }
   .us-card__count {
-    font-size: 0.9rem;
-    color: rgba(18, 22, 28, 0.32);
-    transition: color 400ms ease, transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    font-size: 0.95rem;
+    color: rgba(186, 45, 32, 0.85);
+    transition: color 400ms ease;
   }
   .us-card:hover .us-card__count {
     color: theme('colors.brand.DEFAULT');
-    transform: translateX(-4px) translateY(-1px);
-  }
-  .us-card__code {
-    transition: color 400ms ease, letter-spacing 500ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .us-card:hover .us-card__code {
-    letter-spacing: 0.18em;
   }
   .us-card__title {
     margin-top: 0.75rem;
@@ -1073,7 +905,6 @@ const pageDescription =
     .us-card__more,
     .us-index__arrow,
     .us-card__count,
-    .us-card__code,
     .us-card__title,
     .us-matrix__row,
     .us-standards__cell,

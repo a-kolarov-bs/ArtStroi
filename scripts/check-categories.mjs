@@ -4,7 +4,7 @@
 //   1. every record has one of the categories offered as chips on /proekti;
 //   2. the number of cards per category on /proekti equals the data;
 //   3. on /uslugi, every service with its own category (refCat in
-//      src/pages/uslugi.astro) links "N реализирани обекта" to the
+//      src/data/services.ts) links "N реализирани обекта" to the
 //      /proekti?cat=X filter that shows exactly N cards, and the index at the
 //      top repeats N; a service with refCat: null shows no number anywhere
 //      and links to /proekti. No two services may share a category;
@@ -43,13 +43,13 @@ for (const c of chips) {
   if (!expected[c]) errors.push(`chip ${c} has no projects`);
 }
 
-// Expected: the refCat of each service, in card order, from the page source.
-const uslugiSrc = readFileSync('src/pages/uslugi.astro', 'utf8');
+// Expected: the refCat of each service, in card order, from src/data/services.ts.
+const uslugiSrc = readFileSync('src/data/services.ts', 'utf8');
 const refCats = [...uslugiSrc.matchAll(/^\s*refCat: (null|'([^']+)'),/gm)].map((m) => m[2] ?? null);
-if (refCats.length !== 6) errors.push(`uslugi.astro: expected 6 refCat entries, found ${refCats.length}`);
+if (refCats.length !== 6) errors.push(`services.ts: expected 6 refCat entries, found ${refCats.length}`);
 const own = refCats.filter(Boolean);
-if (new Set(own).size !== own.length) errors.push(`uslugi.astro: two services share a category (${own.join(', ')}); set refCat: null on the one that is not that kind of work`);
-for (const c of own) if (!chips.includes(c)) errors.push(`uslugi.astro: refCat ${c} is not a chip on /proekti`);
+if (new Set(own).size !== own.length) errors.push(`services.ts: two services share a category (${own.join(', ')}); set refCat: null on the one that is not that kind of work`);
+for (const c of own) if (!chips.includes(c)) errors.push(`services.ts: refCat ${c} is not a chip on /proekti`);
 
 const uslugi = readFileSync(join(dist, 'uslugi/index.html'), 'utf8');
 // Card footers, in card order: href and the visible label.
@@ -85,6 +85,7 @@ for (const r of data) {
   if (!existsSync(file)) { errors.push(`missing detail page ${r.slug}`); continue; }
   const html = readFileSync(file, 'utf8');
   if (!/class="g-tile[\s"]/.test(html)) errors.push(`${r.slug}: no gallery tile, a phone shows no photo of this project`);
+
   const ld = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)]
     .map((m) => JSON.parse(m[1]))
     .find((o) => o['@type'] === 'CreativeWork');

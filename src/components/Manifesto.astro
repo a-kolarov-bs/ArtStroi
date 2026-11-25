@@ -3,36 +3,12 @@
 // one looping site video on the right. A plain grid, no scroll pinning,
 // so the section reads in one screen on desktop (round 1, plan 5 row 1).
 import Reveal from './Reveal.astro';
+import { services } from '../data/services';
 
 const videoMobile = '/services/sample-mobile.mp4';
 const videoDesktop = '/services/sample-desktop.mp4';
 const videoPoster = '/services/sample-poster.jpg';
-const services = [
-  {
-    title: 'Сгради и съоръжения',
-    body: 'Жилищни, обществени и индустриални сгради: груб строеж и довършителни работи.',
-  },
-  {
-    title: 'Пътна инфраструктура',
-    body: 'Улици, площади и тротоари, вертикална планировка и реконструкция на градска среда.',
-  },
-  {
-    title: 'Строителство до ключ',
-    body: 'От грубия строеж до готов за ползване обект, с Акт 16 и предаване на обекта.',
-  },
-  {
-    title: 'Електро и ВиК',
-    body: 'Вътрешни и външни електро- и ВиК инсталации.',
-  },
-  {
-    title: 'Изолация и саниране',
-    body: 'Топлоизолация на фасади и покриви, саниране на жилищни и обществени сгради.',
-  },
-  {
-    title: 'Реконструкция и ремонти',
-    body: 'Рехабилитация на стари сгради, декоративни ремонти, барбекюта и камини по индивидуален проект.',
-  },
-];
+
 ---
 
 <section class="cap-section relative isolate overflow-clip bg-cream-100 text-ink-900 py-16 md:py-20 lg:py-24" aria-labelledby="capabilities-heading">
@@ -44,7 +20,7 @@ const services = [
   <div class="container-page relative grid gap-y-8 lg:grid-cols-12 lg:gap-x-16 lg:gap-y-0">
       <Reveal class="row-start-1 lg:col-span-7 lg:col-start-1">
         <p class="eyebrow flex items-center gap-3">
-          <span class="inline-block h-px w-8 bg-brand"></span>
+          <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
           Услуги
         </p>
         <h2
@@ -67,7 +43,7 @@ const services = [
               <span class="cap-item__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <div>
                 <h3 class="cap-item__title">{s.title}</h3>
-                <p class="cap-item__body">{s.body}</p>
+                <p class="cap-item__body">{s.short}</p>
               </div>
             </div>
           </Reveal>
