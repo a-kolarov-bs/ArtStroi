@@ -2,14 +2,15 @@
 /**
  * Project detail page — premium, relaxed product page.
  *
- * Composition (top→bottom, tight):
- *   1. Breadcrumb strip + archive index
- *   2. Image-led hero — large cover left, title + key meta right
- *   3. Story + spec table (two-column, tight)
- *   4. Dense gallery (Castle-Homes-style wall, 4-col, hairline gaps,
- *      lightbox with arrow-key nav + frame counter)
- *   5. Medium-sized contained map card with address pill
- *   6. Compact next-project CTA
+ * Composition (top→bottom):
+ *   1. Running head: project number, category, place, back link
+ *   2. Hero: cover left (desktop), title + meta + mini map right.
+ *      Phones/tablets: no cover and no map; the title comes first.
+ *   3. Gallery: one page-wide grid up to 5 frames, a horizontal slider
+ *      above that; lightbox with arrow keys
+ *   4. Long description (only when it is longer than the hero snippet)
+ *   5. CTA band: manager's phone + "Получете оферта"
+ *   6. More projects (ProjectCard, as on /proekti)
  *
  * SEO: CreativeWork + BreadcrumbList JSON-LD, canonical, OG image,
  * descriptive alts, lazy gallery, eager hero.
@@ -17,8 +18,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Reveal from '../../components/Reveal.astro';
 import ProjectProtocol from '../../components/ProjectProtocol.astro';
-import { projects, getCategory, getProtocol } from '../../data/projects';
-import { company } from '../../data/company';
+import { projects, getProtocol } from '../../data/projects';
+import { company, phone, telHref } from '../../data/company';
+import ProjectCard from '../../components/ProjectCard.astro';
 import { imageSize } from '../../data/assets';
 
 export async function getStaticPaths() {
@@ -31,22 +33,26 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const idx = projects.findIndex((p) => p.id === project.id);
 
-// Pick the next 3 projects in archive order (wrapping). Used in the
+// Pick the next NEXT_COUNT projects in archive order (wrapping). Used in the
 // editorial close-out grid so visitors leave with three concrete onward
 // destinations — a curiosity hook, not just a "next" button.
-const NEXT_COUNT = 3;
+const NEXT_COUNT = 4;
 const nextProjects = Array.from({ length: NEXT_COUNT }, (_, i) =>
   projects[(idx + 1 + i) % projects.length]
 );
-const nextProject = nextProjects[0];
 
-const category = getCategory(project);
+const category = project.category;
 const cover = project.coverImageUrl ?? '/hero/hero-poster.jpg';
 const locationShort = (project.location ?? '').split(',')[0]?.trim() || 'България';
 
 const gallery: string[] = project.galleryImageUrls.length > 0
   ? project.galleryImageUrls
   : project.coverImageUrl ? [project.coverImageUrl] : [];
+// A description up to ~3 short sentences stays whole in the hero; only a
+// longer one gets its own section (and a shortened copy in the hero).
+const hasLongStory = (project.description?.length ?? 0) > 320;
+// Up to 5 frames fit one page-wide grid; more go into the horizontal slider.
+const galleryStatic = gallery.length < 6;
 
 const mapEmbedSrc = project.mapEmbedUrl ??
   (project.location
@@ -74,9 +80,15 @@ const protocol = getProtocol(project);
 // in the editorial running-head metadata strip.
 const protocolYear =
   protocol?.records.find((r) => /^акт/i.test(r.label))?.value.match(/(\d{4})/)?.[1] ?? null;
-const nextProjectNumber = String(((idx + 1) % projects.length) + 1).padStart(3, '0');
 
-const pageTitle = `${project.title}${locationShort && locationShort !== 'България' ? ` — ${locationShort}` : ''} · АРТСТРОЙ ООД`;
+// The place is added only when the title does not name it already.
+const placeInTitle = project.title.toLowerCase().includes(
+  locationShort.replace(/^(гр|с|к\.к|кв)\.\s*/i, '').toLowerCase()
+);
+const pageTitle = `${project.title}${
+  locationShort && locationShort !== 'България' && !placeInTitle ? `, ${locationShort}` : ''
+} · АРТСТРОЙ ООД`;
+const mainPhone = phone('Управител');
 
 // Meta description: template-driven for consistent local-SEO keyword
 // density (executor + location + category + project stats from
@@ -178,11 +190,11 @@ const schemaBreadcrumb = {
               Reads like the running header of an architecture
               publication: archive position · category · location · year.
          ════════════════════════════════════════════════════════════ -->
-    <nav aria-label="Архив на проекти" class="proj-runhead max-lg:order-1 border-b border-ink-900/10 bg-cream-50">
+    <nav aria-label="Проекти" class="proj-runhead max-lg:order-1 border-b border-ink-900/10 bg-cream-50">
       <div class="container-page py-3.5 md:py-4 flex items-center justify-between gap-4 flex-wrap">
         <ol class="runhead-meta flex items-center flex-wrap gap-x-2.5 md:gap-x-3 gap-y-1">
           <li class="runhead-item runhead-archive">
-            АРХИВ — Nº <span class="tabular-nums">{projectNumber}</span> <span class="opacity-50">/</span> <span class="tabular-nums">{totalProjects}</span>
+            Проект № <span class="tabular-nums">{projectNumber}</span> <span class="opacity-50">/</span> <span class="tabular-nums">{totalProjects}</span>
           </li>
           <li class="runhead-sep" aria-hidden="true">·</li>
           <li class="runhead-item">{category}</li>
@@ -201,7 +213,7 @@ const schemaBreadcrumb = {
         </ol>
         <a
           href="/proekti"
-          class="crumb-back inline-flex items-center gap-2 text-[0.65rem] uppercase tracking-[0.22em] font-medium text-ink-900 hover:text-brand transition-colors duration-300"
+          class="crumb-back inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] font-medium text-ink-900 hover:text-brand transition-colors duration-300"
         >
           <span aria-hidden="true" class="text-brand transition-transform duration-300">←</span>
           Всички проекти
@@ -215,7 +227,7 @@ const schemaBreadcrumb = {
               On mobile the cover is hidden — the gallery carousel
               takes its place at the top of the page via order utils.
          ════════════════════════════════════════════════════════════ -->
-    <section class="relative isolate overflow-hidden pt-6 md:pt-10 pb-10 md:pb-14 max-lg:order-3">
+    <section class="relative isolate overflow-hidden pt-6 md:pt-8 lg:pt-10 pb-6 md:pb-8 lg:pb-12 max-lg:order-2">
       <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet"></div>
       <div class="container-page">
         <div class="grid grid-cols-12 gap-y-8 gap-x-6 md:gap-x-10 items-stretch">
@@ -260,7 +272,7 @@ const schemaBreadcrumb = {
                 <p
                   class="mt-6 text-ink-900/85 text-[15px] leading-[1.65] max-w-[42ch]"
                 >
-                  {project.description.length > 220
+                  {hasLongStory
                     ? project.description.slice(0, 217).trimEnd() + '…'
                     : project.description}
                 </p>
@@ -315,15 +327,32 @@ const schemaBreadcrumb = {
                     <dd>{project.scope}</dd>
                   </div>
                 )}
+                {project.location && (
+                  <!-- Phones and tablets: the address instead of the map -->
+                  <div class="meta-row meta-row--narrow">
+                    <dt>Адрес</dt>
+                    <dd>
+                      {mapsLinkOut ? (
+                        <a href={mapsLinkOut} target="_blank" rel="noopener noreferrer" class="addr-link">
+                          {project.location}
+                          <span aria-hidden="true">↗</span>
+                          <span class="sr-only">(Google Maps, нов прозорец)</span>
+                        </a>
+                      ) : project.location}
+                    </dd>
+                  </div>
+                )}
               </dl>
             </Reveal>
 
             {mapEmbedSrc && (
-              <Reveal class="mt-7 flex-1 flex flex-col min-h-[280px]">
+              <!-- Desktop only. The iframe gets its `src` from the page script
+                   at desktop width, so phones do not download the map. -->
+              <Reveal class="max-lg:hidden mt-7 flex-1 flex flex-col min-h-[220px]">
                 <div class="mini-map flex-1 relative overflow-hidden rounded-xl ring-1 ring-ink-900/10 bg-ink-100 shadow-[0_18px_44px_-22px_rgba(18,22,28,0.28)]">
 
                   <iframe
-                    src={mapEmbedSrc}
+                    data-map-src={mapEmbedSrc}
                     class="block w-full h-full"
                     style="border: 0;"
                     loading="lazy"
@@ -343,11 +372,9 @@ const schemaBreadcrumb = {
                       <div class="mini-map-addr inline-flex items-start gap-2.5 max-w-full">
                         <span aria-hidden="true" class="mt-0.5 inline-block h-3.5 w-0.5 bg-brand shrink-0"></span>
                         <div class="min-w-0">
-                          <p class="text-[0.5rem] uppercase tracking-[0.3em] font-semibold text-brand">
-                            Адрес
-                          </p>
+                          <p class="eyebrow">Адрес</p>
                           <p
-                            class="mt-0.5 text-ink-950 text-[12px] !leading-[1.35] truncate"
+                            class="mt-1 text-ink-950 text-sm !leading-[1.35] truncate"
                           >
                             {project.location}
                           </p>
@@ -380,32 +407,26 @@ const schemaBreadcrumb = {
               chrome, count indicator bottom-right.
          ════════════════════════════════════════════════════════════ -->
     {gallery.length > 1 && (
-      <section class="relative isolate overflow-hidden bg-cream-50 pt-2 md:pt-4 pb-12 md:pb-16 max-lg:order-2 max-lg:pt-6">
+      <section class="relative isolate overflow-hidden bg-cream-50 pt-2 lg:pt-4 pb-8 md:pb-10 lg:pb-12 max-lg:order-3" aria-labelledby="gallery-label">
         <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
-        <div class="container-page mb-6 md:mb-8">
-          <div class="flex items-end justify-between gap-4 flex-wrap">
-            <div>
-              <p class="eyebrow">
-                Галерия
-              </p>
-              <h2
-                class="mt-2 font-display text-ink-950 !leading-[1.05]"
-                style="font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.1rem); letter-spacing: -0.018em;"
-              >
-                Кадри от обекта
-              </h2>
-            </div>
-            <p class="text-[0.62rem] uppercase tracking-[0.22em] font-medium text-ink-600 tabular-nums">
-              <span class="text-ink-950">{String(gallery.length).padStart(2, '0')}</span>
-              <span class="text-ink-300 mx-1">·</span>
-              кадъра
+        <div class="container-page mb-4 md:mb-5">
+          <div class="flex items-baseline justify-between gap-4">
+            <p id="gallery-label" class="eyebrow">Галерия</p>
+            <p class="text-xs uppercase tracking-[0.18em] font-medium text-ink-600 tabular-nums">
+              {gallery.length} кадъра
             </p>
           </div>
         </div>
 
-        <div class="gallery-fullbleed">
+        <div class={galleryStatic ? 'container-page' : 'gallery-fullbleed'}>
           <div class="gallery-slider relative">
-            <div class="gallery-wall" data-gallery role="region" aria-label="Хоризонтална галерия">
+            <div
+              class={galleryStatic ? 'gallery-grid' : 'gallery-wall'}
+              data-gallery
+              data-count={gallery.length}
+              role="region"
+              aria-label={galleryStatic ? 'Галерия' : 'Хоризонтална галерия'}
+            >
               {gallery.map((src, i) => (
                 <button
                   type="button"
@@ -415,8 +436,9 @@ const schemaBreadcrumb = {
                 >
                   <img
                     src={src}
+                    data-full={src}
                     {...imageSize(src)}
-                    alt={`${project.title} — кадър ${i + 1}`}
+                    alt={`${project.title}, кадър ${i + 1}`}
                     loading={i < 6 ? 'eager' : 'lazy'}
                     decoding="async"
                     class="block h-full w-full object-cover transition-transform duration-[1200ms] ease-out-expo group-hover:scale-[1.04]"
@@ -427,7 +449,7 @@ const schemaBreadcrumb = {
                   ></span>
                   <span
                     aria-hidden="true"
-                    class="g-num absolute left-2.5 bottom-2.5 md:left-3 md:bottom-3 text-[0.6rem] uppercase tracking-[0.2em] font-medium text-white tabular-nums opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    class="g-num absolute left-2.5 bottom-2.5 md:left-3 md:bottom-3 text-xs uppercase tracking-[0.2em] font-medium text-white tabular-nums opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     style="text-shadow: 0 1px 3px rgba(0,0,0,0.55);"
                   >
                     {String(i + 1).padStart(2, '0')} <span class="opacity-50">/</span> {String(gallery.length).padStart(2, '0')}
@@ -444,6 +466,7 @@ const schemaBreadcrumb = {
               ))}
             </div>
 
+            {!galleryStatic && (<>
             <!-- Edge fades — soften where tiles get clipped at the scroll edges -->
             <span aria-hidden="true" class="gallery-fade gallery-fade-l pointer-events-none absolute left-0 top-0 bottom-0 w-10 md:w-16 lg:w-20"></span>
             <span aria-hidden="true" class="gallery-fade gallery-fade-r pointer-events-none absolute right-0 top-0 bottom-0 w-10 md:w-16 lg:w-20"></span>
@@ -469,12 +492,14 @@ const schemaBreadcrumb = {
                 <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </button>
+            </>)}
           </div>
         </div>
 
+        {!galleryStatic && (
         <div class="container-page">
           <!-- Live scrubber — tracks horizontal scroll position -->
-          <div class="mt-5 md:mt-6 flex items-center gap-4 text-[0.6rem] uppercase tracking-[0.22em] font-medium text-ink-600">
+          <div class="mt-5 md:mt-6 flex items-center gap-4 text-xs uppercase tracking-[0.18em] font-medium text-ink-600">
             <span class="tabular-nums text-ink-950" data-gallery-current>01</span>
             <span class="flex-1 h-px bg-ink-900/10 relative overflow-hidden">
               <span class="absolute left-0 top-0 bottom-0 bg-brand/85 origin-left" data-gallery-progress style="width: 0%;"></span>
@@ -482,6 +507,7 @@ const schemaBreadcrumb = {
             <span class="tabular-nums text-ink-950">{String(gallery.length).padStart(2, '0')}</span>
           </div>
         </div>
+        )}
 
         <!-- Lightbox -->
         <dialog id="gw-lightbox" class="gw-lightbox" aria-label="Преглед на галерия">
@@ -489,7 +515,7 @@ const schemaBreadcrumb = {
             <img id="gw-image" alt="" />
           </div>
           <div class="gw-topbar pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-between p-5 md:p-6">
-            <span id="gw-label" class="text-white/85 text-[0.62rem] uppercase tracking-[0.25em] font-medium pointer-events-auto">
+            <span id="gw-label" class="text-white/85 text-xs uppercase tracking-[0.2em] font-medium pointer-events-auto">
               Кадър 01
             </span>
             <button type="button" class="gw-btn gw-close pointer-events-auto" data-gw-close aria-label="Затвори">
@@ -521,8 +547,8 @@ const schemaBreadcrumb = {
          4 · STORY — long-form description if longer than the hero
               snippet justified.
          ════════════════════════════════════════════════════════════ -->
-    {project.description && project.description.length > 220 && (
-      <section class="relative isolate overflow-hidden bg-cream-50 py-14 md:py-20 max-lg:order-5">
+    {hasLongStory && (
+      <section class="relative isolate overflow-hidden bg-cream-50 py-10 md:py-14 max-lg:order-5">
         <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-c"></div>
         <div class="container-page">
           <div class="grid grid-cols-12 gap-x-6 md:gap-x-10 gap-y-8">
@@ -550,124 +576,84 @@ const schemaBreadcrumb = {
     )}
 
     <!-- ════════════════════════════════════════════════════════════
-         5 · NEXT — magazine-style split card, premium hover.
+         5 · CTA — the manager's phone right after the photos and text.
          ════════════════════════════════════════════════════════════ -->
-    <section class="relative isolate overflow-hidden bg-cream-50 py-10 md:py-14 max-lg:order-6">
-      <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
-      <div class="container-page">
-
-        <!-- Section header — sets up the curiosity hook + total count -->
-        <Reveal>
-          <div class="flex items-end justify-between gap-4 flex-wrap mb-6 md:mb-8">
-            <div>
-              <p class="eyebrow flex items-center gap-3">
-                <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
-                Продължи в архива
-              </p>
-              <h2
-                class="mt-3 font-display text-ink-950 !leading-[1.05]"
-                style="font-size: clamp(1.4rem, 1rem + 1.3vw, 2rem); letter-spacing: -0.018em;"
-              >
-                Още проекти
-              </h2>
-            </div>
-            <a
-              href="/proekti"
-              class="archive-all inline-flex items-center gap-2 text-ink-900 hover:text-brand transition-colors duration-300 text-[0.65rem] uppercase tracking-[0.25em] font-semibold"
+    <section class="relative isolate overflow-hidden bg-ink-950 text-white max-lg:order-6" aria-labelledby="proj-cta-title">
+      <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-d opacity-[0.18]"></div>
+      <span aria-hidden="true" class="absolute inset-x-0 top-0 h-[3px] bg-brand"></span>
+      <div class="container-page py-10 md:py-12 lg:py-14">
+        <div class="grid gap-7 lg:grid-cols-12 lg:items-center lg:gap-10">
+          <div class="lg:col-span-5">
+            <h2
+              id="proj-cta-title"
+              class="font-display text-white tracking-tight leading-[1.05]"
+              style="font-size: clamp(1.85rem, 1.2rem + 2vw, 2.9rem); letter-spacing: -0.02em;"
             >
-              Виж всичките {projects.length}
-              <span aria-hidden="true">↗</span>
+              Подобен обект?
+            </h2>
+            <p class="mt-3 text-base md:text-lg text-white/70 leading-[1.6] max-w-[40ch]">
+              Обадете се на управителя или изпратете запитване.
+            </p>
+          </div>
+          <div class="lg:col-span-7 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10 lg:justify-end">
+            <a href={telHref(mainPhone.number)} class="proj-cta-tel group">
+              <span class="eyebrow block">Управител</span>
+              <span
+                class="mt-2 block font-display tabular-nums text-white transition-colors duration-300 group-hover:text-brand"
+                style="font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.35rem); line-height: 1; letter-spacing: -0.01em;"
+              >
+                {mainPhone.number}
+              </span>
+            </a>
+            <a href="/kontakti" class="btn-brand self-start sm:self-auto">
+              Получете оферта
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </a>
           </div>
-        </Reveal>
+        </div>
+      </div>
+    </section>
 
-        <!-- 3-up grid of vertical cards — same magazine DNA, compacted -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-          {nextProjects.map((p, i) => {
-            const pIdx = projects.findIndex((x) => x.id === p.id);
-            const pNum = String(pIdx + 1).padStart(3, '0');
-            const pCat = getCategory(p);
-            const pLocShort = (p.location ?? '').split(',')[0]?.trim();
-            return (
-              <Reveal class="h-full" delay={i * 80}>
-                <a
-                  href={`/proekti/${p.slug}`}
-                  class="next-card group relative flex flex-col h-full overflow-hidden rounded-xl ring-1 ring-ink-950/10 shadow-[0_18px_44px_-24px_rgba(18,22,28,0.32)]"
-                  aria-label={`Проект Nº ${pNum}: ${p.title}`}
-                >
-                  <!-- TOP: cover image -->
-                  <div class="relative aspect-[4/3] overflow-hidden bg-ink-900">
-                    <img
-                      src={p.coverImageUrl ?? '/hero/hero-poster.jpg'}
-                      {...imageSize(p.coverImageUrl)}
-                      alt={p.title}
-                      loading="lazy"
-                      decoding="async"
-                      class="absolute inset-0 h-full w-full object-cover transition-transform duration-[1500ms] ease-out-expo group-hover:scale-[1.06]"
-                    />
-                    <!-- Top wash so chip reads on bright photos -->
-                    <span
-                      aria-hidden="true"
-                      class="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-ink-950/35 to-transparent"
-                    ></span>
-                    <!-- Category chip top-left -->
-                    <span
-                      class="next-chip absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.5rem] uppercase tracking-[0.22em] font-semibold text-white"
-                    >
-                      <span aria-hidden="true" class="inline-block h-1 w-1 rounded-full bg-brand"></span>
-                      {pCat}
-                    </span>
-                    <!-- Position bottom-right -->
-                    <span
-                      class="absolute right-3 bottom-3 text-[0.5rem] uppercase tracking-[0.26em] font-semibold text-white/95 tabular-nums"
-                      style="text-shadow: 0 1px 3px rgba(0,0,0,0.55);"
-                    >
-                      Nº {pNum}
-                    </span>
-                  </div>
+    <!-- ════════════════════════════════════════════════════════════
+         6 · MORE PROJECTS — the same card as the projects page.
+         ════════════════════════════════════════════════════════════ -->
+    <section class="relative isolate overflow-hidden bg-cream-50 py-10 md:py-12 lg:py-16 max-lg:order-7" aria-labelledby="proj-more-title">
+      <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
+      <div class="container-page">
+        <div class="flex items-end justify-between gap-4 flex-wrap mb-6 md:mb-8">
+          <div>
+            <p class="eyebrow flex items-center gap-3">
+              <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
+              Реализирани обекти
+            </p>
+            <h2
+              id="proj-more-title"
+              class="mt-3 font-display text-ink-950 !leading-[1.05]"
+              style="font-size: clamp(1.4rem, 1rem + 1.3vw, 2rem); letter-spacing: -0.018em;"
+            >
+              Още проекти
+            </h2>
+          </div>
+          <a
+            href="/proekti"
+            class="archive-all inline-flex items-center gap-2 text-ink-900 hover:text-brand transition-colors duration-300 text-xs uppercase tracking-[0.18em] font-semibold"
+          >
+            Вижте всички {projects.length}
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
 
-                  <!-- BOTTOM: dark editorial panel -->
-                  <div class="next-panel relative bg-ink-950 text-white flex flex-col justify-between p-5 md:p-6 flex-1">
-                    <div class="relative">
-                      <h3
-                        class="next-title font-display tracking-tight text-balance"
-                        style="font-size: clamp(1.25rem, 1rem + 0.7vw, 1.55rem); line-height: 1.1; letter-spacing: -0.02em;"
-                      >
-                        {p.title}
-                      </h3>
-                      {pLocShort && (
-                        <p
-                          class="mt-2.5 text-[12px] !leading-[1.4] text-white/60 flex items-center gap-1.5"
-                        >
-                          <svg width="10" height="12" viewBox="0 0 14 18" fill="none" class="opacity-70 shrink-0">
-                            <path d="M7 1.5C4.24 1.5 2 3.74 2 6.5C2 10.5 7 16.5 7 16.5C7 16.5 12 10.5 12 6.5C12 3.74 9.76 1.5 7 1.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-                            <circle cx="7" cy="6.5" r="1.6" fill="currentColor"/>
-                          </svg>
-                          <span class="truncate">{pLocShort}</span>
-                        </p>
-                      )}
-                    </div>
-
-                    <div class="relative mt-5 flex items-center gap-3 pt-4 border-t border-white/12">
-                      <span class="next-cta inline-flex items-center gap-2.5 text-white group-hover:text-brand transition-colors duration-400">
-                        <span class="text-[0.6rem] uppercase tracking-[0.26em] font-semibold">
-                          Отвори
-                        </span>
-                        <span class="next-arrow-wrap inline-flex items-center gap-1 overflow-hidden">
-                          <span aria-hidden="true" class="next-arrow-line block h-px bg-current transition-[width] duration-500 ease-out-expo"></span>
-                          <span aria-hidden="true" class="next-arrow-head transition-transform duration-500 ease-out-expo">
-                            <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-                              <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                          </span>
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              </Reveal>
-            );
-          })}
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
+          {nextProjects.map((p, i) => (
+            <ProjectCard
+              project={p}
+              index={i}
+              aspect="aspect-[4/5]"
+              hoverImages={p.galleryImageUrls}
+            />
+          ))}
         </div>
       </div>
     </section>
@@ -681,7 +667,7 @@ const schemaBreadcrumb = {
     aspect-ratio: 4 / 3;
   }
   @media (min-width: 1024px) {
-    .hero-figure { aspect-ratio: 5 / 4; }
+    .hero-figure { aspect-ratio: 3 / 2; }
   }
   .hero-image {
     animation: hero-settle 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -705,9 +691,9 @@ const schemaBreadcrumb = {
     padding-bottom: 0;
   }
   .meta-row dt {
-    font-size: 0.6rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.14em;
     font-weight: 600;
     color: #BA2D20;
   }
@@ -796,10 +782,9 @@ const schemaBreadcrumb = {
 
   /* ── Running head — magazine-style page header ── */
   .runhead-item {
-    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-    font-size: 0.62rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.16em;
     font-weight: 500;
     color: #12161C;
     line-height: 1.1;
@@ -810,13 +795,9 @@ const schemaBreadcrumb = {
   }
   .runhead-sep {
     color: #BA2D20;
-    font-size: 0.62rem;
+    font-size: 0.75rem;
     opacity: 0.55;
     user-select: none;
-  }
-  @media (max-width: 640px) {
-    .runhead-item { font-size: 0.58rem; letter-spacing: 0.18em; }
-    .runhead-sep { font-size: 0.58rem; }
   }
 
   /* ─────────────────────────────────────────────────────────────
@@ -960,67 +941,60 @@ const schemaBreadcrumb = {
     .gallery-arrow-next { right: 6px; }
   }
 
+  /* ─────────────────────────────────────────────────────────────
+     GALLERY GRID — up to 5 frames on one page-wide grid.
+     The lead frame takes a 2×2 block; the others share the rest,
+     and an odd one out spans the full remaining row, so no cell is
+     left empty (2 columns on phones, 4 from tablet up).
+     ───────────────────────────────────────────────────────────── */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: clamp(120px, 34vw, 200px);
+    gap: 4px;
+  }
+  .gallery-grid .g-tile:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  .gallery-grid[data-count='2'] .g-tile:last-child,
+  .gallery-grid[data-count='4'] .g-tile:last-child {
+    grid-column: span 2;
+  }
+  @media (min-width: 768px) {
+    .gallery-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-auto-rows: clamp(150px, 17vw, 250px);
+      gap: 6px;
+    }
+    .gallery-grid[data-count='2'] .g-tile:last-child {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+    .gallery-grid[data-count='3'] .g-tile:not(:first-child) {
+      grid-column: span 2;
+    }
+  }
+
+  /* Address row in the meta list replaces the map below desktop width */
+  @media (min-width: 1024px) {
+    .meta-row--narrow { display: none; }
+  }
+  .addr-link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgba(186, 45, 32, 0.45);
+    text-underline-offset: 3px;
+  }
+  .addr-link:hover { color: #BA2D20; }
+
+  /* CTA band phone */
+  .proj-cta-tel { display: inline-block; }
+
   /* ── Story prose ── */
   .story-prose {
     text-wrap: pretty;
     font-feature-settings: 'kern', 'liga';
-  }
-
-  /* ─────────────────────────────────────────────────────────────
-     NEXT-PROJECT CARD — magazine split, dark editorial close-out.
-     ───────────────────────────────────────────────────────────── */
-  .next-card {
-    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 500ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .next-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 32px 64px -28px rgba(18, 22, 28, 0.45);
-  }
-
-  /* Category chip on the cover — Apple glass on photo */
-  .next-chip {
-    background: rgba(255, 255, 255, 0.14);
-    backdrop-filter: blur(14px) saturate(180%);
-    -webkit-backdrop-filter: blur(14px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.30);
-  }
-
-  /* Title color shift on hover — fast subtle warmth */
-  .next-title {
-    transition: color 400ms cubic-bezier(0.16, 1, 0.3, 1);
-    color: white;
-  }
-  .next-card:hover .next-title { color: #FAF3EA; }
-
-  /* Arrow line draws from 6px → 28px on hover; head nudges right */
-  .next-arrow-line {
-    width: 6px;
-  }
-  .next-card:hover .next-arrow-line {
-    width: 28px;
-  }
-  .next-card:hover .next-arrow-head {
-    transform: translateX(3px);
-  }
-
-  @media (max-width: 767px) {
-    .next-card .next-title {
-      color: #FAF3EA;
-    }
-    .next-card .next-cta {
-      color: #BA2D20;
-    }
-    .next-card .next-arrow-line {
-      width: 28px;
-    }
-    .next-card .next-arrow-head {
-      transform: translateX(3px);
-    }
-    .next-card img {
-      transform: scale(1.06);
-    }
   }
 
   /* "Виж всичките" link — arrow flicks up-right on hover */
@@ -1028,30 +1002,6 @@ const schemaBreadcrumb = {
     display: inline-block;
     transform: translate(2px, -2px);
     transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  /* Subtle scan-line on the dark panel — adds architectural texture */
-  .next-panel::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-    background-size: 48px 48px;
-    opacity: 0.7;
-    mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 50%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 50%, transparent 100%);
-  }
-
-  /* Reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .next-card,
-    .next-arrow-line,
-    .next-arrow-head,
-    .next-title { transition: none !important; }
-    .next-card:hover { transform: none !important; }
   }
 
   /* ─────────────────────────────────────────────────────────────
@@ -1163,86 +1113,98 @@ const schemaBreadcrumb = {
     .gw-lightbox[open] { animation: none !important; transform: none !important; opacity: 1 !important; }
     .map-card iframe { transition: none !important; filter: none !important; }
     .g-tile img { transition: none !important; }
-    .next-card img,
-    .next-arrow-line,
-    .next-arrow-head { transition: none !important; }
     .mini-map-pin svg { animation: none !important; }
     .crumb-back:hover span,
     .map-cta:hover span { transform: none !important; }
   }
 </style>
 
-<script define:vars={{ gallery }}>
-  // This inline script runs again on every visit; page-wide listeners are
-  // dropped when ClientRouter leaves the page.
-  const pageScope = new AbortController();
-  document.addEventListener('astro:before-swap', () => pageScope.abort(), { once: true });
+<script>
+  // Gallery, lightbox and the desktop mini map of a project page.
+  // ClientRouter runs this module once per visit. The page is wired on every
+  // `astro:page-load` (also when the same project is opened again, by a link
+  // or by "back") and released on `astro:before-swap`.
+  let pageScope: AbortController | null = null;
+  const release = () => {
+    pageScope?.abort();
+    pageScope = null;
+  };
+
+  // ── Mini map: desktop only, so phones do not download it ──
+  function initMiniMap(signal: AbortSignal) {
+    const frame = document.querySelector<HTMLIFrameElement>('iframe[data-map-src]');
+    if (!frame) return;
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    const load = () => {
+      if (desktop.matches && !frame.getAttribute('src')) frame.src = frame.dataset.mapSrc ?? '';
+    };
+    load();
+    desktop.addEventListener('change', load, { signal });
+  }
 
   // ── Lightbox ───────────────────────────────────────────
-  const dialog = document.getElementById('gw-lightbox');
-  const imageEl = document.getElementById('gw-image');
-  const currentEl = document.getElementById('gw-current');
-  const labelEl = document.getElementById('gw-label');
-
-  if (dialog && imageEl && currentEl && gallery.length > 0) {
-    if (gallery.length === 1) dialog.setAttribute('data-single', '');
+  function initLightbox(signal: AbortSignal) {
+    const dialog = document.getElementById('gw-lightbox') as HTMLDialogElement | null;
+    const imageEl = document.getElementById('gw-image') as HTMLImageElement | null;
+    const currentEl = document.getElementById('gw-current');
+    const labelEl = document.getElementById('gw-label');
+    const tiles = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-gallery] .g-tile'));
+    const frames = tiles.map((t) => t.querySelector('img')?.dataset.full ?? '');
+    if (!dialog || !imageEl || !currentEl || tiles.length === 0) return;
+    dialog.toggleAttribute('data-single', frames.length === 1);
 
     let currentIndex = 0;
-
-    const show = (idx) => {
-      currentIndex = ((idx % gallery.length) + gallery.length) % gallery.length;
+    const show = (idx: number) => {
+      currentIndex = ((idx % frames.length) + frames.length) % frames.length;
       imageEl.style.animation = 'none';
-      imageEl.offsetHeight;
+      void imageEl.offsetHeight; // restart the fade-in
       imageEl.style.animation = '';
-      imageEl.src = gallery[currentIndex];
+      imageEl.src = frames[currentIndex];
+      imageEl.alt = tiles[currentIndex].querySelector('img')?.alt ?? '';
       currentEl.textContent = String(currentIndex + 1);
       if (labelEl) labelEl.textContent = `Кадър ${String(currentIndex + 1).padStart(2, '0')}`;
     };
-
-    const open = (idx) => {
+    const open = (idx: number) => {
       show(idx);
       dialog.showModal();
       document.body.style.overflow = 'hidden';
     };
     const close = () => dialog.close();
 
-    document.querySelectorAll('[data-gallery] .g-tile').forEach((btn) => {
-      btn.addEventListener('click', () => open(Number(btn.getAttribute('data-index'))));
-    });
-
-    dialog.querySelector('[data-gw-close]')?.addEventListener('click', close);
-    dialog.querySelector('[data-gw-prev]')?.addEventListener('click', () => show(currentIndex - 1));
-    dialog.querySelector('[data-gw-next]')?.addEventListener('click', () => show(currentIndex + 1));
-
+    tiles.forEach((btn, i) => btn.addEventListener('click', () => open(i), { signal }));
+    dialog.querySelector('[data-gw-close]')?.addEventListener('click', close, { signal });
+    dialog.querySelector('[data-gw-prev]')?.addEventListener('click', () => show(currentIndex - 1), { signal });
+    dialog.querySelector('[data-gw-next]')?.addEventListener('click', () => show(currentIndex + 1), { signal });
     dialog.addEventListener('click', (e) => {
       if (e.target === dialog) close();
-    });
+    }, { signal });
     dialog.addEventListener('close', () => {
       document.body.style.overflow = '';
-    });
-
+    }, { signal });
     document.addEventListener('keydown', (e) => {
       if (!dialog.open) return;
       if (e.key === 'ArrowLeft') { e.preventDefault(); show(currentIndex - 1); }
       else if (e.key === 'ArrowRight') { e.preventDefault(); show(currentIndex + 1); }
-    }, { signal: pageScope.signal });
+    }, { signal });
+    signal.addEventListener('abort', () => {
+      if (dialog.open) dialog.close();
+      document.body.style.overflow = '';
+    });
   }
 
-  // ── Horizontal slider — arrows, scrubber, edge-fade toggles ──
-  const wall = document.querySelector('[data-gallery]');
-  const slider = wall?.closest('.gallery-slider');
-  const prevBtn = slider?.querySelector('[data-gallery-prev]');
-  const nextBtn = slider?.querySelector('[data-gallery-next]');
-  const progressEl = document.querySelector('[data-gallery-progress]');
-  const currentTileEl = document.querySelector('[data-gallery-current]');
+  // ── Horizontal slider (6+ frames): arrows, scrubber, edge fades ──
+  function initSlider(signal: AbortSignal) {
+    const wall = document.querySelector<HTMLElement>('.gallery-wall[data-gallery]');
+    const slider = wall?.closest<HTMLElement>('.gallery-slider');
+    if (!wall || !slider) return;
+    const prevBtn = slider.querySelector<HTMLElement>('[data-gallery-prev]');
+    const nextBtn = slider.querySelector<HTMLElement>('[data-gallery-next]');
+    const progressEl = document.querySelector<HTMLElement>('[data-gallery-progress]');
+    const currentTileEl = document.querySelector<HTMLElement>('[data-gallery-current]');
+    const tiles = Array.from(wall.querySelectorAll<HTMLElement>('.g-tile'));
 
-  if (wall && slider) {
-    const tiles = Array.from(wall.querySelectorAll('.g-tile'));
-    const total = tiles.length;
-
+    // Scroll by whole columns, about one view at a time.
     const tileStep = () => {
-      // Scroll by ~one viewport-width worth, biased to multiples of the
-      // first tile's width so snaps line up nicely.
       const first = tiles[0];
       if (!first) return wall.clientWidth * 0.85;
       const w = first.getBoundingClientRect().width;
@@ -1258,40 +1220,47 @@ const schemaBreadcrumb = {
       const atEnd = x >= max - 2;
       slider.dataset.atStart = String(atStart);
       slider.dataset.atEnd = String(atEnd);
-      if (prevBtn) prevBtn.classList.toggle('is-disabled', atStart);
-      if (nextBtn) nextBtn.classList.toggle('is-disabled', atEnd);
+      prevBtn?.classList.toggle('is-disabled', atStart);
+      nextBtn?.classList.toggle('is-disabled', atEnd);
       if (progressEl) progressEl.style.width = `${Math.max(6, ratio * 100)}%`;
-
-      // Current tile = first one whose left edge is within the viewport
+      // Current tile = first one whose left edge is inside the view
       const wallRect = wall.getBoundingClientRect();
       let idx = 0;
       for (let i = 0; i < tiles.length; i++) {
-        const r = tiles[i].getBoundingClientRect();
-        if (r.left - wallRect.left >= -8) { idx = i; break; }
+        if (tiles[i].getBoundingClientRect().left - wallRect.left >= -8) { idx = i; break; }
       }
       if (currentTileEl) currentTileEl.textContent = String(idx + 1).padStart(2, '0');
     };
 
-    prevBtn?.addEventListener('click', () => {
-      wall.scrollBy({ left: -tileStep(), behavior: 'smooth' });
-    });
-    nextBtn?.addEventListener('click', () => {
-      wall.scrollBy({ left: tileStep(), behavior: 'smooth' });
-    });
+    prevBtn?.addEventListener('click', () => wall.scrollBy({ left: -tileStep(), behavior: 'smooth' }), { signal });
+    nextBtn?.addEventListener('click', () => wall.scrollBy({ left: tileStep(), behavior: 'smooth' }), { signal });
 
     let raf = 0;
-    const onScroll = () => {
+    wall.addEventListener('scroll', () => {
       if (!raf) raf = requestAnimationFrame(() => { raf = 0; updateState(); });
-    };
-    wall.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', updateState, { signal: pageScope.signal });
+    }, { passive: true, signal });
+    window.addEventListener('resize', updateState, { signal });
+    signal.addEventListener('abort', () => cancelAnimationFrame(raf));
     updateState();
 
-    // Keyboard support — left/right arrows scroll the slider when focused
+    // Left/right arrows scroll the slider when it has focus
     wall.tabIndex = 0;
     wall.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') { e.preventDefault(); wall.scrollBy({ left: -tileStep(), behavior: 'smooth' }); }
       else if (e.key === 'ArrowRight') { e.preventDefault(); wall.scrollBy({ left: tileStep(), behavior: 'smooth' }); }
-    });
+    }, { signal });
   }
+
+  function initProjectPage() {
+    release();
+    if (!document.querySelector('[data-gallery], iframe[data-map-src]')) return;
+    const scope = new AbortController();
+    pageScope = scope;
+    initMiniMap(scope.signal);
+    initLightbox(scope.signal);
+    initSlider(scope.signal);
+  }
+
+  document.addEventListener('astro:page-load', initProjectPage);
+  document.addEventListener('astro:before-swap', release);
 </script>

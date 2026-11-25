@@ -2,16 +2,17 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Reveal from '../components/Reveal.astro';
-import { projects, projectCategories, getCategory } from '../data/projects';
+import { projects, projectCategories } from '../data/projects';
 import { imageSize } from '../data/assets';
 import { clients } from '../data/clients';
 import { company, yearsActive as getYearsActive, phone, telHref } from '../data/company';
 
-const PAGE_SIZE = 25;
+// 24 fills full rows in both the 2- and the 3-column grid.
+const PAGE_SIZE = 24;
 
 // Pre-compute category + a flattened search blob for client-side filtering.
 const cards = projects.map((p) => {
-  const category = getCategory(p);
+  const category = p.category;
   const search = [p.title, p.location ?? '', p.client ?? '', p.description ?? '', p.scope ?? '', category]
     .join(' ')
     .toLowerCase();
@@ -35,7 +36,7 @@ const reelPick = (() => {
   }
   // Then 2 more from each category to balance
   for (const cat of projectCategories) {
-    const fromCat = projects.filter((p) => getCategory(p) === cat && !seen.has(p.id));
+    const fromCat = projects.filter((p) => p.category === cat && !seen.has(p.id));
     for (const p of fromCat.slice(0, 2)) {
       picked.push(p);
       seen.add(p.id);
@@ -55,7 +56,7 @@ const heroStats = [
   { label: 'Възложители', value: clients.length, plus: false },
 ];
 
-const pageTitle = `Архив проекти · ${projects.length} реализирани обекта — ${company.name}`;
+const pageTitle = `Проекти · ${projects.length} реализирани обекта — ${company.name}`;
 const pageDescription = `${projects.length} реализирани обекта${
   company.founded !== null ? ` от ${company.founded} до ${currentYear}` : ''
 }: жилищни сгради, инфраструктура, обществени обекти и паркове из цяла България.`;
@@ -68,15 +69,15 @@ const pageDescription = `${projects.length} реализирани обекта$
        The reel sits flush at the top so the transparent header
        overlays a dark surface (and stays readable).
        ════════════════════════════════════════════════════════════ -->
-  <section class="proekti-hero relative isolate overflow-hidden bg-cream-50">
+  <section class="proekti-hero relative isolate overflow-hidden bg-cream-50 border-b border-ink-900/[0.08]">
     <!-- Cinematic film reel: project photos auto-scroll left, infinite loop -->
     <div class="reel-wrap relative w-full overflow-hidden bg-ink-950">
       <div class="reel flex h-full gap-3 lg:gap-4">
         {[...reelPick, ...reelPick].map((p, i) => (
           <a
-            href={`/proekti?cat=${encodeURIComponent(getCategory(p))}`}
+            href={`/proekti?cat=${encodeURIComponent(p.category)}`}
             class="reel-card group/reel relative shrink-0 block overflow-hidden"
-            aria-label={`${p.title} — ${getCategory(p)}`}
+            aria-label={`${p.title} — ${p.category}`}
             data-clone={i >= reelPick.length ? 'true' : 'false'}
           >
             <img
@@ -95,7 +96,7 @@ const pageDescription = `${projects.length} реализирани обекта$
               class="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/15 to-transparent opacity-0 group-hover/reel:opacity-100 transition-opacity duration-500"
             ></div>
             <div class="absolute left-4 right-4 bottom-4 opacity-0 group-hover/reel:opacity-100 transition-opacity duration-500 delay-75">
-              <p class="text-[10px] uppercase tracking-eyebrow text-brand">{getCategory(p)}</p>
+              <p class="text-xs uppercase tracking-eyebrow text-brand">{p.category}</p>
               <p class="mt-1 text-sm font-medium text-white line-clamp-2">{p.title}</p>
             </div>
           </a>
@@ -107,91 +108,87 @@ const pageDescription = `${projects.length} реализирани обекта$
       <div aria-hidden="true" class="pointer-events-none absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-ink-950 to-transparent"></div>
     </div>
 
-    <!-- Editorial title block on cream — sits below the reel -->
+    <!-- Title and the search/filters share one band: the title on the left,
+         the tools on the right (no separate filter strip below). -->
     <div aria-hidden="true" class="absolute inset-0 -z-20 bp-sheet"></div>
-    <div class="container-page relative pt-7 md:pt-10 pb-8 md:pb-14">
-      <Reveal>
-        <p class="eyebrow flex items-center gap-3 flex-wrap">
-          <span class="inline-block h-px w-10 bg-brand"></span>
-          Архивът · Archive{company.founded !== null && ` ${company.founded} — ${currentYear}`}
-        </p>
-        <h1
-          class="mt-4 md:mt-7 font-display tracking-tight leading-[0.95] text-ink-950 max-w-[18ch]"
-          style="font-size: clamp(2.25rem, 1rem + 4vw, 5.25rem); letter-spacing: -0.025em;"
-        >
-          Нашето портфолио </br> <span class="text-brand">от доказателства.</span>
-        </h1>
-
-        <!-- Stats band -->
-        <dl
-          class="mt-6 md:mt-10 grid gap-y-8 gap-x-8 max-w-2xl border-t border-ink-900/10 pt-4 md:pt-7"
-          style={`grid-template-columns: repeat(${heroStats.length}, minmax(0, 1fr));`}
-        >
-          {heroStats.map((st) => (
-            <div>
-              <dt class="sr-only">{st.label}</dt>
-              <dd class="font-display text-ink-950 leading-[0.85] tabular-nums" style="font-size: clamp(2.5rem, 4vw, 4rem);">
-                <span data-counter={st.value}>0</span>{st.plus && <span class="text-brand">+</span>}
-              </dd>
-              <p class="mt-3 md:mt-4 text-[11px] uppercase tracking-eyebrow text-ink-600">{st.label}</p>
-            </div>
-          ))}
-        </dl>
-      </Reveal>
-    </div>
-  </section>
-
-  <!-- ════════════════════════════════════════════════════════════
-       FILTER STRIP — search + 4 category chips + counter.
-       ════════════════════════════════════════════════════════════ -->
-  <section class="proekti-filterbar relative bg-cream-50 border-y border-ink-900/[0.08]">
-    <div class="container-page py-3.5 md:py-10">
-      <div class="flex flex-col gap-3.5 md:gap-7">
-        <!-- Editorial underline-style search -->
-        <div class="search-wrap flex items-center gap-4 border-b border-brand pb-3 transition-colors duration-300">
-          <svg
-            class="text-brand shrink-0"
-            width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"
+    <div class="container-page relative pt-7 md:pt-10 pb-6 md:pb-10 lg:pb-12">
+      <div class="grid grid-cols-1 gap-y-7 lg:grid-cols-12 lg:gap-x-12 lg:items-end">
+        <Reveal class="lg:col-span-6">
+          <p class="eyebrow flex items-center gap-3 flex-wrap">
+            <span class="inline-block h-px w-10 bg-brand"></span>
+            Проекти{company.founded !== null && ` · ${company.founded}–${currentYear}`}
+          </p>
+          <h1
+            class="mt-4 md:mt-6 font-display tracking-tight leading-[0.95] text-ink-950 max-w-[14ch]"
+            style="font-size: clamp(2.25rem, 1rem + 4vw, 5.25rem); letter-spacing: -0.025em;"
           >
-            <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5" />
-            <path d="M14 14l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-          </svg>
-          <input
-            id="proekti-search"
-            type="search"
-            inputmode="search"
-            autocomplete="off"
-            placeholder="Търси по име, локация или ключова дума…"
-            aria-label="Търсене в архива"
-            class="flex-1 bg-transparent border-0 outline-none text-base md:text-lg placeholder:text-ink-900/40 text-ink-950 py-1"
-          />
-          <button
-            type="button"
-            id="proekti-search-clear"
-            class="hidden text-xs uppercase tracking-eyebrow text-ink-600 hover:text-ink-950 transition-colors"
-            aria-label="Изчисти търсенето"
-          >
-            Изчисти
-          </button>
-        </div>
+            Реализирани <span class="text-brand">обекти</span>
+          </h1>
 
-        <!-- Chip row + counter -->
-        <div class="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-5 md:gap-8">
+          <!-- Stats band -->
+          <dl
+            class="mt-6 md:mt-8 grid gap-x-8 max-w-xl border-t border-ink-900/10 pt-4 md:pt-6"
+            style={`grid-template-columns: repeat(${heroStats.length}, minmax(0, 1fr));`}
+          >
+            {heroStats.map((st) => (
+              <div>
+                <dt class="sr-only">{st.label}</dt>
+                <dd class="font-display text-ink-950 leading-[0.85] tabular-nums" style="font-size: clamp(2.5rem, 4vw, 4rem);">
+                  <span data-counter={st.value}>{st.value}</span>{st.plus && <span class="text-brand">+</span>}
+                </dd>
+                <p class="mt-3 text-xs uppercase tracking-eyebrow text-ink-600">{st.label}</p>
+              </div>
+            ))}
+          </dl>
+        </Reveal>
+
+        <div class="proekti-tools lg:col-span-6 flex flex-col gap-4 md:gap-6">
+          <!-- Underline-style search -->
+          <div class="search-wrap flex items-center gap-4 border-b border-brand pb-3 transition-colors duration-300">
+            <svg
+              class="text-brand shrink-0"
+              width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"
+            >
+              <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5" />
+              <path d="M14 14l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            <input
+              id="proekti-search"
+              type="search"
+              inputmode="search"
+              autocomplete="off"
+              placeholder="Търсете по име, място или възложител…"
+              aria-label="Търсене в проектите"
+              class="flex-1 min-w-0 bg-transparent border-0 outline-none text-base md:text-lg placeholder:text-ink-900/45 text-ink-950 py-1"
+            />
+            <button
+              type="button"
+              id="proekti-search-clear"
+              aria-label="Изчистете търсенето"
+              class="hidden text-xs uppercase tracking-eyebrow text-ink-600 hover:text-ink-950 transition-colors"
+            >
+              Изчистете
+            </button>
+          </div>
+
+          <!-- Category chips with their counts -->
           <div
-            class="filter-chips flex flex-nowrap md:flex-wrap items-center gap-2.5 overflow-x-auto -mx-1 px-1 pb-1 md:overflow-visible"
-            role="tablist"
+            class="filter-chips flex flex-nowrap md:flex-wrap items-center gap-2 overflow-x-auto -mx-1 px-1 pb-1 md:overflow-visible"
+            role="group"
             aria-label="Филтър по категория"
           >
-            <button type="button" class="chip is-active" data-cat="all" aria-pressed="true">Всички</button>
+            <button type="button" class="chip is-active" data-cat="all" aria-pressed="true">
+              Всички <span class="chip-count">{cards.length}</span>
+            </button>
             {projectCategories.map((c) => (
-              <button type="button" class="chip" data-cat={c} aria-pressed="false">{c}</button>
+              <button type="button" class="chip" data-cat={c} aria-pressed="false">
+                {c} <span class="chip-count">{counts[c] ?? 0}</span>
+              </button>
             ))}
           </div>
-          <p class="text-[11px] uppercase tracking-eyebrow text-ink-600 shrink-0 self-end md:self-auto">
-            <span id="proekti-count" class="text-brand font-semibold">{cards.length}</span>
-            <span class="text-ink-600/70">/</span>
-            <span class="text-ink-950 font-medium">{cards.length}</span>
-            проекта
+          <p class="text-xs uppercase tracking-eyebrow text-ink-600" aria-live="polite">
+            Показани <span id="proekti-count" class="text-brand font-semibold tabular-nums">{cards.length}</span>
+            от <span class="text-ink-950 font-medium tabular-nums">{cards.length}</span>
           </p>
         </div>
       </div>
@@ -199,16 +196,17 @@ const pageDescription = `${projects.length} реализирани обекта$
   </section>
 
   <!-- ════════════════════════════════════════════════════════════
-       GRID — 25 cards per page, paginated client-side.
+       GRID — 24 cards per page, paginated client-side.
        ════════════════════════════════════════════════════════════ -->
-  <section class="bg-cream-50 py-8 md:py-24 lg:py-28" id="proekti-grid-section">
+  <section class="bg-cream-50 pt-6 pb-12 md:pt-10 md:pb-16 lg:pt-12 lg:pb-20" id="proekti-grid-section" aria-labelledby="proekti-grid-title">
+    <h2 id="proekti-grid-title" class="sr-only">Списък на обектите</h2>
     <!-- Mobile uses tighter horizontal padding so the 2-col cards have a bit
          more room than the rest of the page; desktop keeps container-page. -->
     <div class="mx-auto w-full max-w-7xl px-4 md:px-10 lg:px-12">
-      <!-- Mobile: 2-col compact grid; tablet: 2-col; desktop: 3-col wide grid. -->
+      <!-- Phone: 2 columns; from tablet: 3 columns. -->
       <div
         id="proekti-grid"
-        class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-x-2 sm:gap-x-6 md:gap-x-7 lg:gap-x-8 gap-y-6 md:gap-y-10 lg:gap-y-12"
+        class="grid grid-cols-2 md:grid-cols-3 gap-x-3 md:gap-x-6 lg:gap-x-8 gap-y-3 md:gap-y-8 lg:gap-y-10"
         data-page-size={PAGE_SIZE}
       >
         {cards.map((c, i) => (
@@ -227,15 +225,20 @@ const pageDescription = `${projects.length} реализирани обекта$
                 hoverImages={c.project.galleryImageUrls}
               />
             </div>
-            <div class="card-caption hidden md:flex mt-5 items-baseline gap-3">
-              <span
-                class="font-display text-ink-900/40 tabular-nums text-sm"
-              >
-                №{String(c.project.id).padStart(3, '0')}
-              </span>
-              <span class="text-[10px] uppercase tracking-eyebrow text-brand">
-                {c.category}
-              </span>
+            <div class="card-caption max-md:hidden mt-4">
+              <p class="flex items-baseline gap-3">
+                <span class="font-display text-ink-900/50 tabular-nums text-sm">
+                  №{String(c.project.id).padStart(3, '0')}
+                </span>
+                <span class="text-xs uppercase tracking-eyebrow text-brand">
+                  {c.category}
+                </span>
+              </p>
+              {c.project.description && (
+                <p class="card-desc mt-2 text-sm leading-snug text-ink-600 line-clamp-2">
+                  {c.project.description}
+                </p>
+              )}
             </div>
           </article>
         ))}
@@ -256,19 +259,19 @@ const pageDescription = `${projects.length} реализирани обекта$
       >
         <p class="eyebrow flex items-center justify-center gap-3">
           <span class="inline-block h-px w-8 bg-brand"></span>
-          Празно поле
+          Няма резултат
         </p>
         <h3 class="mt-6 font-display text-3xl md:text-4xl text-ink-950 leading-[1.05]">
-          Не намираме обект <br/>с тези критерии.
+          Няма обект <br/>с това търсене.
         </h3>
         <p class="mt-5 text-base text-ink-600 max-w-md mx-auto">
-          Опитай с по-широки филтри — или ни питай директно. Често за необичайни проекти запис в архива още няма.
+          Опитайте с друга дума или изберете „Всички“. Ако търсите обект, който не е в списъка, попитайте ни.
         </p>
         <div class="mt-8 flex flex-wrap justify-center gap-3">
           <button type="button" id="proekti-clear" class="btn-ghost-dark">
-            Изчисти филтрите
+            Изчистете филтрите
           </button>
-          <a href="/kontakti" class="btn-brand">Питай ни директно</a>
+          <a href="/kontakti" class="btn-brand">Изпратете запитване</a>
         </div>
       </div>
     </div>
@@ -292,27 +295,27 @@ const pageDescription = `${projects.length} реализирани обекта$
     <div class="container-page relative">
       <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-end">
         <Reveal class="lg:col-span-7">
-          <p class="eyebrow text-brand flex items-center gap-3">
+          <p class="eyebrow flex items-center gap-3">
             <span class="inline-block h-px w-8 bg-brand"></span>
-            Започни проект
+            Запитване
           </p>
           <h2
             class="mt-6 font-display tracking-tight leading-[1.02] text-white max-w-[18ch]"
             style="font-size: clamp(2.25rem, 1rem + 4.5vw, 5rem); letter-spacing: -0.025em;"
           >
-            Архивът свършва тук.
+            Имате подобен обект?
             <span class="block text-white/65">
-              Следващият обект — твой.
+              Ще го обсъдим с вас.
             </span>
           </h2>
         </Reveal>
         <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
           <p class="text-base md:text-lg text-white/70 leading-[1.65] max-w-[42ch]">
-            От рекордно сложни жилищни групи до общинска инфраструктура — питай ни директно.
+            Строим жилищни и обществени сгради, хотели, улици и паркове. Обадете се на управителя или изпратете запитване.
           </p>
           <div class="mt-8 flex flex-wrap gap-3">
             <a href="/kontakti" class="btn-brand">
-              Свържи се с нас
+              Получете оферта
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -406,6 +409,20 @@ const pageDescription = `${projects.length} реализирани обекта$
       inset 0 1px 0 rgba(255, 255, 255, 0.20),
       0 8px 22px -10px rgba(186, 45, 32, 0.55);
     transform: translateY(-1px);
+  }
+
+  .chip-count {
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    opacity: 0.55;
+  }
+  .chip.is-active .chip-count { opacity: 0.8; }
+
+  /* Under the card the description is shown only where there is no hover
+     (tablets); with a mouse it appears on the card itself. */
+  .card-desc { display: none; }
+  @media (hover: none) {
+    .card-desc { display: -webkit-box; }
   }
 
   .filter-chips::-webkit-scrollbar { display: none; }
@@ -547,8 +564,8 @@ const pageDescription = `${projects.length} реализирани обекта$
       min-width: auto;
       gap: 0.25rem;
       padding: 0 0.55rem;
-      font-size: 0.55rem;
-      letter-spacing: 0.05em;
+      font-size: 0.75rem;
+      letter-spacing: 0.02em;
     }
     #proekti-pager .pager-step svg {
       width: 10px;
@@ -567,21 +584,24 @@ const pageDescription = `${projects.length} реализирани обекта$
   // snap because browsers recompute the current keyframe position
   // against the new duration. Web Animations API `playbackRate`
   // smoothly rescales speed while keeping the current position.
-  const setupReelHover = () => {
+  const setupReelHover = (signal: AbortSignal) => {
     const wrap = document.querySelector<HTMLElement>('.proekti-hero .reel-wrap');
     const reel = wrap?.querySelector<HTMLElement>('.reel');
     if (!wrap || !reel) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const anim = reel.getAnimations().find((a) => a.playState === 'running');
     if (!anim) return;
-    wrap.addEventListener('mouseenter', () => { anim.updatePlaybackRate(0.25); });
-    wrap.addEventListener('mouseleave', () => { anim.updatePlaybackRate(1); });
+    wrap.addEventListener('mouseenter', () => { anim.updatePlaybackRate(0.25); }, { signal });
+    wrap.addEventListener('mouseleave', () => { anim.updatePlaybackRate(1); }, { signal });
   };
 
   // ── Count-up animation for the hero stats band ───────────
-  const setupCounters = () => {
+  // The markup holds the final numbers; with reduced motion they stay as is.
+  const setupCounters = (signal: AbortSignal) => {
     const counters = document.querySelectorAll<HTMLElement>('[data-counter]');
     if (!counters.length) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    for (const el of counters) el.textContent = '0';
     const ease = (t: number) => 1 - Math.pow(1 - t, 3); // ease-out cubic
     const animate = (el: HTMLElement, target: number) => {
       const duration = 2800;
@@ -606,13 +626,27 @@ const pageDescription = `${projects.length} реализирани обекта$
       { threshold: 0.45 }
     );
     for (const el of counters) io.observe(el);
+    signal.addEventListener('abort', () => io.disconnect());
   };
 
   // ── Filter + paginate ─────────────────────────────────────
+  // This module runs once per visit (ClientRouter); the page is wired on
+  // every `astro:page-load` and released on `astro:before-swap`.
+  let pageScope: AbortController | null = null;
+  const release = () => {
+    pageScope?.abort();
+    pageScope = null;
+  };
+
   const setup = () => {
-    setupCounters();
-    setupReelHover();
+    release();
     const grid = document.getElementById('proekti-grid');
+    if (!grid) return; // not the projects page
+    const scope = new AbortController();
+    pageScope = scope;
+    const { signal } = scope;
+    setupCounters(signal);
+    setupReelHover(signal);
     const searchInput = document.getElementById('proekti-search') as HTMLInputElement | null;
     const searchClear = document.getElementById('proekti-search-clear');
     const counter = document.getElementById('proekti-count');
@@ -624,7 +658,7 @@ const pageDescription = `${projects.length} реализирани обекта$
 
     const items = Array.from(grid.querySelectorAll<HTMLElement>('.project-grid-item'));
     const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip'));
-    const PAGE_SIZE = parseInt(grid.dataset.pageSize ?? '25', 10);
+    const PAGE_SIZE = parseInt(grid.dataset.pageSize ?? '24', 10);
 
     const state = {
       cat: 'all',
@@ -647,6 +681,7 @@ const pageDescription = `${projects.length} реализирани обекта$
       { threshold: 0.1, rootMargin: '0px 0px -6% 0px' }
     );
     for (const item of items) reveal.observe(item);
+    signal.addEventListener('abort', () => reveal.disconnect());
 
     const apply = (opts: { resetPage?: boolean; scroll?: boolean } = {}) => {
       if (opts.resetPage) state.page = 1;
@@ -750,21 +785,21 @@ const pageDescription = `${projects.length} реализирани обекта$
     searchInput.addEventListener('input', () => {
       state.q = searchInput.value;
       apply({ resetPage: true });
-    });
+    }, { signal });
 
     searchClear?.addEventListener('click', () => {
       searchInput.value = '';
       state.q = '';
       apply({ resetPage: true });
       searchInput.focus();
-    });
+    }, { signal });
 
     for (const chip of chips) {
       chip.addEventListener('click', () => {
         state.cat = chip.dataset.cat ?? 'all';
         setActiveChip(state.cat);
         apply({ resetPage: true });
-      });
+      }, { signal });
     }
 
     clearBtn?.addEventListener('click', () => {
@@ -773,7 +808,7 @@ const pageDescription = `${projects.length} реализирани обекта$
       searchInput.value = '';
       setActiveChip('all');
       apply({ resetPage: true });
-    });
+    }, { signal });
 
     // Pager — event delegation (buttons rendered dynamically).
     pager.addEventListener('click', (e) => {
@@ -790,7 +825,7 @@ const pageDescription = `${projects.length} реализирани обекта$
         else if (direction === 'next') state.page = state.page + 1;
         apply({ scroll: true });
       }
-    });
+    }, { signal });
 
     // Hydrate state from URL (?q=&cat=&page=).
     const params = new URLSearchParams(window.location.search);
@@ -812,6 +847,6 @@ const pageDescription = `${projects.length} реализирани обекта$
     apply();
   };
 
-  setup();
   document.addEventListener('astro:page-load', setup);
+  document.addEventListener('astro:before-swap', release);
 </script>
