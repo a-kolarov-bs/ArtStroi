@@ -10,8 +10,9 @@
 //      and links to /proekti. No two services may share a category;
 //   4. every project detail page names its category in JSON-LD and the
 //      JSON-LD image is an absolute URL;
-//   5. every project detail page draws at least one gallery tile: the hero
-//      cover is hidden below 1024 px, so a phone sees only the gallery.
+//   5. every project detail page draws at least one gallery tile, and the
+//      cover as the first one (shown only below 1024 px, where the hero
+//      cover is hidden), so a phone sees the finished building.
 // Usage: node scripts/check-categories.mjs [distDir]   (runs as postbuild)
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -85,7 +86,8 @@ for (const r of data) {
   if (!existsSync(file)) { errors.push(`missing detail page ${r.slug}`); continue; }
   const html = readFileSync(file, 'utf8');
   if (!/class="g-tile[\s"]/.test(html)) errors.push(`${r.slug}: no gallery tile, a phone shows no photo of this project`);
-
+  if (r.cover_image_url && !/data-gallery-cover[\s\S]*?class="g-tile g-tile--cover/.test(html))
+    errors.push(`${r.slug}: the cover is not the first gallery frame below 1024 px`);
   const ld = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)]
     .map((m) => JSON.parse(m[1]))
     .find((o) => o['@type'] === 'CreativeWork');
