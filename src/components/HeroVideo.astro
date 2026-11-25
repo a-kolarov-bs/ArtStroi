@@ -61,7 +61,7 @@ const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
 
   <!-- Hero content (bechtel 1:1 layout: headline left-center, card right-center) -->
   <div class="hero-layout container-page relative z-10 flex flex-1 items-center pt-24 pb-12">
-    <div class="grid w-full grid-cols-1 lg:grid-cols-12 items-center gap-10">
+    <div class="hero-grid grid w-full grid-cols-1 lg:grid-cols-12 items-center gap-10">
       <!-- Headline + subline (signature slogan in Poiret One, red accents) -->
       <div class="hero-copy lg:col-span-7 lg:-translate-y-16 xl:-translate-y-20">
         <!-- One h1: the search phrase (kicker) plus the slogan. -->
@@ -149,18 +149,24 @@ const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
       object-position: center;
     }
 
+    /* Phones: text and card share one column in the flow. The card is
+       pushed to the bottom when the screen is tall enough and simply
+       follows the buttons when it is not, so it never covers them. */
     .hero-layout {
       min-height: 100svh;
       align-items: stretch;
-      padding-top: clamp(6.75rem, 15svh, 8.25rem);
-      padding-bottom: calc(1.1rem + env(safe-area-inset-bottom));
+      padding-top: clamp(8.2rem, 18svh, 10.2rem);
+      padding-bottom: calc(1.35rem + env(safe-area-inset-bottom));
+    }
+
+    .hero-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 2rem;
     }
 
     .hero-copy {
-      position: absolute;
-      left: 1.5rem;
-      right: 1.5rem;
-      top: clamp(8.2rem, 18svh, 10.2rem);
       max-width: 100%;
       transform: none;
     }
@@ -194,19 +200,14 @@ const heroPosterMobile = '/hero/hero-poster-mobile.jpg';
 
 
     .hero-carousel-slot {
-      position: absolute;
-      left: 50%;
-      bottom: max(1.35rem, calc(1rem + env(safe-area-inset-bottom)));
       width: min(100%, 20rem);
-      transform: translateX(-50%);
-      z-index: 5;
-      margin-top: 0;
+      margin: auto auto 0;
     }
   }
 
   @media (max-width: 380px) {
-    .hero-copy {
-      top: 7.7rem;
+    .hero-layout {
+      padding-top: 7.7rem;
     }
 
     .hero-body {
