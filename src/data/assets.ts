@@ -6,6 +6,7 @@ import sertFiles from './legacy-assets/sert.json';
 import partFiles from './legacy-assets/part.json';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { VARIANT_WIDTHS, variantPath, webpSize } from './image-variants.mjs';
 
 const publicDir = fileURLToPath(new URL('../../public', import.meta.url));
 
@@ -39,8 +40,38 @@ export function localAsset(url: string): string {
   return asset.path;
 }
 
-/** width/height attributes for a mirrored image (empty when unknown). */
+const headerSizes = new Map<string, { width?: number; height?: number }>();
+
+/**
+ * width/height attributes for an image under public/: from the manifests for
+ * mirrored files, otherwise from the WebP header (thumbnails, resized
+ * copies). Empty when unknown.
+ */
 export function imageSize(path: string | null | undefined): { width?: number; height?: number } {
-  const asset = path ? byPath.get(path) : undefined;
-  return asset?.width && asset.height ? { width: asset.width, height: asset.height } : {};
+  if (!path) return {};
+  const asset = byPath.get(path);
+  if (asset?.width && asset.height) return { width: asset.width, height: asset.height };
+  if (!headerSizes.has(path)) {
+    const file = publicDir + path;
+    const size = path.endsWith('.webp') && existsSync(file) ? webpSize(file) : null;
+    headerSizes.set(path, size ?? {});
+  }
+  return headerSizes.get(path)!;
+}
+
+/**
+ * `src`, `srcset`, `sizes`, `width`, `height` for a photo, using the smaller
+ * copies from scripts/make-image-variants.mjs when they exist. `sizes` is the
+ * width the image is drawn at (for object-cover crops, the drawn width, not
+ * the box width).
+ */
+export function responsiveImage(
+  path: string,
+  sizes: string,
+): { src: string; srcset?: string; sizes?: string; width?: number; height?: number } {
+  const size = imageSize(path);
+  const copies = VARIANT_WIDTHS.filter((w) => existsSync(publicDir + variantPath(path, w)));
+  if (!copies.length || !size.width) return { src: path, ...size };
+  const srcset = [...copies.map((w) => `${variantPath(path, w)} ${w}w`), `${path} ${size.width}w`].join(', ');
+  return { src: path, srcset, sizes, ...size };
 }
