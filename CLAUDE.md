@@ -78,7 +78,8 @@ src/
 │   ├── Header.astro               # sticky, прозрачен върху hero, top progress bar
 │   ├── Footer.astro
 │   ├── HeroVideo.astro            # full-bleed composite video + text overlay
-│   ├── HeroNewsCard.tsx           # React island, Embla карусел в долен десен ъгъл
+│   ├── HeroNewsCarousel.astro     # карусел с новини/сертификати в hero
+│   ├── CtaBand.astro              # общ призив с телефона на управителя
 │   ├── ProjectCard.astro          # portrait, premium hover motion
 │   ├── TrustedBy.astro            # CSS-only infinite marquee
 │   ├── Reveal.astro               # IntersectionObserver fade-up
@@ -89,8 +90,10 @@ src/
 ├── pages/
 │   └── index.astro
 ├── data/
-│   ├── projects.ts                # seed от data-extract/projects.json (55)
-│   └── clients.ts                 # 15 placeholder лога (общини, институции)
+│   ├── company.ts                 # ЕДИНСТВЕНИЯТ източник на фирмените факти
+│   ├── projects.ts                # 55 проекта, изрична категория на всеки
+│   ├── assets.ts                  # стар URL → локален файл (build пада при липса)
+│   └── clients.ts                 # лога на възложители
 └── styles/global.css              # Tailwind base + custom components
 public/
 ├── hero/
