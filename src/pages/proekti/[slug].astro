@@ -9,7 +9,7 @@
  *   3. Gallery: one page-wide grid up to 5 frames, a horizontal slider
  *      above that; lightbox with arrow keys
  *   4. Long description (only when it is longer than the hero snippet)
- *   5. CTA band: manager's phone + "Получи оферта"
+ *   5. CTA band: manager's phone + "Получете оферта"
  *   6. More projects (ProjectCard, as on /proekti)
  *
  * SEO: CreativeWork + BreadcrumbList JSON-LD, canonical, OG image,
@@ -33,7 +33,7 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const idx = projects.findIndex((p) => p.id === project.id);
 
-// Pick the next 3 projects in archive order (wrapping). Used in the
+// Pick the next NEXT_COUNT projects in archive order (wrapping). Used in the
 // editorial close-out grid so visitors leave with three concrete onward
 // destinations — a curiosity hook, not just a "next" button.
 const NEXT_COUNT = 4;
@@ -606,7 +606,7 @@ const schemaBreadcrumb = {
               </span>
             </a>
             <a href="/kontakti" class="btn-brand self-start sm:self-auto">
-              Получи оферта
+              Получете оферта
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
