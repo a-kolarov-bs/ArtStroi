@@ -276,13 +276,17 @@ const description = project.description?.trim() || '';
       advance();
       timerId = window.setInterval(advance, SLIDE_INTERVAL_MS);
     });
-    card.addEventListener('mouseleave', () => {
+    const stop = () => {
       if (timerId !== null) {
         clearInterval(timerId);
         timerId = null;
       }
       for (const s of slides) s.classList.remove('is-active');
       current = -1;
-    });
+    };
+    card.addEventListener('mouseleave', stop);
+    // Clicking a card navigates without a `mouseleave`; stop the timer
+    // before ClientRouter swaps the page out.
+    document.addEventListener('astro:before-swap', stop);
   }
 </script>

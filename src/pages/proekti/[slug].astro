@@ -1173,6 +1173,11 @@ const schemaBreadcrumb = {
 </style>
 
 <script define:vars={{ gallery }}>
+  // This inline script runs again on every visit; page-wide listeners are
+  // dropped when ClientRouter leaves the page.
+  const pageScope = new AbortController();
+  document.addEventListener('astro:before-swap', () => pageScope.abort(), { once: true });
+
   // ── Lightbox ───────────────────────────────────────────
   const dialog = document.getElementById('gw-lightbox');
   const imageEl = document.getElementById('gw-image');
@@ -1220,7 +1225,7 @@ const schemaBreadcrumb = {
       if (!dialog.open) return;
       if (e.key === 'ArrowLeft') { e.preventDefault(); show(currentIndex - 1); }
       else if (e.key === 'ArrowRight') { e.preventDefault(); show(currentIndex + 1); }
-    });
+    }, { signal: pageScope.signal });
   }
 
   // ── Horizontal slider — arrows, scrubber, edge-fade toggles ──
@@ -1279,7 +1284,7 @@ const schemaBreadcrumb = {
       if (!raf) raf = requestAnimationFrame(() => { raf = 0; updateState(); });
     };
     wall.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', updateState);
+    window.addEventListener('resize', updateState, { signal: pageScope.signal });
     updateState();
 
     // Keyboard support — left/right arrows scroll the slider when focused

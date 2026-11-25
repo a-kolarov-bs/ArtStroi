@@ -425,6 +425,13 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
 
 <script>
   const AUTOPLAY_MS = 8500;
+  // Autoplay timers of the current page; cleared before ClientRouter swaps
+  // the page so a detached carousel does not keep ticking.
+  const timers = new Set<number>();
+  document.addEventListener('astro:before-swap', () => {
+    timers.forEach((id) => window.clearInterval(id));
+    timers.clear();
+  });
 
   function initHeroNewsCarousel() {
     const roots = document.querySelectorAll<HTMLElement>('[data-hero-news]');
@@ -469,10 +476,14 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
 
       const start = () => {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        window.clearInterval(timer);
+        if (timer !== undefined) {
+          window.clearInterval(timer);
+          timers.delete(timer);
+        }
         timer = window.setInterval(() => {
           if (!paused) goTo(active + 1);
         }, AUTOPLAY_MS);
+        timers.add(timer);
       };
 
       prevBtn?.addEventListener('click', () => goTo(active - 1));
