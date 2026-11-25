@@ -124,8 +124,8 @@ const pageDescription = `${
       <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-start">
         <!-- LEFT — title -->
         <Reveal class="lg:col-span-7">
-          <p class="eyebrow flex items-center gap-3 flex-wrap text-brand">
-            <span class="inline-block h-px w-10 bg-brand"></span>
+          <p class="eyebrow flex items-center gap-3 flex-wrap">
+            <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
             За нас{company.founded !== null && ` · ${company.founded} → ${currentYear}`}
           </p>
           <h1
@@ -228,10 +228,7 @@ const pageDescription = `${
     <div class="container-page relative pt-16 md:pt-20 pb-16 md:pb-20">
       <div>
         <Reveal>
-          <div class="zn-award__kicker">
-            <span class="inline-block h-px w-8 bg-brand"></span>
-            <p class="eyebrow">Отличие</p>
-          </div>
+          <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Отличие</p>
         </Reveal>
 
         <div class="mt-8 md:mt-10 grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
@@ -276,7 +273,7 @@ const pageDescription = `${
           <Reveal class="lg:col-span-3">
             <div class="zn-award__cell h-full">
             <p class="zn-award__label">Нашата роля</p>
-            <p class="zn-award__value">Артстрой ООД</p>
+            <p class="zn-award__value">{company.name}</p>
             </div>
           </Reveal>
           <Reveal class="lg:col-span-3" delay={60}>
@@ -366,7 +363,7 @@ const pageDescription = `${
     <div class="container-page relative">
       <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end mb-10 md:mb-14">
         <Reveal class="lg:col-span-7">
-          <p class="eyebrow">Документи</p>
+          <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Документи</p>
           <h2
             id="certs-heading"
             class="mt-3 font-display tracking-tight text-ink-950 max-w-[22ch]"
@@ -601,11 +598,7 @@ const pageDescription = `${
       linear-gradient(90deg, rgba(43, 49, 57, 0.94) 0%, rgba(43, 49, 57, 0.86) 44%, rgba(43, 49, 57, 0.70) 100%),
       radial-gradient(ellipse at 76% 20%, rgba(186, 45, 32, 0.16), transparent 44%);
   }
-  .zn-award__kicker {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-  }
+
   .zn-award__cell {
     background: rgba(18, 22, 28, 0.70);
     padding: 1.25rem 1.2rem 1.35rem;
