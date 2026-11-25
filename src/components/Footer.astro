@@ -146,7 +146,8 @@ const years = yearsActive();
       border-right: 1px solid rgba(18, 22, 28, 0.10);
     }
     .footer-cell:first-child { padding-left: 0; }
-    .footer-cell:last-child  { padding-right: 0; border-right: none; }
+    /* Restate the full padding: the 768px :last-child rule is more specific. */
+    .footer-cell:last-child  { padding: 2.5rem 0 2.5rem 2rem; border-right: none; }
   }
 
   .footer-meta span {
