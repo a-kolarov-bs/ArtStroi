@@ -6,11 +6,16 @@ import Footer from '../components/Footer.astro';
 import SmoothScroll from '../components/SmoothScroll.astro';
 import { company } from '../data/company';
 import { projects } from '../data/projects';
+import { organizationSchema } from '../data/schema';
 
 interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  /** Alt text for the share image; the default describes og-default.jpg. */
+  ogImageAlt?: string;
+  /** Keep the page out of search results (404). */
+  noindex?: boolean;
   noHeader?: boolean;
   noFooter?: boolean;
   /** When the page top is light (no dark hero), force the header into its
@@ -22,12 +27,18 @@ const {
   title = 'АРТСТРОЙ ООД — Строителство в Смолян и България',
   description = `Строителна фирма ${company.name} от ${company.city}. Жилищни сгради, обществени обекти, хотели и инфраструктура. ${projects.length} реализирани обекта${company.founded !== null ? ` от ${company.founded} г. насам` : ''}.`,
   ogImage = '/og-default.jpg',
+  ogImageAlt = ogImage === '/og-default.jpg'
+    ? `Хотел, построен от ${company.name}, гледка отвисоко`
+    : title,
+  noindex = false,
   noHeader = false,
   noFooter = false,
   solidHeader = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = new URL(ogImage, Astro.site).toString();
+const site = Astro.site ?? new URL('https://artstroismolian.com');
 ---
 
 <!doctype html>
@@ -43,15 +54,23 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonical} />}
 
-    <!-- Open Graph -->
+    <!-- Open Graph / Twitter -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={company.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
+    {!noindex && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:locale" content="bg_BG" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema(site))} />
 
     <!-- Fonts: the original АРТСТРОЙ pair — Poiret One (headings) +
          Didact Gothic (body/UI). Both ship a single 400 weight with
@@ -66,8 +85,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <ClientRouter />
   </head>
   <body class:list={["min-h-screen bg-ink-0 text-ink-900 antialiased", solidHeader && "has-solid-header"]}>
+    <a href="#main" class="skip-link">Към съдържанието</a>
     {!noHeader && <Header />}
-    <main>
+    <main id="main">
       <slot />
     </main>
     {!noFooter && <Footer />}

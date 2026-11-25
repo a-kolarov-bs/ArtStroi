@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "prebuild": "node scripts/check-scoped-class.mjs",
+    "prebuild": "node scripts/check-scoped-class.mjs && node scripts/gen-redirects.mjs --check",
     "build": "astro build",
-    "postbuild": "node scripts/check-categories.mjs",
+    "postbuild": "node scripts/check-categories.mjs && node scripts/check-seo.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "astro": "astro"

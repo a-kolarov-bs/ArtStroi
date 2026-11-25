@@ -20,6 +20,8 @@ import Reveal from '../../components/Reveal.astro';
 import ProjectProtocol from '../../components/ProjectProtocol.astro';
 import { projects, getProtocol } from '../../data/projects';
 import { company, phone, telHref } from '../../data/company';
+import { organizationId } from '../../data/schema';
+import { projectMetaDescription } from '../../data/meta';
 import ProjectCard from '../../components/ProjectCard.astro';
 import { imageSize } from '../../data/assets';
 
@@ -87,27 +89,15 @@ const placeInTitle = project.title.toLowerCase().includes(
 );
 const pageTitle = `${project.title}${
   locationShort && locationShort !== 'България' && !placeInTitle ? `, ${locationShort}` : ''
-} · АРТСТРОЙ ООД`;
+} — ${company.name}`;
 const mainPhone = phone('Управител');
 
-// Meta description: template-driven for consistent local-SEO keyword
-// density (executor + location + category + project stats from
-// ПРОТОКОЛ). The prose description sits on the page in the hero — it
-// shouldn't double as meta description for B2B queries.
-const metaLead = `${project.title} — изпълнен от АРТСТРОЙ ООД${
-  locationShort && locationShort !== 'България' ? ` в ${locationShort}` : ''
-}. ${category}.`;
-const metaStats = protocol && protocol.metrics.length > 0
-  ? ' ' + protocol.metrics.map((m) => `${m.value} ${m.label}`).join(' · ') + '.'
-  : '';
-const fullMeta = (metaLead + metaStats).replace(/\s+/g, ' ').trim();
-const pageDescription = fullMeta.length > 160
-  ? fullMeta.slice(0, 157).trimEnd() + '…'
-  : fullMeta;
+// Meta description: what the title does not say (rules in data/meta.ts).
+const pageDescription = projectMetaDescription(project, pageTitle);
 
 // ─── SEO ────────────────────────────────────────────────────────
 const siteOrigin = (Astro.site ?? new URL('https://artstroismolian.com')).toString().replace(/\/$/, '');
-const canonical = `${siteOrigin}/proekti/${project.slug}`;
+const canonical = `${siteOrigin}/proekti/${project.slug}/`;
 
 const schemaCreativeWork = {
   '@context': 'https://schema.org',
@@ -118,19 +108,8 @@ const schemaCreativeWork = {
   image: project.coverImageUrl ? `${siteOrigin}${project.coverImageUrl}` : undefined,
   url: canonical,
   inLanguage: 'bg',
-  creator: {
-    '@type': 'Organization',
-    name: company.name,
-    url: siteOrigin,
-    ...(company.founded !== null && { foundingDate: String(company.founded) }),
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: `${company.district}, ${company.street}`,
-      addressLocality: company.city,
-      postalCode: company.postalCode,
-      addressCountry: 'BG',
-    },
-  },
+  // Full company data lives in the GeneralContractor block from BaseLayout.
+  creator: { '@type': 'GeneralContractor', '@id': organizationId(siteOrigin), name: company.name },
   contentLocation: project.location
     ? {
         '@type': 'Place',
@@ -171,8 +150,8 @@ const schemaBreadcrumb = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Начало', item: siteOrigin },
-    { '@type': 'ListItem', position: 2, name: 'Проекти', item: `${siteOrigin}/proekti` },
+    { '@type': 'ListItem', position: 1, name: 'Начало', item: `${siteOrigin}/` },
+    { '@type': 'ListItem', position: 2, name: 'Проекти', item: `${siteOrigin}/proekti/` },
     { '@type': 'ListItem', position: 3, name: project.title, item: canonical },
   ],
 };

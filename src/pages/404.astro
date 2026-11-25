@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { company, phone, telHref } from '../data/company';
+
+const manager = phone('Управител');
+---
+
+<BaseLayout
+  title={`Страницата не е намерена — ${company.name}`}
+  description={`Адресът не съществува на сайта на ${company.name}, ${company.city}. Вижте проектите или се свържете с нас.`}
+  noindex
+  solidHeader
+>
+  <section class="nf relative isolate overflow-hidden bg-cream-50 text-ink-950">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-d opacity-[0.24]"></div>
+
+    <div class="container-page nf__grid pt-32 md:pt-36 lg:pt-40 pb-16 md:pb-24">
+      <div class="nf__copy">
+        <p class="eyebrow flex items-center gap-3">
+          <span class="inline-block h-px w-8 bg-brand"></span>Грешка 404
+        </p>
+        <h1>Тази страница я няма</h1>
+        <p class="nf__text">
+          Може линкът да е от стария ни сайт или в адреса да има грешка.
+        </p>
+
+        <div class="nf__actions">
+          <a href="/proekti/" class="btn-brand">Вижте проектите</a>
+          <a href="/kontakti/" class="btn-ghost-dark">Свържете се с нас</a>
+        </div>
+
+        <p class="nf__call">
+          Или се обадете на управителя:
+          <a href={telHref(manager.number)}>{manager.number}</a>
+        </p>
+      </div>
+
+      <div class="nf__mark" aria-hidden="true">
+        <span class="nf__digits">404</span>
+        <span class="nf__dim"><span>адресът не е намерен</span></span>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: center;
+    min-height: min(78vh, 46rem);
+  }
+
+  .nf h1 {
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 1.4rem + 3.6vw, 5rem);
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  .nf__text {
+    margin-top: 1.5rem;
+    max-width: 32rem;
+    border-left: 2px solid #ba2d20;
+    padding-left: 1.25rem;
+    color: rgba(18, 22, 28, 0.7);
+    font-size: clamp(1rem, 0.92rem + 0.28vw, 1.14rem);
+    line-height: 1.7;
+  }
+
+  .nf__actions {
+    margin-top: 2.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .nf__call {
+    margin-top: 1.75rem;
+    color: rgba(18, 22, 28, 0.62);
+    font-size: 0.95rem;
+  }
+
+  .nf__call a {
+    color: #12161c;
+    white-space: nowrap;
+    text-decoration: underline;
+    text-decoration-color: rgb(186 45 32 / 0.5);
+    text-underline-offset: 0.25em;
+  }
+
+  .nf__call a:hover {
+    color: #ba2d20;
+  }
+
+  /* Big outlined numerals with a drawing-style dimension line under them. */
+  .nf__mark {
+    justify-self: end;
+    display: grid;
+    gap: 1rem;
+    user-select: none;
+  }
+
+  .nf__digits {
+    font-family: var(--font-display);
+    font-size: clamp(7rem, 4rem + 13vw, 17rem);
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgb(186 45 32 / 0.55);
+  }
+
+  .nf__dim {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid rgba(18, 22, 28, 0.35);
+    padding-top: 0.6rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(18, 22, 28, 0.5);
+  }
+
+  .nf__dim::before,
+  .nf__dim::after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    width: 1px;
+    height: 11px;
+    background: rgba(18, 22, 28, 0.35);
+  }
+
+  .nf__dim::before { left: 0; }
+  .nf__dim::after { right: 0; }
+
+  @media (max-width: 767px) {
+    .nf__grid {
+      grid-template-columns: 1fr;
+      min-height: 0;
+      gap: 2.5rem;
+    }
+
+    .nf__mark {
+      order: -1;
+      justify-self: start;
+    }
+
+    .nf__digits {
+      font-size: 7.5rem;
+    }
+
+    .nf__actions > a {
+      flex: 1 1 100%;
+    }
+  }
+</style>

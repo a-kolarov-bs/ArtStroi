@@ -9,7 +9,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
 ---
 
 <BaseLayout
-  title={`Контакти — ${company.name}`}
+  title={`Контакти — ${company.name}, ${company.city}`}
   description={`Контакти на ${company.name}: телефони, имейл и офис в ${fullAddress}.`}
   solidHeader
 >
