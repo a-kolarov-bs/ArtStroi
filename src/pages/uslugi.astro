@@ -166,7 +166,7 @@ const serviceDefs = [
     refCat: 'Обществени сгради',
     photoId: 12,
   },
-] satisfies { refCat: ProjectCategory }[];
+] satisfies ({ refCat: ProjectCategory } & Record<string, unknown>)[];
 
 // The count on each card is the number of cards the linked /proekti
 // filter shows, so the two can never disagree.
