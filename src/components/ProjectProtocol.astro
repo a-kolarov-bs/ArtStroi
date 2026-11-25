@@ -245,6 +245,16 @@ const { protocol, number, total } = Astro.props;
   const formatNum = (n: number) =>
     n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
+  // ClientRouter runs this module once per visit: count-ups are set up on
+  // every `astro:page-load` and their observers dropped on `astro:before-swap`.
+  const observers = new Set<IntersectionObserver>();
+  const release = () => {
+    observers.forEach((o) => o.disconnect());
+    observers.clear();
+  };
+
+  function initProtocols() {
+  release();
   const sections = document.querySelectorAll<HTMLElement>('.proj-protocol');
   for (const section of sections) {
     const valueEls = section.querySelectorAll<HTMLElement>('[data-pp-target]');
@@ -278,7 +288,12 @@ const { protocol, number, total } = Astro.props;
       { threshold: 0.4 }
     );
     io.observe(section);
+    observers.add(io);
   }
+  }
+
+  document.addEventListener('astro:page-load', initProtocols);
+  document.addEventListener('astro:before-swap', release);
 
   function animateCount(el: HTMLElement, target: number, delay: number) {
     const duration = 2800;

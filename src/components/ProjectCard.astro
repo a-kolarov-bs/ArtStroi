@@ -68,15 +68,15 @@ const description = project.description?.trim() || '';
   {hasSlideshow && (
     <!-- Slideshow layer (hidden by default; cycles through gallery on hover) -->
     <div class="hover-slideshow absolute inset-0" aria-hidden="true">
-      {hoverImages.map((url, idx) => (
+      {/* No `src` until the first hover: the slides are never shown on touch
+          screens, so they must not cost a download there. */}
+      {hoverImages.map((url) => (
         <img
-          src={url}
+          data-src={url}
           {...imageSize(url)}
           alt=""
-          loading="lazy"
           decoding="async"
           class="slide absolute inset-0 h-full w-full object-cover"
-          data-slide-index={idx}
         />
       ))}
     </div>
@@ -86,7 +86,7 @@ const description = project.description?.trim() || '';
   <div
     class="absolute inset-0 transition-opacity duration-600 ease-out-expo"
     aria-hidden="true"
-    style="background: linear-gradient(to top, rgba(18,22,28,0.88) 0%, rgba(18,22,28,0.30) 45%, rgba(18,22,28,0.0) 75%);"
+    style="background: linear-gradient(to top, rgba(18,22,28,0.92) 0%, rgba(18,22,28,0.62) 32%, rgba(18,22,28,0.12) 62%, rgba(18,22,28,0.0) 80%);"
   ></div>
 
   {hasHoverFx && (
@@ -97,44 +97,24 @@ const description = project.description?.trim() || '';
     ></div>
   )}
 
-  <!-- Top-right index marker -->
-  <span
-    class:list={[
-      'absolute uppercase tracking-eyebrow font-medium text-white/60',
-      isSmall
-        ? 'right-4 top-4 text-[0.55rem]'
-        : 'right-3 top-3 text-[0.55rem] md:right-5 md:top-5 md:text-[0.65rem]',
-    ]}
-    aria-hidden="true"
-  >
-    {String(index + 1).padStart(2, '0')} <span class="text-white/30">/</span> {isSmall ? '' : 'ПРОЕКТ'}
-  </span>
-
   <!-- Content (bottom) -->
   <div class:list={[
     'relative z-10 flex h-full flex-col justify-end',
-    isSmall ? 'p-4' : 'p-3 md:p-7 lg:p-8',
+    isSmall ? 'p-4' : 'p-3 md:p-4 lg:p-7',
   ]}>
     <div class="flex items-end justify-between gap-3">
       <div class="min-w-0 flex-1">
-        <p
-          class:list={[
-            'eyebrow !text-white inline-flex items-center rounded-full',
-            'bg-white/20 backdrop-blur-md ring-1 ring-white/30',
-            'transition-colors duration-300',
-            isSmall
-              ? '!text-[0.6rem] px-2.5 py-1'
-              : '!text-[0.45rem] md:!text-xs !leading-none md:!leading-normal px-1.5 py-[3px] md:px-3 md:py-1.5',
-          ]}
-        >
+        <!-- Place chip. On a two-column phone grid the title needs the room,
+             and most titles already name the place. -->
+        <p class:list={['card-loc', !isSmall && 'card-loc--wide']}>
           {locationLabel}
         </p>
         <h3
           class:list={[
-            'font-display leading-[1.1] md:leading-[1.05] tracking-tight text-white max-w-[26ch] line-clamp-3',
+            'font-display tracking-tight text-white',
             isSmall
-              ? 'mt-2 text-base md:text-[15px]'
-              : 'mt-1.5 text-[13px] md:mt-3 md:text-2xl lg:text-3xl',
+              ? 'mt-2 text-base leading-[1.1] md:text-[15px] max-w-[26ch] line-clamp-3'
+              : 'text-base leading-[1.15] line-clamp-4 md:mt-3 md:text-lg md:leading-[1.1] md:line-clamp-3 lg:text-2xl lg:leading-[1.05] max-w-[26ch]',
           ]}
         >
           {project.title}
@@ -143,7 +123,7 @@ const description = project.description?.trim() || '';
           <p
             class:list={[
               'hover-desc text-white/85 max-w-[34ch] line-clamp-3',
-              isSmall ? 'text-[12px] leading-snug' : 'text-[11px] md:text-sm leading-snug',
+              'text-sm leading-snug',
             ]}
           >
             {description}
@@ -159,12 +139,12 @@ const description = project.description?.trim() || '';
       <span
         class:list={[
           'grid shrink-0 place-items-center rounded-full bg-brand text-white shadow-lift transition-all duration-500 ease-out-expo group-hover:scale-110 group-hover:-rotate-12',
-          isSmall ? 'h-9 w-9' : 'h-7 w-7 md:h-12 md:w-12',
+          isSmall ? 'h-9 w-9' : 'max-lg:hidden h-12 w-12',
         ]}
         aria-hidden="true"
       >
         <svg
-          class={isSmall ? 'w-[11px] h-[11px]' : 'w-2.5 h-2.5 md:w-3.5 md:h-3.5'}
+          class={isSmall ? 'w-[11px] h-[11px]' : 'w-3.5 h-3.5'}
           viewBox="0 0 14 14"
           fill="none"
         >
@@ -202,11 +182,41 @@ const description = project.description?.trim() || '';
       opacity 800ms cubic-bezier(0.16, 1, 0.3, 1) 200ms,
       transform 800ms cubic-bezier(0.16, 1, 0.3, 1) 200ms;
   }
-  .has-hover-fx:hover .hover-desc {
-    max-height: 8rem;
-    margin-top: 0.5rem;
-    opacity: 1;
-    transform: translateY(0);
+  @media (hover: hover) {
+    .has-hover-fx:hover .hover-desc {
+      max-height: 8rem;
+      margin-top: 0.5rem;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  /* Touch screens have no hover: the description and the slideshow are not
+     part of the card there (the archive grid shows the text under the card
+     from tablet width; the detail page has it in full). */
+  @media (hover: none) {
+    .hover-desc,
+    .hover-slideshow { display: none; }
+  }
+
+  /* Place chip on the photo */
+  .card-loc {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.18);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  }
+  @media (max-width: 767.98px) {
+    .card-loc--wide { display: none; }
   }
 
   /* Slideshow: each slide stacked over the cover image, hidden by default.
@@ -230,63 +240,79 @@ const description = project.description?.trim() || '';
 </style>
 
 <script>
-  // ── Hover videos: play/pause on enter/leave ─────────────────
-  const videoCards = document.querySelectorAll<HTMLElement>('.has-hover-video');
-  for (const card of videoCards) {
-    const video = card.querySelector<HTMLVideoElement>('video.hover-video');
-    if (!video) continue;
-    let playPromise: Promise<void> | undefined;
-    card.addEventListener('mouseenter', () => {
-      try {
-        playPromise = video.play();
-      } catch (_) { /* ignore */ }
-    });
-    card.addEventListener('mouseleave', () => {
+  // Hover behaviour of the cards on the current page. ClientRouter runs this
+  // module once per visit, so the cards are wired on every `astro:page-load`
+  // and released on `astro:before-swap` (timers, playing videos, listeners).
+  const SLIDE_INTERVAL_MS = 1700;
+  let pageScope: AbortController | null = null;
+
+  function releaseCards() {
+    pageScope?.abort();
+    pageScope = null;
+  }
+
+  function initProjectCards() {
+    releaseCards();
+    const scope = new AbortController();
+    pageScope = scope;
+    const { signal } = scope;
+
+    // ── Hover videos: play on enter, rewind on leave ──────────
+    for (const card of document.querySelectorAll<HTMLElement>('.has-hover-video')) {
+      const video = card.querySelector<HTMLVideoElement>('video.hover-video');
+      if (!video) continue;
+      let playPromise: Promise<void> | undefined;
       const reset = () => {
         video.pause();
         video.currentTime = 0;
       };
-      if (playPromise) playPromise.then(reset).catch(() => reset());
-      else reset();
-    });
+      card.addEventListener('mouseenter', () => {
+        playPromise = video.play().catch(() => undefined);
+      }, { signal });
+      card.addEventListener('mouseleave', () => {
+        if (playPromise) playPromise.then(reset);
+        else reset();
+      }, { signal });
+      signal.addEventListener('abort', () => video.pause());
+    }
+
+    // ── Hover slideshow: cycle through the gallery while hovered ──
+    // The slides get their `src` on the first hover only.
+    for (const card of document.querySelectorAll<HTMLElement>('.has-hover-slideshow')) {
+      const slides = Array.from(card.querySelectorAll<HTMLImageElement>('img.slide'));
+      if (slides.length === 0) continue;
+      let current = -1;
+      let timerId: number | null = null;
+
+      const advance = () => {
+        const next = (current + 1) % slides.length;
+        if (current >= 0) slides[current].classList.remove('is-active');
+        slides[next].classList.add('is-active');
+        current = next;
+      };
+      const stop = () => {
+        if (timerId !== null) {
+          window.clearInterval(timerId);
+          timerId = null;
+        }
+        for (const s of slides) s.classList.remove('is-active');
+        current = -1;
+      };
+
+      card.addEventListener('mouseenter', () => {
+        if (timerId !== null) return;
+        for (const s of slides) {
+          if (!s.getAttribute('src') && s.dataset.src) s.src = s.dataset.src;
+        }
+        advance();
+        timerId = window.setInterval(advance, SLIDE_INTERVAL_MS);
+      }, { signal });
+      card.addEventListener('mouseleave', stop, { signal });
+      // A click navigates without `mouseleave`.
+      signal.addEventListener('abort', stop);
+    }
   }
 
-  // ── Hover slideshow: cycle through gallery on enter, stop on leave ──
-  // Each card has 3-5 stacked images (.slide). On hover we add `.is-active`
-  // to one at a time on a timer, producing a soft crossfade. On leave we
-  // clear all `.is-active` flags so the underlying cover image returns.
-  const SLIDE_INTERVAL_MS = 1700;
-  const slideshowCards = document.querySelectorAll<HTMLElement>('.has-hover-slideshow');
-  for (const card of slideshowCards) {
-    const slides = Array.from(card.querySelectorAll<HTMLImageElement>('img.slide'));
-    if (slides.length === 0) continue;
-    let current = -1;
-    let timerId: number | null = null;
-
-    const advance = () => {
-      const next = (current + 1) % slides.length;
-      if (current >= 0) slides[current].classList.remove('is-active');
-      slides[next].classList.add('is-active');
-      current = next;
-    };
-
-    card.addEventListener('mouseenter', () => {
-      if (timerId !== null) return;
-      // Show the first slide immediately, then cycle on interval.
-      advance();
-      timerId = window.setInterval(advance, SLIDE_INTERVAL_MS);
-    });
-    const stop = () => {
-      if (timerId !== null) {
-        clearInterval(timerId);
-        timerId = null;
-      }
-      for (const s of slides) s.classList.remove('is-active');
-      current = -1;
-    };
-    card.addEventListener('mouseleave', stop);
-    // Clicking a card navigates without a `mouseleave`; stop the timer
-    // before ClientRouter swaps the page out.
-    document.addEventListener('astro:before-swap', stop);
-  }
+  document.addEventListener('astro:page-load', initProjectCards);
+  document.addEventListener('astro:before-swap', releaseCards);
 </script>
