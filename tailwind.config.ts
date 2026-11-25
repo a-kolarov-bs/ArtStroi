@@ -4,6 +4,8 @@ export default {
   content: ['./src/**/*.{astro,html,ts,tsx,js,jsx,md,mdx}'],
   theme: {
     extend: {
+      // border-white/12 and similar hairlines are used across pages.
+      opacity: { 12: '0.12' },
       colors: {
         brand: {
           DEFAULT: '#BA2D20',

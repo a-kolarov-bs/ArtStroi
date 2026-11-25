@@ -1,11 +1,12 @@
 ---
 // Closing call-to-action band shared by /uslugi and /za-nas: dark slab,
-// title left, hours + three direct phone lines + two buttons right.
+// title left, hours + the manager's phone + two buttons right. The
+// footer right below lists every line, so the band keeps just one.
 // One look and one button text on every page that uses it (vizualen Н11).
 import Reveal from './Reveal.astro';
 import { company, phone, telHref } from '../data/company';
 
-const phones = [phone('Управител'), phone('Технически директор'), phone('Транспорт')];
+const manager = phone('Управител');
 ---
 
 <section class="cta-band relative isolate overflow-hidden bg-ink-950 text-white py-16 lg:py-20" aria-labelledby="cta-band-heading">
@@ -33,16 +34,10 @@ const phones = [phone('Управител'), phone('Технически дир�
           Работим {company.hoursDays} {company.hoursTime}. Пишете ни и за по-необичайни задачи: реставрация, аварийни укрепвания, общински обекти.
         </p>
 
-        <ul class="cta-band__phones mt-6 grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/12 rounded-[4px] overflow-hidden">
-          {phones.map((p) => (
-            <li class="cta-band__phone bg-ink-950 px-4 py-3.5">
-              <p class="text-xs uppercase tracking-eyebrow text-brand">{p.roleShort}</p>
-              <a href={telHref(p.number)} class="mt-1 block text-[15px] text-white tabular-nums whitespace-nowrap hover:text-brand transition-colors">
-                {p.number}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <a href={telHref(manager.number)} class="cta-band__phone mt-6 flex items-baseline justify-between gap-4 border-y border-white/12 py-3.5">
+          <span class="text-xs uppercase tracking-eyebrow text-brand">{manager.roleShort}</span>
+          <span class="text-[17px] md:text-lg text-white tabular-nums whitespace-nowrap">{manager.number}</span>
+        </a>
 
         <div class="cta-band__actions mt-6 flex flex-wrap gap-3">
           <a href="/kontakti" class="btn-brand">
@@ -61,21 +56,18 @@ const phones = [phone('Управител'), phone('Технически дир�
 </section>
 
 <style>
-  .cta-band__phone {
-    transition: background-color 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  .cta-band__phone span:last-child {
+    transition: color 400ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .cta-band__phone:hover {
-    background: rgba(186, 45, 32, 0.10);
+  .cta-band__phone:hover span:last-child { color: theme('colors.brand.DEFAULT'); }
+  .cta-band__phone:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
   }
-  /* Phones: three in a row from 640px; below that the manager's line is
-     full width and the other two share a row. */
   @media (max-width: 639px) {
-    .cta-band__phones { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .cta-band__phone { padding: 0.8rem 0.85rem; }
-    .cta-band__phone:first-child { grid-column: 1 / -1; }
     .cta-band__actions > a { flex: 1 1 auto; justify-content: center; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .cta-band__phone { transition: none; }
+    .cta-band__phone span:last-child { transition: none; }
   }
 </style>

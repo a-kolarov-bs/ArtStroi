@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Reveal from '../components/Reveal.astro';
+import CtaBand from '../components/CtaBand.astro';
 import { projects } from '../data/projects';
 import { imageSize } from '../data/assets';
 import { company, yearsActive as getYearsActive, cprsGroupsLabel } from '../data/company';
@@ -8,8 +9,8 @@ import { company, yearsActive as getYearsActive, cprsGroupsLabel } from '../data
 // ────────────────────────────────────────────────────────────────
 // За нас — editorial dossier of the firm.
 // Dense like uslugi.astro: no oceans of whitespace, alternating
-// cream/ink bands, with ONE full-bleed section ("Сграда на годината")
-// that breaks out of container-page on purpose.
+// cream/ink bands. Every section, the award included, aligns to
+// container-page.
 // ────────────────────────────────────────────────────────────────
 
 const currentYear = new Date().getFullYear();
@@ -38,21 +39,18 @@ const isoStandards = [
   {
     code: 'ISO 9001:2015',
     title: 'Управление на качеството',
-    body: 'Сертифицирана система за управление на качеството — приложима за пълния обхват на строително-монтажните работи.',
     img: '/sert/1.webp',
     pdf: '/sert/1.pdf',
   },
   {
     code: 'ISO 14001:2015',
     title: 'Околна среда',
-    body: 'Управление по отношение на околната среда — намалено въздействие на строителния процес върху терена и общността.',
     img: '/sert/2.webp',
     pdf: '/sert/2.pdf',
   },
   {
     code: 'ISO 45001:2018',
-    title: 'Здраве и безопасност',
-    body: 'Система за управление на здравето и безопасността при работа — оценен риск на всяко работно място на обекта.',
+    title: 'Здраве и безопасност при работа',
     img: '/sert/3.webp',
     pdf: '/sert/3.pdf',
   },
@@ -68,26 +66,26 @@ const cprsCards = [
   {
     roman: 'II',
     title: 'Втора група',
-    body: 'Строежи от транспортната инфраструктура — пътища, тротоари, площади.',
+    body: 'Строежи от транспортната инфраструктура: пътища, тротоари, площади.',
     img: '/sert/5.webp',
   },
   {
     roman: 'III',
     title: 'Трета група',
-    body: 'Строежи от енергийната инфраструктура — електро, ВиК, външни мрежи.',
+    body: 'Строежи от енергийната инфраструктура: електро, ВиК, външни мрежи.',
     img: '/sert/6.webp',
   },
   {
     roman: 'IV',
     title: 'Четвърта група',
-    body: 'Строежи от благоустройствената инфраструктура — паркове, ВиК съоръжения.',
+    body: 'Строежи от благоустройствената инфраструктура: паркове, ВиК съоръжения.',
     img: '/sert/7.webp',
   },
 ];
 
 const declaration = {
   title: 'Декларация за целите и ангажиментите',
-  body: 'Политика на ръководството по качество, околна среда, здраве и безопасност при работа. Документът е публичен и неразделна част от интегрираната ни система.',
+  body: 'Политиката на ръководството по качество, околна среда, здраве и безопасност при работа.',
   pdf: '/sert/doc07412420240403151358.pdf',
   img: '/sert/8.webp',
 };
@@ -120,7 +118,7 @@ const pageDescription = `${
     )}
 
     <div class="container-page relative pt-32 md:pt-36 lg:pt-40 pb-14 md:pb-20">
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-end">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-start">
         <!-- LEFT — title -->
         <Reveal class="lg:col-span-7">
           <p class="eyebrow flex items-center gap-3 flex-wrap text-brand">
@@ -148,21 +146,18 @@ const pageDescription = `${
                 <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem);">
                   <span data-counter={st.value} data-pad={st.pad || undefined}>0</span>{st.plus && <span class="text-brand">+</span>}
                 </dd>
-                <p class="mt-3 text-[10.5px] uppercase tracking-eyebrow text-white/55">{st.short}</p>
+                <p class="mt-3 text-xs uppercase tracking-eyebrow text-white/60">{st.short}</p>
               </div>
             ))}
           </dl>
         </Reveal>
 
         <!-- RIGHT — dossier card -->
-        <Reveal class="lg:col-span-5" delay={120}>
+        <Reveal class="lg:col-span-5 lg:pt-10" delay={120}>
           <aside class="zn-dossier">
-            <div class="flex items-baseline justify-between border-b border-white/15 pb-3">
-              <p class="text-[10.5px] uppercase tracking-eyebrow text-white/55">
-                Профил · Стр.&nbsp;А
-              </p>
-              <p class="font-display text-white/55 text-sm tabular-nums">
-                01 / 07
+            <div class="border-b border-white/15 pb-3">
+              <p class="text-xs uppercase tracking-eyebrow text-white/60">
+                Профил
               </p>
             </div>
 
@@ -196,7 +191,7 @@ const pageDescription = `${
             </dl>
 
             <a href="#nagrada" class="zn-dossier__cta">
-              Виж наградения обект
+              Вижте наградения обект
               <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -225,28 +220,27 @@ const pageDescription = `${
       class="zn-award__wash"
     />
 
-    <div class="relative px-5 md:px-10 pt-16 md:pt-24 pb-16 md:pb-22">
-      <div class="mx-auto max-w-[92rem]">
+    <div class="container-page relative pt-16 md:pt-20 pb-16 md:pb-20">
+      <div>
         <Reveal>
           <div class="zn-award__kicker">
-            <span class="inline-block h-px w-10 bg-brand"></span>
-            <p class="eyebrow text-brand">Наше отличие · Национално признание</p>
+            <span class="inline-block h-px w-8 bg-brand"></span>
+            <p class="eyebrow">Отличие</p>
           </div>
         </Reveal>
 
         <div class="mt-8 md:mt-10 grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           <Reveal class="lg:col-span-5">
-            <p class="zn-award__category">Сграда на годината · 2022</p>
             <h2
               id="award-heading"
-              class="mt-4 font-display tracking-tight text-white"
-              style="font-size: clamp(3.4rem, 1.6rem + 6vw, 7.8rem); line-height: 0.9; letter-spacing: -0.03em;"
+              class="font-display tracking-tight text-white"
+              style="font-size: clamp(2.4rem, 1.4rem + 3.4vw, 4.75rem); line-height: 0.95; letter-spacing: -0.025em;"
             >
               Сграда
               <span class="block text-brand">на годината.</span>
             </h2>
             <p class="mt-6 md:mt-8 max-w-[48ch] text-[15.5px] md:text-[16.5px] text-white/72 leading-[1.7]">
-              „АРТСТРОЙ“ ООД е изпълнител на отличения проект „Вино и СПА хотел Чукара“ в Националния конкурс „Сграда на годината“ 2022. Това е признание за реално изпълнение, детайл и строителна дисциплина.
+              {company.name} е изпълнител на „Вино и СПА хотел Чукара“. Обектът е отличен в Националния конкурс „Сграда на годината“ 2022.
             </p>
             <div class="zn-award__seal" aria-label="Сграда на годината 2022">
               <span>2022</span>
@@ -334,11 +328,8 @@ const pageDescription = `${
         </div>
 
         <div class="zn-award__footer">
-          <p>
-            Отличието е в категория „Ваканционни и СПА хотели“ на Национален конкурс „Сграда на годината“ 2022.
-          </p>
           <a href="https://www.buildingoftheyear.bg/bg/uchastnici/spa-2022/vino-i-spa-hotel-chukara" target="_blank" rel="noopener noreferrer" class="zn-award__link">
-            Виж проекта в конкурса
+            Вижте проекта в конкурса
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -352,25 +343,25 @@ const pageDescription = `${
        5 · CERTIFICATES — ISO row + ЦПРС groups + декларация.
        Dense grid, brand-monogram cards. Each cert is a spec page.
        ════════════════════════════════════════════════════════════ -->
-  <section class="relative isolate overflow-hidden bg-cream-50 pt-16 md:pt-24 pb-4 md:pb-6" aria-labelledby="certs-heading">
+  <section class="relative isolate overflow-hidden bg-cream-50 py-16 lg:py-20" aria-labelledby="certs-heading">
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
 
     <div class="container-page relative">
       <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end mb-10 md:mb-14">
         <Reveal class="lg:col-span-7">
-          <p class="eyebrow">Сертификати · Регистри</p>
+          <p class="eyebrow">Документи</p>
           <h2
             id="certs-heading"
             class="mt-3 font-display tracking-tight text-ink-950 max-w-[22ch]"
             style="font-size: clamp(1.85rem, 1rem + 2vw, 2.85rem); line-height: 1.05;"
           >
-            Документи под
-            <span class="text-brand">подпис</span>.
+            Сертификати и
+            <span class="text-brand">регистри</span>.
           </h2>
         </Reveal>
         <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
           <p class="text-[14.5px] md:text-[15px] text-ink-600 leading-[1.65] max-w-[46ch]">
-            Системата ни за управление на качеството, околната среда, здравето и безопасността при работа е изградена в съответствие с международните стандарти ISO и е валидирана от независим орган.
+            Работим по ISO 9001:2015, ISO 14001:2015 и ISO 45001:2018 и сме вписани в Централния професионален регистър на строителя. Копията на сертификатите и удостоверенията са по-долу.
           </p>
         </Reveal>
       </div>
@@ -395,7 +386,6 @@ const pageDescription = `${
               </h3>
               <p class="zn-iso__label">{s.title}</p>
               <span aria-hidden="true" class="zn-iso__hr"></span>
-              <p class="zn-iso__body">{s.body}</p>
 
               <!-- Document thumbnail — legacy scan, replaced when clients
                    upload new versions -->
@@ -404,7 +394,7 @@ const pageDescription = `${
                   <img src={s.img} {...imageSize(s.img)} alt={`Сертификат ${s.code}`} loading="lazy" decoding="async" />
                 </span>
                 <span class="zn-iso__doc-meta">
-                  <span class="zn-iso__doc-label">Виж сертификата</span>
+                  <span class="zn-iso__doc-label">Вижте сертификата</span>
                   <span class="zn-iso__doc-ext">PDF</span>
                 </span>
                 <svg class="zn-iso__doc-arrow" width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -427,13 +417,13 @@ const pageDescription = `${
             >
               ЦПРС · вписвания
             </h3>
-            <p class="text-[11.5px] uppercase tracking-eyebrow text-ink-600">
+            <p class="text-xs uppercase tracking-eyebrow text-ink-600">
               Централен професионален регистър на строителя
             </p>
           </div>
         </Reveal>
 
-        <ol class="zn-cprs grid grid-cols-2 lg:grid-cols-5 gap-px bg-ink-900/12">
+        <ol class="zn-cprs grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-ink-900/12">
           {cprsCards.map((g, i) => (
             <Reveal as="li" delay={i * 60}>
              <div class="zn-cprs__cell group h-full">
@@ -482,57 +472,7 @@ const pageDescription = `${
       </div>
     </div>
   </section>
-
-  <!-- ════════════════════════════════════════════════════════════
-       6 · CTA — compact split, mirrors /uslugi closing.
-       ════════════════════════════════════════════════════════════ -->
-  <section class="relative isolate overflow-hidden bg-cream-50 pt-3 md:pt-4 pb-16 md:pb-24" aria-labelledby="zn-cta-heading">
-    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet"></div>
-    <span
-      aria-hidden="true"
-      class="zn-cta__backdrop absolute -left-6 top-4 select-none pointer-events-none font-display text-ink-900/[0.05] leading-[0.78]"
-      style="font-size: clamp(10rem, 22vw, 22rem);"
-    >
-      ARTSTROY
-    </span>
-
-    <div class="container-page relative">
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-end">
-        <Reveal class="lg:col-span-7">
-          <p class="eyebrow flex items-center gap-3">
-            <span class="inline-block h-px w-10 bg-brand"></span>
-            Започни проект
-          </p>
-          <h2
-            id="zn-cta-heading"
-            class="mt-5 font-display tracking-tight leading-[1.02] text-ink-950 max-w-[22ch]"
-            style="font-size: clamp(2rem, 1rem + 4vw, 4.5rem); letter-spacing: -0.025em;"
-          >
-            Имаш проект?
-            <span class="block text-ink-900/55">
-              Започни от един разговор.
-            </span>
-          </h2>
-        </Reveal>
-        <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
-          <p class="text-[15px] md:text-base text-ink-600 leading-[1.65] max-w-[44ch]">
-            Пишете ни или се обадете. Отговаряме {company.hoursDays} {company.hoursTime}.
-          </p>
-          <div class="mt-7 flex flex-wrap gap-3">
-            <a href="/kontakti" class="btn-brand">
-              Получи оферта
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-            <a href="/proekti" class="btn-ghost-dark">
-              Виж архива
-            </a>
-          </div>
-        </Reveal>
-      </div>
-    </div>
-  </section>
+  <CtaBand />
 </BaseLayout>
 
 <style>
@@ -585,7 +525,7 @@ const pageDescription = `${
   }
   .zn-dossier__row:last-child { border-bottom: none; }
   .zn-dossier__row dt {
-    font-size: 0.62rem;
+    font-size: 0.75rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.42);
@@ -624,82 +564,7 @@ const pageDescription = `${
     .zn-dossier__row dd { font-size: 0.85rem; }
   }
 
-  /* ════════ MANIFESTO — pillars ═════════════════════════════════ */
-  .zn-pillars { /* outer ol */
-    border: 1px solid rgba(18, 22, 28, 0.08);
-  }
-  .zn-pillar {
-    background: theme('colors.cream.50');
-    transition:
-      background-color 320ms cubic-bezier(0.16, 1, 0.3, 1),
-      transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 600ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .zn-pillar:hover {
-    background: #FFFFFF;
-    transform: translateY(-3px);
-    box-shadow: 0 18px 38px -20px rgba(18, 22, 28, 0.22);
-    z-index: 2;
-  }
-  .zn-pillar__inner {
-    padding: 1.6rem 1.4rem 1.5rem;
-  }
-  @media (min-width: 768px) {
-    .zn-pillar__inner { padding: 1.85rem 1.7rem 1.7rem; }
-  }
-  @media (min-width: 1024px) {
-    .zn-pillar__inner { padding: 2rem 1.9rem 1.9rem; }
-  }
-  .zn-pillar__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.75rem;
-  }
-  .zn-pillar__roman {
-    font-size: 1.1rem;
-    letter-spacing: 0.02em;
-    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .zn-pillar:hover .zn-pillar__roman {
-    transform: translateX(-2px) translateY(-1px);
-  }
-  .zn-pillar__step {
-    font-size: 0.62rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgba(18, 22, 28, 0.45);
-    font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", monospace;
-    transition: letter-spacing 500ms cubic-bezier(0.16, 1, 0.3, 1), color 400ms ease;
-  }
-  .zn-pillar:hover .zn-pillar__step {
-    letter-spacing: 0.2em;
-    color: theme('colors.brand.DEFAULT');
-  }
-  .zn-pillar__word {
-    margin-top: 1rem;
-    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .zn-pillar:hover .zn-pillar__word {
-    transform: translateY(-1px);
-  }
-  .zn-pillar__hr {
-    display: block;
-    height: 1px;
-    width: 2.5rem;
-    background: rgba(186, 45, 32, 0.55);
-    margin: 1rem 0 0.95rem;
-    transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .zn-pillar:hover .zn-pillar__hr { width: 5rem; }
-  .zn-pillar__body {
-    max-width: 48ch;
-  }
-
-  /* ════════ AWARD — full-bleed marquee section ════════════════════ */
-  .zn-award {
-    min-height: 100vh;
-  }
+  /* ════════ AWARD — full-bleed photo wash, content in container-page ═ */
   .zn-award__wash {
     position: absolute;
     inset: 0;
@@ -723,14 +588,6 @@ const pageDescription = `${
     display: flex;
     align-items: center;
     gap: 0.9rem;
-  }
-  .zn-award__category {
-    color: rgba(255, 255, 255, 0.58);
-    font-size: 0.72rem;
-    line-height: 1.4;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    font-weight: 650;
   }
   .zn-award__cell {
     background: rgba(18, 22, 28, 0.70);
@@ -973,83 +830,6 @@ const pageDescription = `${
     gap: 0.7rem;
   }
 
-  /* ════════ TIMELINE ═══════════════════════════════════════════ */
-  .zn-timeline {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1px;
-    background: rgba(18, 22, 28, 0.12);
-    border: 1px solid rgba(18, 22, 28, 0.08);
-  }
-  @media (max-width: 1023px) {
-    .zn-timeline {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  @media (max-width: 479px) {
-    .zn-timeline {
-      grid-template-columns: 1fr;
-    }
-  }
-  .zn-timeline__cell {
-    position: relative;
-    background: theme('colors.cream.100');
-    padding: 1.4rem 1.3rem 1.6rem;
-    display: flex;
-    flex-direction: column;
-    transition: background-color 320ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .zn-timeline__cell:hover {
-    background: theme('colors.cream.50');
-  }
-  @media (min-width: 768px) {
-    .zn-timeline__cell { padding: 1.7rem 1.6rem 1.85rem; }
-  }
-  .zn-timeline__year {
-    display: block;
-    font-size: clamp(1.6rem, 1rem + 1.5vw, 2.3rem);
-    line-height: 0.85;
-    margin-bottom: 0.6rem;
-    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .zn-timeline__cell:hover .zn-timeline__year {
-    transform: translateY(-2px);
-  }
-  .zn-timeline__dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    background: theme('colors.brand.DEFAULT');
-    margin-bottom: 0.5rem;
-    border-radius: 50%;
-    transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .zn-timeline__cell:hover .zn-timeline__dot {
-    transform: scale(1.6);
-  }
-  .zn-timeline__hr {
-    display: block;
-    height: 1px;
-    width: 2rem;
-    background: rgba(18, 22, 28, 0.2);
-    margin: 0.2rem 0 0.9rem;
-    transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .zn-timeline__cell:hover .zn-timeline__hr {
-    width: 4rem;
-    background: theme('colors.brand.DEFAULT');
-  }
-  .zn-timeline__label {
-    font-size: 1.05rem;
-    line-height: 1.15;
-    margin-bottom: 0.4rem;
-  }
-  .zn-timeline__body {
-    font-size: 13.5px;
-    line-height: 1.55;
-    max-width: 32ch;
-  }
-
   /* ════════ CERTIFICATES — ISO + ЦПРС ═══════════════════════════ */
   .zn-iso {
     border: 1px solid rgba(18, 22, 28, 0.08);
@@ -1091,7 +871,7 @@ const pageDescription = `${
     transform: translateY(-3px) rotate(-2deg);
   }
   .zn-iso__step {
-    font-size: 0.62rem;
+    font-size: 0.75rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: rgba(18, 22, 28, 0.45);
@@ -1104,7 +884,7 @@ const pageDescription = `${
   }
   .zn-iso__title { margin-top: 1.1rem; }
   .zn-iso__label {
-    font-size: 0.62rem;
+    font-size: 0.75rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: rgba(18, 22, 28, 0.55);
@@ -1120,12 +900,6 @@ const pageDescription = `${
     transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .zn-iso__cell:hover .zn-iso__hr { width: 5rem; }
-  .zn-iso__body {
-    font-size: 14px;
-    line-height: 1.6;
-    color: theme('colors.ink.600');
-    max-width: 44ch;
-  }
   .zn-iso__doc {
     margin-top: 1.4rem;
     display: grid;
@@ -1172,7 +946,7 @@ const pageDescription = `${
     color: theme('colors.ink.950');
   }
   .zn-iso__doc-ext {
-    font-size: 0.6rem;
+    font-size: 0.75rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: rgba(18, 22, 28, 0.45);
@@ -1207,6 +981,20 @@ const pageDescription = `${
   @media (min-width: 768px) {
     .zn-cprs__inner { padding: 1.6rem 1.4rem 1.5rem; }
   }
+  /* Phone (one column): roman numeral in a narrow left column, text and
+     document link beside it, so five entries stay short. */
+  @media (max-width: 639px) {
+    .zn-cprs__inner {
+      display: grid;
+      grid-template-columns: 2.75rem 1fr;
+      column-gap: 0.9rem;
+      row-gap: 0.4rem;
+      padding: 1.15rem 1.15rem 1.2rem;
+    }
+    .zn-cprs__roman { grid-row: 1 / span 3; }
+    .zn-cprs__body { max-width: none; }
+    .zn-cprs__doc { grid-column: 2; margin-top: 0.3rem; }
+  }
   .zn-cprs__roman {
     display: block;
     font-size: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
@@ -1225,7 +1013,7 @@ const pageDescription = `${
     letter-spacing: -0.005em;
   }
   .zn-cprs__body {
-    font-size: 12.5px;
+    font-size: 14px;
     line-height: 1.5;
     color: theme('colors.ink.600');
     max-width: 28ch;
@@ -1263,8 +1051,8 @@ const pageDescription = `${
     transform: scale(1.05);
   }
   .zn-cprs__doc-label {
-    font-size: 0.6rem;
-    letter-spacing: 0.16em;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     font-weight: 600;
     color: theme('colors.ink.950');
@@ -1278,28 +1066,12 @@ const pageDescription = `${
     color: theme('colors.brand.DEFAULT');
   }
 
-  /* ════════ CTA backdrop drift ═════════════════════════════════ */
-  .zn-cta__backdrop {
-    animation: zn-cta-drift 32s ease-in-out infinite alternate;
-    will-change: transform;
-  }
-  @keyframes zn-cta-drift {
-    0%   { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(1.8rem, 0.6rem, 0); }
-  }
-
   /* ════════ REDUCED MOTION ══════════════════════════════════════ */
   @media (prefers-reduced-motion: reduce) {
     .zn-hero__backdrop,
-    .zn-award__bg,
-    .zn-cta__backdrop {
+    .zn-award__bg {
       animation: none !important;
     }
-    .zn-pillar,
-    .zn-pillar__roman,
-    .zn-pillar__step,
-    .zn-pillar__word,
-    .zn-pillar__hr,
     .zn-iso__cell,
     .zn-iso__num,
     .zn-iso__step,
@@ -1310,28 +1082,19 @@ const pageDescription = `${
     .zn-cprs__roman,
     .zn-cprs__thumb img,
     .zn-cprs__doc svg,
-    .zn-timeline__year,
-    .zn-timeline__dot,
-    .zn-timeline__hr,
-    .zn-timeline__cell,
     .zn-dossier__row,
     .zn-dossier__cta,
     .zn-award__img,
     .zn-award__cell {
       transition: none !important;
     }
-    .zn-pillar:hover,
     .zn-iso__cell:hover,
-    .zn-pillar__roman,
     .zn-iso__num,
     .zn-cprs__roman,
-    .zn-timeline__year,
     .zn-award__img {
       transform: none !important;
     }
-    .zn-pillar__hr,
-    .zn-iso__hr,
-    .zn-timeline__hr { width: 2.5rem !important; }
+    .zn-iso__hr { width: 2.5rem !important; }
   }
 </style>
 
