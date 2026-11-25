@@ -6,8 +6,6 @@
       .lnf { stroke: #1A1F26; stroke-opacity: 0.035; fill: none; }
       .red { stroke: #BA2D20; stroke-opacity: 0.22; fill: none; }
       .redf{ fill: #BA2D20; fill-opacity: 0.18; stroke: none; }
-      .tx  { fill: #1A1F26; fill-opacity: 0.20; stroke: none; font-family: ui-monospace,SFMono-Regular,monospace; font-size: 12px; letter-spacing: 0.05em; }
-      .txr { fill: #BA2D20; fill-opacity: 0.32; stroke: none; font-family: ui-monospace,SFMono-Regular,monospace; font-size: 12px; letter-spacing: 0.05em; }
     </style>
   </defs>
 
@@ -64,18 +62,11 @@
     <line x1="380" y1="154" x2="380" y2="166"/>
     <line x1="700" y1="154" x2="700" y2="166"/>
   </g>
-  <text class="tx" x="230" y="148" text-anchor="middle">3.20m</text>
-  <text class="tx" x="540" y="148" text-anchor="middle">4.65m</text>
   <!-- Room labels -->
-  <text class="tx" x="495" y="335" text-anchor="middle">СПАЛНЯ · 16.2m²</text>
-  <text class="tx" x="200" y="320" text-anchor="middle">КУХНЯ</text>
-  <text class="tx" x="600" y="565" text-anchor="middle">ХОЛ · 28m²</text>
-  <text class="tx" x="290" y="600" text-anchor="middle">КОРИДОР</text>
   <!-- Section marker (red) -->
   <g class="red">
     <circle cx="56" cy="200" r="11" stroke-width="1"/>
   </g>
-  <text class="txr" x="56" y="204" text-anchor="middle">A</text>
 
   <!-- ==== SECTION CUT MARKER B-B (horizontal red dashed) ==== -->
   <g class="red">
@@ -83,16 +74,8 @@
     <circle cx="1380" cy="380" r="13" stroke-width="1"/>
     <line x1="913" y1="380" x2="1367" y2="380" stroke-dasharray="14 4 2 4" stroke-width="1"/>
   </g>
-  <text class="txr" x="900" y="384" text-anchor="middle">B</text>
-  <text class="txr" x="1380" y="384" text-anchor="middle">B</text>
-  <text class="tx" x="1140" y="370" text-anchor="middle">SECTION B-B</text>
 
   <!-- ==== SCATTERED ANNOTATIONS — sparse, drafting paper feel ==== -->
-  <text class="tx" x="900" y="120">SHEET A-101 · UPPER FL ADDITION</text>
-  <text class="tx" x="1500" y="200">SCALE 1:50</text>
-  <text class="tx" x="1700" y="500" transform="rotate(-90 1700 500)">M = 25.40m</text>
-  <text class="tx" x="120" y="900">+0.00 = ±0.000</text>
-  <text class="tx" x="900" y="1100">REV.03 · 05.2024 · АРТСТРОЙ ООД</text>
 
   <!-- ==== Sparse cross marks at 200px intervals — drafting registration ==== -->
   <g class="ln" stroke-width="0.5" stroke-opacity="0.06">
@@ -109,13 +92,10 @@
     <path d="M 1100 1200 Q 1300 1180, 1500 1200 T 1900 1220"/>
     <path d="M 1100 1280 Q 1300 1260, 1500 1280 T 1900 1300"/>
   </g>
-  <text class="tx" x="1750" y="1190">+108.25</text>
 
   <!-- Title block — bottom-right corner, very subtle -->
   <g class="ln" stroke-width="0.5">
     <rect x="1700" y="1410" width="280" height="60"/>
     <line x1="1700" y1="1430" x2="1980" y2="1430"/>
   </g>
-  <text class="tx" x="1840" y="1424" text-anchor="middle">АРТСТРОЙ ООД · A-101</text>
-  <text class="tx" x="1840" y="1455" text-anchor="middle">M 1:50 · ETAGE 02</text>
 </svg>

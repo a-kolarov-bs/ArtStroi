@@ -83,11 +83,11 @@ const mapQuery = encodeURIComponent(officeMapQuery);
                 <span class="contact-error" id="message-error" data-error-for="message"></span>
               </div>
 
-              <div class="contact-form__footer">
+              <div class="contact-form__footer" data-surface="dark">
                 <p data-contact-status aria-live="polite">
                   Проверяваме имейла и текста преди изпращане.
                 </p>
-                <button type="submit">
+                <button type="submit" class="btn-brand shrink-0">
                   Изпрати имейл
                   <span aria-hidden="true">↗</span>
                 </button>
@@ -236,7 +236,7 @@ const mapQuery = encodeURIComponent(officeMapQuery);
     line-height: 0.95;
   }
 
-  .contact-form-panel__head p {
+  .contact-form-panel__head p:not(.eyebrow) {
     color: rgba(18, 22, 28, 0.62);
     font-size: 0.96rem;
     line-height: 1.64;
@@ -304,6 +304,11 @@ const mapQuery = encodeURIComponent(officeMapQuery);
   .contact-field textarea:focus {
     box-shadow: inset 0 -2px 0 #ba2d20;
   }
+  /* The input itself has no outline; the whole field carries the ring. */
+  .contact-field:has(:focus-visible) {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
 
   .contact-field:has([aria-invalid="true"]) {
     background: rgba(186, 45, 32, 0.08);
@@ -334,29 +339,6 @@ const mapQuery = encodeURIComponent(officeMapQuery);
     line-height: 1.5;
   }
 
-  .contact-form__footer button {
-    display: inline-flex;
-    min-height: 3.1rem;
-    align-items: center;
-    justify-content: center;
-    gap: 0.65rem;
-    border: 1px solid rgba(255, 251, 244, 0.18);
-    border-radius: 999px;
-    background: #ba2d20;
-    padding: 0 1.2rem;
-    color: #fffaf2;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    transition: background-color 220ms ease, transform 220ms ease;
-  }
-
-  .contact-form__footer button:hover,
-  .contact-form__footer button:focus-visible {
-    background: #d43a2c;
-    transform: translateY(-1px);
-  }
 
   .contact-side {
     display: grid;
@@ -537,7 +519,7 @@ const mapQuery = encodeURIComponent(officeMapQuery);
     }
 
     .contact-form-panel__head,
-    .contact-form-panel__head p,
+    .contact-form-panel__head p:not(.eyebrow),
     .contact-side,
     .contact-office,
     .contact-map {

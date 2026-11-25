@@ -122,9 +122,9 @@ const total = capabilities.length;
             <div class="cap-media">
               <video
                 class="cap-video"
+                data-motion-video
                 muted
                 loop
-                autoplay
                 playsinline
                 preload="auto"
                 poster={videoPoster}
@@ -481,7 +481,7 @@ const total = capabilities.length;
       transform: translate(2px, -2px);
     }
     .cap-cta:focus-visible {
-      outline: 2px solid rgba(186, 45, 32, 0.28);
+      outline: 2px solid var(--focus-ring);
       outline-offset: 4px;
     }
     .cap-cta--desktop {
@@ -523,7 +523,6 @@ const total = capabilities.length;
         color: #12161C !important;
         transform: none !important;
       }
-      .cap-video { display: none; }
       .cap-cta { transition: none !important; }
       .cap-cta:hover,
       .cap-cta:focus-visible { transform: none !important; }
@@ -531,7 +530,12 @@ const total = capabilities.length;
   </style>
 
   <script>
-    type Lenis = { on: (ev: string, cb: () => void) => void };
+    import { initMotionVideos } from '../scripts/motion-video';
+    // The services video stays on its poster under reduced motion.
+    initMotionVideos();
+    document.addEventListener('astro:page-load', initMotionVideos);
+
+    type Lenis = { on: (ev: string, cb: () => void) => () => void };
 
     let cleanup: (() => void) | null = null;
 
@@ -626,8 +630,7 @@ const total = capabilities.length;
       // real source of truth; native 'scroll' fires too, but this is
       // belt-and-suspenders for sub-pixel accuracy.
       const lenis = (window as unknown as { __lenis?: Lenis }).__lenis;
-      const lenisTick = () => onScroll();
-      lenis?.on('scroll', lenisTick);
+      const offLenis = lenis?.on('scroll', onScroll);
 
       tick();
 
@@ -635,11 +638,16 @@ const total = capabilities.length;
         window.removeEventListener('scroll', onScroll);
         window.removeEventListener('resize', onResize);
         if (raf) cancelAnimationFrame(raf);
-        // Lenis has no `off` in our version — leak is bounded by setup re-run.
+        offLenis?.();
       };
     };
 
     setup();
     document.addEventListener('astro:page-load', setup);
+    // Stop the scroll wheel before ClientRouter swaps the page out.
+    document.addEventListener('astro:before-swap', () => {
+      cleanup?.();
+      cleanup = null;
+    });
   </script>
 </section>

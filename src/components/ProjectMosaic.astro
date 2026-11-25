@@ -453,10 +453,14 @@ const firstPlate = toRoman(startingPlate);
       document.body.style.overflow = '';
     });
 
+    // This inline script runs again on every visit; drop the page-wide
+    // listener when ClientRouter leaves the page.
+    const pageScope = new AbortController();
+    document.addEventListener('astro:before-swap', () => pageScope.abort(), { once: true });
     document.addEventListener('keydown', (e) => {
       if (!dialog.open) return;
       if (e.key === 'ArrowLeft') { e.preventDefault(); show(currentIndex - 1); }
       else if (e.key === 'ArrowRight') { e.preventDefault(); show(currentIndex + 1); }
-    });
+    }, { signal: pageScope.signal });
   }
 </script>

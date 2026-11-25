@@ -49,9 +49,27 @@
     font-feature-settings: 'kern', 'liga', 'ss01';
   }
 
-  /* Fluid focus ring */
+  /* Focus ring — one rule for the whole site.
+     The colour is an inherited custom property, so the NEAREST surface wins:
+     brand red on light surfaces, cream on dark ones (red on ink is ~3:1 and
+     disappears over the hero video). A dark section marks itself with a
+     bg-ink-* class or data-surface="dark"; a light block inside it resets.
+     The value is set on a surface's CHILDREN (`> *`): the ring is drawn
+     outside the focused element, so a dark card on a cream section keeps
+     the cream section's red ring.
+     Components never set `outline: none` on focus without a replacement —
+     use outline: 2px solid var(--focus-ring) on the element or its wrapper. */
+  :root,
+  :is(.bg-cream-50, .bg-cream-100, .bg-white, .bg-stone-100, .bg-ink-100,
+      [data-surface='light']) > * {
+    --focus-ring: theme('colors.brand.DEFAULT');
+  }
+  :is(.bg-ink-950, .bg-ink-900, .bg-ink-800,
+      [data-surface='dark'], #site-header[data-tone='dark']) > * {
+    --focus-ring: theme('colors.cream.50');
+  }
   :focus-visible {
-    outline: 2px solid theme('colors.brand.DEFAULT');
+    outline: 2px solid var(--focus-ring);
     outline-offset: 3px;
     border-radius: 4px;
   }
@@ -72,26 +90,33 @@
     @apply text-xs uppercase tracking-eyebrow font-medium text-brand;
   }
 
+  /* Buttons — one family, one size (48px, 14px, sentence case):
+       .btn-brand       primary, solid red
+       .btn-ghost       secondary on a dark surface (white hairline)
+       .btn-ghost-dark  secondary on a light surface (dark glass)
+     Pages add only layout utilities (width, margin); no own font size,
+     letter-spacing, uppercase or height. */
+  .btn-brand,
+  .btn-ghost,
+  .btn-ghost-dark {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full
+           px-7 py-0 text-sm font-medium leading-none
+           transition-all duration-400 ease-out-expo;
+  }
+
   .btn-brand {
-    @apply inline-flex items-center justify-center gap-2 rounded-full
-           bg-brand text-white px-7 py-3.5 text-sm font-medium
-           transition-all duration-400 ease-out-expo
+    @apply bg-brand text-white
            hover:bg-brand-dark hover:shadow-lift
            focus-visible:bg-brand-dark;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-full
-           border border-white/30 text-white px-7 py-3.5 text-sm font-medium
-           transition-all duration-400 ease-out-expo
+    @apply border border-white/30 text-white
            hover:bg-white/10 hover:border-white/60;
   }
 
   .btn-ghost-dark {
-    @apply inline-flex items-center justify-center gap-2 rounded-full
-           px-7 py-3.5 text-sm font-medium text-ink-900
-           transition-all duration-400 ease-out-expo
-           glass-dark;
+    @apply text-ink-900 glass-dark;
   }
   .btn-ghost-dark:hover {
     color: theme('colors.ink.950');

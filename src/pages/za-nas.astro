@@ -271,22 +271,30 @@ const pageDescription = `${
           </Reveal>
         </div>
 
-        <div class="mt-8 md:mt-10 grid lg:grid-cols-12 gap-px bg-white/12">
-          <Reveal class="zn-award__cell lg:col-span-3">
+        <div class="mt-8 md:mt-10 grid grid-cols-2 lg:grid-cols-12 gap-px bg-white/12">
+          <Reveal class="lg:col-span-3">
+            <div class="zn-award__cell h-full">
             <p class="zn-award__label">Нашата роля</p>
             <p class="zn-award__value">Артстрой ООД</p>
+            </div>
           </Reveal>
-          <Reveal class="zn-award__cell lg:col-span-3" delay={60}>
+          <Reveal class="lg:col-span-3" delay={60}>
+            <div class="zn-award__cell h-full">
             <p class="zn-award__label">Отличие</p>
             <p class="zn-award__value">Сграда на годината</p>
+            </div>
           </Reveal>
-          <Reveal class="zn-award__cell lg:col-span-3" delay={120}>
+          <Reveal class="lg:col-span-3" delay={120}>
+            <div class="zn-award__cell h-full">
             <p class="zn-award__label">Категория</p>
             <p class="zn-award__value">Ваканционни и СПА хотели</p>
+            </div>
           </Reveal>
-          <Reveal class="zn-award__cell lg:col-span-3" delay={180}>
+          <Reveal class="lg:col-span-3" delay={180}>
+            <div class="zn-award__cell h-full">
             <p class="zn-award__label">Обект</p>
             <p class="zn-award__value">Вино и СПА хотел Чукара</p>
+            </div>
           </Reveal>
         </div>
 
@@ -370,7 +378,8 @@ const pageDescription = `${
       <!-- ISO row — three feature cards -->
       <ol class="zn-iso grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ink-900/12">
         {isoStandards.map((s, i) => (
-          <Reveal as="li" delay={i * 80} class="zn-iso__cell group">
+          <Reveal as="li" delay={i * 80} class="relative hover:z-[2]">
+           <div class="zn-iso__cell group h-full">
             <article class="zn-iso__inner">
               <header class="zn-iso__head">
                 <span class="zn-iso__num font-display tabular-nums text-brand">
@@ -403,6 +412,7 @@ const pageDescription = `${
                 </svg>
               </a>
             </article>
+           </div>
           </Reveal>
         ))}
       </ol>
@@ -425,7 +435,8 @@ const pageDescription = `${
 
         <ol class="zn-cprs grid grid-cols-2 lg:grid-cols-5 gap-px bg-ink-900/12">
           {cprsCards.map((g, i) => (
-            <Reveal as="li" delay={i * 60} class="zn-cprs__cell group">
+            <Reveal as="li" delay={i * 60}>
+             <div class="zn-cprs__cell group h-full">
               <article class="zn-cprs__inner">
                 <span class="zn-cprs__roman font-display text-brand">
                   {g.roman}
@@ -442,11 +453,13 @@ const pageDescription = `${
                   </svg>
                 </a>
               </article>
+             </div>
             </Reveal>
           ))}
 
           <!-- Declaration as a 5th, distinct cell -->
-          <Reveal as="li" delay={cprsCards.length * 60} class="zn-cprs__cell zn-cprs__cell--alt group">
+          <Reveal as="li" delay={cprsCards.length * 60}>
+           <div class="zn-cprs__cell zn-cprs__cell--alt group h-full">
             <article class="zn-cprs__inner">
               <span class="zn-cprs__roman font-display text-brand">
                 §
@@ -463,6 +476,7 @@ const pageDescription = `${
                 </svg>
               </a>
             </article>
+           </div>
           </Reveal>
         </ol>
       </div>
@@ -730,6 +744,10 @@ const pageDescription = `${
   @media (min-width: 768px) {
     .zn-award__cell { padding: 1.45rem 1.55rem 1.55rem; }
   }
+  /* Phone: 2×2 cells sized by their text, no empty band between label and value. */
+  @media (max-width: 767px) {
+    .zn-award__cell { min-height: 0; padding: 1rem 1rem 1.1rem; }
+  }
   .zn-award__cell:hover {
     background: rgba(18, 22, 28, 0.86);
   }
@@ -747,6 +765,9 @@ const pageDescription = `${
     font-size: clamp(1rem, 0.9rem + 0.35vw, 1.18rem);
     line-height: 1.15;
     font-family: theme('fontFamily.display');
+  }
+  @media (max-width: 767px) {
+    .zn-award__value { margin-top: 0.75rem; }
   }
   .zn-award__seal {
     margin-top: 2rem;
