@@ -136,8 +136,9 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
               />
             </span>
           </div>
-          <h3>{s.title}</h3>
-          <p>{s.body}</p>
+          <!-- Not a heading: the hero has no h2, and the cards are a teaser. -->
+          <p class="cert-card__title">{s.title}</p>
+          <p class="cert-card__body">{s.body}</p>
         </div>
         <div class="absolute bottom-0 inset-x-0 flex items-center justify-end px-3.5 pb-3.5">
           <span
@@ -208,7 +209,7 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
   }
   .cert-card__label,
   .cert-card__accent {
-    font-size: 0.62rem;
+    font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 0.15em;
     line-height: 1;
@@ -338,7 +339,7 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
     object-position: top center;
     filter: saturate(0.9) contrast(1.03);
   }
-  .cert-card h3 {
+  .cert-card__title {
     position: relative;
     z-index: 2;
     margin-top: 0.75rem;
@@ -349,7 +350,7 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
     line-height: 1.02;
     letter-spacing: 0;
   }
-  .cert-card p {
+  .cert-card__body {
     position: relative;
     z-index: 2;
     margin-top: 0.55rem;
@@ -388,7 +389,7 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
     }
     .cert-card__label,
     .cert-card__accent {
-      font-size: 0.56rem;
+      font-size: 0.75rem;
     }
     .cert-card__stage {
       min-height: 6.75rem;
@@ -409,15 +410,15 @@ const sealPoints = Array.from({ length: 72 }, (_, i) => {
       width: 5.15rem;
       right: -0.05rem;
     }
-    .cert-card h3 {
+    .cert-card__title {
       margin-top: 0.45rem;
       max-width: 11rem;
       font-size: 0.96rem;
     }
-    .cert-card p {
+    .cert-card__body {
       margin-top: 0.38rem;
       max-width: 11rem;
-      font-size: 0.67rem;
+      font-size: 0.75rem;
       line-height: 1.34;
     }
   }
