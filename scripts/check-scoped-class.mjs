@@ -61,8 +61,11 @@ function componentClassTokens(src) {
     const line = markup.slice(0, m.index).split('\n').length;
     const strings = [];
     for (const [, v] of attrs.matchAll(/\bclass="([^"]*)"/g)) strings.push(v);
-    for (const [, v] of attrs.matchAll(/\bclass:list=\{([^}]*)\}/g)) {
-      for (const [, s] of v.matchAll(/['"`]([^'"`]*)['"`]/g)) strings.push(s);
+    // class={…} and class:list={…}: every string / template literal inside
+    // the expression (template `${…}` holes are dropped, the static text kept).
+    for (const [, v] of attrs.matchAll(/\bclass(?::list)?=\{((?:[^{}]|\{[^{}]*\})*)\}/g)) {
+      const expr = v.replace(/\$\{[^{}]*\}/g, ' ');
+      for (const [, , s] of expr.matchAll(/(['"`])((?:(?!\1)[^\\]|\\.)*)\1/g)) strings.push(s);
     }
     for (const s of strings) for (const tok of s.split(/\s+/).filter(Boolean)) res.push({ tag, tok, line });
   }
