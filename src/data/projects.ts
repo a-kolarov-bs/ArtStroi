@@ -1,10 +1,34 @@
 import legacy from './legacy-projects.json';
 import { localAsset } from './assets';
 
+// ─── Categories ──────────────────────────────────────────────────
+// Every record in legacy-projects.json carries an explicit `category`.
+// Nothing is guessed from the title: the filter on /proekti, the chips,
+// the per-category counts on /uslugi and the related projects on the
+// detail page all read this one field.
+export const projectCategories = [
+  'Жилищни сгради',
+  'Хотели и туризъм',
+  'Обществени сгради',
+  'Инфраструктура',
+  'Паркове и детски площадки',
+] as const;
+
+export type ProjectCategory = (typeof projectCategories)[number];
+
+function toCategory(id: number, value: string | undefined): ProjectCategory {
+  const found = projectCategories.find((c) => c === value);
+  if (!found) {
+    throw new Error(`legacy-projects.json: project ${id} has no valid category (got ${JSON.stringify(value)})`);
+  }
+  return found;
+}
+
 export interface Project {
   id: number;
   slug: string;
   title: string;
+  category: ProjectCategory;
   location: string | null;
   client: string | null;
   scope: string | null;
@@ -21,6 +45,7 @@ interface LegacyRecord {
   id: number;
   slug: string;
   title: string;
+  category?: string;
   location: string | null;
   client: string | null;
   scope: string | null;
@@ -41,6 +66,7 @@ function fromLegacy(r: LegacyRecord): Project {
     id: r.id,
     slug: r.slug,
     title: r.title,
+    category: toCategory(r.id, r.category),
     location: r.location,
     client: r.client,
     scope: r.scope,
@@ -62,33 +88,6 @@ export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
 }
 
-// ─── Categories ──────────────────────────────────────────────────
-// Legacy data has no category field; we derive one from the title
-// using ordered keyword matching (most specific rules first).
-
-export type ProjectCategory =
-  | 'Жилищни сгради'
-  | 'Инфраструктура'
-  | 'Обществени сгради'
-  | 'Паркове и детски площадки';
-
-export const projectCategories: ProjectCategory[] = [
-  'Жилищни сгради',
-  'Инфраструктура',
-  'Обществени сгради',
-  'Паркове и детски площадки',
-];
-
-export function getCategory(p: Project): ProjectCategory {
-  const t = p.title.toLowerCase();
-  // Most specific keyword groups first.
-  if (/площад|парк |зона за отдих|фонтан|чарши|детска площадка/.test(t))
-    return 'Паркове и детски площадки';
-  if (/улиц|тротоар|свлачище|подпорни|корекци|речно корит|тец|бензино/.test(t))
-    return 'Инфраструктура';
-  if (/жилищн|къща|вила|сити хоум/.test(t)) return 'Жилищни сгради';
-  return 'Обществени сгради';
-}
 
 // ─── Project Protocol (technical sheet) ──────────────────────────
 // Premium "ПРОТОКОЛ" band shown between hero and gallery on the

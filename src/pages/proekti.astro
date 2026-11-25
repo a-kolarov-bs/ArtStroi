@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Reveal from '../components/Reveal.astro';
-import { projects, projectCategories, getCategory } from '../data/projects';
+import { projects, projectCategories } from '../data/projects';
 import { imageSize } from '../data/assets';
 import { clients } from '../data/clients';
 import { company, yearsActive as getYearsActive, phone, telHref } from '../data/company';
@@ -11,7 +11,7 @@ const PAGE_SIZE = 25;
 
 // Pre-compute category + a flattened search blob for client-side filtering.
 const cards = projects.map((p) => {
-  const category = getCategory(p);
+  const category = p.category;
   const search = [p.title, p.location ?? '', p.client ?? '', p.description ?? '', p.scope ?? '', category]
     .join(' ')
     .toLowerCase();
@@ -35,7 +35,7 @@ const reelPick = (() => {
   }
   // Then 2 more from each category to balance
   for (const cat of projectCategories) {
-    const fromCat = projects.filter((p) => getCategory(p) === cat && !seen.has(p.id));
+    const fromCat = projects.filter((p) => p.category === cat && !seen.has(p.id));
     for (const p of fromCat.slice(0, 2)) {
       picked.push(p);
       seen.add(p.id);
@@ -74,9 +74,9 @@ const pageDescription = `${projects.length} реализирани обекта$
       <div class="reel flex h-full gap-3 lg:gap-4">
         {[...reelPick, ...reelPick].map((p, i) => (
           <a
-            href={`/proekti?cat=${encodeURIComponent(getCategory(p))}`}
+            href={`/proekti?cat=${encodeURIComponent(p.category)}`}
             class="reel-card group/reel relative shrink-0 block overflow-hidden"
-            aria-label={`${p.title} — ${getCategory(p)}`}
+            aria-label={`${p.title} — ${p.category}`}
             data-clone={i >= reelPick.length ? 'true' : 'false'}
           >
             <img
@@ -95,7 +95,7 @@ const pageDescription = `${projects.length} реализирани обекта$
               class="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/15 to-transparent opacity-0 group-hover/reel:opacity-100 transition-opacity duration-500"
             ></div>
             <div class="absolute left-4 right-4 bottom-4 opacity-0 group-hover/reel:opacity-100 transition-opacity duration-500 delay-75">
-              <p class="text-[10px] uppercase tracking-eyebrow text-brand">{getCategory(p)}</p>
+              <p class="text-[10px] uppercase tracking-eyebrow text-brand">{p.category}</p>
               <p class="mt-1 text-sm font-medium text-white line-clamp-2">{p.title}</p>
             </div>
           </a>

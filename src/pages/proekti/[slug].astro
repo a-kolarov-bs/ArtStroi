@@ -17,7 +17,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Reveal from '../../components/Reveal.astro';
 import ProjectProtocol from '../../components/ProjectProtocol.astro';
-import { projects, getCategory, getProtocol } from '../../data/projects';
+import { projects, getProtocol } from '../../data/projects';
 import { company } from '../../data/company';
 import { imageSize } from '../../data/assets';
 
@@ -40,7 +40,7 @@ const nextProjects = Array.from({ length: NEXT_COUNT }, (_, i) =>
 );
 const nextProject = nextProjects[0];
 
-const category = getCategory(project);
+const category = project.category;
 const cover = project.coverImageUrl ?? '/hero/hero-poster.jpg';
 const locationShort = (project.location ?? '').split(',')[0]?.trim() || 'България';
 
@@ -586,7 +586,7 @@ const schemaBreadcrumb = {
           {nextProjects.map((p, i) => {
             const pIdx = projects.findIndex((x) => x.id === p.id);
             const pNum = String(pIdx + 1).padStart(3, '0');
-            const pCat = getCategory(p);
+            const pCat = p.category;
             const pLocShort = (p.location ?? '').split(',')[0]?.trim();
             return (
               <Reveal class="h-full" delay={i * 80}>

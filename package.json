@@ -8,6 +8,7 @@
     "start": "astro dev",
     "prebuild": "node scripts/check-scoped-class.mjs",
     "build": "astro build",
+    "postbuild": "node scripts/check-categories.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "astro": "astro"

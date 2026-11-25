@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Reveal from '../components/Reveal.astro';
-import { projects, getCategory } from '../data/projects';
+import { projects } from '../data/projects';
 import { company, yearsActive as getYearsActive, phone, telHref, cprsGroupsLabel } from '../data/company';
 
 // ────────────────────────────────────────────────────────────────
@@ -164,7 +164,7 @@ const serviceDefs = [
 // filter shows, so the two can never disagree.
 const services = serviceDefs.map((s) => ({
   ...s,
-  refCount: projects.filter((p) => getCategory(p) === s.refCat).length,
+  refCount: projects.filter((p) => p.category === s.refCat).length,
 }));
 
 const inHouse = [
