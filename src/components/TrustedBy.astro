@@ -1,6 +1,7 @@
 ---
 import type { Client } from '../data/clients';
 import Reveal from './Reveal.astro';
+import { imageSize } from '../data/assets';
 
 interface Props {
   clients: Client[];
@@ -44,6 +45,7 @@ const tracks = [...clients, ...clients];
             <div class="h-20 md:h-24 grid place-items-center">
               <img
                 src={c.logo}
+                {...imageSize(c.logo)}
                 alt={i < clients.length ? c.alt : ''}
                 loading="lazy"
                 decoding="async"

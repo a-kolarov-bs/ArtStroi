@@ -10,7 +10,7 @@ import { company, yearsActive as getYearsActive, cprsGroupsLabel } from '../data
 // ────────────────────────────────────────────────────────────────
 
 import CtaBand from '../components/CtaBand.astro';
-import { imageSize } from '../data/assets';
+import { responsiveImage } from '../data/assets';
 
 const currentYear = new Date().getFullYear();
 const yearsActive = getYearsActive();
@@ -345,8 +345,7 @@ const pageDescription =
             <article id={s.slug} class="us-card__inner">
               <a href={s.photo.href} class="us-card__photo" aria-label={`Обект: ${s.photo.title}`}>
                 <img
-                  src={s.photo.src}
-                  {...imageSize(s.photo.src)}
+                  {...responsiveImage(s.photo.src, '(min-width: 1280px) 420px, (min-width: 640px) 50vw, 100vw')}
                   alt={s.photo.title}
                   loading="lazy"
                   decoding="async"
