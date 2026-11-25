@@ -34,7 +34,8 @@ const awardSlots = [
 
 // ── Certificates — sourced verbatim from /sert.html of legacy site ────
 // Scans mirrored from the legacy host into public/sert/
-// (scripts/fetch-legacy-assets.py).
+// (scripts/fetch-legacy-assets.py). The ISO previews 1–3.webp are the
+// first page of the valid PDFs 1–3.pdf (to 02.2027), not the old JPGs.
 const isoStandards = [
   {
     code: 'ISO 9001:2015',
@@ -56,29 +57,31 @@ const isoStandards = [
   },
 ];
 
+// `body` is copied word for word from the scope line of each certificate
+// (4–7.webp); nothing is added that the document does not say.
 const cprsCards = [
   {
     roman: 'I',
     title: 'Първа група',
-    body: 'Строежи от високото строителство и прилежащата му инфраструктура.',
+    body: 'Строежи от високото строителство, прилежащата му инфраструктура, електронни съобщителни мрежи и съоръжения.',
     img: '/sert/4.webp',
   },
   {
     roman: 'II',
     title: 'Втора група',
-    body: 'Строежи от транспортната инфраструктура: пътища, тротоари, площади.',
+    body: 'Строежи от транспортната инфраструктура.',
     img: '/sert/5.webp',
   },
   {
     roman: 'III',
     title: 'Трета група',
-    body: 'Строежи от енергийната инфраструктура: електро, ВиК, външни мрежи.',
+    body: 'Строежи от енергийната инфраструктура.',
     img: '/sert/6.webp',
   },
   {
     roman: 'IV',
     title: 'Четвърта група',
-    body: 'Строежи от благоустройствената инфраструктура: паркове, ВиК съоръжения.',
+    body: 'Строежи от благоустройствената инфраструктура, хидротехническото строителство и опазването на околната среда.',
     img: '/sert/7.webp',
   },
 ];
