@@ -117,7 +117,7 @@ const serviceDefs = [
       'Конструктивно усилване',
       'Сертификат за енергийна ефективност',
     ],
-    refCat: 'Обществени сгради',
+    refCat: null,
     photoId: 18,
   },
   {
@@ -140,7 +140,7 @@ const serviceDefs = [
       'Слаботокови инсталации',
       'Външни мрежи и съоръжения',
     ],
-    refCat: 'Обществени сгради',
+    refCat: null,
     photoId: 41,
   },
   {
@@ -163,16 +163,20 @@ const serviceDefs = [
       'Барбекюта и камини',
       'Парапети и ковано желязо',
     ],
-    refCat: 'Обществени сгради',
+    refCat: null,
     photoId: 12,
   },
-] satisfies ({ refCat: ProjectCategory } & Record<string, unknown>)[];
+] satisfies ({ refCat: ProjectCategory | null } & Record<string, unknown>)[];
 
-// The count on each card is the number of cards the linked /proekti
-// filter shows, so the two can never disagree.
+// `refCat` is set only when a project category matches the service one to
+// one. Then the card and the index show the number of cards the linked
+// /proekti filter shows, so the two can never disagree. A service without
+// its own category (refCat: null) shows no number and links to all objects:
+// a borrowed category would count projects that are not this kind of work.
+// scripts/check-categories.mjs reads these refCat values and checks dist/.
 const services = serviceDefs.map((s) => ({
   ...s,
-  refCount: projects.filter((p) => p.category === s.refCat).length,
+  refCount: s.refCat ? projects.filter((p) => p.category === s.refCat).length : null,
 }));
 
 const inHouse = [
@@ -299,10 +303,12 @@ const pageDescription =
                     </span>
                     <span class="us-index__tag" aria-hidden="true">{s.tag}</span>
                     <span class="us-index__title">{s.title}</span>
-                    <span class="us-index__leaders" aria-hidden="true"></span>
-                    <span class="us-index__count font-display tabular-nums">
-                      {s.refCount}
-                    </span>
+                    <span class:list={['us-index__leaders', { 'us-index__leaders--wide': s.refCount === null }]} aria-hidden="true"></span>
+                    {s.refCount !== null && (
+                      <span class="us-index__count font-display tabular-nums">
+                        {s.refCount}
+                      </span>
+                    )}
                     <span class="us-index__arrow" aria-hidden="true">
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                         <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -404,8 +410,8 @@ const pageDescription =
               </details>
 
               <footer class="us-card__foot">
-                <a href={`/proekti?cat=${encodeURIComponent(s.refCat)}`} class="us-card__more">
-                  <span>{objectsLabel(s.refCount)}</span>
+                <a href={s.refCat ? `/proekti?cat=${encodeURIComponent(s.refCat)}` : '/proekti'} class="us-card__more">
+                  <span>{s.refCount !== null ? objectsLabel(s.refCount) : 'Вижте реализираните обекти'}</span>
                   <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                     <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -648,7 +654,10 @@ const pageDescription =
     font-size: 0.95rem;
     color: rgba(255, 255, 255, 0.55);
   }
+  /* No own category → no number: the leader runs on to the arrow. */
+  .us-index__leaders--wide { grid-column: span 2; }
   .us-index__arrow {
+    grid-column: -2 / -1;
     color: rgba(255, 255, 255, 0.32);
     transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), color 320ms ease;
   }

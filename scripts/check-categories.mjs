@@ -3,8 +3,11 @@
 // src/data/legacy-projects.json:
 //   1. every record has one of the categories offered as chips on /proekti;
 //   2. the number of cards per category on /proekti equals the data;
-//   3. every "N проекта в архива" link on /uslugi says the same N as the
-//      /proekti?cat=X filter it opens;
+//   3. on /uslugi, every service with its own category (refCat in
+//      src/pages/uslugi.astro) links "N реализирани обекта" to the
+//      /proekti?cat=X filter that shows exactly N cards, and the index at the
+//      top repeats N; a service with refCat: null shows no number anywhere
+//      and links to /proekti. No two services may share a category;
 //   4. every project detail page names its category in JSON-LD and the
 //      JSON-LD image is an absolute URL.
 // Usage: node scripts/check-categories.mjs [distDir]   (runs as postbuild)
@@ -38,23 +41,48 @@ for (const c of chips) {
   if (!expected[c]) errors.push(`chip ${c} has no projects`);
 }
 
+// Expected: the refCat of each service, in card order, from the page source.
+const uslugiSrc = readFileSync('src/pages/uslugi.astro', 'utf8');
+const refCats = [...uslugiSrc.matchAll(/^\s*refCat: (null|'([^']+)'),/gm)].map((m) => m[2] ?? null);
+if (refCats.length !== 6) errors.push(`uslugi.astro: expected 6 refCat entries, found ${refCats.length}`);
+const own = refCats.filter(Boolean);
+if (new Set(own).size !== own.length) errors.push(`uslugi.astro: two services share a category (${own.join(', ')}); set refCat: null on the one that is not that kind of work`);
+for (const c of own) if (!chips.includes(c)) errors.push(`uslugi.astro: refCat ${c} is not a chip on /proekti`);
+
 const uslugi = readFileSync(join(dist, 'uslugi/index.html'), 'utf8');
-const links = [...uslugi.matchAll(/href="\/proekti\?cat=([^"]+)"[^>]*>\s*<span[^>]*>(\d+) (реализиран обект|реализирани обекта)<\/span>/g)];
-if (links.length === 0) errors.push('/uslugi: no "N реализирани обекта" links found');
-// The index at the top of /uslugi repeats the same numbers, in card order.
-const indexCounts = [...uslugi.matchAll(/us-index__count[^>]*>\s*(\d+)\s*</g)].map((m) => m[1]);
-if (indexCounts.join() !== links.map((l) => l[2]).join())
-  errors.push(`/uslugi index counts ${indexCounts.join()} != card links ${links.map((l) => l[2]).join()}`);
-for (const [, rawCat, n] of links) {
-  const cat = decodeURIComponent(decode(rawCat));
-  if (Number(n) !== (onPage[cat] ?? 0))
-    errors.push(`/uslugi says ${n} for ${cat}, /proekti?cat=${cat} shows ${onPage[cat] ?? 0}`);
-}
+// Card footers, in card order: href and the visible label.
+const links = [...uslugi.matchAll(/href="(\/proekti[^"]*)"[^>]*class="[^"]*us-card__more[^"]*"[^>]*>\s*<span[^>]*>([^<]+)<\/span>/g)]
+  .map((m) => ({ href: decode(m[1]), label: m[2].trim() }));
+// Index rows at the top, in the same order: the number, or none.
+const indexRows = [...uslugi.matchAll(/class="us-index__row[\s\S]*?<\/a>/g)]
+  .map((m) => m[0].match(/us-index__count[^>]*>\s*(\d+)\s*</)?.[1] ?? null);
+if (links.length !== refCats.length) errors.push(`/uslugi: ${links.length} card links, ${refCats.length} services`);
+if (indexRows.length !== refCats.length) errors.push(`/uslugi: ${indexRows.length} index rows, ${refCats.length} services`);
+const uslugiParts = [];
+refCats.forEach((cat, i) => {
+  const link = links[i];
+  const idx = indexRows[i];
+  if (!link) return;
+  if (cat === null) {
+    if (link.href !== '/proekti') errors.push(`/uslugi card ${i + 1}: no own category, links to ${link.href} instead of /proekti`);
+    if (/\d/.test(link.label)) errors.push(`/uslugi card ${i + 1}: no own category, but the link says "${link.label}"`);
+    if (idx !== null) errors.push(`/uslugi index row ${i + 1}: no own category, but shows ${idx}`);
+    uslugiParts.push(`${i + 1}: без число`);
+    return;
+  }
+  const n = onPage[cat] ?? 0;
+  const m = link.label.match(/^(\d+) (реализиран обект|реализирани обекта)$/);
+  if (decodeURIComponent(link.href) !== `/proekti?cat=${cat}`) errors.push(`/uslugi card ${i + 1}: links to ${decodeURIComponent(link.href)}, expected /proekti?cat=${cat}`);
+  if (!m || Number(m[1]) !== n) errors.push(`/uslugi card ${i + 1}: says "${link.label}", /proekti?cat=${cat} shows ${n}`);
+  if (idx === null || Number(idx) !== n) errors.push(`/uslugi index row ${i + 1}: shows ${idx}, /proekti?cat=${cat} shows ${n}`);
+  uslugiParts.push(`${i + 1}: ${cat} ${n}`);
+});
 
 for (const r of data) {
   const file = join(dist, 'proekti', r.slug, 'index.html');
   if (!existsSync(file)) { errors.push(`missing detail page ${r.slug}`); continue; }
   const html = readFileSync(file, 'utf8');
+
   const ld = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)]
     .map((m) => JSON.parse(m[1]))
     .find((o) => o['@type'] === 'CreativeWork');
@@ -64,7 +92,7 @@ for (const r of data) {
 }
 
 const summary = Object.entries(onPage).map(([c, n]) => `${c} ${n}`).join(' · ');
-const uslugiSummary = links.map(([, c, n]) => `${decodeURIComponent(decode(c))} ${n}`).join(' · ');
+const uslugiSummary = uslugiParts.join(' · ');
 if (errors.length) {
   console.error(`check-categories: ${errors.length} problem(s)`);
   for (const e of errors) console.error('  - ' + e);
