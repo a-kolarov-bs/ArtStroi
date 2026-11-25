@@ -1,14 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Reveal from '../components/Reveal.astro';
-import { company, fullAddress, mapQuery as officeMapQuery } from '../data/company';
+import { company, fullAddress, mapQuery as officeMapQuery, phone, telHref } from '../data/company';
 
 const mapQuery = encodeURIComponent(officeMapQuery);
+const manager = phone('Управител');
+const otherPhones = company.phones.filter((p) => p.role !== manager.role);
 ---
 
 <BaseLayout
   title={`Контакти — ${company.name}`}
-  description={`Контакти на ${company.name}. Офис: ${fullAddress}.`}
+  description={`Контакти на ${company.name}: телефони, имейл и офис в ${fullAddress}.`}
   solidHeader
 >
   <section class="contact-page relative isolate overflow-hidden bg-cream-50 text-ink-950">
@@ -23,60 +25,93 @@ const mapQuery = encodeURIComponent(officeMapQuery);
             <h1>Пишете ни</h1>
           </div>
           <p class="contact-hero__text">
-            Без формалности. Кажете ни какъв е обектът, къде се намира и какво искате да
-            се случи. Ще върнем отговор с най-смислената следваща стъпка.
+            Кажете ни какъв е обектът, къде се намира и какво трябва да се направи.
+            Най-бързо е по телефона. Чертежи и снимки пратете по имейл.
           </p>
         </div>
       </Reveal>
 
       <div class="contact-layout mt-11 md:mt-14">
-        <Reveal>
+        <Reveal class="min-w-0 min-[1180px]:col-start-2 min-[1180px]:row-start-1">
+          <section class="contact-call" aria-labelledby="contact-call-heading">
+            <p class="eyebrow">Телефони</p>
+            <h2 id="contact-call-heading">Обадете се</h2>
+
+            <div class="contact-call__body">
+              <a class="contact-call__lead" href={telHref(manager.number)}>
+                <span class="contact-call__role">{manager.role}</span>
+                <span class="contact-call__number">{manager.number}</span>
+                <span class="contact-call__hours">{company.hoursDays} {company.hoursTime}</span>
+                <svg class="contact-call__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5.2 3.5h3.1l1.6 4.1-2.1 1.3a11.4 11.4 0 0 0 7.3 7.3l1.3-2.1 4.1 1.6v3.1a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 3.2 5.7a2 2 0 0 1 2-2.2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                </svg>
+              </a>
+
+              <ul class="contact-call__list">
+                {otherPhones.map((p) => (
+                  <li>
+                    <span>{p.role}</span>
+                    <a href={telHref(p.number)}>{p.number}</a>
+                  </li>
+                ))}
+                <li>
+                  <span>Имейл</span>
+                  <a href={`mailto:${company.email}`}>{company.email}</a>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </Reveal>
+
+        <Reveal class="min-w-0 min-[1180px]:col-start-1 min-[1180px]:row-start-1 min-[1180px]:row-span-2">
           <section class="contact-form-panel" aria-labelledby="contact-form-heading">
             <div class="contact-form-panel__head">
               <p class="eyebrow">Запитване</p>
               <h2 id="contact-form-heading">Разкажете ни накратко.</h2>
               <p>
-                Формата подготвя имейл към нас. Ако имате чертежи или снимки, добавете ги
-                като прикачени файлове след отваряне на имейла.
+                Формата подготвя писмо до нас във вашата поща. Чертежи и снимки добавете
+                като прикачени файлове. Полетата със <span class="text-brand">*</span> са задължителни.
               </p>
             </div>
 
             <form class="contact-form" data-contact-form data-mailto={company.email} novalidate>
               <div class="contact-field">
                 <label for="first-name">Име</label>
-                <input id="first-name" name="firstName" type="text" autocomplete="given-name" />
+                <input id="first-name" name="firstName" type="text" autocomplete="given-name" placeholder="Иван" />
               </div>
 
               <div class="contact-field">
                 <label for="last-name">Фамилия</label>
-                <input id="last-name" name="lastName" type="text" autocomplete="family-name" />
+                <input id="last-name" name="lastName" type="text" autocomplete="family-name" placeholder="Петров" />
               </div>
 
               <div class="contact-field">
-                <label for="phone">Тел. номер</label>
-                <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+                <label for="phone">Телефон</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+359 …" />
               </div>
 
               <div class="contact-field">
-                <label for="email">Имейл</label>
+                <label for="email">Имейл <span class="contact-field__req" aria-hidden="true">*</span></label>
                 <input
                   id="email"
                   name="email"
                   type="email"
                   autocomplete="email"
                   aria-describedby="email-error"
+                  placeholder="ime@primer.bg"
                   required
                 />
                 <span class="contact-error" id="email-error" data-error-for="email"></span>
               </div>
 
               <div class="contact-field contact-field--wide">
-                <label for="message">Текст</label>
+                <label for="message">Текст <span class="contact-field__req" aria-hidden="true">*</span></label>
                 <textarea
                   id="message"
                   name="message"
                   rows="7"
                   aria-describedby="message-error"
+                  placeholder="Какъв е обектът, къде е и какво трябва да се направи"
                   required
                   minlength="10"
                 ></textarea>
@@ -84,63 +119,58 @@ const mapQuery = encodeURIComponent(officeMapQuery);
               </div>
 
               <div class="contact-form__footer" data-surface="dark">
-                <p data-contact-status aria-live="polite">
-                  Проверяваме имейла и текста преди изпращане.
-                </p>
                 <button type="submit" class="btn-brand shrink-0">
-                  Изпрати имейл
+                  Изпратете запитване
                   <span aria-hidden="true">↗</span>
                 </button>
+                <div class="contact-form__hint">
+                  <p data-contact-status aria-live="polite">Ще се отвори вашата поща с готово писмо.</p>
+                  <p class="contact-form__copy">
+                    Ако пощата не се отвори, пишете ни на
+                    <span class="contact-form__mail">{company.email}</span>.
+                  </p>
+                  <button type="button" class="contact-copy" data-copy-email={company.email}>
+                    <span data-copy-label aria-live="polite">Копирайте адреса</span>
+                  </button>
+                </div>
               </div>
             </form>
           </section>
         </Reveal>
 
-        <Reveal delay={120}>
-          <aside class="contact-side" aria-label="Данни за контакт">
-            <div class="contact-office">
-              <div class="contact-office__head">
-                <p class="eyebrow">Офис</p>
-                <h2>{company.district}, {company.city}</h2>
-              </div>
+        <Reveal delay={120} class="min-w-0 min-[1180px]:col-start-2 min-[1180px]:row-start-2">
+          <section class="contact-office" aria-labelledby="contact-office-heading">
+            <p class="eyebrow">Офис</p>
+            <h2 id="contact-office-heading">{company.district}, {company.city}</h2>
 
-              <address>
-                {company.street}<br />
-                {company.district}<br />
-                гр. {company.city} {company.postalCode}
-              </address>
+            <address>
+              {company.street}<br />
+              {company.district}<br />
+              гр. {company.city} {company.postalCode}
+            </address>
 
-              <div class="contact-map" aria-label="Карта с локацията на офиса">
-                <iframe
-                  title={`${company.name}, офис ${company.city}`}
-                  src={`https://maps.google.com/maps?q=${mapQuery}&output=embed`}
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
+            <a
+              class="contact-map-link"
+              href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Отворете в Google Maps
+              <span aria-hidden="true">↗</span>
+            </a>
+          </section>
+        </Reveal>
 
-                <span aria-hidden="true" class="contact-map__wash"></span>
-
-                <div class="contact-map__addr" aria-hidden="true">
-                  <span class="contact-map__bar"></span>
-                  <div>
-                    <p>Адрес</p>
-                    <strong>{company.street}, {company.city}</strong>
-                  </div>
-                </div>
-              </div>
-
-              <a
-                class="contact-map-link"
-                href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Отвори в Google Maps
-                <span aria-hidden="true">↗</span>
-              </a>
-            </div>
-
-          </aside>
+        <Reveal class="min-w-0 min-[1180px]:col-span-2 min-[1180px]:row-start-3">
+          <div class="contact-map">
+            <iframe
+              title={`Карта: ${company.name}, офис ${company.city}`}
+              src={`https://maps.google.com/maps?q=${mapQuery}&output=embed`}
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+            <span aria-hidden="true" class="contact-map__wash"></span>
+          </div>
         </Reveal>
       </div>
     </div>
@@ -176,7 +206,6 @@ const mapQuery = encodeURIComponent(officeMapQuery);
     max-width: none;
     font-family: var(--font-display);
     font-size: clamp(3.4rem, 1.9rem + 4vw, 5.9rem);
-    font-weight: 560;
     line-height: 0.94;
     letter-spacing: 0;
     white-space: nowrap;
@@ -192,26 +221,154 @@ const mapQuery = encodeURIComponent(officeMapQuery);
     line-height: 1.72;
   }
 
+  /* Phones first in the DOM (and on narrow screens); from 1180px the form
+     takes the left column and the phones sit top right, above the fold. */
   .contact-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(21rem, 0.56fr);
-    gap: clamp(1.25rem, 3.8vw, 4.5rem);
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2.5rem;
     align-items: start;
   }
 
-  .contact-layout > * {
-    min-width: 0;
+  @media (min-width: 1180px) {
+    .contact-layout {
+      grid-template-columns: minmax(0, 1.05fr) minmax(21rem, 0.56fr);
+      grid-template-rows: auto 1fr auto;
+      column-gap: clamp(1.25rem, 3.8vw, 4.5rem);
+    }
   }
 
+  .contact-call,
   .contact-form-panel,
-  .contact-side {
+  .contact-office {
     border-top: 1px solid rgba(18, 22, 28, 0.16);
-  }
-
-  .contact-form-panel {
     padding-top: 1.4rem;
   }
 
+  .contact-call h2,
+  .contact-office h2 {
+    margin-top: 0.7rem;
+    color: #15191f;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 1.1rem + 1.3vw, 2.3rem);
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+  }
+
+  /* ── Phones ─────────────────────────────────────────────────────── */
+  .contact-call__body {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.15rem;
+  }
+
+  @media (min-width: 720px) and (max-width: 1179px) {
+    .contact-call__body {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: start;
+    }
+  }
+
+  .contact-call__lead {
+    position: relative;
+    display: grid;
+    gap: 0.4rem;
+    border-radius: 0.75rem;
+    background: #15191f;
+    padding: 1.1rem 4.25rem 1.15rem 1.25rem;
+    color: #fff;
+    box-shadow: 0 18px 40px -24px rgba(18, 22, 28, 0.55);
+    transition:
+      background-color 400ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .contact-call__lead:hover {
+    background: #ba2d20;
+    transform: translateY(-2px);
+  }
+
+  .contact-call__role {
+    color: rgba(255, 251, 244, 0.7);
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .contact-call__number {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 1.25rem + 1vw, 2.05rem);
+    line-height: 1.1;
+    -webkit-text-stroke: 0.025em currentColor;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .contact-call__hours {
+    color: rgba(255, 251, 244, 0.6);
+    font-size: 0.82rem;
+  }
+
+  .contact-call__icon {
+    position: absolute;
+    top: 50%;
+    right: 1.1rem;
+    box-sizing: content-box;
+    padding: 0.6rem;
+    border-radius: 999px;
+    background: #ba2d20;
+    transform: translateY(-50%);
+    transition: background-color 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .contact-call__lead:hover .contact-call__icon {
+    background: #8f1f15;
+  }
+
+  .contact-call__list li {
+    display: flex;
+    min-height: 2.9rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(18, 22, 28, 0.12);
+  }
+
+  .contact-call__list li:first-child {
+    border-top: 1px solid rgba(18, 22, 28, 0.12);
+  }
+
+  @media (min-width: 720px) and (max-width: 1179px) {
+    .contact-call__list li:first-child {
+      border-top: 0;
+    }
+  }
+
+  .contact-call__list span {
+    color: rgba(18, 22, 28, 0.6);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .contact-call__list a {
+    color: #15191f;
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    text-decoration: underline;
+    text-decoration-color: rgba(186, 45, 32, 0.45);
+    text-underline-offset: 5px;
+    transition: color 220ms ease, text-decoration-color 220ms ease;
+  }
+
+  .contact-call__list a:hover {
+    color: #ba2d20;
+    text-decoration-color: #ba2d20;
+  }
+
+  /* ── Form ───────────────────────────────────────────────────────── */
   .contact-form-panel__head {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.52fr);
@@ -237,7 +394,7 @@ const mapQuery = encodeURIComponent(officeMapQuery);
   }
 
   .contact-form-panel__head p:not(.eyebrow) {
-    color: rgba(18, 22, 28, 0.62);
+    color: rgba(18, 22, 28, 0.66);
     font-size: 0.96rem;
     line-height: 1.64;
   }
@@ -259,6 +416,7 @@ const mapQuery = encodeURIComponent(officeMapQuery);
     min-height: 6.6rem;
     background: rgba(255, 251, 244, 0.76);
     padding: 1rem 1.05rem 0.9rem;
+    transition: background-color 260ms ease;
   }
 
   .contact-field--wide {
@@ -268,11 +426,15 @@ const mapQuery = encodeURIComponent(officeMapQuery);
 
   .contact-field label {
     color: #ba2d20;
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.16em;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
     line-height: 1.2;
     text-transform: uppercase;
+  }
+
+  .contact-field__req {
+    margin-left: 0.15rem;
+    letter-spacing: 0;
   }
 
   .contact-field input,
@@ -280,15 +442,25 @@ const mapQuery = encodeURIComponent(officeMapQuery);
     width: 100%;
     min-width: 0;
     border: 0;
+    border-bottom: 1px solid rgba(26, 31, 38, 0.25);
+    border-radius: 0;
     outline: 0;
     background: transparent;
     color: #15191f;
     font: inherit;
     line-height: 1.45;
+    padding: 0 0 0.35rem;
+    transition: border-color 220ms ease, box-shadow 220ms ease;
+  }
+
+  .contact-field input::placeholder,
+  .contact-field textarea::placeholder {
+    color: rgba(18, 22, 28, 0.34);
+    opacity: 1;
   }
 
   .contact-field input {
-    margin-top: 0.9rem;
+    margin-top: 0.8rem;
     font-family: var(--font-display);
     font-size: clamp(1.25rem, 1rem + 0.7vw, 1.8rem);
   }
@@ -300,10 +472,17 @@ const mapQuery = encodeURIComponent(officeMapQuery);
     font-size: 1rem;
   }
 
+  /* Focus: 2px red line under the input and a lighter cell. */
   .contact-field input:focus,
   .contact-field textarea:focus {
-    box-shadow: inset 0 -2px 0 #ba2d20;
+    border-bottom-color: #ba2d20;
+    box-shadow: 0 1px 0 #ba2d20;
   }
+
+  .contact-field:focus-within {
+    background: #fffdf9;
+  }
+
   /* The input itself has no outline; the whole field carries the ring. */
   .contact-field:has(:focus-visible) {
     outline: 2px solid var(--focus-ring);
@@ -324,55 +503,93 @@ const mapQuery = encodeURIComponent(officeMapQuery);
 
   .contact-form__footer {
     grid-column: 1 / -1;
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    gap: 0.9rem 1.5rem;
     background: #15191f;
-    padding: 1rem;
-    color: rgba(255, 251, 244, 0.7);
+    padding: 1.1rem 1rem 1.15rem 1.15rem;
+    color: rgba(255, 251, 244, 0.72);
   }
 
-  .contact-form__footer p {
-    max-width: 28rem;
+  .contact-form__footer > button {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .contact-form__hint {
+    grid-column: 1;
+    grid-row: 1;
+    display: grid;
+    justify-items: start;
+    gap: 0.35rem;
+    min-width: 0;
     font-size: 0.88rem;
     line-height: 1.5;
   }
 
-
-  .contact-side {
-    display: grid;
-    gap: 1.1rem;
-    padding-top: 1.4rem;
+  .contact-form__hint p:first-child {
+    color: #fff;
   }
 
-  .contact-office__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
+  .contact-form__mail {
+    color: #fff;
+    overflow-wrap: anywhere;
   }
 
-  .contact-office h2 {
-    color: #15191f;
-    font-family: var(--font-display);
-    font-size: clamp(1.35rem, 1rem + 1.05vw, 2rem);
-    line-height: 1;
+  .contact-copy {
+    display: inline-flex;
+    min-height: 2.25rem;
+    align-items: center;
+    margin-top: 0.15rem;
+    border: 1px solid rgba(255, 251, 244, 0.3);
+    border-radius: 999px;
+    padding: 0 0.95rem;
+    color: #fff;
+    font-size: 0.82rem;
+    transition: background-color 220ms ease, border-color 220ms ease;
   }
 
+  .contact-copy:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 251, 244, 0.6);
+  }
+
+  .contact-copy[data-copied='true'] {
+    border-color: #ba2d20;
+    background: rgba(186, 45, 32, 0.25);
+  }
+
+  /* ── Office and map ─────────────────────────────────────────────── */
   .contact-office address {
-    margin-top: 1rem;
+    margin-top: 0.9rem;
     color: rgba(18, 22, 28, 0.74);
     font-style: normal;
     font-size: 0.97rem;
     line-height: 1.58;
   }
 
+  .contact-map-link {
+    margin-top: 0.9rem;
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.5rem;
+    color: #15191f;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: color 220ms ease, gap 220ms ease;
+  }
+
+  .contact-map-link:hover {
+    color: #ba2d20;
+    gap: 0.75rem;
+  }
+
   .contact-map {
-    margin-top: 1.15rem;
     position: relative;
-    min-height: 20rem;
-    aspect-ratio: 4 / 3;
+    height: clamp(16rem, 26vw, 22rem);
     overflow: hidden;
     border-radius: 0.75rem;
     box-shadow: 0 18px 44px -22px rgba(18, 22, 28, 0.28);
@@ -401,91 +618,9 @@ const mapQuery = encodeURIComponent(officeMapQuery);
     background: linear-gradient(to bottom, rgba(18, 22, 28, 0.22), rgba(18, 22, 28, 0.06), transparent);
   }
 
-  .contact-map__addr {
-    position: absolute;
-    left: 0.75rem;
-    right: 0.75rem;
-    bottom: 0.75rem;
-    display: inline-flex;
-    max-width: calc(100% - 1.5rem);
-    align-items: flex-start;
-    gap: 0.65rem;
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.94);
-    padding: 0.55rem 0.85rem 0.65rem 0.7rem;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.95),
-      0 8px 22px -10px rgba(18, 22, 28, 0.32);
-    backdrop-filter: blur(14px) saturate(180%);
-    -webkit-backdrop-filter: blur(14px) saturate(180%);
-    pointer-events: none;
-  }
-
-  .contact-map__bar {
-    display: inline-block;
-    width: 0.125rem;
-    height: 0.875rem;
-    margin-top: 0.125rem;
-    flex: 0 0 auto;
-    background: #ba2d20;
-  }
-
-  .contact-map__addr p {
-    color: #ba2d20;
-    font-size: 0.5rem;
-    font-weight: 800;
-    letter-spacing: 0.3em;
-    line-height: 1.1;
-    text-transform: uppercase;
-  }
-
-  .contact-map__addr strong {
-    display: block;
-    margin-top: 0.15rem;
-    overflow: hidden;
-    color: #15191f;
-    font-size: 0.75rem;
-    font-weight: 520;
-    line-height: 1.35;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .contact-map-link {
-    margin-top: 0.8rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #15191f;
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    transition: color 220ms ease, gap 220ms ease;
-  }
-
-  .contact-map-link:hover {
-    color: #ba2d20;
-    gap: 0.75rem;
-  }
-
-  @media (max-width: 1180px) {
-    .contact-layout {
-      grid-template-columns: 1fr;
-    }
-
-    .contact-side {
-      grid-template-columns: minmax(0, 0.9fr) minmax(19rem, 0.85fr);
-      align-items: start;
-    }
-
-  }
-
   @media (max-width: 900px) {
     .contact-hero,
-    .contact-form-panel__head,
-    .contact-side {
+    .contact-form-panel__head {
       grid-template-columns: 1fr;
     }
 
@@ -518,14 +653,8 @@ const mapQuery = encodeURIComponent(officeMapQuery);
       line-height: 1.6;
     }
 
-    .contact-form-panel__head,
-    .contact-form-panel__head p:not(.eyebrow),
-    .contact-side,
-    .contact-office,
-    .contact-map {
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
+    .contact-layout {
+      row-gap: 2rem;
     }
 
     .contact-form {
@@ -538,39 +667,33 @@ const mapQuery = encodeURIComponent(officeMapQuery);
     }
 
     .contact-form__footer {
-      display: grid;
+      grid-template-columns: 1fr;
     }
 
-    .contact-form__footer button {
+    .contact-form__footer > button {
+      grid-column: 1;
+      grid-row: 1;
       width: 100%;
     }
 
-    .contact-office__head {
-      display: grid;
+    .contact-form__hint {
+      grid-row: 2;
     }
 
     .contact-map {
-      min-height: 17rem;
-      aspect-ratio: 16 / 11;
-      max-height: 19rem;
+      height: 17rem;
     }
+  }
 
-    .contact-map__addr {
-      left: 0.55rem;
-      right: 0.55rem;
-      max-width: calc(100% - 1.1rem);
+  @media (prefers-reduced-motion: reduce) {
+    .contact-call__lead,
+    .contact-call__lead:hover {
+      transform: none;
+      transition: none;
     }
-
-    .contact-map__addr > div {
-      min-width: 0;
-    }
-
-    .contact-map__addr strong {
-      white-space: normal;
-    }
-
   }
 </style>
+
 
 <script>
   const initContactForms = () => {
@@ -653,12 +776,50 @@ const mapQuery = encodeURIComponent(officeMapQuery);
           message,
         ].join('\n');
 
-        if (status) status.textContent = 'Отваряме имейл клиент с попълненото запитване.';
+        if (status) status.textContent = 'Отваряме вашата поща с готовото писмо.';
         window.location.href = `mailto:${form.dataset.mailto}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       });
     });
   };
 
-  initContactForms();
-  document.addEventListener('astro:page-load', initContactForms);
+  // „Копирайте адреса“: for visitors whose browser has no mail app set up.
+  const initCopyEmail = () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((button) => {
+      if (button.dataset.ready === 'true') return;
+      button.dataset.ready = 'true';
+
+      const label = button.querySelector('[data-copy-label]');
+      const initial = label?.textContent ?? '';
+      let timer = 0;
+
+      button.addEventListener('click', async () => {
+        const value = button.dataset.copyEmail ?? '';
+        let copied = false;
+        try {
+          await navigator.clipboard.writeText(value);
+          copied = true;
+        } catch {
+          // No clipboard access: select the address so it can be copied by hand.
+          const mail = button.parentElement?.querySelector('.contact-form__mail');
+          if (mail) window.getSelection()?.selectAllChildren(mail);
+        }
+
+        button.dataset.copied = copied ? 'true' : 'false';
+        if (label) label.textContent = copied ? 'Адресът е копиран' : 'Адресът е маркиран';
+        window.clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          button.dataset.copied = 'false';
+          if (label) label.textContent = initial;
+        }, 2600);
+      });
+    });
+  };
+
+  const init = () => {
+    initContactForms();
+    initCopyEmail();
+  };
+
+  init();
+  document.addEventListener('astro:page-load', init);
 </script>
