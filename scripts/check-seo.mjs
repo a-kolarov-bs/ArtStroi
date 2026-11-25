@@ -10,7 +10,11 @@
 //      address, telephone, email, opening hours, url, logo, image, and no
 //      foundingDate / taxID / vatID / aggregateRating (unconfirmed facts);
 //   6. 404.html has noindex and links to /proekti/ and /kontakti/;
-//   7. robots.txt points at a sitemap file that exists.
+//   7. robots.txt points at a sitemap file that exists;
+//   8. the description shares no run of 4+ words with the title (Google shows
+//      both, a repeat wastes the snippet) and a cut description („…“) does not
+//      end on an abbreviation („гр.“, „с.“) or a preposition;
+//   9. every target in dist/_redirects is a page that exists in dist/.
 // Usage: node scripts/check-seo.mjs [distDir]   (runs as postbuild)
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -34,6 +38,20 @@ const meta = (html, attr, key) => {
 };
 
 const company = 'АРТСТРОЙ ООД';
+const DANGLING = new Set(['на', 'в', 'във', 'и', 'с', 'със', 'от', 'по', 'за', 'до', 'към', 'при', 'а']);
+const words = (s) => s.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+/** First run of 4 words found in both texts, or null. */
+function sharedRun(a, b, n = 4) {
+  const wa = words(a);
+  const set = new Set();
+  for (let i = 0; i + n <= wa.length; i++) set.add(wa.slice(i, i + n).join(' '));
+  const wb = words(b);
+  for (let i = 0; i + n <= wb.length; i++) {
+    const g = wb.slice(i, i + n).join(' ');
+    if (set.has(g)) return g;
+  }
+  return null;
+}
 const pages = htmlFiles(dist);
 let checked = 0;
 let ldBlocks = 0;
@@ -61,6 +79,14 @@ for (const file of pages) {
   if (desc) dup(seenDesc, desc, rel, 'description');
   if (!desc) err('no meta description');
   else if (desc.length > 160) err(`description ${desc.length} chars (> 160)`);
+  if (desc && title) {
+    const shared = sharedRun(title, desc);
+    if (shared) err(`description repeats the title: „${shared}“`);
+    const beforeCut = desc.match(/(\S+)…/g)?.map((m) => m.slice(0, -1)) ?? [];
+    for (const tok of beforeCut)
+      if (/^[\p{Ll}.-]{1,4}\.?$/u.test(tok) && (tok.endsWith('.') || DANGLING.has(tok)))
+        err(`description cut after „${tok}“`);
+  }
 
   const canonical = html.match(/<link rel="canonical" href="([^"]*)"/)?.[1] ?? null;
   const robots = meta(html, 'name', 'robots');
@@ -115,8 +141,24 @@ if (!sitemap) errors.push('robots.txt: no Sitemap line');
 else if (!existsSync(join(dist, new URL(sitemap).pathname))) errors.push(`robots.txt: ${sitemap} not in dist`);
 if (!existsSync(join(dist, '404.html'))) errors.push('dist/404.html missing');
 
+const redirectsFile = join(dist, '_redirects');
+let redirects = 0;
+if (!existsSync(redirectsFile)) errors.push('dist/_redirects missing');
+else {
+  for (const line of readFileSync(redirectsFile, 'utf8').split('\n')) {
+    if (/^\s*(#|$)/.test(line)) continue;
+    const [from, to, code] = line.trim().split(/\s+/);
+    redirects++;
+    if (code !== '301') errors.push(`_redirects: ${from} has code ${code}`);
+    const path = to?.split('#')[0] ?? '';
+    const page = path.endsWith('/') ? join(dist, path, 'index.html') : join(dist, path);
+    if (!existsSync(page)) errors.push(`_redirects: ${from} → ${to}, no such page in dist`);
+    if (existsSync(join(dist, from))) errors.push(`_redirects: ${from} is a real file, the rule never fires`);
+  }
+}
+
 if (errors.length) {
   console.error(`check-seo: ${errors.length} problem(s)\n  ` + errors.join('\n  '));
   process.exit(1);
 }
-console.log(`check-seo: OK. ${checked} pages, ${ldBlocks} JSON-LD blocks parsed, robots.txt → ${sitemap}.`);
+console.log(`check-seo: OK. ${checked} pages, ${ldBlocks} JSON-LD blocks parsed, ${redirects} redirects lead to pages, robots.txt → ${sitemap}.`);

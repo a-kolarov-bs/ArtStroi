@@ -21,6 +21,7 @@ import ProjectProtocol from '../../components/ProjectProtocol.astro';
 import { projects, getProtocol } from '../../data/projects';
 import { company, phone, telHref } from '../../data/company';
 import { organizationId } from '../../data/schema';
+import { projectMetaDescription } from '../../data/meta';
 import ProjectCard from '../../components/ProjectCard.astro';
 import { imageSize } from '../../data/assets';
 
@@ -91,21 +92,8 @@ const pageTitle = `${project.title}${
 } — ${company.name}`;
 const mainPhone = phone('Управител');
 
-// Meta description: object, place, category and executor first, then the
-// start of the project text, cut at a word boundary to fit ~155 characters.
-// No gendered participle („изпълнен/а“): titles are of every gender.
-const metaLead = `${project.title}${
-  locationShort && locationShort !== 'България' && !placeInTitle ? `, ${locationShort}` : ''
-}. ${category}. Изпълнител: ${company.name}.`;
-const metaStats = protocol && protocol.metrics.length > 0
-  ? ' ' + protocol.metrics.map((m) => `${m.value} ${m.label}`).join(' · ') + '.'
-  : '';
-const fullMeta = [metaLead + metaStats, project.description ?? '']
-  .join(' ').replace(/\s+/g, ' ').trim();
-const META_MAX = 155;
-const pageDescription = fullMeta.length > META_MAX
-  ? fullMeta.slice(0, META_MAX - 1).replace(/[\s,;:.]+\S*$/, '') + '…'
-  : fullMeta;
+// Meta description: what the title does not say (rules in data/meta.ts).
+const pageDescription = projectMetaDescription(project, pageTitle);
 
 // ─── SEO ────────────────────────────────────────────────────────
 const siteOrigin = (Astro.site ?? new URL('https://artstroismolian.com')).toString().replace(/\/$/, '');
