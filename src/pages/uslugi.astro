@@ -421,9 +421,16 @@ const pageDescription =
         // Phones: object types and scope fold under one tap so six
         // full-width cards stay short. Runs during parse (no layout jump);
         // without JS every card stays open.
-        if (window.matchMedia('(max-width: 639px)').matches) {
-          document.querySelectorAll('details.us-card__spec').forEach(function (d) { d.open = false; });
-        }
+        // From 640px up the toggle is hidden, so a phone turned sideways
+        // reopens every card instead of leaving the lists shut.
+        (function () {
+          var mq = window.matchMedia('(max-width: 639px)');
+          var set = function () {
+            document.querySelectorAll('details.us-card__spec').forEach(function (d) { d.open = !mq.matches; });
+          };
+          if (mq.matches) set();
+          mq.addEventListener('change', set);
+        })();
       </script>
     </div>
   </section>
@@ -717,9 +724,32 @@ const pageDescription =
     height: 100%;
     object-fit: cover;
     transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* Phones: the photo shrinks to a thumbnail right of the code and the
+     title, so six stacked cards stay short and each still shows a real
+     object. The project name stays in alt / aria-label. */
   }
   @media (max-width: 639px) {
-    .us-card__photo { aspect-ratio: 16 / 7; }
+    .us-card__inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 104px;
+      column-gap: 1rem;
+      align-content: start;
+    }
+    .us-card__inner > * { grid-column: 1 / -1; }
+    .us-card__inner > .us-card__head { grid-column: 1; grid-row: 1; }
+    .us-card__inner > .us-card__title { grid-column: 1; grid-row: 2; }
+    .us-card__inner > .us-card__photo {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      align-self: start;
+      margin: 0;
+      width: 104px;
+      height: 84px;
+      aspect-ratio: auto;
+      border-radius: 2px;
+    }
+    .us-card__inner > .us-card__photo::after,
+    .us-card__inner > .us-card__photo .us-card__photo-cap { display: none; }
   }
   .us-card:hover .us-card__photo img { transform: scale(1.04); }
   .us-card__photo::after {
