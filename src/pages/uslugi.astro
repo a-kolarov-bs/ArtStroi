@@ -223,7 +223,7 @@ const cards = services.map((s) => {
   return { ...s, photo: { src: ref.coverImageUrl, title: ref.title, href: `/proekti/${ref.slug}` } };
 });
 
-const pageTitle = 'Строителни услуги · АРТСТРОЙ ООД, Смолян';
+const pageTitle = `Строителни услуги — ${company.name}, ${company.city}`;
 const pageDescription =
   `Жилищно и обществено строителство, инфраструктура, реконструкция, енергийно саниране, инсталации и реставрация. ${
     yearsActive !== null ? `${yearsActive} години строителство в Смолян и областта.` : 'Строителна фирма от Смолян.'
