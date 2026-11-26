@@ -168,7 +168,10 @@ const managerTel = telHref(manager.number);
 
   body.has-solid-header #site-header[data-tone='dark'],
   #site-header[data-state='scrolled'][data-tone='dark'] {
-    background-color: rgb(18 22 28 / 0.18);
+    /* Dense enough that the white links read on their own even when a
+       bright photo slides under the bar (≥ 3:1 over pure white); the
+       tone script only sees CSS colours, not what a photo shows. */
+    background-color: rgb(18 22 28 / 0.62);
     backdrop-filter: saturate(145%) blur(10px);
     -webkit-backdrop-filter: saturate(145%) blur(10px);
     border-bottom: 1px solid rgb(255 255 255 / 0.08);
@@ -179,7 +182,8 @@ const managerTel = telHref(manager.number);
   }
 
   body.has-solid-header #site-header[data-tone='light'],
-  #site-header[data-state='scrolled'][data-tone='light'] {
+  #site-header[data-state='scrolled'][data-tone='light'],
+  #site-header[data-tone='light'][data-mixed] {
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.60), rgba(247, 244, 238, 0.38)),
       rgba(226, 219, 207, 0.34);
@@ -195,7 +199,8 @@ const managerTel = telHref(manager.number);
   }
 
   /* ── Tone → colours of the links ─────────────────────────────────────
-     The tone (set by the script from what is behind the logo) only sets
+     The tone (set by the script from what is behind the logo, the links
+     and the number) only sets
      these variables. The links read them in exactly one rule
      each, and :hover is one rule on top, so no tone selector can outrank
      the hover state. Before the script runs there is no data-tone:
@@ -362,13 +367,16 @@ const managerTel = telHref(manager.number);
     opacity: 1;
   }
 
-  #site-header[data-state='scrolled'] .site-logo__img--light,
-  body.has-solid-header #site-header .site-logo__img--light {
+  /* Before the script sets data-tone only. Once it is set the tone alone
+     picks the logo: an unscoped solid-header rule here used to outrank it
+     and kept the dark-ink logo on a dark cover. */
+  #site-header[data-state='scrolled']:not([data-tone]) .site-logo__img--light,
+  body.has-solid-header #site-header:not([data-tone]) .site-logo__img--light {
     opacity: 1;
   }
 
-  #site-header[data-state='scrolled'] .site-logo__img--dark,
-  body.has-solid-header #site-header .site-logo__img--dark {
+  #site-header[data-state='scrolled']:not([data-tone]) .site-logo__img--dark,
+  body.has-solid-header #site-header:not([data-tone]) .site-logo__img--dark {
     opacity: 0;
   }
 
@@ -385,16 +393,6 @@ const managerTel = telHref(manager.number);
   }
 
   #site-header[data-tone='light'] .site-logo__img--dark {
-    opacity: 0;
-  }
-
-  body.has-solid-header #site-header[data-tone='light'] .site-logo__img--light,
-  #site-header[data-state='scrolled'][data-tone='light'] .site-logo__img--light {
-    opacity: 1;
-  }
-
-  body.has-solid-header #site-header[data-tone='light'] .site-logo__img--dark,
-  #site-header[data-state='scrolled'][data-tone='light'] .site-logo__img--dark {
     opacity: 0;
   }
 
@@ -641,12 +639,11 @@ const managerTel = telHref(manager.number);
       return tone === 'dark' || tone === 'light' ? tone : null;
     };
 
-    const inferTone = () => {
-      if (!logo) return window.scrollY > 80 || document.body.classList.contains('has-solid-header') ? 'light' : 'dark';
+    const fallbackTone = () =>
+      window.scrollY > 80 || document.body.classList.contains('has-solid-header') ? 'light' : 'dark';
 
-      const rect = logo.getBoundingClientRect();
-      const x = Math.round(rect.left + rect.width * 0.5);
-      const y = Math.round(rect.top + rect.height * 0.5);
+    // Tone of the surface under one point of the bar.
+    const toneAt = (x: number, y: number) => {
       const stack = document.elementsFromPoint(x, y);
       const target = stack.find((element) => !header.contains(element) && element !== document.documentElement && element !== document.body);
       const explicit = explicitTone(target ?? null);
@@ -668,7 +665,29 @@ const managerTel = telHref(manager.number);
         levels += 1;
       }
 
-      return window.scrollY > 80 || document.body.classList.contains('has-solid-header') ? 'light' : 'dark';
+      return fallbackTone();
+    };
+
+    // The bar's tone has to hold for everything written on it: the logo,
+    // the links in the middle and the number on the right (the round chips
+    // below 1024 carry their own dark glass, so they are not sampled).
+    // White text is chosen only when the surface under every item is dark.
+    // Anything mixed gets the light tone, whose frosted bar is dense enough
+    // for dark text over a dark photo; data-mixed gives it that bar even at
+    // the top of a page, where the dark tone has no bar at all.
+    const sampled = () => [
+      logo,
+      ...header.querySelectorAll<HTMLElement>('[data-nav-link]'),
+      window.matchMedia('(min-width: 1024px)').matches ? header.querySelector<HTMLElement>('[data-header-call]') : null,
+    ];
+    const inferTone = () => {
+      const tones = sampled()
+        .map((element) => element?.getBoundingClientRect())
+        .filter((rect): rect is DOMRect => !!rect && rect.width > 0 && rect.height > 0)
+        .map((rect) => toneAt(Math.round(rect.left + rect.width * 0.5), Math.round(rect.top + rect.height * 0.5)));
+      if (!tones.length) return { tone: fallbackTone(), mixed: false };
+      const dark = tones.filter((tone) => tone === 'dark').length;
+      return { tone: dark === tones.length ? 'dark' : 'light', mixed: dark > 0 && dark < tones.length };
     };
 
     // While the menu is open the page behind the scrim does not scroll.
@@ -710,7 +729,10 @@ const managerTel = telHref(manager.number);
       const ratio = h > 0 ? Math.min(y / h, 1) : 0;
       progress.style.width = `${ratio * 100}%`;
       header.dataset.state = y > 80 ? 'scrolled' : 'top';
-      header.dataset.tone = inferTone();
+      const { tone, mixed } = inferTone();
+      header.dataset.tone = tone;
+      if (mixed) header.dataset.mixed = '';
+      else delete header.dataset.mixed;
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
