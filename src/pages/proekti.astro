@@ -99,8 +99,7 @@ const pageDescription = `${company.completedProjects}+ реализирани о
         ))}
       </div>
       <!-- Edge fades — soften where the reel meets the header & body -->
-      <!-- Desktop only: on the phone the header bar must not darken the photos. -->
-      <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-ink-950/55 to-transparent max-md:hidden"></div>
+      <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-ink-950/55 to-transparent"></div>
       <div aria-hidden="true" class="pointer-events-none absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-ink-950 to-transparent"></div>
       <div aria-hidden="true" class="pointer-events-none absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-ink-950 to-transparent"></div>
     </div>
@@ -697,7 +696,7 @@ const pageDescription = `${company.completedProjects}+ реализирани о
 
     const writeUrl = () => {
       const url = new URL(window.location.href);
-
+      url.searchParams.delete('q'); // old links from the removed word search
       if (state.cat !== 'all') url.searchParams.set('cat', state.cat); else url.searchParams.delete('cat');
       if (state.page > 1) url.searchParams.set('page', String(state.page)); else url.searchParams.delete('page');
       window.history.replaceState({}, '', url.toString());
@@ -711,7 +710,6 @@ const pageDescription = `${company.completedProjects}+ реализирани о
       }
     };
 
-
     for (const chip of chips) {
       chip.addEventListener('click', () => {
         state.cat = chip.dataset.cat ?? 'all';
@@ -719,7 +717,6 @@ const pageDescription = `${company.completedProjects}+ реализирани о
         apply({ resetPage: true });
       }, { signal });
     }
-
 
     // Pager — event delegation (buttons rendered dynamically).
     pager.addEventListener('click', (e) => {
