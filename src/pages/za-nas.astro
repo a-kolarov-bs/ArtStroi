@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Reveal from '../components/Reveal.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { projects } from '../data/projects';
 import { imageSize } from '../data/assets';
 import { company, yearsActive as getYearsActive, cprsGroupsLabel } from '../data/company';
 
@@ -15,14 +14,12 @@ import { company, yearsActive as getYearsActive, cprsGroupsLabel } from '../data
 
 const currentYear = new Date().getFullYear();
 const yearsActive = getYearsActive();
-const totalProjects = projects.length;
 const cprsLabel = cprsGroupsLabel();
 
+// Firm-wide totals (company.ts), not the count of projects shown on the site.
 const heroStats = [
-  ...(yearsActive !== null ? [{ label: 'Години работа', short: 'Години', value: yearsActive, pad: 0, plus: true }] : []),
-  { label: 'Реализирани обекти', short: 'Обекта', value: totalProjects, pad: 0, plus: false },
-  ...(company.cprsGroups ? [{ label: 'ЦПРС групи', short: 'ЦПРС групи', value: company.cprsGroups.length, pad: 2, plus: false }] : []),
-  { label: 'ISO стандарта', short: 'ISO стандарта', value: 3, pad: 2, plus: false },
+  { label: 'Завършени обекта', short: 'Обекта', value: company.completedProjects },
+  { label: 'Години опит', short: 'Години', value: company.yearsExperience },
 ];
 
 // ── Award (Сграда на годината) — Chukara project feature.
@@ -103,27 +100,34 @@ const pageDescription = `${
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <!-- ════════════════════════════════════════════════════════════
-       1 · HERO — dark editorial slab, compact and dense.
-       Same vocabulary as /uslugi hero so the firm reads as one voice.
+       1 · HERO — photo of the awarded Chukara hotel behind the whole
+       hero (desktop) or behind the title band (phone). Title and
+       numbers on the left, the firm's profile on the right over the
+       photo. Phone order: photo + title → profile → numbers.
        ════════════════════════════════════════════════════════════ -->
   <section class="zn-hero relative isolate overflow-hidden bg-ink-950 text-white">
-    <span aria-hidden="true" class="absolute inset-x-0 top-0 h-[3px] bg-brand"></span>
+    <span aria-hidden="true" class="absolute inset-x-0 top-0 z-[1] h-[3px] bg-brand"></span>
+    <!-- Shows only on the phone, below the photo band. -->
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-dark bp-sheet-c"></div>
 
-    {company.founded !== null && (
-      <span
-        aria-hidden="true"
-        class="zn-hero__backdrop absolute -right-8 -bottom-14 select-none pointer-events-none font-display text-white/[0.045] leading-[0.78]"
-        style="font-size: clamp(11rem, 22vw, 26rem);"
-      >
-        {company.founded}
-      </span>
-    )}
-
-    <div class="container-page relative pt-32 md:pt-36 lg:pt-40 pb-14 md:pb-20">
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-start">
-        <!-- LEFT — title -->
-        <Reveal class="lg:col-span-7">
+    <div class="container-page zn-hero__grid">
+      <!-- Title. On the phone this block holds the photo band; from lg up it
+           is static, so the photo fills the whole section. -->
+      <div class="zn-hero__intro">
+        <div aria-hidden="true" class="zn-hero__media">
+          <img
+            src="/award/chukara/hero.jpg"
+            width="1800"
+            height="1048"
+            alt=""
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            class="zn-hero__photo"
+          />
+          <span class="zn-hero__shade"></span>
+        </div>
+        <Reveal>
           <p class="eyebrow flex items-center gap-3 flex-wrap">
             <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
             За нас{company.founded !== null && ` · ${company.founded} → ${currentYear}`}
@@ -137,26 +141,15 @@ const pageDescription = `${
               {yearsActive !== null ? 'строителство в Смолян.' : 'от Смолян.'}
             </span>
           </h1>
-          <p class="mt-7 md:mt-9 max-w-[54ch] text-base md:text-lg text-white/70 leading-[1.65]">
+          <p class="mt-6 md:mt-8 max-w-[54ch] text-base md:text-lg text-white/80 leading-[1.65]">
             {company.name} строи жилища, обществени сгради и инфраструктура в област Смолян и в други краища на България.{company.founded !== null && ` Работим от ${company.founded} г.`}
           </p>
-
-          <!-- Tight inline stats — no separate band -->
-          <dl class="zn-stats mt-9 md:mt-11 gap-x-6 gap-y-4 max-w-2xl border-t border-white/12 pt-6" style={`--zn-cols: ${heroStats.length};`}>
-            {heroStats.map((st) => (
-              <div>
-                <dt class="sr-only">{st.label}</dt>
-                <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem);">
-                  <span data-counter={st.value} data-pad={st.pad || undefined}>0</span>{st.plus && <span class="text-brand">+</span>}
-                </dd>
-                <p class="mt-3 text-xs uppercase tracking-eyebrow text-white/60">{st.short}</p>
-              </div>
-            ))}
-          </dl>
         </Reveal>
+      </div>
 
-        <!-- RIGHT — dossier card -->
-        <Reveal class="lg:col-span-5 lg:pt-10" delay={120}>
+      <!-- Profile — over the photo on desktop, on the dark band on the phone -->
+      <div class="zn-hero__aside">
+        <Reveal delay={120}>
           <aside class="zn-dossier">
             <div class="border-b border-white/15 pb-3">
               <p class="text-xs uppercase tracking-eyebrow text-white/60">
@@ -189,7 +182,7 @@ const pageDescription = `${
               </div>
               <div class="zn-dossier__row">
                 <dt>Награда</dt>
-                <dd class="text-brand">Сграда на годината</dd>
+                <dd>Сграда на годината</dd>
               </div>
             </dl>
 
@@ -200,6 +193,23 @@ const pageDescription = `${
               </svg>
             </a>
           </aside>
+        </Reveal>
+      </div>
+
+      <!-- Numbers — firm-wide totals from company.ts -->
+      <div class="zn-hero__stats">
+        <Reveal delay={60}>
+          <dl class="zn-stats">
+            {heroStats.map((st) => (
+              <div>
+                <dt class="sr-only">{st.label}</dt>
+                <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(2rem, 1.2rem + 2vw, 3rem);">
+                  <span data-counter={st.value}>{st.value}</span><span class="text-brand">+</span>
+                </dd>
+                <dd aria-hidden="true" class="mt-3 text-xs uppercase tracking-eyebrow text-white/70">{st.short}</dd>
+              </div>
+            ))}
+          </dl>
         </Reveal>
       </div>
     </div>
@@ -494,33 +504,117 @@ const pageDescription = `${
   #nagrada { scroll-margin-top: 6rem; }
 
   /* ════════ HERO ════════════════════════════════════════════════ */
-  /* Stat row — declared in CSS so Tailwind's JIT doesn't have to find
-     `grid-cols-4` (which it sometimes misses when only the bare class
-     is used). 4 cols at >=520px, 2 cols below. */
+  /* Phone: one column — photo band with the title, then the profile and
+     the numbers on the dark section background. */
+  .zn-hero { --zn-top: 7.5rem; }
+  .zn-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'intro' 'aside' 'stats';
+    padding-top: var(--zn-top);
+    padding-bottom: 3.5rem;
+  }
+  /* Tall photo band (≈ 5:4 of the screen width), title at its foot. */
+  .zn-hero__intro {
+    grid-area: intro;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: calc(min(128vw, 38rem) - var(--zn-top));
+    padding-bottom: 2.5rem;
+  }
+  .zn-hero__intro h1,
+  .zn-hero__intro p:not(.eyebrow) {
+    text-shadow: 0 1px 18px rgba(18, 22, 28, 0.55);
+  }
+  .zn-hero__aside { grid-area: aside; margin-top: 2rem; }
+  .zn-hero__stats { grid-area: stats; margin-top: 2.25rem; }
+
+  /* The photo layer. On the phone it is the band behind the title:
+     full-bleed sideways, up to the top of the section (behind the
+     header), down to the end of the title block. */
+  .zn-hero__media {
+    position: absolute;
+    z-index: -1;
+    top: calc(-1 * var(--zn-top));
+    bottom: 0;
+    left: calc(50% - 50vw);
+    right: calc(50% - 50vw);
+    overflow: hidden;
+  }
+  .zn-hero__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 62% 50%;
+  }
+  /* Top for the header, the bottom melts into the section's ink. */
+  .zn-hero__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(18, 22, 28, 0.6) 0%,
+      rgba(18, 22, 28, 0.08) 18%,
+      rgba(18, 22, 28, 0.42) 34%,
+      rgba(18, 22, 28, 0.84) 50%,
+      rgba(18, 22, 28, 0.95) 75%,
+      #12161c 100%
+    );
+  }
+
+  /* Desktop: the photo fills the whole hero; title and numbers sit
+     left, the profile panel right, all anchored to the bottom. */
+  @media (min-width: 1024px) {
+    .zn-hero { --zn-top: 10rem; }
+    .zn-hero__grid {
+      min-height: min(100svh, 52rem);
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      grid-template-rows: 1fr auto;
+      grid-template-areas: 'intro aside' 'stats aside';
+      column-gap: clamp(3rem, 5vw, 5rem);
+      align-items: end;
+      padding-bottom: 4.5rem;
+    }
+    .zn-hero__intro { position: static; min-height: 0; padding-bottom: 0; }
+    .zn-hero__aside { margin-top: 0; align-self: end; }
+    .zn-hero__stats { margin-top: 2.75rem; }
+    .zn-hero__media { inset: 0; }
+    .zn-hero__photo { object-position: 50% 55%; }
+    /* Heavier on the left (title) and at the bottom (numbers). */
+    .zn-hero__shade {
+      background:
+        linear-gradient(90deg, rgba(18, 22, 28, 0.94) 0%, rgba(18, 22, 28, 0.8) 40%, rgba(18, 22, 28, 0.42) 70%, rgba(18, 22, 28, 0.3) 100%),
+        linear-gradient(180deg, rgba(18, 22, 28, 0.6) 0%, rgba(18, 22, 28, 0) 26%, rgba(18, 22, 28, 0) 50%, rgba(18, 22, 28, 0.85) 100%);
+    }
+  }
+
+  /* Two numbers side by side, close together (not spread wide). */
   .zn-stats {
     display: grid;
-    grid-template-columns: repeat(var(--zn-cols, 4), minmax(0, 1fr));
-    column-gap: 1.5rem;
-    row-gap: 1rem;
-  }
-  @media (max-width: 519px) {
-    .zn-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  .zn-hero__backdrop {
-    animation: zn-drift 26s ease-in-out infinite alternate;
-    will-change: transform;
-  }
-  @keyframes zn-drift {
-    0%   { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-2rem, -0.6rem, 0); }
+    grid-template-columns: repeat(2, max-content);
+    column-gap: clamp(2.5rem, 6vw, 4.5rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    padding-top: 1.5rem;
   }
   .zn-stat > span[data-counter] {
     display: inline-block;
   }
 
-  /* Hero dossier card — same vocabulary as us-index */
+  /* Hero dossier card. Over the photo (lg+) it is a dark glass panel. */
   .zn-dossier {
     position: relative;
+  }
+  @media (min-width: 1024px) {
+    .zn-dossier {
+      padding: 1.75rem 1.75rem 1.6rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(18, 22, 28, 0.7);
+      -webkit-backdrop-filter: blur(14px) saturate(1.1);
+      backdrop-filter: blur(14px) saturate(1.1);
+    }
   }
   .zn-dossier__list {
     margin-top: 0.5rem;
@@ -542,7 +636,7 @@ const pageDescription = `${
     font-size: 0.75rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.42);
+    color: rgba(255, 255, 255, 0.62);
     font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", monospace;
   }
   .zn-dossier__row dd {
@@ -1078,7 +1172,6 @@ const pageDescription = `${
 
   /* ════════ REDUCED MOTION ══════════════════════════════════════ */
   @media (prefers-reduced-motion: reduce) {
-    .zn-hero__backdrop,
     .zn-award__bg {
       animation: none !important;
     }
