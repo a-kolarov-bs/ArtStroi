@@ -105,7 +105,9 @@ const vercelText = JSON.stringify({
 
 if (process.argv.includes('--check')) {
   const cur = existsSync(out) ? readFileSync(out, 'utf8') : '';
-  const curVercel = existsSync(vercelOut) ? readFileSync(vercelOut, 'utf8') : '';
+  // Vercel reads vercel.json before the build and does not leave it in the
+  // build folder, so there it is checked locally and in git, not on Vercel.
+  const curVercel = process.env.VERCEL ? vercelText : existsSync(vercelOut) ? readFileSync(vercelOut, 'utf8') : '';
   if (cur !== text || curVercel !== vercelText) {
     console.error('gen-redirects: public/_redirects or vercel.json is out of date. Run: node scripts/gen-redirects.mjs');
     process.exit(1);
