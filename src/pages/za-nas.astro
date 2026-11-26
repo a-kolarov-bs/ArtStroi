@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Reveal from '../components/Reveal.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { projects } from '../data/projects';
 import { imageSize } from '../data/assets';
 import { company, yearsActive as getYearsActive, cprsGroupsLabel } from '../data/company';
 
@@ -15,14 +14,12 @@ import { company, yearsActive as getYearsActive, cprsGroupsLabel } from '../data
 
 const currentYear = new Date().getFullYear();
 const yearsActive = getYearsActive();
-const totalProjects = projects.length;
 const cprsLabel = cprsGroupsLabel();
 
+// Firm-wide totals (company.ts), not the count of projects shown on the site.
 const heroStats = [
-  ...(yearsActive !== null ? [{ label: 'Години работа', short: 'Години', value: yearsActive, pad: 0, plus: true }] : []),
-  { label: 'Реализирани обекти', short: 'Обекта', value: totalProjects, pad: 0, plus: false },
-  ...(company.cprsGroups ? [{ label: 'ЦПРС групи', short: 'ЦПРС групи', value: company.cprsGroups.length, pad: 2, plus: false }] : []),
-  { label: 'ISO стандарта', short: 'ISO стандарта', value: 3, pad: 2, plus: false },
+  { label: 'Завършени обекта', short: 'Обекта', value: company.completedProjects },
+  { label: 'Години опит', short: 'Години', value: company.yearsExperience },
 ];
 
 // ── Award (Сграда на годината) — Chukara project feature.
@@ -103,27 +100,36 @@ const pageDescription = `${
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <!-- ════════════════════════════════════════════════════════════
-       1 · HERO — dark editorial slab, compact and dense.
-       Same vocabulary as /uslugi hero so the firm reads as one voice.
+       1 · HERO — photo of the awarded Chukara hotel behind the whole
+       hero (desktop) or behind the title band (phone). Title and
+       numbers on the left, the firm's profile on the right over the
+       photo. Phone order: photo + title → profile → numbers.
        ════════════════════════════════════════════════════════════ -->
   <section class="zn-hero relative isolate overflow-hidden bg-ink-950 text-white">
-    <span aria-hidden="true" class="absolute inset-x-0 top-0 h-[3px] bg-brand"></span>
+    <span aria-hidden="true" class="absolute inset-x-0 top-0 z-[1] h-[3px] bg-brand"></span>
+    <!-- Shows only on the phone, below the photo band. -->
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-dark bp-sheet-c"></div>
 
-    {company.founded !== null && (
-      <span
-        aria-hidden="true"
-        class="zn-hero__backdrop absolute -right-8 -bottom-14 select-none pointer-events-none font-display text-white/[0.045] leading-[0.78]"
-        style="font-size: clamp(11rem, 22vw, 26rem);"
-      >
-        {company.founded}
-      </span>
-    )}
-
-    <div class="container-page relative pt-32 md:pt-36 lg:pt-40 pb-14 md:pb-20">
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-start">
-        <!-- LEFT — title -->
-        <Reveal class="lg:col-span-7">
+    <div class="container-page zn-hero__grid">
+      <!-- Title. On the phone this block holds the photo band; from lg up it
+           is static, so the photo fills the whole section. -->
+      <div class="zn-hero__intro">
+        <div aria-hidden="true" class="zn-hero__media">
+          <img
+            src="/award/chukara/hero.jpg"
+            srcset="/award/chukara/hero-800.webp 800w, /award/chukara/hero-1600.webp 1600w"
+            sizes="100vw"
+            width="1800"
+            height="1048"
+            alt=""
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            class="zn-hero__photo"
+          />
+          <span class="zn-hero__shade"></span>
+        </div>
+        <Reveal>
           <p class="eyebrow flex items-center gap-3 flex-wrap">
             <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
             За нас{company.founded !== null && ` · ${company.founded} → ${currentYear}`}
@@ -133,30 +139,19 @@ const pageDescription = `${
             style="font-size: clamp(2.5rem, 1.25rem + 5vw, 6rem); letter-spacing: -0.025em;"
           >
             {yearsActive !== null ? `${yearsActive} години` : 'Строителна фирма'}
-            <span class="block text-brand">
+            <span class="block w-fit text-brand">
               {yearsActive !== null ? 'строителство в Смолян.' : 'от Смолян.'}
             </span>
           </h1>
-          <p class="mt-7 md:mt-9 max-w-[54ch] text-base md:text-lg text-white/70 leading-[1.65]">
+          <p class="mt-6 md:mt-8 max-w-[54ch] text-base md:text-lg text-white/80 leading-[1.65]">
             {company.name} строи жилища, обществени сгради и инфраструктура в област Смолян и в други краища на България.{company.founded !== null && ` Работим от ${company.founded} г.`}
           </p>
-
-          <!-- Tight inline stats — no separate band -->
-          <dl class="zn-stats mt-9 md:mt-11 gap-x-6 gap-y-4 max-w-2xl border-t border-white/12 pt-6" style={`--zn-cols: ${heroStats.length};`}>
-            {heroStats.map((st) => (
-              <div>
-                <dt class="sr-only">{st.label}</dt>
-                <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(1.6rem, 1rem + 1.8vw, 2.5rem);">
-                  <span data-counter={st.value} data-pad={st.pad || undefined}>0</span>{st.plus && <span class="text-brand">+</span>}
-                </dd>
-                <p class="mt-3 text-xs uppercase tracking-eyebrow text-white/60">{st.short}</p>
-              </div>
-            ))}
-          </dl>
         </Reveal>
+      </div>
 
-        <!-- RIGHT — dossier card -->
-        <Reveal class="lg:col-span-5 lg:pt-10" delay={120}>
+      <!-- Profile — over the photo on desktop, on the dark band on the phone -->
+      <div class="zn-hero__aside">
+        <Reveal delay={120}>
           <aside class="zn-dossier">
             <div class="border-b border-white/15 pb-3">
               <p class="text-xs uppercase tracking-eyebrow text-white/60">
@@ -189,7 +184,7 @@ const pageDescription = `${
               </div>
               <div class="zn-dossier__row">
                 <dt>Награда</dt>
-                <dd class="text-brand">Сграда на годината</dd>
+                <dd>Сграда на годината</dd>
               </div>
             </dl>
 
@@ -201,6 +196,169 @@ const pageDescription = `${
             </a>
           </aside>
         </Reveal>
+      </div>
+
+      <!-- Numbers — firm-wide totals from company.ts -->
+      <div class="zn-hero__stats">
+        <Reveal delay={60}>
+          <dl class="zn-stats">
+            {heroStats.map((st) => (
+              <div>
+                <dt class="sr-only">{st.label}</dt>
+                <dd class="zn-stat font-display text-white leading-[0.85] tabular-nums" style="font-size: clamp(2rem, 1.2rem + 2vw, 3rem);">
+                  <span data-counter={st.value}>{st.value}</span><span class="text-brand">+</span>
+                </dd>
+                <dd aria-hidden="true" class="mt-3 text-xs uppercase tracking-eyebrow text-white/70">{st.short}</dd>
+              </div>
+            ))}
+          </dl>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       2 · CERTIFICATES — ISO row + ЦПРС groups + декларация.
+       Separate white cards with a gap; on the phone each row is a
+       sideways slider with a "1 / N" counter.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="relative isolate overflow-hidden bg-cream-50 py-16 lg:py-20" aria-labelledby="certs-heading">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
+
+    <div class="container-page relative">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end mb-10 md:mb-14">
+        <Reveal class="lg:col-span-7">
+          <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Документи</p>
+          <h2
+            id="certs-heading"
+            class="mt-3 font-display tracking-tight text-ink-950 max-w-[22ch]"
+            style="font-size: clamp(1.85rem, 1rem + 2vw, 2.85rem); line-height: 1.05;"
+          >
+            Сертификати и
+            <span class="text-brand">регистри</span>.
+          </h2>
+        </Reveal>
+        <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
+          <p class="text-[14.5px] md:text-[15px] text-ink-600 leading-[1.65] max-w-[46ch]">
+            Работим по ISO 9001:2015, ISO 14001:2015 и ISO 45001:2018 и сме вписани в Централния професионален регистър на строителя. Копията на сертификатите и удостоверенията са по-долу.
+          </p>
+        </Reveal>
+      </div>
+
+      <!-- ISO row — three feature cards -->
+      <div data-rail>
+      <p class="zn-rail__count" aria-hidden="true"><span data-rail-current>1</span> / {isoStandards.length}</p>
+      <ol class="zn-iso zn-rail__track grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6" data-rail-track aria-label="ISO сертификати">
+        {isoStandards.map((s, i) => (
+          <Reveal as="li" delay={i * 80} class="relative hover:z-[2]">
+           <div class="zn-iso__cell group h-full">
+            <article class="zn-iso__inner">
+              <header class="zn-iso__head">
+                <span class="zn-iso__num font-display tabular-nums text-brand">
+                  ISO
+                </span>
+                <span class="zn-iso__step">№{String(i + 1).padStart(2, '0')}</span>
+              </header>
+              <h3
+                class="zn-iso__title font-display tracking-tight text-ink-950"
+                style="font-size: clamp(1.25rem, 0.95rem + 0.75vw, 1.55rem); line-height: 1.1;"
+              >
+                {s.code}
+              </h3>
+              <p class="zn-iso__label">{s.title}</p>
+              <span aria-hidden="true" class="zn-iso__hr"></span>
+
+              <!-- Document thumbnail — legacy scan, replaced when clients
+                   upload new versions -->
+              <a class="zn-iso__doc group/doc" href={s.pdf} target="_blank" rel="noopener noreferrer">
+                <span class="zn-iso__thumb">
+                  <img src={s.img} {...imageSize(s.img)} alt={`Сертификат ${s.code}`} loading="lazy" decoding="async" />
+                </span>
+                <span class="zn-iso__doc-meta">
+                  <span class="zn-iso__doc-label">Вижте сертификата</span>
+                  <span class="zn-iso__doc-ext">PDF</span>
+                </span>
+                <svg class="zn-iso__doc-arrow" width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </article>
+           </div>
+          </Reveal>
+        ))}
+      </ol>
+      </div>
+
+      <!-- ЦПРС groups row + declaration -->
+      <div class="mt-10 md:mt-14">
+        <Reveal class="mb-8 md:mb-10">
+          <div class="flex flex-wrap items-baseline justify-between gap-4 border-b border-ink-900/15 pb-4">
+            <h3
+              class="font-display tracking-tight text-ink-950"
+              style="font-size: clamp(1.15rem, 0.85rem + 0.85vw, 1.5rem); line-height: 1.15;"
+            >
+              ЦПРС · вписвания
+            </h3>
+            <p class="text-xs uppercase tracking-eyebrow text-ink-600">
+              Централен професионален регистър на строителя
+            </p>
+          </div>
+        </Reveal>
+
+        <div data-rail>
+        <p class="zn-rail__count" aria-hidden="true"><span data-rail-current>1</span> / {cprsCards.length + 1}</p>
+        <!-- 5 in a row only from xl: at 1024 a fifth of the row is too narrow
+             for the "Удостоверение" tile, so 1024–1279 is 3 + 2. -->
+        <ol class="zn-cprs zn-rail__track grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 lg:gap-6" data-rail-track aria-label="ЦПРС удостоверения и декларация">
+          {cprsCards.map((g, i) => (
+            <Reveal as="li" delay={i * 60}>
+             <div class="zn-cprs__cell group h-full">
+              <article class="zn-cprs__inner">
+                <span class="zn-cprs__roman font-display text-brand">
+                  {g.roman}
+                </span>
+                <h4 class="zn-cprs__title">{g.title}</h4>
+                <p class="zn-cprs__body">{g.body}</p>
+                <a class="zn-cprs__doc" href={g.img} target="_blank" rel="noopener noreferrer" aria-label={`Удостоверение ${g.title}`}>
+                  <span class="zn-cprs__thumb">
+                    <img src={g.img} {...imageSize(g.img)} alt="" loading="lazy" decoding="async" />
+                  </span>
+                  <span class="zn-cprs__doc-label">Удостоверение</span>
+                  <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </article>
+             </div>
+            </Reveal>
+          ))}
+
+          <!-- Declaration as a 5th, distinct cell -->
+          <Reveal as="li" delay={cprsCards.length * 60}>
+           <div class="zn-cprs__cell group h-full">
+            <article class="zn-cprs__inner">
+              <span class="zn-cprs__roman font-display text-brand">
+                §
+              </span>
+              <h4 class="zn-cprs__title">{declaration.title}</h4>
+              <p class="zn-cprs__body">{declaration.body}</p>
+              <a class="zn-cprs__doc" href={declaration.pdf} target="_blank" rel="noopener noreferrer" aria-label="Декларация PDF">
+                <span class="zn-cprs__thumb">
+                  <img src={declaration.img} {...imageSize(declaration.img)} alt="" loading="lazy" decoding="async" />
+                </span>
+                <span class="zn-cprs__doc-meta">
+                  <span class="zn-cprs__doc-label">Декларация</span>
+                  <span class="zn-cprs__doc-ext">PDF</span>
+                </span>
+                <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </article>
+           </div>
+          </Reveal>
+        </ol>
+        </div>
       </div>
     </div>
   </section>
@@ -216,6 +374,8 @@ const pageDescription = `${
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-dark bp-sheet-b"></div>
     <img
       src="/award/chukara/hero.jpg"
+      srcset="/award/chukara/hero-800.webp 800w, /award/chukara/hero-1600.webp 1600w"
+      sizes="100vw"
       width="1800"
       height="1048"
       alt=""
@@ -255,6 +415,8 @@ const pageDescription = `${
             <figure class="zn-award__hero">
               <img
                 src="/award/chukara/hero.jpg"
+                srcset="/award/chukara/hero-800.webp 800w, /award/chukara/hero-1600.webp 1600w"
+                sizes="(min-width: 1024px) 58vw, 100vw"
                 width="1800"
                 height="1048"
                 alt="Вино и СПА хотел Чукара, с. Кисийците, общ. Трявна"
@@ -352,140 +514,6 @@ const pageDescription = `${
       </div>
     </div>
   </section>
-
-  <!-- ════════════════════════════════════════════════════════════
-       5 · CERTIFICATES — ISO row + ЦПРС groups + декларация.
-       Dense grid, brand-monogram cards. Each cert is a spec page.
-       ════════════════════════════════════════════════════════════ -->
-  <section class="relative isolate overflow-hidden bg-cream-50 py-16 lg:py-20" aria-labelledby="certs-heading">
-    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
-
-    <div class="container-page relative">
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end mb-10 md:mb-14">
-        <Reveal class="lg:col-span-7">
-          <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Документи</p>
-          <h2
-            id="certs-heading"
-            class="mt-3 font-display tracking-tight text-ink-950 max-w-[22ch]"
-            style="font-size: clamp(1.85rem, 1rem + 2vw, 2.85rem); line-height: 1.05;"
-          >
-            Сертификати и
-            <span class="text-brand">регистри</span>.
-          </h2>
-        </Reveal>
-        <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
-          <p class="text-[14.5px] md:text-[15px] text-ink-600 leading-[1.65] max-w-[46ch]">
-            Работим по ISO 9001:2015, ISO 14001:2015 и ISO 45001:2018 и сме вписани в Централния професионален регистър на строителя. Копията на сертификатите и удостоверенията са по-долу.
-          </p>
-        </Reveal>
-      </div>
-
-      <!-- ISO row — three feature cards -->
-      <ol class="zn-iso grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ink-900/12">
-        {isoStandards.map((s, i) => (
-          <Reveal as="li" delay={i * 80} class="relative hover:z-[2]">
-           <div class="zn-iso__cell group h-full">
-            <article class="zn-iso__inner">
-              <header class="zn-iso__head">
-                <span class="zn-iso__num font-display tabular-nums text-brand">
-                  ISO
-                </span>
-                <span class="zn-iso__step">№{String(i + 1).padStart(2, '0')}</span>
-              </header>
-              <h3
-                class="zn-iso__title font-display tracking-tight text-ink-950"
-                style="font-size: clamp(1.25rem, 0.95rem + 0.75vw, 1.55rem); line-height: 1.1;"
-              >
-                {s.code}
-              </h3>
-              <p class="zn-iso__label">{s.title}</p>
-              <span aria-hidden="true" class="zn-iso__hr"></span>
-
-              <!-- Document thumbnail — legacy scan, replaced when clients
-                   upload new versions -->
-              <a class="zn-iso__doc group/doc" href={s.pdf} target="_blank" rel="noopener noreferrer">
-                <span class="zn-iso__thumb">
-                  <img src={s.img} {...imageSize(s.img)} alt={`Сертификат ${s.code}`} loading="lazy" decoding="async" />
-                </span>
-                <span class="zn-iso__doc-meta">
-                  <span class="zn-iso__doc-label">Вижте сертификата</span>
-                  <span class="zn-iso__doc-ext">PDF</span>
-                </span>
-                <svg class="zn-iso__doc-arrow" width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
-            </article>
-           </div>
-          </Reveal>
-        ))}
-      </ol>
-
-      <!-- ЦПРС groups row + declaration -->
-      <div class="mt-10 md:mt-14">
-        <Reveal class="mb-8 md:mb-10">
-          <div class="flex flex-wrap items-baseline justify-between gap-4 border-b border-ink-900/15 pb-4">
-            <h3
-              class="font-display tracking-tight text-ink-950"
-              style="font-size: clamp(1.15rem, 0.85rem + 0.85vw, 1.5rem); line-height: 1.15;"
-            >
-              ЦПРС · вписвания
-            </h3>
-            <p class="text-xs uppercase tracking-eyebrow text-ink-600">
-              Централен професионален регистър на строителя
-            </p>
-          </div>
-        </Reveal>
-
-        <ol class="zn-cprs grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-ink-900/12">
-          {cprsCards.map((g, i) => (
-            <Reveal as="li" delay={i * 60}>
-             <div class="zn-cprs__cell group h-full">
-              <article class="zn-cprs__inner">
-                <span class="zn-cprs__roman font-display text-brand">
-                  {g.roman}
-                </span>
-                <h4 class="zn-cprs__title">{g.title}</h4>
-                <p class="zn-cprs__body">{g.body}</p>
-                <a class="zn-cprs__doc" href={g.img} target="_blank" rel="noopener noreferrer" aria-label={`Удостоверение ${g.title}`}>
-                  <span class="zn-cprs__thumb">
-                    <img src={g.img} {...imageSize(g.img)} alt="" loading="lazy" decoding="async" />
-                  </span>
-                  <span class="zn-cprs__doc-label">Удостоверение</span>
-                  <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                    <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </a>
-              </article>
-             </div>
-            </Reveal>
-          ))}
-
-          <!-- Declaration as a 5th, distinct cell -->
-          <Reveal as="li" delay={cprsCards.length * 60}>
-           <div class="zn-cprs__cell zn-cprs__cell--alt group h-full">
-            <article class="zn-cprs__inner">
-              <span class="zn-cprs__roman font-display text-brand">
-                §
-              </span>
-              <h4 class="zn-cprs__title">{declaration.title}</h4>
-              <p class="zn-cprs__body">{declaration.body}</p>
-              <a class="zn-cprs__doc" href={declaration.pdf} target="_blank" rel="noopener noreferrer" aria-label="Декларация PDF">
-                <span class="zn-cprs__thumb">
-                  <img src={declaration.img} {...imageSize(declaration.img)} alt="" loading="lazy" decoding="async" />
-                </span>
-                <span class="zn-cprs__doc-label">Декларация · PDF</span>
-                <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
-            </article>
-           </div>
-          </Reveal>
-        </ol>
-      </div>
-    </div>
-  </section>
   <CtaBand />
 </BaseLayout>
 
@@ -494,40 +522,157 @@ const pageDescription = `${
   #nagrada { scroll-margin-top: 6rem; }
 
   /* ════════ HERO ════════════════════════════════════════════════ */
-  /* Stat row — declared in CSS so Tailwind's JIT doesn't have to find
-     `grid-cols-4` (which it sometimes misses when only the bare class
-     is used). 4 cols at >=520px, 2 cols below. */
+  /* Phone: one column — photo band with the title, then the profile and
+     the numbers on the dark section background. */
+  .zn-hero { --zn-top: 7.5rem; }
+  .zn-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'intro' 'aside' 'stats';
+    padding-top: var(--zn-top);
+    padding-bottom: 3.5rem;
+  }
+  /* Tall photo band (≈ 5:4 of the screen width), title at its foot. */
+  .zn-hero__intro {
+    grid-area: intro;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: calc(min(128vw, 38rem) - var(--zn-top));
+    padding-bottom: 2.5rem;
+  }
+  .zn-hero__intro h1,
+  .zn-hero__intro p:not(.eyebrow) {
+    text-shadow: 0 1px 18px rgba(18, 22, 28, 0.55);
+  }
+  /* Local scrim behind the title only: the red line „от Смолян.“ needs a
+     near-black ground for 3:1 (brand red on ink-950 alone is 2.85:1),
+     while the rest of the photo keeps its light. */
+  .zn-hero__intro h1 { position: relative; }
+  .zn-hero__intro h1::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    /* Phone: hug the title so the hotel above stays visible. */
+    inset: -2.5rem -4.5rem -2.5rem -4.5rem;
+    background: radial-gradient(
+      closest-side,
+      rgba(5, 6, 8, 0.97) 52%,
+      rgba(5, 6, 8, 0.86) 64%,
+      rgba(5, 6, 8, 0.55) 78%,
+      rgba(5, 6, 8, 0.22) 90%,
+      rgba(5, 6, 8, 0) 100%
+    );
+    pointer-events: none;
+  }
+  .zn-hero__aside { grid-area: aside; margin-top: 2rem; }
+  .zn-hero__stats { grid-area: stats; margin-top: 2.25rem; }
+
+  /* The photo layer. On the phone it is the band behind the title:
+     full-bleed sideways, up to the top of the section (behind the
+     header), down to the end of the title block. */
+  .zn-hero__media {
+    position: absolute;
+    z-index: -1;
+    top: calc(-1 * var(--zn-top));
+    bottom: 0;
+    left: calc(50% - 50vw);
+    right: calc(50% - 50vw);
+    overflow: hidden;
+  }
+  .zn-hero__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 62% 50%;
+  }
+  /* Top for the header, the bottom melts into the section's ink. */
+  .zn-hero__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(18, 22, 28, 0.6) 0%,
+      rgba(18, 22, 28, 0.08) 18%,
+      rgba(18, 22, 28, 0.42) 34%,
+      rgba(18, 22, 28, 0.84) 50%,
+      rgba(18, 22, 28, 0.95) 75%,
+      #12161c 100%
+    );
+  }
+
+  /* Desktop: the photo fills the whole hero; title and numbers sit
+     left, the profile panel right, all anchored to the bottom. */
+  @media (min-width: 1024px) {
+    .zn-hero { --zn-top: 10rem; }
+    .zn-hero__grid {
+      min-height: min(100svh, 52rem);
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      grid-template-rows: 1fr auto;
+      grid-template-areas: 'intro aside' 'stats aside';
+      column-gap: clamp(3rem, 5vw, 5rem);
+      align-items: end;
+      padding-bottom: 4.5rem;
+    }
+    .zn-hero__intro { position: static; min-height: 0; padding-bottom: 0; }
+    /* Desktop: the scrim sits only behind the red line, hugging its
+       glyphs (w-fit), so the hotel facade to the right keeps its light. */
+    .zn-hero__intro h1::before { content: none; }
+    .zn-hero__intro h1 > .text-brand { position: relative; }
+    .zn-hero__intro h1 > .text-brand::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      inset: -0.75rem -2.5rem -1rem -2.5rem;
+      background: rgba(5, 6, 8, 0.97);
+      filter: blur(16px);
+      pointer-events: none;
+    }
+    .zn-hero__aside { margin-top: 0; align-self: end; }
+    .zn-hero__stats { margin-top: 2.75rem; }
+    .zn-hero__media { inset: 0; }
+    .zn-hero__photo { object-position: 50% 55%; }
+    /* Heavier on the left (title) and at the bottom (numbers). */
+    .zn-hero__shade {
+      background:
+        linear-gradient(90deg, rgba(18, 22, 28, 0.94) 0%, rgba(18, 22, 28, 0.8) 40%, rgba(18, 22, 28, 0.42) 70%, rgba(18, 22, 28, 0.3) 100%),
+        linear-gradient(180deg, rgba(18, 22, 28, 0.6) 0%, rgba(18, 22, 28, 0) 26%, rgba(18, 22, 28, 0) 50%, rgba(18, 22, 28, 0.85) 100%);
+    }
+  }
+
+  /* Two numbers side by side, close together (not spread wide). */
   .zn-stats {
     display: grid;
-    grid-template-columns: repeat(var(--zn-cols, 4), minmax(0, 1fr));
-    column-gap: 1.5rem;
-    row-gap: 1rem;
-  }
-  @media (max-width: 519px) {
-    .zn-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  .zn-hero__backdrop {
-    animation: zn-drift 26s ease-in-out infinite alternate;
-    will-change: transform;
-  }
-  @keyframes zn-drift {
-    0%   { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-2rem, -0.6rem, 0); }
+    grid-template-columns: repeat(2, max-content);
+    column-gap: clamp(2.5rem, 6vw, 4.5rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    padding-top: 1.5rem;
   }
   .zn-stat > span[data-counter] {
     display: inline-block;
   }
 
-  /* Hero dossier card — same vocabulary as us-index */
+  /* Hero dossier card. Over the photo (lg+) it is a dark glass panel. */
   .zn-dossier {
     position: relative;
+  }
+  @media (min-width: 1024px) {
+    .zn-dossier {
+      padding: 1.75rem 1.75rem 1.6rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(18, 22, 28, 0.7);
+      -webkit-backdrop-filter: blur(14px) saturate(1.1);
+      backdrop-filter: blur(14px) saturate(1.1);
+    }
   }
   .zn-dossier__list {
     margin-top: 0.5rem;
   }
   .zn-dossier__row {
     display: grid;
-    grid-template-columns: 9rem 1fr;
+    grid-template-columns: 7.5rem 1fr;
     align-items: baseline;
     gap: 0.75rem;
     padding: 0.85rem 0;
@@ -542,7 +687,7 @@ const pageDescription = `${
     font-size: 0.75rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.42);
+    color: rgba(255, 255, 255, 0.62);
     font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", monospace;
   }
   .zn-dossier__row dd {
@@ -558,7 +703,6 @@ const pageDescription = `${
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-weight: 600;
     color: #FFFFFF;
     border-bottom: 1px solid rgba(255, 255, 255, 0.22);
     padding-bottom: 0.35rem;
@@ -624,7 +768,6 @@ const pageDescription = `${
     line-height: 1.2;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    font-weight: 700;
   }
   .zn-award__value {
     margin-top: 1.35rem;
@@ -714,7 +857,6 @@ const pageDescription = `${
     line-height: 1.25;
     letter-spacing: 0.13em;
     text-transform: uppercase;
-    font-weight: 700;
   }
   @media (max-width: 639px) {
     .zn-award__hero-caption {
@@ -828,7 +970,6 @@ const pageDescription = `${
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-weight: 600;
     color: #FFFFFF;
     border-bottom: 1px solid rgba(255, 255, 255, 0.22);
     padding-bottom: 0.35rem;
@@ -841,21 +982,72 @@ const pageDescription = `${
   }
 
   /* ════════ CERTIFICATES — ISO + ЦПРС ═══════════════════════════ */
-  .zn-iso {
-    border: 1px solid rgba(18, 22, 28, 0.08);
-  }
-  .zn-iso__cell {
-    background: theme('colors.cream.50');
+  /* Every certificate is its own white card: rounded, hairline border,
+     soft shadow. The lists set the gap (gap-5 / lg:gap-6 = 20 / 24 px). */
+  .zn-iso__cell,
+  .zn-cprs__cell {
+    position: relative;
+    background: #FFFFFF;
+    border: 1px solid rgba(26, 31, 38, 0.1);
+    border-radius: 14px;
+    box-shadow:
+      0 1px 2px rgba(18, 22, 28, 0.04),
+      0 12px 28px -20px rgba(18, 22, 28, 0.4);
     transition:
-      background-color 320ms cubic-bezier(0.16, 1, 0.3, 1),
       transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
       box-shadow 600ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .zn-iso__cell:hover {
-    background: #FFFFFF;
+  .zn-iso__cell:hover,
+  .zn-cprs__cell:hover {
     transform: translateY(-3px);
-    box-shadow: 0 18px 38px -20px rgba(18, 22, 28, 0.22);
-    z-index: 2;
+    box-shadow:
+      0 1px 2px rgba(18, 22, 28, 0.04),
+      0 22px 40px -22px rgba(18, 22, 28, 0.42);
+  }
+
+  /* Counter above each slider — phone only. */
+  .zn-rail__count {
+    display: none;
+  }
+  /* Phone: each row of cards is a sideways scroll-snap slider. The next
+     card peeks in from the right edge; the track bleeds to the screen
+     edges (container-page has px-6) so nothing scrolls the page itself. */
+  @media (max-width: 639px) {
+    .zn-rail__count {
+      display: block;
+      margin-bottom: 0.75rem;
+      text-align: right;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      color: theme('colors.ink.600');
+      font-variant-numeric: tabular-nums;
+    }
+    .zn-rail__track {
+      position: relative;
+      display: flex;
+      gap: 0.875rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 1.5rem;
+      margin-inline: -1.5rem;
+      padding: 0.25rem 1.5rem 1.75rem;
+      margin-bottom: -1.75rem;
+      scrollbar-width: none;
+    }
+    .zn-rail__track::-webkit-scrollbar { display: none; }
+    .zn-rail__track > :global(li) {
+      flex: 0 0 84%;
+      scroll-snap-align: start;
+    }
+    /* No fade-up inside the slider: the peeking card must be visible at
+       once (it is the hint that there is more), and swiping should not
+       replay an entrance animation. */
+    .zn-rail__track > :global(.reveal) {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
   .zn-iso__inner {
     padding: 1.6rem 1.5rem 1.5rem;
@@ -898,7 +1090,6 @@ const pageDescription = `${
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: rgba(18, 22, 28, 0.55);
-    font-weight: 600;
     margin-top: 0.55rem;
   }
   .zn-iso__hr {
@@ -906,19 +1097,22 @@ const pageDescription = `${
     height: 1px;
     width: 2.5rem;
     background: rgba(186, 45, 32, 0.55);
-    margin: 1.05rem 0 0.95rem;
+    margin: 1.05rem 0 2.35rem;
     transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .zn-iso__cell:hover .zn-iso__hr { width: 5rem; }
+  /* margin-top:auto pins the tile to the card's foot, so the three ISO
+     tiles line up even when one subtitle wraps (ISO 45001 at 1024). */
   .zn-iso__doc {
-    margin-top: 1.4rem;
+    margin-top: auto;
     display: grid;
     grid-template-columns: 3.4rem 1fr auto;
     align-items: center;
     gap: 0.85rem;
     padding: 0.7rem 0.85rem 0.7rem 0.7rem;
-    background: rgba(18, 22, 28, 0.045);
+    background: rgba(18, 22, 28, 0.035);
     border: 1px solid rgba(18, 22, 28, 0.08);
+    border-radius: 8px;
     transition: background-color 320ms ease, border-color 320ms ease, padding 320ms ease;
   }
   .zn-iso__doc:hover {
@@ -931,6 +1125,7 @@ const pageDescription = `${
     width: 100%;
     aspect-ratio: 1 / 1.3;
     overflow: hidden;
+    border-radius: 3px;
     background: rgba(18, 22, 28, 0.08);
     box-shadow: 0 2px 8px -2px rgba(18, 22, 28, 0.12);
   }
@@ -952,7 +1147,6 @@ const pageDescription = `${
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-weight: 600;
     color: theme('colors.ink.950');
   }
   .zn-iso__doc-ext {
@@ -972,15 +1166,6 @@ const pageDescription = `${
   }
 
   /* ────── ЦПРС groups + declaration ───────────────────────────── */
-  .zn-cprs {
-    border: 1px solid rgba(18, 22, 28, 0.08);
-  }
-  .zn-cprs__cell {
-    background: theme('colors.cream.50');
-    transition: background-color 320ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .zn-cprs__cell:hover { background: #FFFFFF; }
-  .zn-cprs__cell--alt { background: theme('colors.cream.100'); }
   .zn-cprs__inner {
     padding: 1.4rem 1.25rem 1.4rem;
     display: flex;
@@ -991,20 +1176,13 @@ const pageDescription = `${
   @media (min-width: 768px) {
     .zn-cprs__inner { padding: 1.6rem 1.4rem 1.5rem; }
   }
-  /* Phone (one column): roman numeral in a narrow left column, text and
-     document link beside it, so five entries stay short. */
-  @media (max-width: 639px) {
-    .zn-cprs__inner {
-      display: grid;
-      grid-template-columns: 2.75rem 1fr;
-      column-gap: 0.9rem;
-      row-gap: 0.4rem;
-      padding: 1.15rem 1.15rem 1.2rem;
-    }
-    .zn-cprs__roman { grid-row: 1 / span 3; }
-    .zn-cprs__body { max-width: none; }
-    .zn-cprs__doc { grid-column: 2; margin-top: 0.3rem; }
+  /* Five in a row (xl) leaves a ~218 px card: tighter side padding so the
+     "Удостоверение" tile fits inside itself (the tile itself is compact
+     everywhere — the narrowest case is the 320 px phone slider). */
+  @media (min-width: 1280px) {
+    .zn-cprs__inner { padding-inline: 1.15rem; }
   }
+
   .zn-cprs__roman {
     display: block;
     font-size: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
@@ -1018,7 +1196,6 @@ const pageDescription = `${
     font-size: 0.92rem;
     line-height: 1.2;
     color: theme('colors.ink.950');
-    font-weight: 600;
     font-family: theme('fontFamily.display');
     letter-spacing: -0.005em;
   }
@@ -1032,12 +1209,13 @@ const pageDescription = `${
   .zn-cprs__doc {
     margin-top: 0.4rem;
     display: grid;
-    grid-template-columns: 2.4rem 1fr auto;
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
     padding: 0.5rem 0.55rem 0.5rem 0.5rem;
-    background: rgba(18, 22, 28, 0.045);
+    background: rgba(18, 22, 28, 0.035);
     border: 1px solid rgba(18, 22, 28, 0.08);
+    border-radius: 8px;
     transition: background-color 320ms ease, border-color 320ms ease;
   }
   .zn-cprs__doc:hover {
@@ -1049,6 +1227,7 @@ const pageDescription = `${
     width: 100%;
     aspect-ratio: 1 / 1.3;
     overflow: hidden;
+    border-radius: 3px;
     background: rgba(18, 22, 28, 0.08);
   }
   .zn-cprs__thumb img {
@@ -1062,10 +1241,21 @@ const pageDescription = `${
   }
   .zn-cprs__doc-label {
     font-size: 0.75rem;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    font-weight: 600;
     color: theme('colors.ink.950');
+  }
+  .zn-cprs__doc-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .zn-cprs__doc-ext {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(18, 22, 28, 0.45);
+    font-family: ui-monospace, "SFMono-Regular", monospace;
   }
   .zn-cprs__doc svg {
     color: rgba(18, 22, 28, 0.45);
@@ -1078,7 +1268,6 @@ const pageDescription = `${
 
   /* ════════ REDUCED MOTION ══════════════════════════════════════ */
   @media (prefers-reduced-motion: reduce) {
-    .zn-hero__backdrop,
     .zn-award__bg {
       animation: none !important;
     }
@@ -1099,6 +1288,7 @@ const pageDescription = `${
       transition: none !important;
     }
     .zn-iso__cell:hover,
+    .zn-cprs__cell:hover,
     .zn-iso__num,
     .zn-cprs__roman,
     .zn-award__img {
@@ -1153,4 +1343,51 @@ const pageDescription = `${
 
   setupCounters();
   document.addEventListener('astro:page-load', setupCounters);
+
+  // ── Certificate sliders (phone): "1 / N" follows the card at the left edge ──
+  const setupRails = () => {
+    document.querySelectorAll<HTMLElement>('[data-rail]').forEach((rail) => {
+      if (rail.dataset.railReady) return;
+      const track = rail.querySelector<HTMLElement>('[data-rail-track]');
+      const out = rail.querySelector<HTMLElement>('[data-rail-current]');
+      if (!track || !out) return;
+      rail.dataset.railReady = '1';
+      const items = Array.from(track.children) as HTMLElement[];
+      let frame = 0;
+      const update = () => {
+        frame = 0;
+        const max = track.scrollWidth - track.clientWidth;
+        let index = 0;
+        if (max > 0 && track.scrollLeft >= max - 2) {
+          index = items.length - 1;
+        } else {
+          const start = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+          let best = Infinity;
+          items.forEach((item, i) => {
+            const d = Math.abs(item.offsetLeft - start - track.scrollLeft);
+            if (d < best) { best = d; index = i; }
+          });
+        }
+        out.textContent = String(index + 1);
+      };
+      track.addEventListener('scroll', () => { if (!frame) frame = requestAnimationFrame(update); }, { passive: true });
+      // Keyboard: a card that only peeks in is not scrolled by the browser on
+      // focus, so bring the focused card to the snap position ourselves.
+      track.addEventListener('focusin', (e) => {
+        if (track.scrollWidth <= track.clientWidth) return;
+        const item = items.find((it) => it.contains(e.target as Node));
+        if (!item) return;
+        const t = track.getBoundingClientRect();
+        const r = item.getBoundingClientRect();
+        if (r.left >= t.left - 1 && r.right <= t.right + 1) return;
+        const start = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        track.scrollTo({ left: item.offsetLeft - start, behavior: reduce ? 'auto' : 'smooth' });
+      });
+      update();
+    });
+  };
+
+  setupRails();
+  document.addEventListener('astro:page-load', setupRails);
 </script>
