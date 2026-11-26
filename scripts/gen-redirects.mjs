@@ -80,14 +80,30 @@ const text = [
   '',
 ].join('\n');
 
+// The same rules for Vercel (vercel.json `redirects`), which ignores _redirects.
+// `permanent: true` = 308; search engines treat it like 301.
+const vercelOut = join(root, 'vercel.json');
+const vercelText = JSON.stringify({
+  $schema: 'https://openapi.vercel.sh/vercel.json',
+  redirects: text
+    .split('\n')
+    .filter((l) => l && !l.startsWith('#'))
+    .map((l) => {
+      const [source, destination] = l.trim().split(/\s+/);
+      return { source, destination, permanent: true };
+    }),
+}, null, 2) + '\n';
+
 if (process.argv.includes('--check')) {
   const cur = existsSync(out) ? readFileSync(out, 'utf8') : '';
-  if (cur !== text) {
-    console.error('gen-redirects: public/_redirects is out of date. Run: node scripts/gen-redirects.mjs');
+  const curVercel = existsSync(vercelOut) ? readFileSync(vercelOut, 'utf8') : '';
+  if (cur !== text || curVercel !== vercelText) {
+    console.error('gen-redirects: public/_redirects or vercel.json is out of date. Run: node scripts/gen-redirects.mjs');
     process.exit(1);
   }
   console.log(`gen-redirects: OK (${STATIC.length} static + ${bg.length} projects + ${en.length} EN)`);
 } else {
   writeFileSync(out, text);
+  writeFileSync(vercelOut, vercelText);
   console.log(`gen-redirects: wrote ${STATIC.length} static + ${bg.length} projects + ${en.length} EN = ${STATIC.length + bg.length + en.length} rules`);
 }

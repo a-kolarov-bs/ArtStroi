@@ -115,7 +115,7 @@ npm run preview  # локален preview на build-а
 npx astro check  # type check
 ```
 
-**Пренасочвания от стария сайт:** `public/_redirects` (301, формат **Netlify**) се генерира с `node scripts/gen-redirects.mjs` от `source_url` в `src/data/legacy-projects.json` + статичните стари страници; `prebuild` пада, ако файлът не е обновен. При друг хост файлът се преобразува (Vercel: `redirects` във `vercel.json`; Cloudflare Pages чете същия формат). `www` → без `www` и `http` → `https` се задават в настройките на хоста.
+**Пренасочвания от стария сайт:** `public/_redirects` (301, формат **Netlify**) се генерира с `node scripts/gen-redirects.mjs` от `source_url` в `src/data/legacy-projects.json` + статичните стари страници; `prebuild` пада, ако файлът не е обновен. Същият скрипт пише и `vercel.json` (`redirects`, за Vercel); Cloudflare Pages чете `_redirects`. `www` → без `www` и `http` → `https` се задават в настройките на хоста.
 
 ## Visual iteration (screenshots)
 

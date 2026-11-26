@@ -1,0 +1,610 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/main.html",
+      "destination": "/za-nas/",
+      "permanent": true
+    },
+    {
+      "source": "/sert.html",
+      "destination": "/za-nas/",
+      "permanent": true
+    },
+    {
+      "source": "/partners.html",
+      "destination": "/za-nas/",
+      "permanent": true
+    },
+    {
+      "source": "/services.html",
+      "destination": "/uslugi/",
+      "permanent": true
+    },
+    {
+      "source": "/project.html",
+      "destination": "/proekti/",
+      "permanent": true
+    },
+    {
+      "source": "/contacts.html",
+      "destination": "/kontakti/",
+      "permanent": true
+    },
+    {
+      "source": "/map2.html",
+      "destination": "/kontakti/",
+      "permanent": true
+    },
+    {
+      "source": "/indexen.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mainen.html",
+      "destination": "/za-nas/",
+      "permanent": true
+    },
+    {
+      "source": "/serten.html",
+      "destination": "/za-nas/",
+      "permanent": true
+    },
+    {
+      "source": "/partnersen.html",
+      "destination": "/za-nas/",
+      "permanent": true
+    },
+    {
+      "source": "/servicesen.html",
+      "destination": "/uslugi/",
+      "permanent": true
+    },
+    {
+      "source": "/projecten.html",
+      "destination": "/proekti/",
+      "permanent": true
+    },
+    {
+      "source": "/contactsen.html",
+      "destination": "/kontakti/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect1.html",
+      "destination": "/proekti/baza-za-otdih-ezerata-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect2.html",
+      "destination": "/proekti/remont-na-sgrada-tsdg-radost-gr-aytos/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect3.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-bul-p-k-yavorov-44/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect4.html",
+      "destination": "/proekti/vila-v-s-stoykite-obsht-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect5.html",
+      "destination": "/proekti/rekonstruktsiya-sektor-a-stadion-georgi-asparuhov/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect6.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-ul-s-vrachanski-143/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect7.html",
+      "destination": "/proekti/butikov-hotel-iva-i-elena-k-k-pamporovo/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect8.html",
+      "destination": "/proekti/ploshtad-gr-rakovski/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect9.html",
+      "destination": "/proekti/remont-na-obshtinski-ulitsi-obshtina-krichim/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect10.html",
+      "destination": "/proekti/zona-za-otdih-charshiyata/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect11.html",
+      "destination": "/proekti/izgrazhdane-i-remont-na-trotoari/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect12.html",
+      "destination": "/proekti/kashta-v-kv-kaptazha-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect13.html",
+      "destination": "/proekti/rekonstruktsiya-na-sgrada-v-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect14.html",
+      "destination": "/proekti/semeen-hotel-uzunski-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect15.html",
+      "destination": "/proekti/korektsi-i-razshirenie-na-rechno-korito/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect16.html",
+      "destination": "/proekti/ploshtadka-s-vievo-obshtina-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect17.html",
+      "destination": "/proekti/detska-ploshtadka-gr-aytos/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect18.html",
+      "destination": "/proekti/sanirane-na-chitalishte-s-yoakim-gruevo/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect19.html",
+      "destination": "/proekti/grazhdanska-zashtita-gr-haskovo/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect20.html",
+      "destination": "/proekti/tets-kv-ustovo-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect21.html",
+      "destination": "/proekti/sporten-kompleks-gorna-malina/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect22.html",
+      "destination": "/proekti/preustroystvo-i-remont-na-infektsiozno-otdelenie/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect23.html",
+      "destination": "/proekti/rentgenov-kabinet-mbal-d-r-bratan-shukerov-ad/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect24.html",
+      "destination": "/proekti/ukrepvane-na-svlachishte-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect25.html",
+      "destination": "/proekti/izpalneni-podporni-steni-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect26.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-ul-hr-kovachev-22/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect27.html",
+      "destination": "/proekti/kashta-za-gosti-v-s-kutela/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect28.html",
+      "destination": "/proekti/lyatna-kashta-za-gosti-v-s-godech/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect29.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-plovdiv-ul-ihtimanski-prohod-3/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect30.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-ul-belasitsa-9/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect31.html",
+      "destination": "/proekti/remont-na-chitalishte-s-choba/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect32.html",
+      "destination": "/proekti/sportno-igrishte-gr-madan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect33.html",
+      "destination": "/proekti/park-gr-brezovo/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect34.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-ul-aldomirovska-138/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect35.html",
+      "destination": "/proekti/zhilishtna-sgrada-asenovgrad-ul-tsar-ivan-asen-ii/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect36.html",
+      "destination": "/proekti/kashta-za-gosti-v-kv-sharenka-gr-madan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect37.html",
+      "destination": "/proekti/kashta-za-gosti-v-gr-rudozem/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect38.html",
+      "destination": "/proekti/pitsariya-s-starosel/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect39.html",
+      "destination": "/proekti/fontan-i-detska-ploshtadka-s-srednogortsi/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect40.html",
+      "destination": "/proekti/detska-ploshtadka-kv-ustovo-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect41.html",
+      "destination": "/proekti/dom-na-kulturata-gr-rudozem/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect42.html",
+      "destination": "/proekti/preustroystvo-i-remont-na-vatreshno-otdelenie/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect43.html",
+      "destination": "/proekti/benzonostantsiya-omiks/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect44.html",
+      "destination": "/proekti/remont-na-chitalishte-s-padarsko/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect45.html",
+      "destination": "/proekti/tsnst-gr-panagyurishte/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect46.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-ul-panagyurishte-36/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect47.html",
+      "destination": "/proekti/rekonstruktsiya-na-vila-s-stoykite-obsht-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect48.html",
+      "destination": "/proekti/kashta-v-kv-boyana-gr-sofiya/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect49.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-ul-strandzha-126/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect50.html",
+      "destination": "/proekti/semeyna-kashta-v-s-momchilovtsi/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect51.html",
+      "destination": "/proekti/zhilishtna-sgrada-ul-chan-4-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect52.html",
+      "destination": "/proekti/zhilishtna-sgrada-ul-evredika-27-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect53.html",
+      "destination": "/proekti/hotel-i-hotel-dve-v-upi-27-za-hotelierstvo-vinarna-selskostopanski-deynosti-i-tr/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect54.html",
+      "destination": "/proekti/zhilishtna-grupa-sgrada-siti-houm-iii-sgrada-siti-uayt/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect55.html",
+      "destination": "/proekti/hotel-za-vinarska-izba-i-destileriya-proizvodstveni-deynosti-i-obshtestveno-osbl/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect1en.html",
+      "destination": "/proekti/baza-za-otdih-ezerata-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect2en.html",
+      "destination": "/proekti/remont-na-sgrada-tsdg-radost-gr-aytos/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect3en.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-bul-p-k-yavorov-44/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect4en.html",
+      "destination": "/proekti/vila-v-s-stoykite-obsht-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect5en.html",
+      "destination": "/proekti/rekonstruktsiya-sektor-a-stadion-georgi-asparuhov/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect6en.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-ul-s-vrachanski-143/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect7en.html",
+      "destination": "/proekti/butikov-hotel-iva-i-elena-k-k-pamporovo/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect8en.html",
+      "destination": "/proekti/ploshtad-gr-rakovski/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect9en.html",
+      "destination": "/proekti/remont-na-obshtinski-ulitsi-obshtina-krichim/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect10en.html",
+      "destination": "/proekti/zona-za-otdih-charshiyata/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect11en.html",
+      "destination": "/proekti/izgrazhdane-i-remont-na-trotoari/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect12en.html",
+      "destination": "/proekti/kashta-v-kv-kaptazha-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect13en.html",
+      "destination": "/proekti/rekonstruktsiya-na-sgrada-v-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect14en.html",
+      "destination": "/proekti/semeen-hotel-uzunski-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect15en.html",
+      "destination": "/proekti/korektsi-i-razshirenie-na-rechno-korito/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect16en.html",
+      "destination": "/proekti/ploshtadka-s-vievo-obshtina-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect17en.html",
+      "destination": "/proekti/detska-ploshtadka-gr-aytos/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect18en.html",
+      "destination": "/proekti/sanirane-na-chitalishte-s-yoakim-gruevo/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect19en.html",
+      "destination": "/proekti/grazhdanska-zashtita-gr-haskovo/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect20en.html",
+      "destination": "/proekti/tets-kv-ustovo-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect21en.html",
+      "destination": "/proekti/sporten-kompleks-gorna-malina/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect22en.html",
+      "destination": "/proekti/preustroystvo-i-remont-na-infektsiozno-otdelenie/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect23en.html",
+      "destination": "/proekti/rentgenov-kabinet-mbal-d-r-bratan-shukerov-ad/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect24en.html",
+      "destination": "/proekti/ukrepvane-na-svlachishte-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect25en.html",
+      "destination": "/proekti/izpalneni-podporni-steni-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect26en.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-ul-hr-kovachev-22/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect27en.html",
+      "destination": "/proekti/kashta-za-gosti-v-s-kutela/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect28en.html",
+      "destination": "/proekti/lyatna-kashta-za-gosti-v-s-godech/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect29en.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-plovdiv-ul-ihtimanski-prohod-3/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect30en.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-ul-belasitsa-9/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect31en.html",
+      "destination": "/proekti/remont-na-chitalishte-s-choba/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect32en.html",
+      "destination": "/proekti/sportno-igrishte-gr-madan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect33en.html",
+      "destination": "/proekti/park-gr-brezovo/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect34en.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-ul-aldomirovska-138/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect35en.html",
+      "destination": "/proekti/zhilishtna-sgrada-asenovgrad-ul-tsar-ivan-asen-ii/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect36en.html",
+      "destination": "/proekti/kashta-za-gosti-v-kv-sharenka-gr-madan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect37en.html",
+      "destination": "/proekti/kashta-za-gosti-v-gr-rudozem/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect38en.html",
+      "destination": "/proekti/pitsariya-s-starosel/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect39en.html",
+      "destination": "/proekti/fontan-i-detska-ploshtadka-s-srednogortsi/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect40en.html",
+      "destination": "/proekti/detska-ploshtadka-kv-ustovo-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect41en.html",
+      "destination": "/proekti/dom-na-kulturata-gr-rudozem/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect42en.html",
+      "destination": "/proekti/preustroystvo-i-remont-na-vatreshno-otdelenie/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect43en.html",
+      "destination": "/proekti/benzonostantsiya-omiks/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect44en.html",
+      "destination": "/proekti/remont-na-chitalishte-s-padarsko/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect45en.html",
+      "destination": "/proekti/tsnst-gr-panagyurishte/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect46en.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-ul-panagyurishte-36/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect47en.html",
+      "destination": "/proekti/rekonstruktsiya-na-vila-s-stoykite-obsht-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect48en.html",
+      "destination": "/proekti/kashta-v-kv-boyana-gr-sofiya/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect49en.html",
+      "destination": "/proekti/zhilishtna-sgrada-v-sofiya-ul-strandzha-126/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect50en.html",
+      "destination": "/proekti/semeyna-kashta-v-s-momchilovtsi/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect51en.html",
+      "destination": "/proekti/zhilishtna-sgrada-ul-chan-4-gr-smolyan/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/progect52en.html",
+      "destination": "/proekti/zhilishtna-sgrada-ul-evredika-27-gr-smolyan/",
+      "permanent": true
+    }
+  ]
+}
