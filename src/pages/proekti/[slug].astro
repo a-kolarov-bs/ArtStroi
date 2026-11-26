@@ -713,10 +713,11 @@ const schemaBreadcrumb = {
   .hero-wash {
     background: linear-gradient(to top, rgba(18, 22, 28, 0.92) 0%, rgba(18, 22, 28, 0.78) 30%, rgba(18, 22, 28, 0.35) 48%, rgba(18, 22, 28, 0) 66%);
   }
-  /* Desktop: the cover is at least 3:2 and stretches to the side column,
-     which ends with the near-square map. */
+  /* Desktop: the cover sets the height (--cover-ratio); the map takes what
+     the side column has left. Only a long text with the map's minimum
+     height makes the column, and so the cover, taller (as before). */
   @media (min-width: 1024px) {
-    .hero-figure { aspect-ratio: 3 / 2; }
+    .hero-figure { aspect-ratio: var(--cover-ratio, 27 / 26); }
   }
   .hero-image {
     animation: hero-settle 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -789,7 +790,7 @@ const schemaBreadcrumb = {
   /* ── Mini inline map (right column) — fills available vertical space
         so its bottom aligns with the cover image's bottom on desktop. */
   .mini-map--side {
-    aspect-ratio: 1 / 1;
+    min-height: var(--map-min, 240px);
   }
   .mini-map--square {
     aspect-ratio: 1 / 1;
