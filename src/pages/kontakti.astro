@@ -20,7 +20,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
          the form. The form title is the page's only h1. -->
     <div class="container-page relative pt-28 md:pt-32 lg:pt-36 pb-16 md:pb-24">
       <div class="contact-layout">
-        <Reveal class="min-w-0 min-[1180px]:col-start-2 min-[1180px]:row-start-1">
+        <Reveal class="min-w-0 min-[1024px]:max-[1179px]:col-span-2 min-[1180px]:col-start-2 min-[1180px]:row-start-1">
           <section class="contact-call" aria-labelledby="contact-call-heading">
             <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Телефони</p>
             <h2 id="contact-call-heading">Обадете се</h2>
@@ -51,7 +51,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
           </section>
         </Reveal>
 
-        <Reveal class="min-w-0 min-[1180px]:col-start-1 min-[1180px]:row-start-1 min-[1180px]:row-span-2">
+        <Reveal class="min-w-0 min-[1024px]:max-[1179px]:col-span-2 min-[1180px]:col-start-1 min-[1180px]:row-start-1 min-[1180px]:row-span-2">
           <section class="contact-form-panel" aria-labelledby="contact-form-heading">
             <div class="contact-form-panel__head">
               <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Съобщение</p>
@@ -148,7 +148,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
           </section>
         </Reveal>
 
-        <Reveal class="min-w-0 min-[1180px]:col-start-2 min-[1180px]:row-start-2 min-[1180px]:row-span-2 min-[1180px]:self-end">
+        <Reveal class="min-w-0 min-[1180px]:col-start-2 min-[1180px]:row-start-2 min-[1180px]:row-span-2 min-[1180px]:self-stretch">
           <div class="contact-map">
             <iframe
               title={`Карта: ${company.name}, офис ${company.city}`}
@@ -181,9 +181,17 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
     align-items: start;
   }
 
+  /* 1024–1179: phones and form full width, then office | map (4:3). */
+  @media (min-width: 1024px) and (max-width: 1179px) {
+    .contact-layout {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 2.5rem;
+    }
+  }
+
   @media (min-width: 1180px) {
     .contact-layout {
-      grid-template-columns: minmax(0, 1.05fr) minmax(21rem, 0.56fr);
+      grid-template-columns: minmax(0, 1.05fr) minmax(21rem, 0.8fr);
       grid-template-rows: auto 1fr auto;
       column-gap: clamp(1.25rem, 3.8vw, 4.5rem);
     }
@@ -573,11 +581,20 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
     }
   }
 
-  /* Desktop: a square map in the narrow right column. */
-  @media (min-width: 1180px) {
+  @media (min-width: 1024px) and (max-width: 1179px) {
     .contact-map {
       height: auto;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  /* Desktop: the map fills the right column from under the phones to the
+     bottom of the office, so there is no gap; the column width keeps it
+     close to square. */
+  @media (min-width: 1180px) {
+    .contact-map {
+      height: 100%;
+      min-height: 22rem;
     }
   }
 
