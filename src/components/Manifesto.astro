@@ -412,10 +412,27 @@ const total = capabilities.length;
     .cap-cta--desktop {
       display: none;
     }
+    /* Phones/tablets: the stage is as tall as its content (video + wheel),
+       not the viewport, so the button sits right under the last service
+       when the pin ends (owner, 26.11.2026). JS sets the wrap height from
+       stage.offsetHeight; the min-height fallback must not add a gap. */
+    @media (max-width: 1023px) {
+      .cap-pin-wrap { min-height: 0; }
+      .cap-stage { height: auto; }
+      .cap-stage .container-page { align-items: flex-start; }
+    }
+    /* Pulled up over the wheel's empty "peek below" slot, which is blank
+       once the last service is in focus: ~24px under the last line. */
     .cap-mobile-cta {
-      margin-top: -0.25rem;
+      position: relative;
+      z-index: 1;
+      margin-top: -2.5rem;
       padding-bottom: 3.75rem;
       text-align: center;
+    }
+    /* Narrow phones: the last service wraps to more lines. */
+    @media (max-width: 374px) {
+      .cap-mobile-cta { margin-top: -1.25rem; }
     }
     @media (min-width: 1024px) {
       .cap-cta--desktop {
@@ -504,9 +521,15 @@ const total = capabilities.length;
       let raf = 0;
       const tick = () => {
         raf = 0;
+        // Progress runs exactly while the stage is stuck: from the wrap
+        // reaching the sticky line to the wrap's end meeting the stage's
+        // bottom. (Measuring against the viewport left a dead stretch at
+        // the end where the wheel was done but the page still held.)
         const rect = pinWrap.getBoundingClientRect();
-        const scrolled = -rect.top + EARLY_START;
-        const range = Math.max(1, pinWrap.offsetHeight - window.innerHeight + EARLY_START);
+        const stickyTop = stage ? parseFloat(getComputedStyle(stage).top) || 0 : 0;
+        const stageH = stage?.offsetHeight || window.innerHeight;
+        const scrolled = stickyTop - rect.top + EARLY_START;
+        const range = Math.max(1, pinWrap.offsetHeight - stageH + EARLY_START);
         const progress = Math.max(0, Math.min(1, scrolled / range));
 
         const trackY = progress * advances * itemHpx;
