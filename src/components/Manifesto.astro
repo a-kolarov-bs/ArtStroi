@@ -152,7 +152,7 @@ const total = capabilities.length;
     }
     @media (max-width: 767px) {
       .cap-pin-wrap {
-        margin-top: clamp(1.5rem, 5svh, 2.75rem);
+        margin-top: 1.5rem;
         min-height: calc(100svh - 10rem + var(--pin-distance, 50vh));
       }
       .cap-stage {
@@ -377,11 +377,11 @@ const total = capabilities.length;
       .cap-media-col {
         transform: none;
       }
+      /* As wide as the text above it (owner, round 2, task 7). 3:2 keeps
+         the round-1 height so wheel + video still fit the pinned stage. */
       .cap-media {
-        aspect-ratio: 4 / 3;
-        max-width: min(100%, 19rem);
+        aspect-ratio: 3 / 2;
         max-height: none;
-        margin-inline: auto;
       }
     }
     @media (min-width: 1024px) {
