@@ -732,7 +732,12 @@ const managerTel = telHref(manager.number);
     header.addEventListener('focusout', (event) => {
       if (!isOpen()) return;
       const next = event.relatedTarget;
-      if (next instanceof Node && !header.contains(next)) closeMenu();
+      // Leaving the panel for anything but its own toggle closes it: Tab
+      // past the last row (onto the logo or the call chip) shuts the menu,
+      // Shift+Tab from the first row back to the toggle keeps it open.
+      if (!(next instanceof Node)) return;
+      if (menu?.contains(next) || next === toggle) return;
+      closeMenu();
     }, { signal });
     document.addEventListener('click', (event) => {
       if (!isOpen()) return;
