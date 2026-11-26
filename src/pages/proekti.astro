@@ -43,15 +43,16 @@ const currentYear = new Date().getFullYear();
 const yearsActive = getYearsActive();
 const mainPhone = phone('Управител');
 
-// Every number here is computed from the data files (rechnik §4).
+// Every number here comes from the data files (rechnik §4). The company total
+// (150+) is the headline; the filters below still count the 55 pages shown.
 const heroStats = [
-  { label: 'Реализирани обекта', value: projects.length, plus: false },
+  { label: 'Реализирани обекта', value: company.completedProjects, plus: true },
   ...(yearsActive !== null ? [{ label: 'Години работа', value: yearsActive, plus: true }] : []),
-  { label: 'Възложители', value: clients.length, plus: false },
+  { label: 'Възложители', value: clients.length, plus: true },
 ];
 
-const pageTitle = `Проекти: ${projects.length} реализирани обекта — ${company.name}`;
-const pageDescription = `${projects.length} реализирани обекта${
+const pageTitle = `Проекти: ${company.completedProjects}+ реализирани обекта — ${company.name}`;
+const pageDescription = `${company.completedProjects}+ реализирани обекта${
   company.founded !== null ? ` от ${company.founded} до ${currentYear}` : ''
 }: жилищни сгради, инфраструктура, обществени обекти и паркове из цяла България.`;
 ---
@@ -73,6 +74,8 @@ const pageDescription = `${projects.length} реализирани обекта$
             class="reel-card group/reel relative shrink-0 block overflow-hidden"
             aria-label={`${p.title} — ${p.category}`}
             data-clone={i >= reelPick.length ? 'true' : 'false'}
+            tabindex={i >= reelPick.length ? -1 : undefined}
+            aria-hidden={i >= reelPick.length ? 'true' : undefined}
           >
             <img
               {...responsiveImage(p.coverImageUrl ?? '/hero/hero-poster.jpg', '(min-width: 1280px) 613px, (min-width: 778px) 48vw, 373px')}
@@ -96,7 +99,8 @@ const pageDescription = `${projects.length} реализирани обекта$
         ))}
       </div>
       <!-- Edge fades — soften where the reel meets the header & body -->
-      <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-ink-950/55 to-transparent"></div>
+      <!-- Desktop only: on the phone the header bar must not darken the photos. -->
+      <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-ink-950/55 to-transparent max-md:hidden"></div>
       <div aria-hidden="true" class="pointer-events-none absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-ink-950 to-transparent"></div>
       <div aria-hidden="true" class="pointer-events-none absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-ink-950 to-transparent"></div>
     </div>
@@ -165,7 +169,8 @@ const pageDescription = `${projects.length} реализирани обекта$
   <!-- ════════════════════════════════════════════════════════════
        GRID — 24 cards per page, paginated client-side.
        ════════════════════════════════════════════════════════════ -->
-  <section class="bg-cream-50 pt-6 pb-12 md:pt-10 md:pb-16 lg:pt-12 lg:pb-20" id="proekti-grid-section" aria-labelledby="proekti-grid-title">
+  <section class="relative isolate bg-cream-50 pt-6 pb-12 md:pt-10 md:pb-16 lg:pt-12 lg:pb-20" id="proekti-grid-section" aria-labelledby="proekti-grid-title">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
     <h2 id="proekti-grid-title" class="sr-only">Списък на обектите</h2>
     <!-- Mobile uses tighter horizontal padding so the 2-col cards have a bit
          more room than the rest of the page; desktop keeps container-page. -->
@@ -275,6 +280,10 @@ const pageDescription = `${projects.length} реализирани обекта$
     /* Sized so the transparent header (h-20 = 80px) overlays a dark area
        and the headline below has plenty of breathing room. */
     height: clamp(280px, 36vw, 460px);
+  }
+  /* Phone: the reel is about 1.5× taller (280 → 420 px); desktop unchanged. */
+  @media (max-width: 767px) {
+    .reel-wrap { height: 420px; }
   }
   .reel {
     width: max-content;
