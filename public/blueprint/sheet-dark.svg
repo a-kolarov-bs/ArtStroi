@@ -4,8 +4,8 @@
     <style>
       .ln  { stroke: #FFFFFF; stroke-opacity: 0.10; fill: none; stroke-linecap: square; stroke-linejoin: miter; }
       .lnf { stroke: #FFFFFF; stroke-opacity: 0.06; fill: none; }
-      .red { stroke: #BA2D20; stroke-opacity: 0.38; fill: none; }
-      .redf{ fill: #BA2D20; fill-opacity: 0.28; stroke: none; }
+      .red { stroke: #BA2D20; stroke-opacity: 0.20; fill: none; }
+      .redf{ fill: #BA2D20; fill-opacity: 0.14; stroke: none; }
     </style>
   </defs>
 

@@ -46,7 +46,7 @@ const mainPhone = phone('Управител');
 // Every number here comes from the data files (rechnik §4). The company total
 // (150+) is the headline; the filters below still count the 55 pages shown.
 const heroStats = [
-  { label: 'Реализирани обекта', value: company.completedProjects, plus: true },
+  { label: 'Завършени обекта', value: company.completedProjects, plus: true },
   ...(yearsActive !== null ? [{ label: 'Години работа', value: yearsActive, plus: true }] : []),
   { label: 'Възложители', value: clients.length, plus: true },
 ];
