@@ -68,18 +68,27 @@ else
   MI="minterpolate=fps=${FPS}:mi_mode=blend"
 fi
 
-# 0) the montage is ~29 fps footage stored at 24 fps: of every 29 real
-#    frames 5 are missing (just before stored frames 5, 10, 15, 20 and 24 of
-#    each 24-frame block; measured frame by frame, the content step doubles
-#    there), which shows as a jolt twice a second once slowed. Re-time each
-#    stored frame to its real 29 fps instant so the gaps are filled by the
-#    interpolation below. 24 stored frames still span exactly 1 s, so the
-#    length and mean speed are unchanged.
+# 0) the montage is stored at an even 24 fps, but frames are missing from it
+#    (the content step doubles or triples there), which shows as a jolt once
+#    slowed. Each stored frame's real time is MEASURED from the file and kept
+#    in scripts/hero-mobile-timing.txt (python3 scripts/hero-video-motion.py
+#    timing <src> <txt>; re-run it if hero-composite.mp4 changes). setpts
+#    puts every frame at its real instant, so the gaps are filled by the
+#    interpolation below. The total length is kept (last frame at the same
+#    time as stored), so SLOW keeps its meaning.
+#    Check the result: python3 scripts/hero-video-motion.py check <out.mp4>
 # 1) slow down + interpolate to FPS, 2) scale to full output height
 #    (cropping after the upscale keeps the window steps sub-source-pixel),
 # 3) 9:16 window: holds at the right edge, moves to the left edge between
 #    PAN_FROM and PAN_TO (fractions of DUR) on a half-cosine, then holds.
-VF="setpts='(N+5*floor(N/24)+min(floor(mod(N,24)/5),4))/(29*${SLOW})/TB',${MI},\
+TIMING="$ROOT/scripts/hero-mobile-timing.txt"
+[ -f "$TIMING" ] || { echo "Missing $TIMING" >&2; exit 1; }
+# units(N) = N + sum of (extra units) for every frame from which they apply;
+# units per second so that the last frame keeps its stored time.
+UNITS="$(awk '!/^#/{d=$2-p-1; if ($1>0 && (d>0.0001 || d<-0.0001)) e=e sprintf("%+.2f*gte(N,%d)", d, $1); p=$2}
+  END{printf "%s", "N" e}' "$TIMING")"
+UPS="$(awk '!/^#/{n=$1; t=$2} END{printf "%.6f", t*24/n}' "$TIMING")"
+VF="setpts='(${UNITS})/(${UPS}*${SLOW})/TB',${MI},\
 scale=-2:${H}:flags=lanczos,\
 crop=${W}:${H}:x='(iw-ow)*(1+cos(PI*clip((t/${DUR}-${PAN_FROM})/(${PAN_TO}-${PAN_FROM}),0,1)))/2':y=0,\
 unsharp=5:5:0.4,format=yuv420p"
