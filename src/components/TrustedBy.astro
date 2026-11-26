@@ -8,7 +8,9 @@ interface Props {
 }
 const { clients } = Astro.props;
 
-// Duplicate the list — second copy is used for the seamless 50% translate loop
+// Duplicate the list — second copy is used for the seamless 50% translate loop.
+// Spacing is a margin on every item (not flex `gap`), so the track is exactly
+// two equal copies wide and -50% lands on the seam without a jump.
 const tracks = [...clients, ...clients];
 ---
 
@@ -36,20 +38,20 @@ const tracks = [...clients, ...clients];
   <!-- Marquee (full-bleed) -->
   <Reveal>
     <div class="marquee">
-      <div class="marquee__track flex items-start gap-4 md:gap-16 animate-marquee md:animate-marquee">
+      <div class="marquee__track flex items-start animate-marquee">
         {tracks.map((c, i) => (
           <div
-            class="shrink-0 flex flex-col items-center justify-start px-2 w-[140px] md:w-[160px]"
+            class="shrink-0 flex flex-col items-center justify-start px-2 mr-1 md:mr-8 w-[116px] md:w-[160px]"
             aria-hidden={i >= clients.length ? 'true' : undefined}
           >
-            <div class="h-20 md:h-24 grid place-items-center">
+            <div class="h-[4.25rem] md:h-24 grid place-items-center">
               <img
                 src={c.logo}
                 {...imageSize(c.logo)}
                 alt={i < clients.length ? c.alt : ''}
                 loading="lazy"
                 decoding="async"
-                class="max-h-14 md:max-h-16 w-auto object-contain
+                class="max-h-12 md:max-h-16 w-auto object-contain
                        drop-shadow-[0_2px_4px_rgba(18,22,28,0.12)]
                        transition-transform duration-400 ease-out-expo
                        hover:scale-[1.06]"
@@ -67,10 +69,14 @@ const tracks = [...clients, ...clients];
 </section>
 
 <style>
-  /* Faster marquee on small screens (desktop keeps default 40s) */
+  /* Durations keep the round-1 speed (~105 px/s on desktop, ~105 px/s on
+     phones) now that the logos sit closer together (round 2, task 6). */
+  .marquee__track {
+    animation-duration: 35s;
+  }
   @media (max-width: 767px) {
     .marquee__track {
-      animation-duration: 28s !important;
+      animation-duration: 22s !important;
     }
   }
   /* The rule above outranks the global reduced-motion reset — stop here too. */
