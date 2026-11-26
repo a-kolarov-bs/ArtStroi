@@ -4,7 +4,9 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 
 const site = process.env.SITE_URL
-  ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://artstroismolian.com');
+  // On Vercel: the project's stable production address, not the per-deploy URL.
+  ?? (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://artstroismolian.com');
 
 export default defineConfig({
   site,
