@@ -85,9 +85,9 @@ for (const r of data) {
   const file = join(dist, 'proekti', r.slug, 'index.html');
   if (!existsSync(file)) { errors.push(`missing detail page ${r.slug}`); continue; }
   const html = readFileSync(file, 'utf8');
-  if (!/class="g-tile[\s"]/.test(html)) errors.push(`${r.slug}: no gallery tile, a phone shows no photo of this project`);
-  if (r.cover_image_url && !/data-gallery-cover[\s\S]*?class="g-tile g-tile--cover/.test(html))
-    errors.push(`${r.slug}: the cover is not the first gallery frame below 1024 px`);
+  // Round 2 (owner's variant A): the cover is the hero photo on every width.
+  if (!/class="hero-image[\s"]/.test(html) || /srcset="data:image\/gif/.test(html))
+    errors.push(`${r.slug}: no cover photo on phones (the cover is the hero on every width)`);
   const ld = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)]
     .map((m) => JSON.parse(m[1]))
     .find((o) => o['@type'] === 'CreativeWork');
