@@ -650,8 +650,9 @@ const managerTel = telHref(manager.number);
       if (explicit) return explicit;
 
       let current: Element | null = target ?? document.elementFromPoint(x, Math.min(window.innerHeight - 1, y + 48));
-      let levels = 0;
-      while (current && levels < 8) {
+      // Walk up to the nearest surface with a background, however deep: a
+      // depth limit (8) made the bar flicker over the dark /uslugi hero.
+      while (current && current !== document.documentElement) {
         const explicitCurrent = explicitTone(current);
         if (explicitCurrent) return explicitCurrent;
 
@@ -662,7 +663,6 @@ const managerTel = telHref(manager.number);
         }
 
         current = current.parentElement;
-        levels += 1;
       }
 
       return fallbackTone();
