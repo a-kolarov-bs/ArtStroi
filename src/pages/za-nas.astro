@@ -117,6 +117,8 @@ const pageDescription = `${
         <div aria-hidden="true" class="zn-hero__media">
           <img
             src="/award/chukara/hero.jpg"
+            srcset="/award/chukara/hero-800.webp 800w, /award/chukara/hero-1600.webp 1600w"
+            sizes="100vw"
             width="1800"
             height="1048"
             alt=""
@@ -344,7 +346,10 @@ const pageDescription = `${
                 <span class="zn-cprs__thumb">
                   <img src={declaration.img} {...imageSize(declaration.img)} alt="" loading="lazy" decoding="async" />
                 </span>
-                <span class="zn-cprs__doc-label">Декларация · PDF</span>
+                <span class="zn-cprs__doc-meta">
+                  <span class="zn-cprs__doc-label">Декларация</span>
+                  <span class="zn-cprs__doc-ext">PDF</span>
+                </span>
                 <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                   <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -537,6 +542,26 @@ const pageDescription = `${
   .zn-hero__intro p:not(.eyebrow) {
     text-shadow: 0 1px 18px rgba(18, 22, 28, 0.55);
   }
+  /* Local scrim behind the title only: the red line „от Смолян.“ needs a
+     near-black ground for 3:1 (brand red on ink-950 alone is 2.85:1),
+     while the rest of the photo keeps its light. */
+  .zn-hero__intro h1 { position: relative; }
+  .zn-hero__intro h1::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    /* Phone: hug the title so the hotel above stays visible. */
+    inset: -2.5rem -4.5rem -2.5rem -4.5rem;
+    background: radial-gradient(
+      closest-side,
+      rgba(5, 6, 8, 0.97) 52%,
+      rgba(5, 6, 8, 0.86) 64%,
+      rgba(5, 6, 8, 0.55) 78%,
+      rgba(5, 6, 8, 0.22) 90%,
+      rgba(5, 6, 8, 0) 100%
+    );
+    pointer-events: none;
+  }
   .zn-hero__aside { grid-area: aside; margin-top: 2rem; }
   .zn-hero__stats { grid-area: stats; margin-top: 2.25rem; }
 
@@ -587,6 +612,7 @@ const pageDescription = `${
       padding-bottom: 4.5rem;
     }
     .zn-hero__intro { position: static; min-height: 0; padding-bottom: 0; }
+    .zn-hero__intro h1::before { inset: -7rem -16rem -7rem -12rem; }
     .zn-hero__aside { margin-top: 0; align-self: end; }
     .zn-hero__stats { margin-top: 2.75rem; }
     .zn-hero__media { inset: 0; }
@@ -661,7 +687,6 @@ const pageDescription = `${
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-weight: 600;
     color: #FFFFFF;
     border-bottom: 1px solid rgba(255, 255, 255, 0.22);
     padding-bottom: 0.35rem;
@@ -727,7 +752,6 @@ const pageDescription = `${
     line-height: 1.2;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    font-weight: 700;
   }
   .zn-award__value {
     margin-top: 1.35rem;
@@ -817,7 +841,6 @@ const pageDescription = `${
     line-height: 1.25;
     letter-spacing: 0.13em;
     text-transform: uppercase;
-    font-weight: 700;
   }
   @media (max-width: 639px) {
     .zn-award__hero-caption {
@@ -931,7 +954,6 @@ const pageDescription = `${
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-weight: 600;
     color: #FFFFFF;
     border-bottom: 1px solid rgba(255, 255, 255, 0.22);
     padding-bottom: 0.35rem;
@@ -1052,7 +1074,6 @@ const pageDescription = `${
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: rgba(18, 22, 28, 0.55);
-    font-weight: 600;
     margin-top: 0.55rem;
   }
   .zn-iso__hr {
@@ -1060,12 +1081,14 @@ const pageDescription = `${
     height: 1px;
     width: 2.5rem;
     background: rgba(186, 45, 32, 0.55);
-    margin: 1.05rem 0 0.95rem;
+    margin: 1.05rem 0 2.35rem;
     transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .zn-iso__cell:hover .zn-iso__hr { width: 5rem; }
+  /* margin-top:auto pins the tile to the card's foot, so the three ISO
+     tiles line up even when one subtitle wraps (ISO 45001 at 1024). */
   .zn-iso__doc {
-    margin-top: 1.4rem;
+    margin-top: auto;
     display: grid;
     grid-template-columns: 3.4rem 1fr auto;
     align-items: center;
@@ -1108,7 +1131,6 @@ const pageDescription = `${
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-weight: 600;
     color: theme('colors.ink.950');
   }
   .zn-iso__doc-ext {
@@ -1138,6 +1160,12 @@ const pageDescription = `${
   @media (min-width: 768px) {
     .zn-cprs__inner { padding: 1.6rem 1.4rem 1.5rem; }
   }
+  /* Five in a row (xl) leaves a ~218 px card: tighter side padding so the
+     "Удостоверение" tile fits inside itself (the tile itself is compact
+     everywhere — the narrowest case is the 320 px phone slider). */
+  @media (min-width: 1280px) {
+    .zn-cprs__inner { padding-inline: 1.15rem; }
+  }
 
   .zn-cprs__roman {
     display: block;
@@ -1152,7 +1180,6 @@ const pageDescription = `${
     font-size: 0.92rem;
     line-height: 1.2;
     color: theme('colors.ink.950');
-    font-weight: 600;
     font-family: theme('fontFamily.display');
     letter-spacing: -0.005em;
   }
@@ -1166,9 +1193,9 @@ const pageDescription = `${
   .zn-cprs__doc {
     margin-top: 0.4rem;
     display: grid;
-    grid-template-columns: 2.4rem 1fr auto;
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
     padding: 0.5rem 0.55rem 0.5rem 0.5rem;
     background: rgba(18, 22, 28, 0.035);
     border: 1px solid rgba(18, 22, 28, 0.08);
@@ -1198,10 +1225,21 @@ const pageDescription = `${
   }
   .zn-cprs__doc-label {
     font-size: 0.75rem;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    font-weight: 600;
     color: theme('colors.ink.950');
+  }
+  .zn-cprs__doc-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .zn-cprs__doc-ext {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(18, 22, 28, 0.45);
+    font-family: ui-monospace, "SFMono-Regular", monospace;
   }
   .zn-cprs__doc svg {
     color: rgba(18, 22, 28, 0.45);
