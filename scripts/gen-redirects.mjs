@@ -85,6 +85,15 @@ const text = [
 const vercelOut = join(root, 'vercel.json');
 const vercelText = JSON.stringify({
   $schema: 'https://openapi.vercel.sh/vercel.json',
+  // The *.vercel.app demo stays out of search results; the real domain is
+  // indexed normally once it points here (no code change needed).
+  headers: [
+    {
+      source: '/(.*)',
+      has: [{ type: 'host', value: '(?<sub>.*)\\.vercel\\.app' }],
+      headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+    },
+  ],
   redirects: text
     .split('\n')
     .filter((l) => l && !l.startsWith('#'))
