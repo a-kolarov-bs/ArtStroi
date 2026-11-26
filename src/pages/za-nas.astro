@@ -216,6 +216,149 @@ const pageDescription = `${
   </section>
 
   <!-- ════════════════════════════════════════════════════════════
+       2 · CERTIFICATES — ISO row + ЦПРС groups + декларация.
+       Separate white cards with a gap; on the phone each row is a
+       sideways slider with a "1 / N" counter.
+       ════════════════════════════════════════════════════════════ -->
+  <section class="relative isolate overflow-hidden bg-cream-50 py-16 lg:py-20" aria-labelledby="certs-heading">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
+
+    <div class="container-page relative">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end mb-10 md:mb-14">
+        <Reveal class="lg:col-span-7">
+          <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Документи</p>
+          <h2
+            id="certs-heading"
+            class="mt-3 font-display tracking-tight text-ink-950 max-w-[22ch]"
+            style="font-size: clamp(1.85rem, 1rem + 2vw, 2.85rem); line-height: 1.05;"
+          >
+            Сертификати и
+            <span class="text-brand">регистри</span>.
+          </h2>
+        </Reveal>
+        <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
+          <p class="text-[14.5px] md:text-[15px] text-ink-600 leading-[1.65] max-w-[46ch]">
+            Работим по ISO 9001:2015, ISO 14001:2015 и ISO 45001:2018 и сме вписани в Централния професионален регистър на строителя. Копията на сертификатите и удостоверенията са по-долу.
+          </p>
+        </Reveal>
+      </div>
+
+      <!-- ISO row — three feature cards -->
+      <div data-rail>
+      <p class="zn-rail__count" aria-hidden="true"><span data-rail-current>1</span> / {isoStandards.length}</p>
+      <ol class="zn-iso zn-rail__track grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6" data-rail-track aria-label="ISO сертификати">
+        {isoStandards.map((s, i) => (
+          <Reveal as="li" delay={i * 80} class="relative hover:z-[2]">
+           <div class="zn-iso__cell group h-full">
+            <article class="zn-iso__inner">
+              <header class="zn-iso__head">
+                <span class="zn-iso__num font-display tabular-nums text-brand">
+                  ISO
+                </span>
+                <span class="zn-iso__step">№{String(i + 1).padStart(2, '0')}</span>
+              </header>
+              <h3
+                class="zn-iso__title font-display tracking-tight text-ink-950"
+                style="font-size: clamp(1.25rem, 0.95rem + 0.75vw, 1.55rem); line-height: 1.1;"
+              >
+                {s.code}
+              </h3>
+              <p class="zn-iso__label">{s.title}</p>
+              <span aria-hidden="true" class="zn-iso__hr"></span>
+
+              <!-- Document thumbnail — legacy scan, replaced when clients
+                   upload new versions -->
+              <a class="zn-iso__doc group/doc" href={s.pdf} target="_blank" rel="noopener noreferrer">
+                <span class="zn-iso__thumb">
+                  <img src={s.img} {...imageSize(s.img)} alt={`Сертификат ${s.code}`} loading="lazy" decoding="async" />
+                </span>
+                <span class="zn-iso__doc-meta">
+                  <span class="zn-iso__doc-label">Вижте сертификата</span>
+                  <span class="zn-iso__doc-ext">PDF</span>
+                </span>
+                <svg class="zn-iso__doc-arrow" width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </article>
+           </div>
+          </Reveal>
+        ))}
+      </ol>
+      </div>
+
+      <!-- ЦПРС groups row + declaration -->
+      <div class="mt-10 md:mt-14">
+        <Reveal class="mb-8 md:mb-10">
+          <div class="flex flex-wrap items-baseline justify-between gap-4 border-b border-ink-900/15 pb-4">
+            <h3
+              class="font-display tracking-tight text-ink-950"
+              style="font-size: clamp(1.15rem, 0.85rem + 0.85vw, 1.5rem); line-height: 1.15;"
+            >
+              ЦПРС · вписвания
+            </h3>
+            <p class="text-xs uppercase tracking-eyebrow text-ink-600">
+              Централен професионален регистър на строителя
+            </p>
+          </div>
+        </Reveal>
+
+        <div data-rail>
+        <p class="zn-rail__count" aria-hidden="true"><span data-rail-current>1</span> / {cprsCards.length + 1}</p>
+        <!-- 5 in a row only from xl: at 1024 a fifth of the row is too narrow
+             for the "Удостоверение" tile, so 1024–1279 is 3 + 2. -->
+        <ol class="zn-cprs zn-rail__track grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 lg:gap-6" data-rail-track aria-label="ЦПРС удостоверения и декларация">
+          {cprsCards.map((g, i) => (
+            <Reveal as="li" delay={i * 60}>
+             <div class="zn-cprs__cell group h-full">
+              <article class="zn-cprs__inner">
+                <span class="zn-cprs__roman font-display text-brand">
+                  {g.roman}
+                </span>
+                <h4 class="zn-cprs__title">{g.title}</h4>
+                <p class="zn-cprs__body">{g.body}</p>
+                <a class="zn-cprs__doc" href={g.img} target="_blank" rel="noopener noreferrer" aria-label={`Удостоверение ${g.title}`}>
+                  <span class="zn-cprs__thumb">
+                    <img src={g.img} {...imageSize(g.img)} alt="" loading="lazy" decoding="async" />
+                  </span>
+                  <span class="zn-cprs__doc-label">Удостоверение</span>
+                  <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </article>
+             </div>
+            </Reveal>
+          ))}
+
+          <!-- Declaration as a 5th, distinct cell -->
+          <Reveal as="li" delay={cprsCards.length * 60}>
+           <div class="zn-cprs__cell group h-full">
+            <article class="zn-cprs__inner">
+              <span class="zn-cprs__roman font-display text-brand">
+                §
+              </span>
+              <h4 class="zn-cprs__title">{declaration.title}</h4>
+              <p class="zn-cprs__body">{declaration.body}</p>
+              <a class="zn-cprs__doc" href={declaration.pdf} target="_blank" rel="noopener noreferrer" aria-label="Декларация PDF">
+                <span class="zn-cprs__thumb">
+                  <img src={declaration.img} {...imageSize(declaration.img)} alt="" loading="lazy" decoding="async" />
+                </span>
+                <span class="zn-cprs__doc-label">Декларация · PDF</span>
+                <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </article>
+           </div>
+          </Reveal>
+        </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
        3 · AWARD — light editorial proof of recognition.
        ════════════════════════════════════════════════════════════ -->
   <section
@@ -362,140 +505,6 @@ const pageDescription = `${
       </div>
     </div>
   </section>
-
-  <!-- ════════════════════════════════════════════════════════════
-       5 · CERTIFICATES — ISO row + ЦПРС groups + декларация.
-       Dense grid, brand-monogram cards. Each cert is a spec page.
-       ════════════════════════════════════════════════════════════ -->
-  <section class="relative isolate overflow-hidden bg-cream-50 py-16 lg:py-20" aria-labelledby="certs-heading">
-    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
-
-    <div class="container-page relative">
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end mb-10 md:mb-14">
-        <Reveal class="lg:col-span-7">
-          <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Документи</p>
-          <h2
-            id="certs-heading"
-            class="mt-3 font-display tracking-tight text-ink-950 max-w-[22ch]"
-            style="font-size: clamp(1.85rem, 1rem + 2vw, 2.85rem); line-height: 1.05;"
-          >
-            Сертификати и
-            <span class="text-brand">регистри</span>.
-          </h2>
-        </Reveal>
-        <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
-          <p class="text-[14.5px] md:text-[15px] text-ink-600 leading-[1.65] max-w-[46ch]">
-            Работим по ISO 9001:2015, ISO 14001:2015 и ISO 45001:2018 и сме вписани в Централния професионален регистър на строителя. Копията на сертификатите и удостоверенията са по-долу.
-          </p>
-        </Reveal>
-      </div>
-
-      <!-- ISO row — three feature cards -->
-      <ol class="zn-iso grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ink-900/12">
-        {isoStandards.map((s, i) => (
-          <Reveal as="li" delay={i * 80} class="relative hover:z-[2]">
-           <div class="zn-iso__cell group h-full">
-            <article class="zn-iso__inner">
-              <header class="zn-iso__head">
-                <span class="zn-iso__num font-display tabular-nums text-brand">
-                  ISO
-                </span>
-                <span class="zn-iso__step">№{String(i + 1).padStart(2, '0')}</span>
-              </header>
-              <h3
-                class="zn-iso__title font-display tracking-tight text-ink-950"
-                style="font-size: clamp(1.25rem, 0.95rem + 0.75vw, 1.55rem); line-height: 1.1;"
-              >
-                {s.code}
-              </h3>
-              <p class="zn-iso__label">{s.title}</p>
-              <span aria-hidden="true" class="zn-iso__hr"></span>
-
-              <!-- Document thumbnail — legacy scan, replaced when clients
-                   upload new versions -->
-              <a class="zn-iso__doc group/doc" href={s.pdf} target="_blank" rel="noopener noreferrer">
-                <span class="zn-iso__thumb">
-                  <img src={s.img} {...imageSize(s.img)} alt={`Сертификат ${s.code}`} loading="lazy" decoding="async" />
-                </span>
-                <span class="zn-iso__doc-meta">
-                  <span class="zn-iso__doc-label">Вижте сертификата</span>
-                  <span class="zn-iso__doc-ext">PDF</span>
-                </span>
-                <svg class="zn-iso__doc-arrow" width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
-            </article>
-           </div>
-          </Reveal>
-        ))}
-      </ol>
-
-      <!-- ЦПРС groups row + declaration -->
-      <div class="mt-10 md:mt-14">
-        <Reveal class="mb-8 md:mb-10">
-          <div class="flex flex-wrap items-baseline justify-between gap-4 border-b border-ink-900/15 pb-4">
-            <h3
-              class="font-display tracking-tight text-ink-950"
-              style="font-size: clamp(1.15rem, 0.85rem + 0.85vw, 1.5rem); line-height: 1.15;"
-            >
-              ЦПРС · вписвания
-            </h3>
-            <p class="text-xs uppercase tracking-eyebrow text-ink-600">
-              Централен професионален регистър на строителя
-            </p>
-          </div>
-        </Reveal>
-
-        <ol class="zn-cprs grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-ink-900/12">
-          {cprsCards.map((g, i) => (
-            <Reveal as="li" delay={i * 60}>
-             <div class="zn-cprs__cell group h-full">
-              <article class="zn-cprs__inner">
-                <span class="zn-cprs__roman font-display text-brand">
-                  {g.roman}
-                </span>
-                <h4 class="zn-cprs__title">{g.title}</h4>
-                <p class="zn-cprs__body">{g.body}</p>
-                <a class="zn-cprs__doc" href={g.img} target="_blank" rel="noopener noreferrer" aria-label={`Удостоверение ${g.title}`}>
-                  <span class="zn-cprs__thumb">
-                    <img src={g.img} {...imageSize(g.img)} alt="" loading="lazy" decoding="async" />
-                  </span>
-                  <span class="zn-cprs__doc-label">Удостоверение</span>
-                  <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                    <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </a>
-              </article>
-             </div>
-            </Reveal>
-          ))}
-
-          <!-- Declaration as a 5th, distinct cell -->
-          <Reveal as="li" delay={cprsCards.length * 60}>
-           <div class="zn-cprs__cell zn-cprs__cell--alt group h-full">
-            <article class="zn-cprs__inner">
-              <span class="zn-cprs__roman font-display text-brand">
-                §
-              </span>
-              <h4 class="zn-cprs__title">{declaration.title}</h4>
-              <p class="zn-cprs__body">{declaration.body}</p>
-              <a class="zn-cprs__doc" href={declaration.pdf} target="_blank" rel="noopener noreferrer" aria-label="Декларация PDF">
-                <span class="zn-cprs__thumb">
-                  <img src={declaration.img} {...imageSize(declaration.img)} alt="" loading="lazy" decoding="async" />
-                </span>
-                <span class="zn-cprs__doc-label">Декларация · PDF</span>
-                <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
-            </article>
-           </div>
-          </Reveal>
-        </ol>
-      </div>
-    </div>
-  </section>
   <CtaBand />
 </BaseLayout>
 
@@ -621,7 +630,7 @@ const pageDescription = `${
   }
   .zn-dossier__row {
     display: grid;
-    grid-template-columns: 9rem 1fr;
+    grid-template-columns: 7.5rem 1fr;
     align-items: baseline;
     gap: 0.75rem;
     padding: 0.85rem 0;
@@ -935,21 +944,72 @@ const pageDescription = `${
   }
 
   /* ════════ CERTIFICATES — ISO + ЦПРС ═══════════════════════════ */
-  .zn-iso {
-    border: 1px solid rgba(18, 22, 28, 0.08);
-  }
-  .zn-iso__cell {
-    background: theme('colors.cream.50');
+  /* Every certificate is its own white card: rounded, hairline border,
+     soft shadow. The lists set the gap (gap-5 / lg:gap-6 = 20 / 24 px). */
+  .zn-iso__cell,
+  .zn-cprs__cell {
+    position: relative;
+    background: #FFFFFF;
+    border: 1px solid rgba(26, 31, 38, 0.1);
+    border-radius: 14px;
+    box-shadow:
+      0 1px 2px rgba(18, 22, 28, 0.04),
+      0 12px 28px -20px rgba(18, 22, 28, 0.4);
     transition:
-      background-color 320ms cubic-bezier(0.16, 1, 0.3, 1),
       transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
       box-shadow 600ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .zn-iso__cell:hover {
-    background: #FFFFFF;
+  .zn-iso__cell:hover,
+  .zn-cprs__cell:hover {
     transform: translateY(-3px);
-    box-shadow: 0 18px 38px -20px rgba(18, 22, 28, 0.22);
-    z-index: 2;
+    box-shadow:
+      0 1px 2px rgba(18, 22, 28, 0.04),
+      0 22px 40px -22px rgba(18, 22, 28, 0.42);
+  }
+
+  /* Counter above each slider — phone only. */
+  .zn-rail__count {
+    display: none;
+  }
+  /* Phone: each row of cards is a sideways scroll-snap slider. The next
+     card peeks in from the right edge; the track bleeds to the screen
+     edges (container-page has px-6) so nothing scrolls the page itself. */
+  @media (max-width: 639px) {
+    .zn-rail__count {
+      display: block;
+      margin-bottom: 0.75rem;
+      text-align: right;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      color: theme('colors.ink.600');
+      font-variant-numeric: tabular-nums;
+    }
+    .zn-rail__track {
+      position: relative;
+      display: flex;
+      gap: 0.875rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 1.5rem;
+      margin-inline: -1.5rem;
+      padding: 0.25rem 1.5rem 1.75rem;
+      margin-bottom: -1.75rem;
+      scrollbar-width: none;
+    }
+    .zn-rail__track::-webkit-scrollbar { display: none; }
+    .zn-rail__track > :global(li) {
+      flex: 0 0 84%;
+      scroll-snap-align: start;
+    }
+    /* No fade-up inside the slider: the peeking card must be visible at
+       once (it is the hint that there is more), and swiping should not
+       replay an entrance animation. */
+    .zn-rail__track > :global(.reveal) {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
   .zn-iso__inner {
     padding: 1.6rem 1.5rem 1.5rem;
@@ -1011,8 +1071,9 @@ const pageDescription = `${
     align-items: center;
     gap: 0.85rem;
     padding: 0.7rem 0.85rem 0.7rem 0.7rem;
-    background: rgba(18, 22, 28, 0.045);
+    background: rgba(18, 22, 28, 0.035);
     border: 1px solid rgba(18, 22, 28, 0.08);
+    border-radius: 8px;
     transition: background-color 320ms ease, border-color 320ms ease, padding 320ms ease;
   }
   .zn-iso__doc:hover {
@@ -1025,6 +1086,7 @@ const pageDescription = `${
     width: 100%;
     aspect-ratio: 1 / 1.3;
     overflow: hidden;
+    border-radius: 3px;
     background: rgba(18, 22, 28, 0.08);
     box-shadow: 0 2px 8px -2px rgba(18, 22, 28, 0.12);
   }
@@ -1066,15 +1128,6 @@ const pageDescription = `${
   }
 
   /* ────── ЦПРС groups + declaration ───────────────────────────── */
-  .zn-cprs {
-    border: 1px solid rgba(18, 22, 28, 0.08);
-  }
-  .zn-cprs__cell {
-    background: theme('colors.cream.50');
-    transition: background-color 320ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .zn-cprs__cell:hover { background: #FFFFFF; }
-  .zn-cprs__cell--alt { background: theme('colors.cream.100'); }
   .zn-cprs__inner {
     padding: 1.4rem 1.25rem 1.4rem;
     display: flex;
@@ -1085,20 +1138,7 @@ const pageDescription = `${
   @media (min-width: 768px) {
     .zn-cprs__inner { padding: 1.6rem 1.4rem 1.5rem; }
   }
-  /* Phone (one column): roman numeral in a narrow left column, text and
-     document link beside it, so five entries stay short. */
-  @media (max-width: 639px) {
-    .zn-cprs__inner {
-      display: grid;
-      grid-template-columns: 2.75rem 1fr;
-      column-gap: 0.9rem;
-      row-gap: 0.4rem;
-      padding: 1.15rem 1.15rem 1.2rem;
-    }
-    .zn-cprs__roman { grid-row: 1 / span 3; }
-    .zn-cprs__body { max-width: none; }
-    .zn-cprs__doc { grid-column: 2; margin-top: 0.3rem; }
-  }
+
   .zn-cprs__roman {
     display: block;
     font-size: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
@@ -1130,8 +1170,9 @@ const pageDescription = `${
     align-items: center;
     gap: 0.6rem;
     padding: 0.5rem 0.55rem 0.5rem 0.5rem;
-    background: rgba(18, 22, 28, 0.045);
+    background: rgba(18, 22, 28, 0.035);
     border: 1px solid rgba(18, 22, 28, 0.08);
+    border-radius: 8px;
     transition: background-color 320ms ease, border-color 320ms ease;
   }
   .zn-cprs__doc:hover {
@@ -1143,6 +1184,7 @@ const pageDescription = `${
     width: 100%;
     aspect-ratio: 1 / 1.3;
     overflow: hidden;
+    border-radius: 3px;
     background: rgba(18, 22, 28, 0.08);
   }
   .zn-cprs__thumb img {
@@ -1192,6 +1234,7 @@ const pageDescription = `${
       transition: none !important;
     }
     .zn-iso__cell:hover,
+    .zn-cprs__cell:hover,
     .zn-iso__num,
     .zn-cprs__roman,
     .zn-award__img {
@@ -1246,4 +1289,51 @@ const pageDescription = `${
 
   setupCounters();
   document.addEventListener('astro:page-load', setupCounters);
+
+  // ── Certificate sliders (phone): "1 / N" follows the card at the left edge ──
+  const setupRails = () => {
+    document.querySelectorAll<HTMLElement>('[data-rail]').forEach((rail) => {
+      if (rail.dataset.railReady) return;
+      const track = rail.querySelector<HTMLElement>('[data-rail-track]');
+      const out = rail.querySelector<HTMLElement>('[data-rail-current]');
+      if (!track || !out) return;
+      rail.dataset.railReady = '1';
+      const items = Array.from(track.children) as HTMLElement[];
+      let frame = 0;
+      const update = () => {
+        frame = 0;
+        const max = track.scrollWidth - track.clientWidth;
+        let index = 0;
+        if (max > 0 && track.scrollLeft >= max - 2) {
+          index = items.length - 1;
+        } else {
+          const start = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+          let best = Infinity;
+          items.forEach((item, i) => {
+            const d = Math.abs(item.offsetLeft - start - track.scrollLeft);
+            if (d < best) { best = d; index = i; }
+          });
+        }
+        out.textContent = String(index + 1);
+      };
+      track.addEventListener('scroll', () => { if (!frame) frame = requestAnimationFrame(update); }, { passive: true });
+      // Keyboard: a card that only peeks in is not scrolled by the browser on
+      // focus, so bring the focused card to the snap position ourselves.
+      track.addEventListener('focusin', (e) => {
+        if (track.scrollWidth <= track.clientWidth) return;
+        const item = items.find((it) => it.contains(e.target as Node));
+        if (!item) return;
+        const t = track.getBoundingClientRect();
+        const r = item.getBoundingClientRect();
+        if (r.left >= t.left - 1 && r.right <= t.right + 1) return;
+        const start = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        track.scrollTo({ left: item.offsetLeft - start, behavior: reduce ? 'auto' : 'smooth' });
+      });
+      update();
+    });
+  };
+
+  setupRails();
+  document.addEventListener('astro:page-load', setupRails);
 </script>
