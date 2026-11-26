@@ -11,35 +11,22 @@ const { projects } = Astro.props;
 const total = allProjects.length;
 ---
 
-<section class="relative isolate overflow-hidden bg-cream-50 py-16 md:py-20 lg:py-24" id="featured-projects" aria-labelledby="fp-heading">
+<section class="relative isolate overflow-hidden bg-cream-50 py-8 md:py-10 lg:py-12" id="featured-projects" aria-labelledby="fp-heading">
   <!-- Architectural sheet — back layer -->
   <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-d"></div>
 
   <div class="container-page relative">
-    <Reveal class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8 md:mb-10">
-      <div>
-        <p class="eyebrow flex items-center gap-3">
-          <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
-          Реализирани обекти
-        </p>
-        <h2
-          id="fp-heading"
-          class="mt-5 font-display text-display-md text-ink-950"
-        >
-          Избрани <span class="text-brand">проекти</span>.
-        </h2>
-      </div>
-      <div class="flex items-center gap-5">
-        <p class="text-xs uppercase tracking-eyebrow text-ink-600 whitespace-nowrap">
-          <span class="text-ink-950">{projects.length}</span> от <span class="text-ink-950">{total}</span>
-        </p>
-        <a href="/proekti" class="btn-ghost-dark">
-          Вижте всички
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-      </div>
+    <Reveal class="mb-8 md:mb-10">
+      <p class="eyebrow flex items-center gap-3">
+        <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
+        Реализирани обекти
+      </p>
+      <h2
+        id="fp-heading"
+        class="mt-5 font-display text-display-md text-ink-950"
+      >
+        Избрани <span class="text-brand">проекти</span>.
+      </h2>
     </Reveal>
   </div>
 
@@ -59,6 +46,20 @@ const total = allProjects.length;
       </li>
     ))}
   </ul>
+
+  <!-- "See all" sits under the projects, on the content's left edge
+       (owner, round 2, task 8). -->
+  <div class="container-page relative mt-4 md:mt-6 flex items-center gap-5">
+    <a href="/proekti" class="btn-ghost-dark">
+      Вижте всички
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <p class="text-xs uppercase tracking-eyebrow text-ink-600 whitespace-nowrap">
+      <span class="text-ink-950">{projects.length}</span> от <span class="text-ink-950">{total}</span>
+    </p>
+  </div>
 </section>
 
 <style>
