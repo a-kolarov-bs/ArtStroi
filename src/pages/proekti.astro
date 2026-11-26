@@ -10,14 +10,8 @@ import { company, yearsActive as getYearsActive, phone, telHref } from '../data/
 // 24 fills full rows in both the 2- and the 3-column grid.
 const PAGE_SIZE = 24;
 
-// Pre-compute category + a flattened search blob for client-side filtering.
-const cards = projects.map((p) => {
-  const category = p.category;
-  const search = [p.title, p.location ?? '', p.client ?? '', p.description ?? '', p.scope ?? '', category]
-    .join(' ')
-    .toLowerCase();
-  return { project: p, category, search };
-});
+// Category per card for the client-side category filter.
+const cards = projects.map((p) => ({ project: p, category: p.category }));
 
 const counts: Record<string, number> = { all: cards.length };
 for (const c of cards) counts[c.category] = (counts[c.category] ?? 0) + 1;
@@ -49,15 +43,16 @@ const currentYear = new Date().getFullYear();
 const yearsActive = getYearsActive();
 const mainPhone = phone('Управител');
 
-// Every number here is computed from the data files (rechnik §4).
+// Every number here comes from the data files (rechnik §4). The company total
+// (150+) is the headline; the filters below still count the 55 pages shown.
 const heroStats = [
-  { label: 'Реализирани обекта', value: projects.length, plus: false },
+  { label: 'Реализирани обекта', value: company.completedProjects, plus: true },
   ...(yearsActive !== null ? [{ label: 'Години работа', value: yearsActive, plus: true }] : []),
-  { label: 'Възложители', value: clients.length, plus: false },
+  { label: 'Възложители', value: clients.length, plus: true },
 ];
 
-const pageTitle = `Проекти: ${projects.length} реализирани обекта — ${company.name}`;
-const pageDescription = `${projects.length} реализирани обекта${
+const pageTitle = `Проекти: ${company.completedProjects}+ реализирани обекта — ${company.name}`;
+const pageDescription = `${company.completedProjects}+ реализирани обекта${
   company.founded !== null ? ` от ${company.founded} до ${currentYear}` : ''
 }: жилищни сгради, инфраструктура, обществени обекти и паркове из цяла България.`;
 ---
@@ -79,6 +74,8 @@ const pageDescription = `${projects.length} реализирани обекта$
             class="reel-card group/reel relative shrink-0 block overflow-hidden"
             aria-label={`${p.title} — ${p.category}`}
             data-clone={i >= reelPick.length ? 'true' : 'false'}
+            tabindex={i >= reelPick.length ? -1 : undefined}
+            aria-hidden={i >= reelPick.length ? 'true' : undefined}
           >
             <img
               {...responsiveImage(p.coverImageUrl ?? '/hero/hero-poster.jpg', '(min-width: 1280px) 613px, (min-width: 778px) 48vw, 373px')}
@@ -107,12 +104,12 @@ const pageDescription = `${projects.length} реализирани обекта$
       <div aria-hidden="true" class="pointer-events-none absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-ink-950 to-transparent"></div>
     </div>
 
-    <!-- Title and the search/filters share one band: the title on the left,
-         the tools on the right (no separate filter strip below). -->
+    <!-- Title and the numbers share the first row (title left, numbers right
+         on desktop); the category filters run full width below them. -->
     <div aria-hidden="true" class="absolute inset-0 -z-20 bp-sheet"></div>
     <div class="container-page relative pt-7 md:pt-10 pb-6 md:pb-10 lg:pb-12">
-      <div class="grid grid-cols-1 gap-y-7 lg:grid-cols-12 lg:gap-x-12 lg:items-end">
-        <Reveal class="lg:col-span-6">
+      <div class="grid grid-cols-1 gap-y-6 md:gap-y-8 lg:grid-cols-12 lg:gap-x-12 lg:items-end">
+        <Reveal class="lg:col-span-7">
           <p class="eyebrow flex items-center gap-3 flex-wrap">
             <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
             Проекти{company.founded !== null && ` · ${company.founded}–${currentYear}`}
@@ -123,10 +120,12 @@ const pageDescription = `${projects.length} реализирани обекта$
           >
             Реализирани <span class="text-brand">обекти</span>
           </h1>
+        </Reveal>
 
-          <!-- Stats band -->
+        <!-- Stats band -->
+        <Reveal class="lg:col-span-5" delay={120}>
           <dl
-            class="mt-6 md:mt-8 grid gap-x-8 max-w-xl border-t border-ink-900/10 pt-4 md:pt-6"
+            class="grid gap-x-8 max-w-xl border-t border-ink-900/10 pt-4 md:pt-6 lg:border-t-0 lg:pt-0"
             style={`grid-template-columns: repeat(${heroStats.length}, minmax(0, 1fr));`}
           >
             {heroStats.map((st) => (
@@ -141,35 +140,7 @@ const pageDescription = `${projects.length} реализирани обекта$
           </dl>
         </Reveal>
 
-        <div class="proekti-tools lg:col-span-6 flex flex-col gap-4 md:gap-6">
-          <!-- Underline-style search -->
-          <div class="search-wrap flex items-center gap-4 border-b border-brand pb-3 transition-colors duration-300">
-            <svg
-              class="text-brand shrink-0"
-              width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"
-            >
-              <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5" />
-              <path d="M14 14l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-            </svg>
-            <input
-              id="proekti-search"
-              type="search"
-              inputmode="search"
-              autocomplete="off"
-              placeholder="Търсете по име, място или възложител…"
-              aria-label="Търсене в проектите"
-              class="flex-1 min-w-0 bg-transparent border-0 outline-none text-base md:text-lg placeholder:text-ink-900/45 text-ink-950 py-1"
-            />
-            <button
-              type="button"
-              id="proekti-search-clear"
-              aria-label="Изчистете търсенето"
-              class="hidden text-xs uppercase tracking-eyebrow text-ink-600 hover:text-ink-950 transition-colors"
-            >
-              Изчистете
-            </button>
-          </div>
-
+        <div class="lg:col-span-12 flex flex-col gap-4 md:gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:border-t lg:border-ink-900/10 lg:pt-8">
           <!-- Category chips with their counts -->
           <div
             class="filter-chips flex flex-nowrap md:flex-wrap items-center gap-2 overflow-x-auto -mx-1 px-1 pb-1 md:overflow-visible"
@@ -179,13 +150,13 @@ const pageDescription = `${projects.length} реализирани обекта$
             <button type="button" class="chip is-active" data-cat="all" aria-pressed="true">
               Всички <span class="chip-count">{cards.length}</span>
             </button>
-            {projectCategories.map((c) => (
+            {projectCategories.filter((c) => counts[c]).map((c) => (
               <button type="button" class="chip" data-cat={c} aria-pressed="false">
-                {c} <span class="chip-count">{counts[c] ?? 0}</span>
+                {c} <span class="chip-count">{counts[c]}</span>
               </button>
             ))}
           </div>
-          <p class="text-xs uppercase tracking-eyebrow text-ink-600" aria-live="polite">
+          <p class="shrink-0 text-xs uppercase tracking-eyebrow text-ink-600" aria-live="polite">
             Показани <span id="proekti-count" class="text-brand font-semibold tabular-nums">{cards.length}</span>
             от <span class="text-ink-950 font-medium tabular-nums">{cards.length}</span>
           </p>
@@ -197,7 +168,8 @@ const pageDescription = `${projects.length} реализирани обекта$
   <!-- ════════════════════════════════════════════════════════════
        GRID — 24 cards per page, paginated client-side.
        ════════════════════════════════════════════════════════════ -->
-  <section class="bg-cream-50 pt-6 pb-12 md:pt-10 md:pb-16 lg:pt-12 lg:pb-20" id="proekti-grid-section" aria-labelledby="proekti-grid-title">
+  <section class="relative isolate bg-cream-50 pt-6 pb-12 md:pt-10 md:pb-16 lg:pt-12 lg:pb-20" id="proekti-grid-section" aria-labelledby="proekti-grid-title">
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
     <h2 id="proekti-grid-title" class="sr-only">Списък на обектите</h2>
     <!-- Mobile uses tighter horizontal padding so the 2-col cards have a bit
          more room than the rest of the page; desktop keeps container-page. -->
@@ -211,7 +183,6 @@ const pageDescription = `${projects.length} реализирани обекта$
         {cards.map((c, i) => (
           <article
             class="project-grid-item"
-            data-search={c.search}
             data-category={c.category}
             style={`--card-col: ${i % 3};`}
           >
@@ -249,30 +220,6 @@ const pageDescription = `${projects.length} реализирани обекта$
         class="mt-8 md:mt-20 flex flex-nowrap sm:flex-wrap items-center justify-center gap-1 sm:gap-2"
         aria-label="Странициране"
       ></nav>
-
-      <!-- Empty state -->
-      <div
-        id="proekti-empty"
-        class="hidden mt-20 mx-auto max-w-xl text-center"
-        aria-live="polite"
-      >
-        <p class="eyebrow flex items-center justify-center gap-3">
-          <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
-          Няма резултат
-        </p>
-        <h3 class="mt-6 font-display text-3xl md:text-4xl text-ink-950 leading-[1.05]">
-          Няма обект <br/>с това търсене.
-        </h3>
-        <p class="mt-5 text-base text-ink-600 max-w-md mx-auto">
-          Опитайте с друга дума или изберете „Всички“. Ако търсите обект, който не е в списъка, попитайте ни.
-        </p>
-        <div class="mt-8 flex flex-wrap justify-center gap-3">
-          <button type="button" id="proekti-clear" class="btn-ghost-dark">
-            Изчистете филтрите
-          </button>
-          <a href="/kontakti" class="btn-brand">Пишете ни</a>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -327,16 +274,15 @@ const pageDescription = `${projects.length} реализирани обекта$
 </BaseLayout>
 
 <style>
-  /* The search input has no outline of its own; the underline row carries the ring. */
-  .search-wrap:has(:focus-visible) {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 6px;
-  }
   /* ─── HERO REEL — auto-scrolling film strip ───────────── */
   .reel-wrap {
     /* Sized so the transparent header (h-20 = 80px) overlays a dark area
        and the headline below has plenty of breathing room. */
     height: clamp(280px, 36vw, 460px);
+  }
+  /* Phone: the reel is about 1.5× taller (280 → 420 px); desktop unchanged. */
+  @media (max-width: 767px) {
+    .reel-wrap { height: 420px; }
   }
   .reel {
     width: max-content;
@@ -423,12 +369,6 @@ const pageDescription = `${projects.length} реализирани обекта$
 
   .filter-chips::-webkit-scrollbar { display: none; }
   .filter-chips { scrollbar-width: none; }
-
-  #proekti-search::-webkit-search-cancel-button,
-  #proekti-search::-webkit-search-decoration {
-    -webkit-appearance: none;
-    appearance: none;
-  }
 
   .project-grid-item[hidden] { display: none; }
 
@@ -572,6 +512,11 @@ const pageDescription = `${projects.length} реализирани обекта$
       padding: 0 0.15rem;
     }
   }
+  /* Narrowest phones (320): arrows only, the buttons keep their aria-label,
+     so the pager fits without sideways scroll. */
+  @media (max-width: 379px) {
+    #proekti-pager .pager-step-label { display: none; }
+  }
 </style>
 
 <script>
@@ -643,14 +588,10 @@ const pageDescription = `${projects.length} реализирани обекта$
     const { signal } = scope;
     setupCounters(signal);
     setupReelHover(signal);
-    const searchInput = document.getElementById('proekti-search') as HTMLInputElement | null;
-    const searchClear = document.getElementById('proekti-search-clear');
     const counter = document.getElementById('proekti-count');
-    const empty = document.getElementById('proekti-empty');
-    const clearBtn = document.getElementById('proekti-clear');
     const pager = document.getElementById('proekti-pager');
     const gridSection = document.getElementById('proekti-grid-section');
-    if (!grid || !searchInput || !counter || !empty || !pager) return;
+    if (!counter || !pager) return;
 
     const items = Array.from(grid.querySelectorAll<HTMLElement>('.project-grid-item'));
     const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip'));
@@ -658,7 +599,6 @@ const pageDescription = `${projects.length} реализирани обекта$
 
     const state = {
       cat: 'all',
-      q: '',
       page: 1,
     };
 
@@ -681,15 +621,9 @@ const pageDescription = `${projects.length} реализирани обекта$
 
     const apply = (opts: { resetPage?: boolean; scroll?: boolean } = {}) => {
       if (opts.resetPage) state.page = 1;
-      const q = state.q.trim().toLowerCase();
-      const matched: HTMLElement[] = [];
-      for (const item of items) {
-        const cat = item.dataset.category ?? '';
-        const text = item.dataset.search ?? '';
-        const matchCat = state.cat === 'all' || cat === state.cat;
-        const matchQuery = !q || text.includes(q);
-        if (matchCat && matchQuery) matched.push(item);
-      }
+      const matched = items.filter(
+        (item) => state.cat === 'all' || item.dataset.category === state.cat
+      );
       const totalPages = Math.max(1, Math.ceil(matched.length / PAGE_SIZE));
       if (state.page > totalPages) state.page = totalPages;
       const start = (state.page - 1) * PAGE_SIZE;
@@ -711,8 +645,6 @@ const pageDescription = `${projects.length} реализирани обекта$
         }
       }
       counter.textContent = String(matched.length);
-      empty.classList.toggle('hidden', matched.length !== 0);
-      searchClear?.classList.toggle('hidden', q.length === 0);
       renderPager(state.page, totalPages, matched.length);
       writeUrl();
       if (opts.scroll && gridSection) {
@@ -764,7 +696,7 @@ const pageDescription = `${projects.length} реализирани обекта$
 
     const writeUrl = () => {
       const url = new URL(window.location.href);
-      if (state.q) url.searchParams.set('q', state.q); else url.searchParams.delete('q');
+      url.searchParams.delete('q'); // old links from the removed word search
       if (state.cat !== 'all') url.searchParams.set('cat', state.cat); else url.searchParams.delete('cat');
       if (state.page > 1) url.searchParams.set('page', String(state.page)); else url.searchParams.delete('page');
       window.history.replaceState({}, '', url.toString());
@@ -778,18 +710,6 @@ const pageDescription = `${projects.length} реализирани обекта$
       }
     };
 
-    searchInput.addEventListener('input', () => {
-      state.q = searchInput.value;
-      apply({ resetPage: true });
-    }, { signal });
-
-    searchClear?.addEventListener('click', () => {
-      searchInput.value = '';
-      state.q = '';
-      apply({ resetPage: true });
-      searchInput.focus();
-    }, { signal });
-
     for (const chip of chips) {
       chip.addEventListener('click', () => {
         state.cat = chip.dataset.cat ?? 'all';
@@ -797,14 +717,6 @@ const pageDescription = `${projects.length} реализирани обекта$
         apply({ resetPage: true });
       }, { signal });
     }
-
-    clearBtn?.addEventListener('click', () => {
-      state.q = '';
-      state.cat = 'all';
-      searchInput.value = '';
-      setActiveChip('all');
-      apply({ resetPage: true });
-    }, { signal });
 
     // Pager — event delegation (buttons rendered dynamically).
     pager.addEventListener('click', (e) => {
@@ -823,15 +735,10 @@ const pageDescription = `${projects.length} реализирани обекта$
       }
     }, { signal });
 
-    // Hydrate state from URL (?q=&cat=&page=).
+    // Hydrate state from URL (?cat=&page=).
     const params = new URLSearchParams(window.location.search);
-    const q0 = params.get('q');
     const cat0 = params.get('cat');
     const page0 = params.get('page');
-    if (q0) {
-      searchInput.value = q0;
-      state.q = q0;
-    }
     if (cat0 && chips.some((c) => c.dataset.cat === cat0)) {
       state.cat = cat0;
       setActiveChip(cat0);
