@@ -4,10 +4,13 @@
  *
  * Composition (top→bottom):
  *   1. Running head: project number, category, place, back link
- *   2. Hero: cover left (desktop), title + meta + mini map right.
- *      Phones/tablets: no cover and no map; the title comes first.
- *   3. Gallery: one page-wide grid up to 5 frames, a horizontal slider
- *      above that; lightbox with arrow keys
+ *   2. Hero: cover left, title + meta + near-square map right (desktop).
+ *   3. Gallery: edge to edge on desktop, a grid up to 5 frames and a
+ *      horizontal slider above that; lightbox with arrow keys
+ *
+ * Phones and tablets (owner's variant A, 26.11): tall cover with the
+ * title on it → details → running head → gallery in 2 square columns →
+ * square map (loaded near the view) → the rest.
  *   4. Long description (only when it is longer than the hero snippet)
  *   5. Contact band: manager's phone
  *   6. More projects (ProjectCard, as on /proekti)
@@ -47,38 +50,32 @@ const category = project.category;
 const cover = project.coverImageUrl ?? '/hero/hero-poster.jpg';
 const locationShort = (project.location ?? '').split(',')[0]?.trim() || 'България';
 
-const gallery: string[] = project.galleryImageUrls;
-// The hero cover is desktop only. Below lg the cover opens the gallery as
-// its first frame (often the only photo of the finished building; the
-// gallery is mostly the site during works). On lg it is hidden there and
-// shown in the hero, so it never appears twice.
-const coverTile = project.coverImageUrl;
-const frameCount = (gallery.length + (coverTile ? 1 : 0));
+// The cover is the hero photo on every width, so it never repeats in the
+// gallery below it.
+const gallery: string[] = project.galleryImageUrls.filter((src) => src !== project.coverImageUrl);
 const framesLabel = (n: number) => (n === 1 ? '1 кадър' : `${n} кадъра`);
 // A description up to ~3 short sentences stays whole in the hero; only a
 // longer one gets its own section (and a shortened copy in the hero).
 const hasLongStory = (project.description?.length ?? 0) > 320;
-// Up to 5 frames fit one page-wide grid; more go into the horizontal slider.
+// Up to 5 frames fit one screen-wide grid on desktop; more go into the
+// horizontal slider. Below lg both are 2 columns of square frames.
 const galleryStatic = gallery.length < 6;
-// Drawn width of a gallery tile (see .gallery-grid / .gallery-wall below);
-// the lead tile is twice as wide.
+// Drawn width of a gallery tile (see .gallery-grid / .gallery-wall below).
+// The lead tile is half the screen on desktop (all of it when alone), and
+// takes the full row below lg when the count is odd.
 const tileSizes = (i: number) =>
   galleryStatic
-    ? '(min-width: 1280px) 900px, (min-width: 768px) 75vw, 100vw'
+    ? i === 0
+      ? gallery.length === 1 ? '100vw' : '(min-width: 1024px) 50vw, 100vw'
+      : '50vw'
     : i === 0
-      ? '(min-width: 768px) 720px, 124vw'
-      : '(min-width: 768px) 360px, 62vw';
-// 1×1 transparent GIF: phones get this instead of the desktop-only cover.
-const blankImage = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+      ? '(min-width: 1024px) 720px, 100vw'
+      : '(min-width: 1024px) 360px, 50vw';
 
 const mapEmbedSrc = project.mapEmbedUrl ??
   (project.location
     ? `https://maps.google.com/maps?q=${encodeURIComponent(project.location)}&hl=bg&z=14&output=embed`
     : null);
-
-const mapsLinkOut = project.location
-  ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(project.location)}`
-  : null;
 
 // Coordinate parsing — legacy Maps embeds encode lat/lng in pb param
 function parseCoords(embedUrl: string | null) {
@@ -184,7 +181,9 @@ const schemaBreadcrumb = {
               Reads like the running header of an architecture
               publication: archive position · category · location · year.
          ════════════════════════════════════════════════════════════ -->
-    <nav aria-label="Проекти" class="proj-runhead max-lg:order-1 border-b border-ink-900/10 bg-cream-50">
+    <!-- Phones and tablets: under the details, so the cover sits right
+         under the header (owner's variant A). -->
+    <nav aria-label="Проекти" class="proj-runhead max-lg:order-2 max-lg:border-t border-b border-ink-900/10 bg-cream-50">
       <div class="container-page py-3.5 md:py-4 flex items-center justify-between gap-4 flex-wrap">
         <ol class="runhead-meta flex items-center flex-wrap gap-x-2.5 md:gap-x-3 gap-y-1">
           <li class="runhead-item runhead-archive">
@@ -216,55 +215,57 @@ const schemaBreadcrumb = {
     </nav>
 
     <!-- ════════════════════════════════════════════════════════════
-         2 · HERO — image-led split. Cover on the left (8 cols),
-              title + key meta on the right (4 cols).
-              On mobile the cover is hidden — the gallery carousel
-              takes its place at the top of the page via order utils.
+         2 · HERO — image-led split. Cover on the left (7 cols),
+              title + key meta + a near-square map on the right (5 cols),
+              as tall as the cover.
+              Phones and tablets (owner's variant A): a tall full-width
+              cover right under the header with the category and the
+              title on it, then the details. The right column turns into
+              `display: contents`, so its head lands on the cover's grid
+              cell and its body in the next row (one h1 for both).
          ════════════════════════════════════════════════════════════ -->
-    <section class="relative isolate overflow-hidden pt-6 md:pt-8 lg:pt-10 pb-6 md:pb-8 lg:pb-12 max-lg:order-2">
+    <section class="relative isolate overflow-hidden pt-0 lg:pt-10 pb-8 lg:pb-12 max-lg:order-1">
       <div aria-hidden="true" class="proj-sheet absolute inset-0 -z-10 bp-sheet"></div>
       <div class="container-page">
-        <div class="grid grid-cols-12 gap-y-8 gap-x-6 md:gap-x-10 items-stretch">
+        <div class="proj-hero grid grid-cols-12 gap-x-6 md:gap-x-10 lg:items-stretch">
 
-          <!-- Cover image (desktop only — gallery replaces it on mobile) -->
-          <div class="hidden lg:col-span-7 lg:flex">
-            <Reveal class="w-full flex">
-              <figure class="hero-figure relative overflow-hidden rounded-xl bg-ink-900 ring-1 ring-ink-900/10 w-full shadow-[0_18px_44px_-22px_rgba(18,22,28,0.28)]">
-                <!-- The figure is hidden below lg; the empty source keeps
-                     phones from downloading the photo anyway. -->
-                <picture class="contents">
-                  <source media="(max-width: 1023.98px)" srcset={blankImage} />
-                  <img
-                    {...responsiveImage(cover, '(min-width: 1280px) 700px, 72vw')}
-                    alt={`${project.title}${project.location ? ` — ${project.location}` : ''}`}
-                    fetchpriority="high"
-                    decoding="async"
-                    class="hero-image block w-full h-full object-cover"
-                    style={`view-transition-name: project-${project.slug};`}
-                  />
-                </picture>
-              </figure>
-            </Reveal>
+          <!-- Cover image: full-bleed below lg, a framed plate on lg -->
+          <div class="proj-hero__cover col-span-12 -mx-6 md:-mx-10 lg:mx-0 lg:col-span-7 flex">
+            <figure class="hero-figure relative overflow-hidden bg-ink-900 w-full lg:rounded-xl lg:ring-1 lg:ring-ink-900/10 lg:shadow-[0_18px_44px_-22px_rgba(18,22,28,0.28)]">
+              <img
+                {...responsiveImage(cover, '(min-width: 1280px) 700px, (min-width: 1024px) 58vw, 100vw')}
+                alt={`${project.title}${project.location ? ` — ${project.location}` : ''}`}
+                fetchpriority="high"
+                decoding="async"
+                class="hero-image absolute inset-0 block w-full h-full object-cover"
+                style={`view-transition-name: project-${project.slug};`}
+              />
+              <!-- Below lg the title sits on the photo: a dark wash from the bottom -->
+              <span aria-hidden="true" class="hero-wash lg:hidden pointer-events-none absolute inset-0"></span>
+            </figure>
           </div>
 
           <!-- Title + meta column -->
-          <div class="col-span-12 lg:col-span-5 lg:pt-2 flex flex-col">
-            <Reveal>
-              <p class="eyebrow flex items-center gap-3">
-                <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
-                {category}
-              </p>
-            </Reveal>
+          <div class="proj-hero__side col-span-12 lg:col-span-5 lg:pt-2 lg:flex lg:flex-col">
+            <div class="proj-hero__head">
+              <Reveal>
+                <p class="eyebrow flex items-center gap-3">
+                  <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
+                  {category}
+                </p>
+              </Reveal>
 
-            <Reveal>
-              <h1
-                class="hero-title mt-5 font-display text-ink-950 max-w-[20ch]"
-                style="font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.85rem); line-height: 1.02; letter-spacing: -0.02em;"
-              >
-                {project.title}
-              </h1>
-            </Reveal>
+              <Reveal>
+                <h1
+                  class="hero-title mt-3 lg:mt-5 font-display text-white lg:text-ink-950 max-w-[20ch]"
+                  style="font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.85rem); line-height: 1.02; letter-spacing: -0.02em;"
+                >
+                  {project.title}
+                </h1>
+              </Reveal>
+            </div>
 
+            <div class="proj-hero__body">
             {project.description && (
               <Reveal>
                 <p
@@ -278,6 +279,7 @@ const schemaBreadcrumb = {
             )}
 
             <!-- Compact key-meta list -->
+            {(project.client || project.scope) && (
             <Reveal>
               <dl class="mt-7 grid grid-cols-1 gap-y-3.5">
                 {project.client && (
@@ -325,33 +327,22 @@ const schemaBreadcrumb = {
                     <dd>{project.scope}</dd>
                   </div>
                 )}
-                {project.location && (
-                  <!-- Phones and tablets: the address instead of the map -->
-                  <div class="meta-row meta-row--narrow">
-                    <dt>Адрес</dt>
-                    <dd>
-                      {mapsLinkOut ? (
-                        <a href={mapsLinkOut} target="_blank" rel="noopener noreferrer" class="addr-link">
-                          {project.location}
-                          <span aria-hidden="true">↗</span>
-                          <span class="sr-only">(Google Maps, нов прозорец)</span>
-                        </a>
-                      ) : project.location}
-                    </dd>
-                  </div>
-                )}
               </dl>
             </Reveal>
+            )}
+            </div>
 
             {mapEmbedSrc && (
-              <!-- Desktop only. The iframe gets its `src` from the page script
-                   at desktop width, so phones do not download the map. -->
-              <Reveal class="max-lg:hidden mt-7 flex-1 flex flex-col min-h-[220px]">
-                <div class="mini-map flex-1 relative overflow-hidden rounded-xl ring-1 ring-ink-900/10 bg-ink-100 shadow-[0_18px_44px_-22px_rgba(18,22,28,0.28)]">
+              <!-- Desktop only (phones get their own map after the gallery).
+                   Near square; it takes what the column has left, so the
+                   column ends with the cover. The iframe gets its `src`
+                   from the page script once it is drawn and near the view. -->
+              <Reveal class="max-lg:hidden mt-7 grow flex flex-col">
+                <div class="mini-map mini-map--side grow relative overflow-hidden rounded-xl ring-1 ring-ink-900/10 bg-ink-100 shadow-[0_18px_44px_-22px_rgba(18,22,28,0.28)]">
 
                   <iframe
                     data-map-src={mapEmbedSrc}
-                    class="block w-full h-full"
+                    class="absolute inset-0 block w-full h-full"
                     style="border: 0;"
                     loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"
@@ -394,54 +385,36 @@ const schemaBreadcrumb = {
               data filled in (currently fake placeholder for id=1).
          ════════════════════════════════════════════════════════════ -->
     {protocol && (
-      <div class="max-lg:order-4">
+      <div class="max-lg:order-5">
         <ProjectProtocol protocol={protocol} number={projectNumber} total={totalProjects} />
       </div>
     )}
 
     <!-- ════════════════════════════════════════════════════════════
          4 · GALLERY — dense wall, hairline gaps, lightbox.
-              "Castle Homes"-inspired: tightly packed grid, no
-              chrome, count indicator bottom-right.
+              Phones and tablets: 2 columns of square frames inside the
+              page gutter. Desktop: edge to edge of the screen (owner,
+              26.11): a grid up to 5 frames, a horizontal slider above.
          ════════════════════════════════════════════════════════════ -->
-    {frameCount > 0 && (
-      <section class:list={['relative isolate overflow-hidden bg-cream-50 pt-2 lg:pt-4 pb-8 md:pb-10 lg:pb-12 max-lg:order-3', { 'lg:hidden': gallery.length === 0 }]} aria-labelledby="gallery-label">
+    {gallery.length > 0 && (
+      <section class="relative isolate overflow-hidden bg-cream-50 pt-2 lg:pt-4 pb-8 md:pb-10 lg:pb-12 max-lg:order-3" aria-labelledby="gallery-label">
         <div aria-hidden="true" class="proj-sheet absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
         <div class="container-page mb-4 md:mb-5">
           <div class="flex items-baseline justify-between gap-4">
             <p id="gallery-label" class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Галерия</p>
             <p class="text-xs uppercase tracking-[0.18em] font-medium text-ink-600 tabular-nums">
-              <span class="lg:hidden">{framesLabel(frameCount)}</span>
-              <span class="hidden lg:inline">{framesLabel(gallery.length)}</span>
+              {framesLabel(gallery.length)}
             </p>
           </div>
         </div>
 
-        {coverTile && (
-          <div class="container-page lg:hidden" data-gallery-cover>
-            <button type="button" class="g-tile g-tile--cover group" aria-label="Основна снимка на обекта, на цял екран">
-              <picture class="contents">
-                <source media="(min-width: 1024px)" srcset={blankImage} />
-                <img
-                  {...responsiveImage(coverTile, '(min-width: 768px) 90vw, 100vw')}
-                  data-full={coverTile}
-                  alt={`${project.title}${project.location ? ` — ${project.location}` : ''}`}
-                  fetchpriority="high"
-                  decoding="async"
-                  class="block h-full w-full object-cover"
-                />
-              </picture>
-            </button>
-          </div>
-        )}
-
-        {gallery.length > 0 && (
-        <div class={galleryStatic ? 'container-page' : 'gallery-fullbleed'}>
+        <div class="px-6 md:px-10 lg:px-0">
           <div class="gallery-slider relative">
             <div
               class={galleryStatic ? 'gallery-grid' : 'gallery-wall'}
               data-gallery
               data-count={gallery.length}
+              data-odd={gallery.length % 2 === 1 ? '' : undefined}
               role="region"
               aria-label={galleryStatic ? 'Галерия' : 'Хоризонтална галерия'}
             >
@@ -512,10 +485,9 @@ const schemaBreadcrumb = {
             </>)}
           </div>
         </div>
-        )}
 
         {!galleryStatic && (
-        <div class="container-page">
+        <div class="container-page max-lg:hidden">
           <!-- Live scrubber — tracks horizontal scroll position -->
           <div class="mt-5 md:mt-6 flex items-center gap-4 text-xs uppercase tracking-[0.18em] font-medium text-ink-600">
             <span class="tabular-nums text-ink-950" data-gallery-current>01</span>
@@ -555,9 +527,49 @@ const schemaBreadcrumb = {
           <div class="gw-counter" aria-hidden="true">
             <span id="gw-current" class="tabular-nums">1</span>
             <span class="opacity-40 mx-2">/</span>
-            <span id="gw-total" class="tabular-nums">{frameCount}</span>
+            <span id="gw-total" class="tabular-nums">{gallery.length}</span>
           </div>
         </dialog>
+      </section>
+    )}
+
+    <!-- ════════════════════════════════════════════════════════════
+         4b · MAP on phones and tablets — a square map with the address
+              after the photos. It loads only when it comes near the
+              view (page script), so a visitor who never scrolls this
+              far does not download it.
+         ════════════════════════════════════════════════════════════ -->
+    {mapEmbedSrc && (
+      <section class="lg:hidden relative isolate overflow-hidden bg-cream-50 pt-2 pb-10 md:pb-12 max-lg:order-4" aria-labelledby="map-label">
+        <div aria-hidden="true" class="proj-sheet absolute inset-0 -z-10 bp-sheet bp-sheet-c"></div>
+        <div class="container-page">
+          <p id="map-label" class="eyebrow flex items-center gap-3 mb-4 md:mb-5"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Местоположение</p>
+          <div class="mini-map mini-map--square relative overflow-hidden rounded-xl ring-1 ring-ink-900/10 bg-ink-100 shadow-[0_18px_44px_-22px_rgba(18,22,28,0.28)]">
+            <iframe
+              data-map-src={mapEmbedSrc}
+              class="absolute inset-0 block w-full h-full"
+              style="border: 0;"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title={`Карта на ${project.title}`}
+            ></iframe>
+            <span
+              aria-hidden="true"
+              class="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-ink-950/22 via-ink-950/6 to-transparent"
+            ></span>
+            {project.location && (
+              <div class="pointer-events-none absolute left-3 right-3 bottom-3">
+                <div class="mini-map-addr inline-flex items-start gap-2.5 max-w-full">
+                  <span aria-hidden="true" class="mt-0.5 inline-block h-3.5 w-0.5 bg-brand shrink-0"></span>
+                  <div class="min-w-0">
+                    <p class="eyebrow">Адрес</p>
+                    <p class="mt-1 text-ink-950 text-sm !leading-[1.35]">{project.location}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </section>
     )}
 
@@ -566,7 +578,7 @@ const schemaBreadcrumb = {
               snippet justified.
          ════════════════════════════════════════════════════════════ -->
     {hasLongStory && (
-      <section class="relative isolate overflow-hidden bg-cream-50 py-10 md:py-14 max-lg:order-5">
+      <section class="relative isolate overflow-hidden bg-cream-50 py-10 md:py-14 max-lg:order-6">
         <div aria-hidden="true" class="proj-sheet absolute inset-0 -z-10 bp-sheet bp-sheet-c"></div>
         <div class="container-page">
           <div class="grid grid-cols-12 gap-x-6 md:gap-x-10 gap-y-8">
@@ -596,7 +608,7 @@ const schemaBreadcrumb = {
     <!-- ════════════════════════════════════════════════════════════
          5 · CTA — the manager's phone right after the photos and text.
          ════════════════════════════════════════════════════════════ -->
-    <section class="relative isolate overflow-hidden bg-ink-950 text-white max-lg:order-6" aria-labelledby="proj-cta-title">
+    <section class="relative isolate overflow-hidden bg-ink-950 text-white max-lg:order-7" aria-labelledby="proj-cta-title">
       <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-dark bp-sheet-d"></div>
       <span aria-hidden="true" class="absolute inset-x-0 top-0 h-[3px] bg-brand"></span>
       <div class="container-page py-10 md:py-12 lg:py-14">
@@ -631,7 +643,7 @@ const schemaBreadcrumb = {
     <!-- ════════════════════════════════════════════════════════════
          6 · MORE PROJECTS — the same card as the projects page.
          ════════════════════════════════════════════════════════════ -->
-    <section class="relative isolate overflow-hidden bg-cream-50 py-10 md:py-12 lg:py-16 max-lg:order-7" aria-labelledby="proj-more-title">
+    <section class="relative isolate overflow-hidden bg-cream-50 py-10 md:py-12 lg:py-16 max-lg:order-8" aria-labelledby="proj-more-title">
       <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-b"></div>
       <div class="container-page">
         <div class="flex items-end justify-between gap-4 flex-wrap mb-6 md:mb-8">
@@ -675,12 +687,37 @@ const schemaBreadcrumb = {
 </BaseLayout>
 
 <style>
-  /* ── Hero figure — wide cinematic frame ── */
+  /* ── Hero — phones/tablets: a tall cover with the title on it ── */
   .hero-figure {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 4 / 5;
   }
+  @media (min-width: 768px) {
+    .hero-figure { aspect-ratio: 4 / 3; }
+  }
+  @media (max-width: 1023.98px) {
+    /* The side column dissolves into the grid: the head shares the
+       cover's cell (bottom), the body takes the next row. */
+    .proj-hero__side { display: contents; }
+    .proj-hero__cover { grid-row: 1; grid-column: 1 / -1; }
+    .proj-hero__head {
+      grid-row: 1;
+      grid-column: 1 / -1;
+      align-self: end;
+      position: relative;
+      z-index: 1;
+      padding-block: 4rem 1.75rem;
+    }
+    .proj-hero__head h1 { text-shadow: 0 2px 18px rgba(18, 22, 28, 0.45); }
+    .proj-hero__body { grid-column: 1 / -1; padding-top: 0.25rem; }
+  }
+  .hero-wash {
+    background: linear-gradient(to top, rgba(18, 22, 28, 0.92) 0%, rgba(18, 22, 28, 0.78) 30%, rgba(18, 22, 28, 0.35) 48%, rgba(18, 22, 28, 0) 66%);
+  }
+  /* Desktop: the cover sets the height (--cover-ratio); the map takes what
+     the side column has left. Only a long text with the map's 4:3 floor
+     makes the column, and so the cover, taller. */
   @media (min-width: 1024px) {
-    .hero-figure { aspect-ratio: 3 / 2; }
+    .hero-figure { aspect-ratio: var(--cover-ratio, 27 / 26); }
   }
   .hero-image {
     animation: hero-settle 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -751,9 +788,14 @@ const schemaBreadcrumb = {
   .client-logo-link:hover { transform: translateY(-1px); }
 
   /* ── Mini inline map (right column) — fills available vertical space
-        so its bottom aligns with the cover image's bottom on desktop. */
-  .mini-map {
-    min-height: 200px;
+        so its bottom aligns with the cover image's bottom on desktop;
+        never flatter than 4:3 (owner: "more square and taller"). A long
+        text plus this floor makes the column, and so the cover, taller. */
+  .mini-map--side {
+    aspect-ratio: 4 / 3;
+  }
+  .mini-map--square {
+    aspect-ratio: 1 / 1;
   }
   .mini-map iframe {
     filter: saturate(1.05) contrast(1.02);
@@ -814,79 +856,69 @@ const schemaBreadcrumb = {
   }
 
   /* ─────────────────────────────────────────────────────────────
-     GALLERY SLIDER — horizontal-scroll multi-row grid.
-     Mobile: 2 rows · Tablet: 2 rows · Desktop+: 3 rows.
-     Tiles flow column-by-column, so the slider extends to the right
-     as the gallery grows — built to scale to many photos.
+     GALLERY — phones and tablets: 2 columns of square frames (owner's
+     variant A); an odd count gives the lead frame the whole first row,
+     so no cell is left empty. Grid and slider look the same here.
      ───────────────────────────────────────────────────────────── */
-  .gallery-slider {
-    /* Allow arrows to sit slightly outside the wall edge */
-    padding: 4px 0;
-  }
-  .gallery-wall {
-    display: grid;
-    grid-template-rows: repeat(2, 1fr);
-    grid-auto-flow: column;
-    grid-auto-columns: clamp(220px, 62vw, 320px);
-    grid-template-columns: unset;
-    gap: 3px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-inline: contain;
-    /* Row height — sets total gallery height (rows × this) */
-    --row-h: 200px;
-    grid-template-rows: repeat(2, var(--row-h));
-  }
-  .gallery-wall::-webkit-scrollbar { display: none; }
-
-  @media (min-width: 768px) {
-    .gallery-wall {
-      grid-auto-columns: clamp(260px, 32vw, 360px);
-      --row-h: 220px;
-      gap: 4px;
-    }
-  }
-  @media (min-width: 1024px) {
-    .gallery-wall {
-      grid-template-rows: repeat(3, var(--row-h));
-      grid-auto-columns: clamp(280px, 26vw, 360px);
-      --row-h: 210px;
-    }
-  }
-
   .g-tile {
     position: relative;
     display: block;
     overflow: hidden;
     background: #1A1F26;
     cursor: zoom-in;
-    scroll-snap-align: start;
     border-radius: 6px;
   }
-  /* Cover as the first frame below lg: one wide plate above the grid. */
-  .g-tile--cover {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    margin-bottom: 4px;
-  }
-  @media (min-width: 768px) {
-    .g-tile--cover { aspect-ratio: 16 / 9; margin-bottom: 6px; }
-  }
+  /* Inside the frame: a full-bleed tile at the screen edge would clip an
+     outer ring. Outlines paint above the photo. */
   .g-tile:focus-visible {
     outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
+    outline-offset: -3px;
     z-index: 1;
   }
+  @media (max-width: 1023.98px) {
+    .gallery-grid,
+    .gallery-wall {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px;
+    }
+    .gallery-grid .g-tile,
+    .gallery-wall .g-tile { aspect-ratio: 1 / 1; }
+    [data-odd] > .g-tile:first-child {
+      grid-column: span 2;
+      aspect-ratio: 2 / 1;
+    }
+    .gallery-arrow,
+    .gallery-fade { display: none; }
+  }
 
-  /* First tile = feature — spans all rows AND 2 columns so it reads
-     as the "lead" plate at the start of the slider. */
-  .g-tile:nth-child(1) {
-    grid-row: 1 / -1;
-    grid-column: span 2;
+  /* ─────────────────────────────────────────────────────────────
+     GALLERY SLIDER (desktop, 6+ frames) — horizontal-scroll grid of
+     3 rows, edge to edge of the screen. Tiles flow column by column,
+     so the slider extends to the right as the gallery grows.
+     ───────────────────────────────────────────────────────────── */
+  @media (min-width: 1024px) {
+    .gallery-wall {
+      display: grid;
+      grid-auto-flow: column;
+      --row-h: 210px;
+      grid-template-rows: repeat(3, var(--row-h));
+      grid-auto-columns: clamp(280px, 26vw, 360px);
+      gap: 3px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      overscroll-behavior-inline: contain;
+    }
+    .gallery-wall::-webkit-scrollbar { display: none; }
+    .gallery-wall .g-tile { scroll-snap-align: start; border-radius: 0; }
+    /* The lead plate spans all rows and 2 columns */
+    .gallery-wall .g-tile:first-child {
+      grid-row: 1 / -1;
+      grid-column: span 2;
+    }
   }
 
   /* Edge fades — subtle scroll hint without washing out the project frames */
@@ -964,36 +996,29 @@ const schemaBreadcrumb = {
   }
 
   /* ─────────────────────────────────────────────────────────────
-     GALLERY GRID — up to 5 frames on one page-wide grid.
-     The lead frame takes a 2×2 block; the others share the rest,
-     and an odd one out spans the full remaining row, so no cell is
-     left empty (2 columns on phones, 4 from tablet up).
+     GALLERY GRID (desktop, up to 5 frames) — one grid edge to edge
+     of the screen with hairline gaps (owner, 26.11). The lead frame
+     takes a 2×2 block; the others share the rest, so no cell is left
+     empty.
      ───────────────────────────────────────────────────────────── */
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: clamp(120px, 34vw, 200px);
-    gap: 4px;
-  }
-  .gallery-grid .g-tile:first-child {
-    grid-column: span 2;
-    grid-row: span 2;
-  }
-  .gallery-grid[data-count='2'] .g-tile:last-child,
-  .gallery-grid[data-count='4'] .g-tile:last-child {
-    grid-column: span 2;
-  }
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .gallery-grid {
+      display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      grid-auto-rows: clamp(150px, 17vw, 250px);
-      gap: 6px;
+      grid-auto-rows: clamp(200px, 17vw, 340px);
+      gap: 3px;
+    }
+    .gallery-grid .g-tile { border-radius: 0; }
+    .gallery-grid .g-tile:first-child {
+      grid-column: span 2;
+      grid-row: span 2;
     }
     .gallery-grid[data-count='2'] .g-tile:last-child {
       grid-column: span 2;
       grid-row: span 2;
     }
-    .gallery-grid[data-count='3'] .g-tile:not(:first-child) {
+    .gallery-grid[data-count='3'] .g-tile:not(:first-child),
+    .gallery-grid[data-count='4'] .g-tile:last-child {
       grid-column: span 2;
     }
     .gallery-grid[data-count='1'] .g-tile {
@@ -1002,26 +1027,14 @@ const schemaBreadcrumb = {
   }
 
   /* Below lg the text runs the full width, so the drawing would cross it:
-     keep only a faint strip of it at the right edge, away from the words. */
+     keep it only at the right edge, away from the words. The strength is
+     the site-wide one (no opacity here, round 2 task 14). */
   @media (max-width: 1023.98px) {
     .proj-sheet {
-      opacity: 0.5;
       -webkit-mask-image: linear-gradient(to right, transparent 62%, black 100%);
       mask-image: linear-gradient(to right, transparent 62%, black 100%);
     }
   }
-
-  /* Address row in the meta list replaces the map below desktop width */
-  @media (min-width: 1024px) {
-    .meta-row--narrow { display: none; }
-  }
-  .addr-link {
-    color: inherit;
-    text-decoration: underline;
-    text-decoration-color: rgba(186, 45, 32, 0.45);
-    text-underline-offset: 3px;
-  }
-  .addr-link:hover { color: #BA2D20; }
 
   /* CTA band phone */
   .proj-cta-tel { display: inline-block; }
@@ -1165,16 +1178,22 @@ const schemaBreadcrumb = {
     pageScope = null;
   };
 
-  // ── Mini map: desktop only, so phones do not download it ──
-  function initMiniMap(signal: AbortSignal) {
-    const frame = document.querySelector<HTMLIFrameElement>('iframe[data-map-src]');
-    if (!frame) return;
-    const desktop = window.matchMedia('(min-width: 1024px)');
-    const load = () => {
-      if (desktop.matches && !frame.getAttribute('src')) frame.src = frame.dataset.mapSrc ?? '';
-    };
-    load();
-    desktop.addEventListener('change', load, { signal });
+  // ── Maps: one beside the cover (desktop), one after the gallery (phones
+  //    and tablets); the other is display:none. A map gets its `src` only
+  //    when it is drawn and near the view, so neither is downloaded early.
+  function initMaps(signal: AbortSignal) {
+    const frames = document.querySelectorAll<HTMLIFrameElement>('iframe[data-map-src]');
+    if (!frames.length) return;
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const frame = entry.target as HTMLIFrameElement;
+        if (!frame.getAttribute('src')) frame.src = frame.dataset.mapSrc ?? '';
+        io.unobserve(frame);
+      }
+    }, { rootMargin: '300px 0px' });
+    frames.forEach((frame) => io.observe(frame));
+    signal.addEventListener('abort', () => io.disconnect());
   }
 
   // ── Lightbox ───────────────────────────────────────────
@@ -1184,18 +1203,11 @@ const schemaBreadcrumb = {
     const currentEl = document.getElementById('gw-current');
     const labelEl = document.getElementById('gw-label');
     const totalEl = document.getElementById('gw-total');
-    // The cover tile exists only below lg, so the frame list is taken from
-    // the tiles that are drawn when the lightbox opens.
-    const allTiles = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-gallery-cover] .g-tile, [data-gallery] .g-tile'));
-    if (!dialog || !imageEl || !currentEl || allTiles.length === 0) return;
-    let tiles = allTiles;
-    let frames: string[] = [];
-    const collect = () => {
-      tiles = allTiles.filter((t) => t.getClientRects().length > 0);
-      frames = tiles.map((t) => t.querySelector('img')?.dataset.full ?? '');
-      dialog.toggleAttribute('data-single', frames.length === 1);
-      if (totalEl) totalEl.textContent = String(frames.length);
-    };
+    const tiles = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-gallery] .g-tile'));
+    if (!dialog || !imageEl || !currentEl || tiles.length === 0) return;
+    const frames = tiles.map((t) => t.querySelector('img')?.dataset.full ?? '');
+    dialog.toggleAttribute('data-single', frames.length === 1);
+    if (totalEl) totalEl.textContent = String(frames.length);
 
     let currentIndex = 0;
     const show = (idx: number) => {
@@ -1209,14 +1221,13 @@ const schemaBreadcrumb = {
       if (labelEl) labelEl.textContent = `Кадър ${String(currentIndex + 1).padStart(2, '0')}`;
     };
     const open = (btn: HTMLButtonElement) => {
-      collect();
       show(Math.max(0, tiles.indexOf(btn)));
       dialog.showModal();
       document.body.style.overflow = 'hidden';
     };
     const close = () => dialog.close();
 
-    allTiles.forEach((btn) => btn.addEventListener('click', () => open(btn), { signal }));
+    tiles.forEach((btn) => btn.addEventListener('click', () => open(btn), { signal }));
     dialog.querySelector('[data-gw-close]')?.addEventListener('click', close, { signal });
     dialog.querySelector('[data-gw-prev]')?.addEventListener('click', () => show(currentIndex - 1), { signal });
     dialog.querySelector('[data-gw-next]')?.addEventListener('click', () => show(currentIndex + 1), { signal });
@@ -1298,10 +1309,10 @@ const schemaBreadcrumb = {
 
   function initProjectPage() {
     release();
-    if (!document.querySelector('[data-gallery], [data-gallery-cover], iframe[data-map-src]')) return;
+    if (!document.querySelector('[data-gallery], iframe[data-map-src]')) return;
     const scope = new AbortController();
     pageScope = scope;
-    initMiniMap(scope.signal);
+    initMaps(scope.signal);
     initLightbox(scope.signal);
     initSlider(scope.signal);
   }

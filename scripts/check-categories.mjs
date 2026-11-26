@@ -10,9 +10,13 @@
 //      and links to /proekti. No two services may share a category;
 //   4. every project detail page names its category in JSON-LD and the
 //      JSON-LD image is an absolute URL;
-//   5. every project detail page draws at least one gallery tile, and the
-//      cover as the first one (shown only below 1024 px, where the hero
-//      cover is hidden), so a phone sees the finished building.
+//   5. every project detail page shows the project's own cover as the hero
+//      photo on every width (owner's variant A, round 2): the hero image is
+//      there, its src is the local copy of cover_image_url (not the shared
+//      /hero/hero-poster.jpg fallback), and its srcset is not a placeholder;
+//   6. the gallery under it (the same tiles on phones and desktop) has at
+//      least one tile, exactly the project's gallery frames in data order,
+//      and never repeats the cover.
 // Usage: node scripts/check-categories.mjs [distDir]   (runs as postbuild)
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -22,6 +26,13 @@ const data = JSON.parse(readFileSync('src/data/legacy-projects.json', 'utf8'));
 const errors = [];
 const decode = (s) =>
   s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+// Old-site URL → local path, as localAsset() in src/data/assets.ts does.
+const assetFiles = Object.assign(
+  {},
+  ...['projects', 'sert', 'part'].map((n) => JSON.parse(readFileSync(`src/data/legacy-assets/${n}.json`, 'utf8')).files),
+);
+const localPath = (url) => assetFiles[url.replace('://artstroismolian.com/', '://www.artstroismolian.com/')]?.path ?? null;
+const FALLBACK_COVER = '/hero/hero-poster.jpg';
 
 const proekti = readFileSync(join(dist, 'proekti/index.html'), 'utf8');
 const chips = [...proekti.matchAll(/data-cat="([^"]+)"/g)].map((m) => decode(m[1])).filter((c) => c !== 'all');
@@ -85,9 +96,24 @@ for (const r of data) {
   const file = join(dist, 'proekti', r.slug, 'index.html');
   if (!existsSync(file)) { errors.push(`missing detail page ${r.slug}`); continue; }
   const html = readFileSync(file, 'utf8');
-  if (!/class="g-tile[\s"]/.test(html)) errors.push(`${r.slug}: no gallery tile, a phone shows no photo of this project`);
-  if (r.cover_image_url && !/data-gallery-cover[\s\S]*?class="g-tile g-tile--cover/.test(html))
-    errors.push(`${r.slug}: the cover is not the first gallery frame below 1024 px`);
+  // Rule 5: the project's own cover is the hero photo on every width.
+  const heroTags = [...html.matchAll(/<img\b[^>]*\bclass="hero-image[\s"][^>]*>/g)].map((m) => m[0]);
+  const heroSrc = heroTags[0]?.match(/\ssrc="([^"]*)"/)?.[1];
+  const coverPath = r.cover_image_url ? localPath(r.cover_image_url) : null;
+  if (heroTags.length !== 1 || !heroSrc)
+    errors.push(`${r.slug}: ${heroTags.length} hero cover images (expected 1 with a src)`);
+  else if (/srcset="data:image\/gif/.test(heroTags[0]))
+    errors.push(`${r.slug}: hero cover has a placeholder srcset`);
+  else if (coverPath && decode(heroSrc) !== coverPath)
+    errors.push(`${r.slug}: hero cover is ${decode(heroSrc)}${decode(heroSrc) === FALLBACK_COVER ? ' (the shared fallback)' : ''}, the project's cover is ${coverPath}`);
+  // Rule 6: the gallery tiles are the project's frames, cover excluded.
+  const tiles = [...html.matchAll(/<button\b[^>]*\bclass="g-tile[\s"][\s\S]*?<\/button>/g)]
+    .map((m) => decode(m[0].match(/\sdata-full="([^"]*)"/)?.[1] ?? ''));
+  const frames = r.gallery_image_urls.map(localPath).filter((p) => p !== coverPath);
+  if (!tiles.length) errors.push(`${r.slug}: no gallery tile (data has ${frames.length} frame(s))`);
+  if (coverPath && tiles.includes(coverPath)) errors.push(`${r.slug}: the cover repeats in the gallery`);
+  if (tiles.join('|') !== frames.join('|'))
+    errors.push(`${r.slug}: gallery shows ${tiles.length} tile(s), data has ${frames.length} frame(s) without the cover (or the order differs)`);
   const ld = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)]
     .map((m) => JSON.parse(m[1]))
     .find((o) => o['@type'] === 'CreativeWork');
@@ -103,4 +129,4 @@ if (errors.length) {
   for (const e of errors) console.error('  - ' + e);
   process.exit(1);
 }
-console.log(`check-categories: OK. /proekti: ${summary} (total ${cards.length}). /uslugi links: ${uslugiSummary}. ${data.length} detail pages: genre and absolute image OK.`);
+console.log(`check-categories: OK. /proekti: ${summary} (total ${cards.length}). /uslugi links: ${uslugiSummary}. ${data.length} detail pages: genre, absolute image, own cover and gallery OK.`);
