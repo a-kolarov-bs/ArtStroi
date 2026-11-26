@@ -77,8 +77,7 @@ src/
 ├── components/
 │   ├── Header.astro               # sticky, прозрачен върху hero, top progress bar
 │   ├── Footer.astro
-│   ├── HeroVideo.astro            # full-bleed composite video + text overlay
-│   ├── HeroNewsCarousel.astro     # карусел с новини/сертификати в hero
+│   ├── HeroVideo.astro            # центрирано хиро, 150+/22+; видео 16:9 на десктоп, 9:16 (hero-mobile.mp4) на телефон
 │   ├── CtaBand.astro              # общ призив с телефона на управителя
 │   ├── ProjectCard.astro          # portrait, premium hover motion
 │   ├── TrustedBy.astro            # CSS-only infinite marquee

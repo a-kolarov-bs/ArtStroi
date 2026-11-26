@@ -18,10 +18,11 @@ pattern by hand went wrong twice, so it is measured from the file itself.
   check <video.mp4>
       Fails (exit 1) unless, on a 390x844 phone screen, the content moves
       at mean <= 80 px/s, peak (0.5 s average) <= 150 px/s, and no phase of
-      the 1 s (24 frames) or 2.5 s (60 frames) cycle is faster than 1.3x the
-      average phase (speed of each frame relative to its local 1 s median),
-      over the whole clip. That is the check for the "jolt every N seconds"
-      class of fault.
+      the 1 s (24 frames) or 2.5 s (60 frames) cycle is faster than PHASE_MAX
+      times the average phase (speed of each frame relative to its local 1 s
+      median), over the whole clip. That is the check for the "jolt every N
+      seconds" class of fault. PHASE_MAX is 1.5: the owner accepted the 1.44x
+      left on the 2.5 s cycle by the interpolation (26.11.2026); 807bc6d was 1.95x.
 
 FFMPEG=/path/to/ffmpeg (default: ffmpeg). Standard library only.
 """
@@ -29,6 +30,8 @@ import os
 import statistics as st
 import subprocess
 import sys
+
+PHASE_MAX = 1.5  # see "check" above
 
 FFMPEG = os.environ.get("FFMPEG", "ffmpeg")
 MIN_STEP = 1.5  # source px per stored frame; below it a gap is invisible
@@ -153,9 +156,9 @@ def check(video):
         avg = st.mean(means.values())
         top = max(means, key=means.get)
         ratio = means[top] / avg
-        good = ratio <= 1.3
+        good = ratio <= PHASE_MAX
         ok = ok and good
-        print(f"phase {name:>5} (mod {period}): fastest phase {top} = {ratio:.2f}x average (<=1.3) "
+        print(f"phase {name:>5} (mod {period}): fastest phase {top} = {ratio:.2f}x average (<={PHASE_MAX}) "
               + ("OK" if good else "FAIL"))
         print("   " + " ".join(f"{p}:{means[p] / avg:.2f}" for p in sorted(means)))
     print("OK" if ok else "FAIL")
