@@ -15,23 +15,11 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
 >
   <section class="contact-page relative isolate overflow-hidden bg-cream-50 text-ink-950">
     <div aria-hidden="true" class="absolute inset-0 -z-10 bp-sheet bp-sheet-c"></div>
-    <span aria-hidden="true" class="contact-page__mark">4700</span>
 
-    <div class="container-page relative pt-32 md:pt-36 lg:pt-40 pb-16 md:pb-24">
-      <Reveal>
-        <div class="contact-hero">
-          <div>
-            <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Контакти · Смолян</p>
-            <h1>Пишете ни</h1>
-          </div>
-          <p class="contact-hero__text">
-            Кажете ни какъв е обектът, къде се намира и какво трябва да се направи.
-            Най-бързо е по телефона. Чертежи и снимки пратете по имейл.
-          </p>
-        </div>
-      </Reveal>
-
-      <div class="contact-layout mt-11 md:mt-14">
+    <!-- No intro block (owner 26.11.2026): the page opens on the phones and
+         the form. The form title is the page's only h1. -->
+    <div class="container-page relative pt-28 md:pt-32 lg:pt-36 pb-16 md:pb-24">
+      <div class="contact-layout">
         <Reveal class="min-w-0 min-[1180px]:col-start-2 min-[1180px]:row-start-1">
           <section class="contact-call" aria-labelledby="contact-call-heading">
             <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Телефони</p>
@@ -67,7 +55,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
           <section class="contact-form-panel" aria-labelledby="contact-form-heading">
             <div class="contact-form-panel__head">
               <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Съобщение</p>
-              <h2 id="contact-form-heading">Пишете ни.</h2>
+              <h1 id="contact-form-heading">Пишете ни.</h1>
               <p>
                 Формата подготвя писмо до нас във вашата поща. Чертежи и снимки добавете
                 като прикачени файлове. Полетата със <span class="text-brand">*</span> са задължителни.
@@ -137,7 +125,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
           </section>
         </Reveal>
 
-        <Reveal delay={120} class="min-w-0 min-[1180px]:col-start-2 min-[1180px]:row-start-2">
+        <Reveal delay={120} class="min-w-0 min-[1180px]:col-start-1 min-[1180px]:row-start-3">
           <section class="contact-office" aria-labelledby="contact-office-heading">
             <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Офис</p>
             <h2 id="contact-office-heading">{company.district}, {company.city}</h2>
@@ -160,7 +148,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
           </section>
         </Reveal>
 
-        <Reveal class="min-w-0 min-[1180px]:col-span-2 min-[1180px]:row-start-3">
+        <Reveal class="min-w-0 min-[1180px]:col-start-2 min-[1180px]:row-start-2 min-[1180px]:row-span-2 min-[1180px]:self-end">
           <div class="contact-map">
             <iframe
               title={`Карта: ${company.name}, офис ${company.city}`}
@@ -181,47 +169,11 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
     min-height: 100svh;
   }
 
-  .contact-page__mark {
-    position: absolute;
-    top: 5.8rem;
-    right: -0.08em;
-    z-index: -1;
-    color: rgba(18, 22, 28, 0.04);
-    font-family: var(--font-display);
-    font-size: clamp(9rem, 24vw, 24rem);
-    line-height: 0.8;
-    pointer-events: none;
-  }
-
-  .contact-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(24rem, 0.48fr);
-    gap: clamp(2rem, 6vw, 7rem);
-    align-items: end;
-  }
-
-  .contact-hero h1 {
-    margin-top: 1rem;
-    max-width: none;
-    font-family: var(--font-display);
-    font-size: clamp(3.4rem, 1.9rem + 4vw, 5.9rem);
-    line-height: 0.94;
-    letter-spacing: 0;
-    white-space: nowrap;
-  }
-
-  .contact-hero__text {
-    margin-bottom: 0.9rem;
-    max-width: 34rem;
-    border-left: 2px solid #ba2d20;
-    padding-left: 1.35rem;
-    color: rgba(18, 22, 28, 0.68);
-    font-size: clamp(1rem, 0.92rem + 0.28vw, 1.14rem);
-    line-height: 1.72;
-  }
-
-  /* Phones first in the DOM (and on narrow screens); from 1180px the form
-     takes the left column and the phones sit top right, above the fold. */
+  /* Phones first in the DOM (and on narrow screens). From 1180px:
+       form    | phones
+       form    | map (square, bottom-aligned)
+       office  | map
+     so the office address sits beside its map. */
   .contact-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -384,7 +336,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
     grid-column: 1 / -1;
   }
 
-  .contact-form-panel__head h2 {
+  .contact-form-panel__head h1 {
     max-width: 12ch;
     color: #15191f;
     font-family: var(--font-display);
@@ -597,6 +549,38 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
     background: rgba(18, 22, 28, 0.08);
   }
 
+  /* Desktop: the office reads across the left column (name | address and
+     link), the map is a square in the right column beside it. */
+  @media (min-width: 1180px) {
+    .contact-office {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: clamp(1.5rem, 4vw, 4rem);
+      align-items: start;
+    }
+    .contact-office .eyebrow {
+      grid-column: 1 / -1;
+    }
+    .contact-office h2 {
+      grid-row: 2 / span 2;
+    }
+    .contact-office address,
+    .contact-map-link {
+      grid-column: 2;
+    }
+    .contact-map-link {
+      justify-self: start;
+    }
+  }
+
+  /* Desktop: a square map in the narrow right column. */
+  @media (min-width: 1180px) {
+    .contact-map {
+      height: auto;
+      aspect-ratio: 1 / 1;
+    }
+  }
+
   .contact-map iframe {
     width: 100%;
     height: 100%;
@@ -618,13 +602,8 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
   }
 
   @media (max-width: 900px) {
-    .contact-hero,
     .contact-form-panel__head {
       grid-template-columns: 1fr;
-    }
-
-    .contact-hero__text {
-      margin-bottom: 0;
     }
   }
 
@@ -632,24 +611,6 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
     .contact-page .container-page {
       padding-left: 1.125rem;
       padding-right: 1.125rem;
-    }
-
-    .contact-page__mark {
-      top: 7rem;
-      right: 0;
-      font-size: 8.5rem;
-    }
-
-    .contact-hero h1 {
-      max-width: none;
-      font-size: clamp(2.05rem, 9.5vw, 3.1rem);
-      white-space: normal;
-    }
-
-    .contact-hero__text {
-      padding-left: 1rem;
-      font-size: 0.98rem;
-      line-height: 1.6;
     }
 
     .contact-layout {

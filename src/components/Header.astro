@@ -1,9 +1,8 @@
 ---
 // Sticky transparent-over-hero header. NO top investment buttons (per CLAUDE.md).
-// Layout by width:
-//   < 768   logo · call chip · menu chip
-//   768–1023 logo · call chip · menu chip
-//   ≥ 1024  logo · five links
+// Layout by width (grid 1fr auto 1fr, the middle item is centred):
+//   < 1024  menu chip · logo · call chip
+//   ≥ 1024  logo · five links · manager's number with a handset icon
 // The menu panel (< 1024) carries the links plus „Обадете се“.
 // No „get a quote“ button anywhere: the site is informational (26.11.2026).
 import { phone, telHref } from '../data/company';
@@ -31,10 +30,64 @@ const managerTel = telHref(manager.number);
 >
   <span class="menu-scrim" aria-hidden="true" data-menu-scrim></span>
 
-  <div class="container-page flex h-20 items-center justify-between gap-6">
+  <!-- One three-column bar at every width, so the middle item is always
+       centred on the screen:
+         < 1024  menu chip · logo · call chip
+         ≥ 1024  logo · five links · manager's number
+       DOM order follows the visual order (Tab goes left to right), and the
+       menu panel follows its toggle so Tab moves straight into it. -->
+  <div class="container-page grid h-20 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 md:gap-4 lg:gap-6">
+    <div class="col-start-1 row-start-1 justify-self-start lg:hidden">
+      <button
+        type="button"
+        class="header-chip grid"
+        aria-label="Отворете менюто"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        data-mobile-menu-toggle
+      >
+        <span class="mobile-menu-button__lines" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+
+      <nav
+        id="mobile-menu"
+        class="mobile-menu"
+        aria-label="Мобилна навигация"
+        aria-hidden="true"
+        data-mobile-menu
+        inert
+      >
+        {nav.map((item) => (
+          <a
+            href={item.href}
+            class="mobile-menu__link"
+            aria-current={isCurrent(item.href) ? 'page' : undefined}
+            data-mobile-menu-link
+          >
+            <span>{item.label}</span>
+            <svg width="15" height="15" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        ))}
+
+        <div class="mobile-menu__actions">
+          <a href={managerTel} class="btn-brand w-full justify-between" data-mobile-menu-link>
+            <span>Обадете се</span>
+            <span class="tabular-nums">{manager.number}</span>
+          </a>
+          <p class="mobile-menu__note">Управител · пон.–пет. 9:00–18:00</p>
+        </div>
+      </nav>
+    </div>
+
     <a
       href="/"
-      class="site-logo group flex items-center transition-transform duration-400 hover:scale-[1.02] focus:outline-none focus-visible:outline-none"
+      class="site-logo group col-start-2 row-start-1 flex items-center justify-self-center transition-transform duration-400 hover:scale-[1.02] focus:outline-none focus-visible:outline-none lg:col-start-1 lg:justify-self-start"
       aria-label="АРТСТРОЙ ООД, начало"
     >
       <img
@@ -56,7 +109,7 @@ const managerTel = telHref(manager.number);
       />
     </a>
 
-    <nav class="hidden lg:flex items-center gap-1" aria-label="Главна навигация">
+    <nav class="col-start-2 row-start-1 hidden items-center gap-1 lg:flex" aria-label="Главна навигация">
       {nav.map((item) => (
         <a
           href={item.href}
@@ -69,65 +122,21 @@ const managerTel = telHref(manager.number);
       ))}
     </nav>
 
-    <div class="flex items-center gap-2.5 md:gap-3 lg:hidden">
-      <a
-        href={managerTel}
-        class="header-chip header-chip--call grid lg:hidden"
-        aria-label={`Обадете се на управителя, ${manager.number}`}
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <!-- The manager's number: a round chip on phones, the number itself from
+         1024. A line-drawn handset, not an emoji (emoji differ per device). -->
+    <a
+      href={managerTel}
+      class="header-chip header-call col-start-3 row-start-1 grid justify-self-end"
+      aria-label={`Обадете се на управителя, ${manager.number}`}
+      data-header-call
+    >
+      <span class="header-call__icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
           <path d="M5.2 3.5h3.1l1.6 4.1-2.1 1.3a11.4 11.4 0 0 0 7.3 7.3l1.3-2.1 4.1 1.6v3.1a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 3.2 5.7a2 2 0 0 1 2-2.2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
         </svg>
-      </a>
-
-      <button
-        type="button"
-        class="header-chip grid lg:hidden"
-        aria-label="Отворете менюто"
-        aria-controls="mobile-menu"
-        aria-expanded="false"
-        data-mobile-menu-toggle
-      >
-        <span class="mobile-menu-button__lines" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
-      </button>
-    </div>
-  </div>
-
-  <div class="container-page lg:hidden">
-    <nav
-      id="mobile-menu"
-      class="mobile-menu"
-      aria-label="Мобилна навигация"
-      aria-hidden="true"
-      data-mobile-menu
-      inert
-    >
-      {nav.map((item) => (
-        <a
-          href={item.href}
-          class="mobile-menu__link"
-          aria-current={isCurrent(item.href) ? 'page' : undefined}
-          data-mobile-menu-link
-        >
-          <span>{item.label}</span>
-          <svg width="15" height="15" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-      ))}
-
-      <div class="mobile-menu__actions">
-        <a href={managerTel} class="btn-brand w-full justify-between" data-mobile-menu-link>
-          <span>Обадете се</span>
-          <span class="tabular-nums">{manager.number}</span>
-        </a>
-        <p class="mobile-menu__note">Управител · пон.–пет. 9:00–18:00</p>
-      </div>
-    </nav>
+      </span>
+      <span class="header-call__number">{manager.number}</span>
+    </a>
   </div>
 
   <!-- Top brand progress bar, fills with scroll -->
@@ -259,25 +268,74 @@ const managerTel = telHref(manager.number);
       rgba(18, 22, 28, 0.78);
     border-color: rgba(255, 255, 255, 0.50);
   }
-  /* The call chip is the one-tap action on phones and tablets: brand red. */
-  .header-chip--call {
-    border-color: rgba(255, 255, 255, 0.28);
-    background:
-      linear-gradient(145deg, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0)),
-      theme('colors.brand.DEFAULT');
+  /* ── Call: same neutral glass chip as the menu below 1024 (no red),
+     the manager's number in the link colour from 1024. ─────────────── */
+  .header-call__icon {
+    display: grid;
+    place-items: center;
   }
-  .header-chip--call:hover {
-    background:
-      linear-gradient(145deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0)),
-      theme('colors.brand.dark');
+  .header-call__number {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    #site-header .header-call {
+      display: inline-flex;
+      width: auto;
+      height: 2.75rem;
+      align-items: center;
+      gap: 0.7rem;
+      border: 0;
+      padding: 0 0.35rem 0 0;
+      color: var(--hdr-link);
+      background: none;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      transition: color 300ms theme('transitionTimingFunction.out-expo');
+    }
+    #site-header .header-call:hover {
+      color: var(--hdr-link-hover);
+      background: none;
+    }
+    .header-call__icon {
+      width: 2.25rem;
+      height: 2.25rem;
+      border: 1px solid currentColor;
+      border-color: color-mix(in srgb, currentColor 38%, transparent);
+      border-radius: 999px;
+      transition:
+        background-color 300ms theme('transitionTimingFunction.out-expo'),
+        border-color 300ms theme('transitionTimingFunction.out-expo');
+    }
+    .header-call__icon svg {
+      width: 16px;
+      height: 16px;
+    }
+    .header-call:hover .header-call__icon {
+      border-color: currentColor;
+      background-color: var(--hdr-link-hover-bg);
+    }
+    .header-call__number {
+      display: inline;
+      font-size: 15px;
+      letter-spacing: 0.02em;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
   }
 
   /* ── Logo: light and dark versions cross-fade with the tone ─────── */
   .site-logo {
     position: relative;
-    margin-inline-start: -0.18rem;
     border-radius: 0.25rem;
     padding: 0;
+  }
+  /* Optical alignment to the left edge, only where the logo sits there. */
+  @media (min-width: 1024px) {
+    .site-logo {
+      margin-inline-start: -0.18rem;
+    }
   }
 
   .site-logo:focus-visible {
@@ -398,8 +456,8 @@ const managerTel = telHref(manager.number);
   /* ── Menu panel (< 1024) ───────────────────────────────────────── */
   .mobile-menu {
     position: absolute;
-    inset-inline-start: auto;
-    inset-inline-end: 1.5rem;
+    inset-inline-start: 1.5rem;
+    inset-inline-end: auto;
     top: calc(100% + 0.35rem);
     z-index: 1;
     display: grid;
@@ -428,7 +486,7 @@ const managerTel = telHref(manager.number);
     visibility: hidden;
     pointer-events: none;
     transform: translateY(-8px) scale(0.985);
-    transform-origin: top right;
+    transform-origin: top left;
     transition:
       opacity 320ms theme('transitionTimingFunction.out-expo'),
       visibility 320ms step-end,
@@ -437,7 +495,7 @@ const managerTel = telHref(manager.number);
 
   @media (min-width: 768px) {
     .mobile-menu {
-      inset-inline-end: 2.5rem;
+      inset-inline-start: 2.5rem;
       width: min(26rem, calc(100vw - 5rem));
     }
   }
@@ -493,21 +551,10 @@ const managerTel = telHref(manager.number);
     transform: translateX(2px);
   }
 
-  /* Current page: tinted row and a red bar on the left edge. */
+  /* Current page: a lighter row only (no red bar, owner 26.11.2026). */
   .mobile-menu__link[aria-current='page'] {
-    background-color: rgb(255 255 255 / 0.08);
+    background-color: rgb(255 255 255 / 0.1);
     color: #fff;
-  }
-  .mobile-menu__link[aria-current='page']::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 3px;
-    height: 1.25rem;
-    border-radius: 3px;
-    background: theme('colors.brand.DEFAULT');
-    transform: translateY(-50%);
   }
 
   .mobile-menu__link svg {
