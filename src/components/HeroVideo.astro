@@ -94,15 +94,12 @@ const stats = [
 
     <!-- Two figures, close together under the text (owner's variant C strip). -->
     <dl class="hero-stats mt-10 flex items-stretch justify-center">
-      {stats.map((s, i) => (
-        <>
-          {i > 0 && <span aria-hidden="true" class="hero-stats__rule w-px self-stretch bg-white/35"></span>}
-          <div class="hero-stats__item flex flex-col items-center">
-            <dt class="sr-only">{s.label}</dt>
-            <dd class="hero-stats__num font-display text-white">{s.value}<span class="text-brand">+</span></dd>
-            <dd aria-hidden="true" class="hero-stats__label mt-2 uppercase text-white/85">{s.label}</dd>
-          </div>
-        </>
+      {stats.map((s) => (
+        <div class="hero-stats__item flex flex-col items-center">
+          <dt class="sr-only">{s.label}</dt>
+          <dd class="hero-stats__num font-display text-white">{s.value}<span class="text-brand">+</span></dd>
+          <dd aria-hidden="true" class="hero-stats__label mt-2 uppercase text-white/85">{s.label}</dd>
+        </div>
       ))}
     </dl>
   </div>
@@ -143,7 +140,22 @@ const stats = [
   }
 
   .hero-stats {
-    gap: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+    --hero-stats-gap: clamp(3rem, 2rem + 4vw, 5rem);
+    gap: var(--hero-stats-gap);
+  }
+
+  /* Thin rule between the two figures, centred in the gap. */
+  .hero-stats__item + .hero-stats__item {
+    position: relative;
+  }
+
+  .hero-stats__item + .hero-stats__item::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: calc(var(--hero-stats-gap) / -2);
+    width: 1px;
+    background: rgb(255 255 255 / 0.35);
   }
 
   .hero-stats__num {
@@ -217,17 +229,35 @@ const stats = [
 
   // One file per device: phones the 9:16 video, larger screens the
   // horizontal montage. Set before initMotionVideos so it can start it.
+  const phoneQuery = window.matchMedia('(max-width: 767px)');
+  const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const heroVideos = () => document.querySelectorAll<HTMLVideoElement>('video[data-hero-video]');
+  const sourceFor = (video: HTMLVideoElement) =>
+    phoneQuery.matches ? video.dataset.srcMobile : video.dataset.srcDesktop;
+
   const pickHeroSource = () => {
-    document.querySelectorAll<HTMLVideoElement>('video[data-hero-video]').forEach((video) => {
+    heroVideos().forEach((video) => {
       if (video.getAttribute('src')) return;
-      const phone = window.matchMedia('(max-width: 767px)').matches;
-      const src = phone ? video.dataset.srcMobile : video.dataset.srcDesktop;
+      const src = sourceFor(video);
       if (!src) return;
       // Reduced motion: the poster stays, so do not fetch the video up front.
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) video.preload = 'none';
+      if (reduceQuery.matches) video.preload = 'none';
       video.src = src;
     });
   };
+
+  // Rotation / resize across 768px: swap to the other file, but only if the
+  // video is already playing (a paused poster under reduced motion stays,
+  // and nothing extra is fetched at load).
+  phoneQuery.addEventListener('change', () => {
+    heroVideos().forEach((video) => {
+      const src = sourceFor(video);
+      if (!src || video.getAttribute('src') === src) return;
+      if (video.paused || video.currentTime === 0) return;
+      video.src = src;
+      video.play().catch(() => {});
+    });
+  });
 
   const start = () => {
     pickHeroSource();
