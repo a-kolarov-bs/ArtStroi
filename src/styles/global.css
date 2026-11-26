@@ -301,6 +301,10 @@
   .bp-sheet-b { background-position: -700px -400px; }
   .bp-sheet-c { background-position: -1300px -200px; }
   .bp-sheet-d { background-position: -300px -900px; }
+  /* Same drawing in white lines for dark sections (bg-ink-*, data-surface="dark").
+     The strength lives in the SVG files, one level for the whole site: no
+     opacity utility on a .bp-sheet layer (scripts/check-blueprint.mjs). */
+  .bp-sheet-dark { background-image: url('/blueprint/sheet-dark.svg'); }
   /* Cross-fade mask for blueprints — full opacity centre, fades to edges */
   .bp-mask {
     -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 50%, transparent 100%);

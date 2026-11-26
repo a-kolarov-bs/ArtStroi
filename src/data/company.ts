@@ -25,6 +25,11 @@ export interface Company {
   founded: number | null;
   /** ЦПРС groups, e.g. ['I', 'II']. `null` until the client confirms them. */
   cprsGroups: string[] | null;
+  /** Completed projects in total, shown as „150+“ (owner, 26.11.2026). Not
+   *  the number of projects listed on the site: that is `projects.length`. */
+  completedProjects: number;
+  /** Years of experience, shown as „22+“ (owner, 26.11.2026). */
+  yearsExperience: number;
 }
 
 export const company: Company = {
@@ -45,6 +50,8 @@ export const company: Company = {
   ],
   founded: null,
   cprsGroups: null,
+  completedProjects: 150,
+  yearsExperience: 22,
 };
 
 /** „гр. Смолян 4700, кв. Устово, ул. „Хаджи Иван Бечев“ №6“ */
