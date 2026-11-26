@@ -2,9 +2,10 @@
 // Sticky transparent-over-hero header. NO top investment buttons (per CLAUDE.md).
 // Layout by width:
 //   < 768   logo · call chip · menu chip
-//   768–1023 logo · „Получете оферта“ · call chip · menu chip
-//   ≥ 1024  logo · five links · „Получете оферта“
-// The menu panel (< 1024) carries the links plus „Обадете се“ and the offer.
+//   768–1023 logo · call chip · menu chip
+//   ≥ 1024  logo · five links
+// The menu panel (< 1024) carries the links plus „Обадете се“.
+// No „get a quote“ button anywhere: the site is informational (26.11.2026).
 import { phone, telHref } from '../data/company';
 
 const nav = [
@@ -68,17 +69,7 @@ const managerTel = telHref(manager.number);
       ))}
     </nav>
 
-    <div class="flex items-center gap-2.5 md:gap-3">
-      <a
-        href="/kontakti"
-        class="btn-ghost glass text-ink [--ink:0.03em] hidden md:inline-flex px-6"
-      >
-        Получете оферта
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-
+    <div class="flex items-center gap-2.5 md:gap-3 lg:hidden">
       <a
         href={managerTel}
         class="header-chip header-chip--call grid lg:hidden"
@@ -133,12 +124,6 @@ const managerTel = telHref(manager.number);
         <a href={managerTel} class="btn-brand w-full justify-between" data-mobile-menu-link>
           <span>Обадете се</span>
           <span class="tabular-nums">{manager.number}</span>
-        </a>
-        <a href="/kontakti" class="btn-ghost w-full" data-mobile-menu-link>
-          Получете оферта
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
         </a>
         <p class="mobile-menu__note">Управител · пон.–пет. 9:00–18:00</p>
       </div>
@@ -200,9 +185,9 @@ const managerTel = telHref(manager.number);
       0 8px 22px -18px rgba(18, 22, 28, 0.20);
   }
 
-  /* ── Tone → colours of links and the glass button ───────────────────
+  /* ── Tone → colours of the links ─────────────────────────────────────
      The tone (set by the script from what is behind the logo) only sets
-     these variables. The links and .glass read them in exactly one rule
+     these variables. The links read them in exactly one rule
      each, and :hover is one rule on top, so no tone selector can outrank
      the hover state. Before the script runs there is no data-tone:
      a solid-header page starts light, every other page starts dark. */
@@ -210,16 +195,6 @@ const managerTel = telHref(manager.number);
     --hdr-link: rgb(255 255 255 / 0.86);
     --hdr-link-hover: #fff;
     --hdr-link-hover-bg: rgb(255 255 255 / 0.10);
-    --hdr-glass-bg: rgba(255, 255, 255, 0.10);
-    --hdr-glass-bg-hover: rgba(255, 255, 255, 0.20);
-    --hdr-glass-border: rgba(255, 255, 255, 0.18);
-    --hdr-glass-border-hover: rgba(255, 255, 255, 0.45);
-    --hdr-glass-color: #fff;
-    --hdr-glass-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.55),
-      inset 0 8px 14px -8px rgba(255, 255, 255, 0.35),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.06),
-      0 10px 24px -10px rgba(0, 0, 0, 0.28);
   }
 
   #site-header[data-tone='light'],
@@ -227,16 +202,6 @@ const managerTel = telHref(manager.number);
     --hdr-link: theme('colors.ink.900');
     --hdr-link-hover: theme('colors.ink.950');
     --hdr-link-hover-bg: rgb(18 22 28 / 0.07);
-    --hdr-glass-bg: rgba(28, 32, 38, 0.10);
-    --hdr-glass-bg-hover: rgba(28, 32, 38, 0.18);
-    --hdr-glass-border: rgba(255, 255, 255, 0.55);
-    --hdr-glass-border-hover: rgba(255, 255, 255, 0.80);
-    --hdr-glass-color: theme('colors.ink.900');
-    --hdr-glass-shadow:
-      inset 0 1.5px 0 rgba(255, 255, 255, 1),
-      inset 0 6px 12px -6px rgba(255, 255, 255, 0.40),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.06),
-      0 10px 24px -10px rgba(18, 22, 28, 0.22);
   }
 
   #site-header [data-nav-link] {
@@ -262,16 +227,6 @@ const managerTel = telHref(manager.number);
     background: theme('colors.brand.DEFAULT');
   }
 
-  #site-header .glass {
-    background: var(--hdr-glass-bg);
-    border-color: var(--hdr-glass-border);
-    color: var(--hdr-glass-color);
-    box-shadow: var(--hdr-glass-shadow);
-  }
-  #site-header .glass:hover {
-    background: var(--hdr-glass-bg-hover);
-    border-color: var(--hdr-glass-border-hover);
-  }
 
   /* ── Round chips (call, menu): dark glass, readable on any surface ── */
   .header-chip {

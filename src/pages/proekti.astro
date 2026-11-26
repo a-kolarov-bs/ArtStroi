@@ -270,7 +270,7 @@ const pageDescription = `${projects.length} реализирани обекта$
           <button type="button" id="proekti-clear" class="btn-ghost-dark">
             Изчистете филтрите
           </button>
-          <a href="/kontakti" class="btn-brand">Изпратете запитване</a>
+          <a href="/kontakti" class="btn-brand">Пишете ни</a>
         </div>
       </div>
     </div>
@@ -296,31 +296,28 @@ const pageDescription = `${projects.length} реализирани обекта$
         <Reveal class="lg:col-span-7">
           <p class="eyebrow flex items-center gap-3">
             <span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span>
-            Запитване
+            Контакт
           </p>
           <h2
             class="mt-6 font-display tracking-tight leading-[1.02] text-white max-w-[18ch]"
             style="font-size: clamp(2.25rem, 1rem + 4.5vw, 5rem); letter-spacing: -0.025em;"
           >
-            Имате подобен обект?
+            Въпрос за обект?
             <span class="block text-white/65">
-              Ще го обсъдим с вас.
+              Обадете се или ни пишете.
             </span>
           </h2>
         </Reveal>
         <Reveal class="lg:col-span-5 lg:pb-2" delay={120}>
           <p class="text-base md:text-lg text-white/70 leading-[1.65] max-w-[42ch]">
-            Строим жилищни и обществени сгради, хотели, улици и паркове. Обадете се на управителя или изпратете запитване.
+            Строим жилищни и обществени сгради, хотели, улици и паркове. Управителят отговаря на телефона в работно време.
           </p>
           <div class="mt-8 flex flex-wrap gap-3">
-            <a href="/kontakti" class="btn-brand">
-              Получете оферта
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path d="M3 11L11 3m0 0H5m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-            <a href={telHref(mainPhone.number)} class="btn-ghost tabular-nums">
+            <a href={telHref(mainPhone.number)} class="btn-brand tabular-nums">
               {mainPhone.number}
+            </a>
+            <a href="/kontakti" class="btn-ghost">
+              Контакти
             </a>
           </div>
         </Reveal>

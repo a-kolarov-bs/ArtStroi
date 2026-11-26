@@ -66,8 +66,8 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
         <Reveal class="min-w-0 min-[1180px]:col-start-1 min-[1180px]:row-start-1 min-[1180px]:row-span-2">
           <section class="contact-form-panel" aria-labelledby="contact-form-heading">
             <div class="contact-form-panel__head">
-              <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Запитване</p>
-              <h2 id="contact-form-heading">Разкажете ни накратко.</h2>
+              <p class="eyebrow flex items-center gap-3"><span aria-hidden="true" class="inline-block h-px w-8 bg-brand"></span> Съобщение</p>
+              <h2 id="contact-form-heading">Пишете ни.</h2>
               <p>
                 Формата подготвя писмо до нас във вашата поща. Чертежи и снимки добавете
                 като прикачени файлове. Полетата със <span class="text-brand">*</span> са задължителни.
@@ -110,7 +110,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
                   name="message"
                   rows="7"
                   aria-describedby="message-error"
-                  placeholder="Какъв е обектът, къде е и какво трябва да се направи"
+                  placeholder="Вашият въпрос или съобщение"
                   required
                   minlength="10"
                 ></textarea>
@@ -119,7 +119,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
 
               <div class="contact-form__footer" data-surface="dark">
                 <button type="submit" class="btn-brand shrink-0">
-                  Изпратете запитване
+                  Изпратете съобщение
                   <span aria-hidden="true">↗</span>
                 </button>
                 <div class="contact-form__hint">
@@ -767,7 +767,7 @@ const otherPhones = company.phones.filter((p) => p.role !== manager.role);
         const lastName = getValue(lastNameInput);
         const phone = getValue(phoneInput);
         const subjectName = [firstName, lastName].filter(Boolean).join(' ') || 'сайт';
-        const subject = `Запитване от ${subjectName}`;
+        const subject = `Съобщение от ${subjectName}`;
         const body = [
           `Име: ${[firstName, lastName].filter(Boolean).join(' ') || '-'}`,
           `Телефон: ${phone || '-'}`,
